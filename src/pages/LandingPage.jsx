@@ -11,6 +11,7 @@ import Prod4 from '../components/images/prod4.jpg'
 import { FaStar } from "react-icons/fa";
 import Journey from '../components/journey.jsx'
 import Footer from '../components/footer.jsx'
+import Opener from '../components/images/opener.png'
 
 
 const LandingPage = () => {
@@ -19,17 +20,17 @@ const LandingPage = () => {
     
     <section className="bg-[url('./src/components/images/bg-2.png')] bg-cover bg-center shadow-inner shadow-[#000000 - 500]">
     <Navbar/>
-        <div className="max-w-4xl mx-auto pt-35 px-6 h-screen">
+        <div className="max-w-7xl mx-auto pt-35 px-6 h-screen">
             <div className="flex flex-col items-center mt-6 lg:mt-20">
-                <h1 className="text-6xl sm:6xl lg:text-7xl text-center tracking-wide text-[#FFFFFF]">
+                <h1 className="text-6xl lg:text-8xl text-center tracking-wide text-[#FFFFFF]">
                 ARTISANAL <span className="text-[#EA1A20]"> HOT </span> SAUCE AND <span className="text-[#EA1A20]"> SPICY </span> STUFF
                  </h1>
-                <p className=" mt-8 text-lg text-center text-[#FFFFFF] max-w-3xl">
+                <p className=" mt-8 text-2xl text-center text-[#FFFFFF] max-w-3xl">
                  We pride ourselves on different flavor profiles, not just heat. Anything that’s spicy as a whole, we have it.
                  From powders, to pickles, to oils, to sauces, name it. 
                 </p>
                     <div className="flex justify-center my-10">
-                        <a href="#" className="px-3 mx-3 rounded-md text-xl bg-[#FFD700] p-3 border-black-600">
+                        <a href="#" className="px-3 mx-3 rounded-2xl text-2xl bg-[#FFD700] p-5 border-black-600">
                             Order Now!
                         </a>
                     </div>

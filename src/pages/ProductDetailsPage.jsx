@@ -1,82 +1,115 @@
-
-import Modal from "../components/ThankYouPopUp.jsx"
-import Prod1 from "../components/images/product1.jpg"
-import Alapeno from "../components/images/Alapeno.webp" 
+import Modal from "../components/ThankYouPopUp.jsx";
+import Prod1 from "../components/images/product1.jpg";
+import Alapeno from "../components/images/Alapeno.webp";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-
-
-
 function ProductDetailsPage() {
+  const [Open, setOpen] = useState(false);
+  const { id } = useParams();
+  const [data, setData] = useState([]);
 
-    const [Open, setOpen] = useState(false)
-    const {id} = useParams();
-    const [data, setData] = useState([])
-
-    useEffect(() => {
-    axios.get('http://localhost:3000/api/products/' + id)
-    .then(res => setData(res.data))
-    .catch(err => console.log(err))
-  }, [])
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/products/" + id)
+      .then((res) => setData(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
-   
-    <section className='bg-[#FFD70090] max-w-screen max-h-full h-screen pt-5 '>
+      <section className="bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat max-w-screen max-h-full h-screen pt-5 ">
         <div className="max-w-5xl mx-auto px-3 py-3 border-black border-3 mt-[80px]">
-        
-            <div className="flex flex-col ">
-                <div className="border-b-3 mx-auto p-3">
-                    <img src={Prod1} alt="/" className="lg:w-[400px] lg:h-[400px] w-[300px] h-[300px] " />
-                </div>
-                <div className="flex flex-row justify-evenly border-b-2 pb-3">
-                    <div className="flex flex-col items-start gap-y-[20px] ">
-                        <h1 className="font-black lg:text-4xl text-2xl"> {data.name} </h1>
-                        <p className="lg:text-2xl text-base">Quantity: <input type="number" min={0} className="border-black border-1 w-[80px]" /> </p>
-                        <p className="lg:text-2xl text-base">Size: =<select name="" id=""></select> </p>
-                            <div className="flex flex-row gap-x-1 items-center justify-center text-[#EA1A20] ">
-                                <img src={Alapeno} alt="/" className="w-[50px] h-[50px]"/>
-                                <p>Rating:</p>
-                                <p> 3/5 </p>
-                            </div>
-                    </div>  
-                    <div className="flex flex-col items-end gap-y-5 ">
-                        <h1 className="text-2xl pt-10"> {data.price} <span className="bg-[#FFE2E3] text-[#EA1A20] px-1 py-2 "> 20% </span> </h1>
-                            <div className="flex flex-row border-[#EA1A20] border-2 lg:px-6 px:1 py-2 gap-2 lg:w-[250px] w-[150px] justify-center shadow-md shadow-black">
-                                <FaShoppingCart className="lg:h-[40px] lg:w-[40px] h-[30px] w-[30px] "/> 
-                                <p className="lg:text-2xl text-base"> Add to Cart </p>
-                            </div>
-                            <div className="bg-[#EA1A20] lg:text-3xl text-xl px-6 py-2 text-[#FFFFFF] lg:w-[250px] w-[150px] text-center cursor-pointer shadow-md shadow-black" onClick={() => setOpen(true) }>
-                                Buy Now!
-                            </div>
-                            <Modal open={Open} onClose={() => setOpen(false)}> 
-                                <div className="text-center w-[400px] h-[200px]">
-                                    <h1 className="text-3xl font-bold pb-5"> Do you want to Complete the Transaction?</h1>
-                                    <div>
-                                        <p className="text-lg "> Click Confirm to Complete the Transaction!</p>
-                                    </div>
-                                    <div className="flex items-center justify-center gap-4 p-10 text-lg font-bold text-[#FFFFFF] ">
-                                        <button className="bg-[#EA1A20] w-[150px] rounded-full p-3 cursor-pointer"> Confirm </button>
-                                        <button onClick={() => setOpen(false)} className="bg-[#EA1A20] w-[150px] rounded-full p-3 cursor-pointer "> Cancel </button>
-                                    </div>
-                                </div>
-                            </Modal>
-                    </div>  
-                </div>
-
-                <div className="mx-auto p-2 text-justify">
-                    <h1> Description</h1>
-                    <p> {data.description} </p>
-                </div>
+          <div className="flex flex-col ">
+            <div className="border-b-3 mx-auto p-3">
+              <img
+                src={Prod1}
+                alt="/"
+                className="lg:w-[400px] lg:h-[400px] w-[300px] h-[300px] "
+              />
             </div>
-        </div>
-    </section>
+            <div className="flex flex-row justify-evenly border-b-2 pb-3">
+              <div className="flex flex-col items-start gap-y-[20px] ">
+                <h1 className="font-black lg:text-4xl text-2xl">
+                  {" "}
+                  {data.name}
+                </h1>
+                <p className="lg:text-2xl text-base">
+                  Quantity:
+                  <input
+                    type="number"
+                    min={1}
+                    max={data.stock_quantity}
+                    className="border-black border-1 w-[80px]"
+                  />{" "}
+                </p>
+                <p className="lg:text-2xl text-base">
+                  Size: =<select name="" id=""></select>{" "}
+                </p>
+                <div className="flex flex-row gap-x-1 items-center justify-center text-[#EA1A20] ">
+                  <img src={Alapeno} alt="/" className="w-[50px] h-[50px]" />
+                  <p>Rating:</p>
+                  <p> 3/5 </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-end gap-y-5 ">
+                <h1 className="text-2xl pt-10">
+                  {data.price}
+                  <span className="bg-[#FFE2E3] text-[#EA1A20] px-1 py-2 ">
+                    20%
+                  </span>
+                </h1>
+                <div className="flex flex-row border-[#EA1A20] border-2 lg:px-6 px:1 py-2 gap-2 lg:w-[250px] w-[150px] justify-center shadow-md shadow-black">
+                  <FaShoppingCart className="lg:h-[40px] lg:w-[40px] h-[30px] w-[30px] " />
+                  <p className="lg:text-2xl text-base"> Add to Cart </p>
+                </div>
+                <div
+                  className="bg-[#EA1A20] lg:text-3xl text-xl px-6 py-2 text-[#FFFFFF] lg:w-[250px] w-[150px] text-center cursor-pointer shadow-md shadow-black"
+                  onClick={() => setOpen(true)}
+                >
+                  Buy Now!
+                </div>
+                <Modal open={Open} onClose={() => setOpen(false)}>
+                  <div className="text-center w-[400px] h-[200px]">
+                    <h1 className="text-3xl font-bold pb-5">
+                      {" "}
+                      Do you want to Complete the Transaction?
+                    </h1>
+                    <div>
+                      <p className="text-lg ">
+                        {" "}
+                        Click Confirm to Complete the Transaction!
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-center gap-4 p-10 text-lg font-bold text-[#FFFFFF] ">
+                      <button className="bg-[#EA1A20] w-[150px] rounded-full p-3 cursor-pointer">
+                        {" "}
+                        Confirm{" "}
+                      </button>
+                      <button
+                        onClick={() => setOpen(false)}
+                        className="bg-[#EA1A20] w-[150px] rounded-full p-3 cursor-pointer "
+                      >
+                        {" "}
+                        Cancel{" "}
+                      </button>
+                    </div>
+                  </div>
+                </Modal>
+              </div>
+            </div>
 
+            <div className="mx-auto p-2 text-justify">
+              <h1> Description</h1>
+              <p> {data.description} </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
-  )
+  );
 }
 
-export default ProductDetailsPage
+export default ProductDetailsPage;

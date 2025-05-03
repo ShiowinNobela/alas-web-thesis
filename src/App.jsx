@@ -10,15 +10,28 @@ import ProductDetailsPage from './pages/ProductDetailsPage.jsx'
 import { Route, Routes } from 'react-router-dom'
 import UserSettings from './pages/UserSettings.jsx'
 import GiveReview from './pages/GiveReview.jsx'
-
+import Faqs from './pages/Faqs.jsx'
+import AdminDashboard from './pages/adminPages/adminDashboard.jsx'
+import AddProd from './pages/adminPages/AddProduct.jsx'
+import Login from './pages/adminPages/LoginAdmin.jsx'
+import EditProd from './pages/adminPages/EditProduct.jsx'
+import ProdManagement from './pages/adminPages/ProductManagement.jsx'
+import AccManagement from './pages/adminPages/AccountManagement.jsx'
+import Sales from './pages/adminPages/Sales.jsx'
+import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx'
+import UserEditPopUp from './pages/adminPages/UserEditPopUp.jsx'
+import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx'
+import EditOrder from './pages/adminPages/editOrder.jsx'
+import MainLayout from './pages/MainLayout.jsx'
  
 
 function App() {
 
   return (
     <>
-    <NavBar/>
+    
     <Routes>
+      <Route element={<MainLayout/>}>
       <Route path='/LoginPage' element={ <LoginPage/> }></Route>
       <Route path='/RegPage' element={ <RegPage/> }></Route>
       <Route path='/' element={<LandPage/>}></Route>
@@ -27,7 +40,24 @@ function App() {
       <Route path ='/ContactUs' element={<ContactUs/>}></Route>
       <Route path='/UserSettings' element={<UserSettings/>}></Route>
       <Route path='/GiveReview' element={<GiveReview/>}></Route>
-      </Routes>
+      <Route path='*' element={<h1>404 Not Found</h1>}></Route>
+      <Route path='/Faqs' element={<Faqs/>}></Route>
+      </Route>
+
+      <Route path='/Admin'>
+      <Route index element={<Login/>}></Route>
+      <Route path='DashBoard' element={ <AdminDashboard/> }></Route>
+      <Route path='AddProduct' element={<AddProd/>} ></Route>
+      <Route path='EditProduct/:id' element={<EditProd/>} ></Route>
+      <Route path='ProductManagement' element={<ProdManagement/>} ></Route>
+      <Route path='AccountManagement' element={<AccManagement/>} ></Route>
+      <Route path='Sales' element={<Sales/>} ></Route>
+      <Route path='PopUpInfoPage' element={<PopUpInfoPage/>} ></Route>
+      <Route path='UserEditPopUp' element={<UserEditPopUp/>} ></Route>
+      <Route path='BazaarOrdering' element={<BazaarOrdering/>} ></Route>
+      <Route path='EditOrder' element={<EditOrder/>} ></Route>
+      </Route>
+    </Routes>
      
     </>
   )
