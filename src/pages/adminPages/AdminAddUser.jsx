@@ -1,25 +1,35 @@
 import Sidebar from "../../components/sidebar"
 import { useState, useEffect } from "react";
 import {useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 
 function AdminAddUser() {
+ 
 
-    const [values, setValues] = useState({
-        username: '',
-        email: '',
-        password: '',
-        role: 'admin'
-      })
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, SetPassword] = useState('')
+    const [role, setRole] = useState(1)
+
 
     const Navigate = useNavigate();
 
     const handleCreatAdminUser = (event) => {
         event.preventDefault();
-        axios.post('/api/adminUser/register', values)
+        const values = 
+            {
+            username: username,
+            email: email,
+            password: password,
+            role: role
+        }
+        console.log(values)
+        axios.post('/api/adminUser/register', values           
+        )
         .then(res => {
         console.log(res)
-        Navigate('DashBoard')
+        Navigate('/Admin/AccountManagement')
         })
     }
 
@@ -33,18 +43,18 @@ function AdminAddUser() {
             <div className="flex justify-center items-center pt-10 ">
                 <form className="flex flex-col gap-4" onSubmit={handleCreatAdminUser}> 
                     <input type="text" placeholder="Email" className="p-3 border-1 border-black rounded-2xl"
-                    onChange={e => setValues({...values, email: e.target.value})} />
+                    onChange={e => setEmail(e.target.value)} />
                     <input type="text" placeholder="Username" className="p-3 border-1 border-black rounded-2xl"
-                    onChange={e => setValues({...values, username: e.target.value})}/>
+                    onChange={e => setUsername(e.target.value)}/>
                     <input type="password" placeholder="Password" className="p-3 border-1 border-black rounded-2xl"
-                     onChange={e => setValues({...values, password: e.target.value})}/>
-                    {/* <div className="flex flex-row gap-x-4">
+                     onChange={e => SetPassword(e.target.value)}/>
+                    <div className="flex flex-row gap-x-4">
                         <label for="role" className="p-3">User role:</label>
-                            <select id="role" name="role" className="p-3 border-1 border-black rounded-2xl">
-                                <option value="admin">admin</option>
-                                <option value="staff">staff</option>
+                            <select id="role" name="role" className="p-3 border-1 border-black rounded-2xl" onChange={e => setRole(Number(e.target.value))} value={role}>
+                                <option value={1}>admin</option>
+                                <option value={2}>customer</option>
                             </select>
-                    </div> */}
+                    </div>
                     <button type="submit" className='p-3 bg-orange-300 rounded-2xl' >Add User</button>
                 </form>
             </div>    
