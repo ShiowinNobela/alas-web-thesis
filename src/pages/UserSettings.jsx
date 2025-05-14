@@ -87,15 +87,6 @@ function UserSettings() {
                   Save Changes
                 </button>
               </div>
-              <button
-                className="bg-[#FFD700] p-3 rounded-2xl md:text-2xl  text-md font-medium"
-                onClick={() => {
-                  window.localStorage.removeItem("user");
-                  window.location.href = "/LoginPage";
-                }}
-              >
-                Logout
-              </button>
             </div>
           </div>
         </div>

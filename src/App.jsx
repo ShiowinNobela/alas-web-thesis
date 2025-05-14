@@ -23,7 +23,7 @@ import UserEditPopUp from './pages/adminPages/UserEditPopUp.jsx'
 import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx'
 import EditOrder from './pages/adminPages/editOrder.jsx'
 import MainLayout from './pages/MainLayout.jsx'
- 
+import AdminAddUser from './pages/adminPages/AdminAddUser.jsx'
 
 function App() {
 
@@ -56,6 +56,7 @@ function App() {
       <Route path='UserEditPopUp' element={<UserEditPopUp/>} ></Route>
       <Route path='BazaarOrdering' element={<BazaarOrdering/>} ></Route>
       <Route path='EditOrder' element={<EditOrder/>} ></Route>
+      <Route path='AdminAddUser' element={<AdminAddUser/>} ></Route>
       </Route>
     </Routes>
      

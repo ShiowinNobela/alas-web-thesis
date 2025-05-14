@@ -1,24 +1,25 @@
 import { useEffect, useState } from 'react'
 import { Role } from '../constants'
-import examapleDB from  './records.json'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 
-function UserEditPopUp({open,onClose, id}) {
-    console.log(id)
-
-    let data = examapleDB.find(e => e.id === id) 
-    console.log(data)
- 
-    if (data == null ) {
-        data = 
-        {
-        "id": 0,
-        "name": "",
-        "address": "",
-        "contactNum": 0,
-        "role": ""
-        }
-    }
+function UserEditPopUp({open,onClose}) {
+    
+    const {id} = useParams();
+    const [data, setData] = useState({
+      username: '',
+      address: '',
+      contact_number: '',
+    });
+    
+    useEffect(() => {
+    axios.get('/api/adminUser/' + id)
+    .then(res => {
+      setData(res.data.data);
+    })
+    .catch(err => console.log(err))
+  }, [])
 
   
 
@@ -32,26 +33,26 @@ function UserEditPopUp({open,onClose, id}) {
         <div  className="flex justify-center text-3xl font-semibold"> <span>User Information</span></div>
             
                 <div className="flex flex-row gap-x-21.5">
-                    <h1>Name:</h1>
-                    <input className='border-b-1 w-[300px]' type="text" name="userName" id="userName" value={data.name} /> 
+                    <h1>Username:</h1>
+                    <input className='border-b-1 w-[300px]' type="text" name="userName" id="userName" value={data.username}  /> 
                 </div>
                 <div className="flex flex-row gap-x-18">
                     <h1>Address:</h1>
-                    <input className='border-b-1 w-[500px]' type="text" name="userAddress" id="userAddress" value={data.address}  />
+                    <input className='border-b-1 w-[500px]' type="text" name="userAddress" id="userAddress" />
                 </div>
                 <div className="flex flex-row gap-x-3">
                     <h1>Contact Number:</h1>
-                    <input className='border-b-1' type="number" name="userNumber" id="userNumber"  value={data.contactNum} />
+                    <input className='border-b-1' type="number" name="userNumber" id="userNumber"   />
                 </div>
                 <div className="flex flex-row gap-x-19">
                     <label for="Role">Role:</label>
-                    <select name="Role" id="Role" className='ml-5'>
+                    {/* <select name="Role" id="Role" className='ml-5'>
                         
                         { Role.map( e => { return ( 
                                 <option value={e} selected={e === data.role} >{e}</option>
                             )})
                         }
-                    </select>   
+                    </select>    */}
                 </div>
             
                 <button

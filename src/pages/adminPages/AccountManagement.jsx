@@ -3,6 +3,7 @@ import UserEditPopUp from './UserEditPopUp.jsx';
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 function AccountManagement() {
@@ -23,6 +24,9 @@ function AccountManagement() {
     <Sidebar/>
         <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
             <h1 className='py-5 text-3xl font-semibold '>Account Management</h1>
+            <Link to ='/Admin/AdminAddUser'>
+            <button className='fixed p-5 m-2 top-0 right-10 border-1 bg-orange-300 rounded-2xl'> Add Admin / Staff</button>
+            </Link>
             <div className="w-7xl">
               <div className='flex justify-center items-center'>
               <ul className="flex justify-between w-3xl py-5">
@@ -56,7 +60,7 @@ function AccountManagement() {
 
               <table className="border-1 border-black w-7xl text-center">
                <tr>
-                  <th className="p-2.5 border-black border-1">Name</th>
+                  <th className="p-2.5 border-black border-1">Username</th>
                   <th className="p-2.5 border-black border-1">Address</th>
                   <th className="p-2.5 border-black border-1">Contact Num#</th>
                   <th className="p-2.5 border-black border-1">Role</th>

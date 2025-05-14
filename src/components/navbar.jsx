@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { IoIosArrowDropdown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import Logo from "../components/images/logowhite.png";
 
@@ -29,10 +30,21 @@ function navbar() {
             <li className="px-5 py-1 cursor-pointer">Contact Us</li>
           </Link>
           {window.localStorage.getItem("user") ? (
-            <Link to="/UserSettings">
-              {" "}
-              <li className="px-5 py-1 cursor-pointer">User Settings</li>{" "}
-            </Link>
+         
+              <button className="group relative px-5 py-1 rounded-2xl w-40 ">
+               SETTINGS 
+                <div className=" text-black absolute top-full right-0 rounded-2xl p-3 mt-1 shadow-lg scale-y-0 group-focus:scale-y-100 origin-top bg-white w-40">
+                  <div onClick={() => { window.location.href = "/UserSettings"}}>User Settings</div>
+                  <p>Order List</p>
+
+                  <p onClick={() => {
+                    window.localStorage.removeItem("user");
+                    window.location.href = "/LoginPage";
+                    }}>Logout
+                  </p>
+                </div>
+              </button>
+            
           ) : (
             <Link to="/LoginPage">
               <li className="px-5 py-1 cursor-pointer">Sign In</li>

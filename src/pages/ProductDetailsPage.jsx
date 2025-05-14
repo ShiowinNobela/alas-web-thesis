@@ -21,7 +21,7 @@ function ProductDetailsPage() {
   return (
     <>
       <section className="bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat max-w-screen max-h-full h-screen pt-5 ">
-        <div className="max-w-5xl mx-auto px-3 py-3 border-black border-3 mt-[80px]">
+        <div className="max-w-5xl mx-auto px-3 py-3 border-black border-3 mt-[80px] bg-white">
           <div className="flex flex-col ">
             <div className="border-b-3 mx-auto p-3">
               <img
@@ -57,9 +57,7 @@ function ProductDetailsPage() {
               <div className="flex flex-col items-end gap-y-5 ">
                 <h1 className="text-2xl pt-10">
                   {data.price}
-                  <span className="bg-[#FFE2E3] text-[#EA1A20] px-1 py-2 ">
-                    20%
-                  </span>
+
                 </h1>
                 <div className="flex flex-row border-[#EA1A20] border-2 lg:px-6 px:1 py-2 gap-2 lg:w-[250px] w-[150px] justify-center shadow-md shadow-black">
                   <FaShoppingCart className="lg:h-[40px] lg:w-[40px] h-[30px] w-[30px] " />

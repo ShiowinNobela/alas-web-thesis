@@ -11,7 +11,6 @@ import Prod4 from '../components/images/prod4.jpg'
 import { FaStar } from "react-icons/fa";
 import Journey from '../components/journey.jsx'
 import Footer from '../components/footer.jsx'
-import Opener from '../components/images/opener.png'
 
 
 const LandingPage = () => {
