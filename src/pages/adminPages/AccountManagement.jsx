@@ -8,8 +8,24 @@ import { Link } from 'react-router-dom';
 
 function AccountManagement() {
 
-  const [Open, setOpen] = useState(false) //Modal
+  useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    axios.get("/api/users", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+    .then((response) => {
+      const userData = response.data;
+      if (userData.role_name !== "admin") {
+        window.location.href = "/";
+    }})
+    .catch((error) => {
+      console.error("Error fetching user data:", error);
+    });
+  }, []);
 
+  const [Open, setOpen] = useState(false) //Modal
 
     const [data, setData] = useState()
     useEffect(() => {

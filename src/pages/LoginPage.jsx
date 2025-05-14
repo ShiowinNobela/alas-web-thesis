@@ -17,7 +17,26 @@ function LoginPage() {
         if (response.status === 200) {
           console.log("Login successful");
           window.localStorage.setItem("user", JSON.stringify(response.data));
-          window.location.href = "/";
+
+          return axios.get("/api/users", {
+            headers: {
+              Authorization: `Bearer ${response.data.token}`,
+            },
+          }).then((response) => {
+            const userData = response.data;
+            console.log(userData);
+            if (userData.role_name === "admin") {
+              window.location.href = "/Admin/DashBoard";
+              
+          } 
+            else {
+              window.location.href = "/";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
+        
         } else {
           console.log("Login failed");
         }
