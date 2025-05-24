@@ -16,7 +16,7 @@ function ProductPage() {
 
   return (
     <>
-      <section className="max-w-screen max-h-full h-screen bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat  ">
+      <section className="max-w-screen max-h-full h-full bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat  ">
         <div className="grid lg:grid-cols-4 grid-cols-2">
           <div className="lg:col-span-3 col-span-2 mx-auto py-5">
             <div className="flex flex-col items-center justify-center">
@@ -55,6 +55,7 @@ function ProductPage() {
           </div>
           <Cart />
         </div>
+        
       </section>
     </>
   );

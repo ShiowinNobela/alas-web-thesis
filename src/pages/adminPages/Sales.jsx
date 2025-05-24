@@ -14,7 +14,7 @@ function Sales() {
     <div className="h-screen w-screen ">
         <Sidebar/>
         <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
-            <h1 className='py-5 text-4xl font-semibold '>Sales</h1>
+            <h1 className='py-5 text-4xl font-semibold '>Orders</h1>
             <div className="w-7xl">
               <ul className="flex justify-between py-5">
                 <li > 

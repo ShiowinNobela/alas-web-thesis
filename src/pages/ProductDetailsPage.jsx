@@ -3,24 +3,47 @@ import Prod1 from "../components/images/product1.jpg";
 import Alapeno from "../components/images/Alapeno.webp";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 function ProductDetailsPage() {
   const [Open, setOpen] = useState(false);
   const { id } = useParams();
   const [data, setData] = useState([]);
+  const [prodQuantity, setProdQuantity] = useState(1);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/products/" + id)
+      .get("/api/products/" + id)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
 
+    const handleAddToCart = async () => {
+      try {
+      const user = JSON.parse(window.localStorage.getItem("user"));
+      const userdata = await axios.get("/api/users", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const response = await userdata.data;
+      const product = await axios.post(
+          `/api/cart/${response.id}`,
+          {
+            productId: id.toString(),
+            quantity: prodQuantity,
+          })
+      } catch (error) {
+        console.error("Error parsing user data:", error); 
+      }}
+
+
+
+
   return (
     <>
-      <section className="bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat max-w-screen max-h-full h-screen pt-5 ">
+      <section className="bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat max-w-screen max-h-full h-full pt-5 ">
         <div className="max-w-5xl mx-auto px-3 py-3 border-black border-3 mt-[80px] bg-white">
           <div className="flex flex-col ">
             <div className="border-b-3 mx-auto p-3">
@@ -41,6 +64,8 @@ function ProductDetailsPage() {
                   <input
                     type="number"
                     min={1}
+                    value={prodQuantity}
+                    onChange={(e) => setProdQuantity(e.target.value)}
                     max={data.stock_quantity}
                     className="border-black border-1 w-[80px]"
                   />{" "}
@@ -59,10 +84,14 @@ function ProductDetailsPage() {
                   {data.price}
 
                 </h1>
-                <div className="flex flex-row border-[#EA1A20] border-2 lg:px-6 px:1 py-2 gap-2 lg:w-[250px] w-[150px] justify-center shadow-md shadow-black">
+
+                <Link to="/ProductListPage">
+                <div className="flex flex-row border-[#EA1A20] border-2 lg:px-6 px:1 py-2 gap-2 lg:w-[250px] w-[150px] justify-center shadow-md shadow-black cursor-pointer"
+                  onClick={handleAddToCart}>
                   <FaShoppingCart className="lg:h-[40px] lg:w-[40px] h-[30px] w-[30px] " />
                   <p className="lg:text-2xl text-base"> Add to Cart </p>
                 </div>
+                </Link>
                 <div
                   className="bg-[#EA1A20] lg:text-3xl text-xl px-6 py-2 text-[#FFFFFF] lg:w-[250px] w-[150px] text-center cursor-pointer shadow-md shadow-black"
                   onClick={() => setOpen(true)}
@@ -105,6 +134,11 @@ function ProductDetailsPage() {
             </div>
           </div>
         </div>
+        <div className="flex flex-col items-center justify-center mt-10">
+          <h1 className="text-2xl">Reviews</h1>
+            
+        </div>
+      
       </section>
     </>
   );

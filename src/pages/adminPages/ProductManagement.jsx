@@ -19,7 +19,7 @@ function ProductManagement() {
       <div className='h-full w-screen bg-[#E2E0E1] pl-[256px] flex'>
         <div className='flex flex-row'>
           <h1 className='pl-10 pt-5 text-xl font-semibold '>Product Management</h1>
-          <Link to='/AddProduct'>
+          <Link to='/Admin/AddProduct'>
           <button className=' fixed top-0 right-0 mr-15 mt-5 p-5 text-xl font-semibold bg-[#357a38] text-white rounded-3xl border-2 border-black '>Add Product</button>
           </Link>
         </div>

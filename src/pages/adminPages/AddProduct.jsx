@@ -22,7 +22,7 @@ function AddProduct() {
     axios.post('/api/products/', values)
     .then(res => {
       console.log(res)
-      Navigate('/ProductManagement')
+      Navigate('/Admin/ProductManagement')
     })
   }
 
