@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function UserSettings() {
-  const [getInfo,setGetInfo] = useState();
+  const [getInfo,setGetInfo] = useState({
+    username: '',
+    email: '',
+    contact_number: '',
+    address: '',
+  });
 
+  const navigate = useNavigate();
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("user"));
     axios.get("/api/users", {
@@ -21,6 +28,27 @@ function UserSettings() {
     });
   }, []);
 
+
+    const handleUpdateInfo = (event) => {
+    event.preventDefault();
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    axios.put("/api/users/", getInfo, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+    .then((response) => {
+      console.log("User information updated successfully:", response.data);
+      navigate("/");
+    })  
+    .catch((error) => {
+      console.error("Error updating user information:", error);
+    });
+  }
+    
+
+
+
   return (
     <>
       <section className="max-w-screen md:h-full h-screen  bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat">
@@ -35,25 +63,26 @@ function UserSettings() {
               <input
                 type="text"
                 className="border-black border-2 md:text-xl text-sm md:w-[300px] w-[200px] bg-[#D9D9D9] p-2"
-                value={getInfo?.username}
+                value={getInfo?.username} onChange={e => setGetInfo({ ...getInfo, username: e.target.value })} 
               />
               <input
                 type="text"
                 className="border-black border-2 md:text-xl text-sm md:w-[300px] w-[200px] bg-[#D9D9D9] p-2"
-                value={getInfo?.email}
+                value={getInfo?.email} onChange={e => setGetInfo({ ...getInfo, email: e.target.value })}
               />
               <input
-                type="number"
+                type="text"
                 className="border-black border-2 md:text-xl text-sm md:w-[300px] w-[200px] bg-[#D9D9D9] p-2"
-                placeholder="Phone Number"
+                placeholder="Phone Number" value={getInfo?.contact_number} onChange={e => setGetInfo({ ...getInfo, contact_number: e.target.value })}
               />
               <input
                 type="text"
                 className="border-black border-2 md:text-xl text-sm md:w-[600px] w-[200px] bg-[#D9D9D9] p-2"
-                placeholder="Address"
+                placeholder="Address" value={getInfo?.address} onChange={e => setGetInfo({ ...getInfo, address: e.target.value })}
               />
+              
               <div className="flex items-center justify-end ">
-                <button className="bg-[#FFD700] p-3 rounded-2xl md:text-2xl  text-md font-medium">
+                <button className="bg-[#FFD700] p-3 rounded-2xl md:text-2xl  text-md font-medium" onClick={handleUpdateInfo}>
                   Save Changes
                 </button>
               </div>

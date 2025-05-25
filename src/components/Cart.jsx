@@ -4,6 +4,7 @@ import {AiOutlineClose} from "react-icons/ai"
 import axios from "axios";
 import { useState, useEffect } from "react";
 import CouponPopUp from "../pages/CouponPopUp";
+import { Link } from "react-router-dom";
 
 
 function Cart() {
@@ -119,9 +120,11 @@ function Cart() {
           </div>
           
           <div className="flex items-center justify-center pb-6 border-l-2 border-b-2">
+          <Link to="/CheckoutPage">
           <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]">
                 Checkout
           </div>
+          </Link>
           </div>
         </div>
     </div>

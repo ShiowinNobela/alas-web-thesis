@@ -73,7 +73,7 @@ function LoginPage() {
               <span>Username</span>
               <input
                 type="text"
-                className="rounded-md p-1 border-1 outline-none focus:border-black focus:bg-slate-100  focus:text-black text-white"
+                className="rounded-md p-1 border-1 outline-none focus:border-black focus:bg-slate-100  focus:text-black text-white" 
                 onChange={(e) => setUserLog(e.target.value)}
               />
             </div>

@@ -51,10 +51,20 @@ function navbar() {
             </Link>
           )}
 
-          <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold">
-            {" "}
-            Order{" "}
-          </button>
+          
+          {window.localStorage.getItem("user") ? (
+          <Link to="/ProductListPage">
+            <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold" >
+            Order
+          </button> </Link>)  : ( <Link to="/LoginPage">
+          <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold" >
+            Order
+          </button> </Link>)}
+          
+          
+
+
+          {/* <Link to="//ProductListPage"></Link> */}
         </ul>
 
         <div onClick={navhandler} className=" block md:hidden">

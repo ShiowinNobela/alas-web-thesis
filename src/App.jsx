@@ -24,7 +24,7 @@ import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx'
 import EditOrder from './pages/adminPages/editOrder.jsx'
 import MainLayout from './pages/MainLayout.jsx'
 import AdminAddUser from './pages/adminPages/AdminAddUser.jsx'
-
+import CheckOutPage from './pages/CheckOutPage.jsx'
 function App() {
 
   return (
@@ -42,6 +42,7 @@ function App() {
       <Route path='/GiveReview' element={<GiveReview/>}></Route>
       <Route path='*' element={<h1>404 Not Found</h1>}></Route>
       <Route path='/Faqs' element={<Faqs/>}></Route>
+      <Route path='/CheckOutPage' element={<CheckOutPage/>}></Route>
       </Route>
 
       <Route path='/Admin'>
