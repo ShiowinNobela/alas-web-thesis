@@ -17,7 +17,7 @@ import Login from './pages/adminPages/LoginAdmin.jsx'
 import EditProd from './pages/adminPages/EditProduct.jsx'
 import ProdManagement from './pages/adminPages/ProductManagement.jsx'
 import AccManagement from './pages/adminPages/AccountManagement.jsx'
-import Sales from './pages/adminPages/Sales.jsx'
+import Orders from './pages/adminPages/Orders.jsx'
 import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx'
 import UserEditPopUp from './pages/adminPages/UserEditPopUp.jsx'
 import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx'
@@ -52,7 +52,7 @@ function App() {
       <Route path='EditProduct/:id' element={<EditProd/>} ></Route>
       <Route path='ProductManagement' element={<ProdManagement/>} ></Route>
       <Route path='AccountManagement' element={<AccManagement/>} ></Route>
-      <Route path='Sales' element={<Sales/>} ></Route>
+      <Route path='Orders' element={<Orders/>} ></Route>
       <Route path='PopUpInfoPage' element={<PopUpInfoPage/>} ></Route>
       <Route path='UserEditPopUp' element={<UserEditPopUp/>} ></Route>
       <Route path='BazaarOrdering' element={<BazaarOrdering/>} ></Route>

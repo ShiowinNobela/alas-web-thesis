@@ -18,7 +18,7 @@ function sidebar() {
                     <AiOutlineUser className=" mx-3 h-[30px] w-[30px]"/><span className="flex-1 ml-3 text-left whitespace-nowrap">User Management</span>
                 </li>
                 </Link>
-                <Link to='/Admin/Sales'>
+                <Link to='/Admin/Orders'>
                 <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                     <AiOutlineMoneyCollect  className=" mx-3 h-[30px] w-[30px]"/><span className="flex-1 ml-3 text-left whitespace-nowrap">Orders</span>
                 </li>
@@ -37,7 +37,6 @@ function sidebar() {
                     onClick= {() => {
                     window.localStorage.removeItem("user");
                     window.location.href = "/LoginPage";}}>
-                    <h1>Welcome /User/</h1>
                     <div className="flex items-center p-2 pb-4 pt-4 ml-15 text-base  font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
                     <IoIosLogOut className=" mx-2 h-[30px] w-[30px]" /> <span className="flex-1 ml-1 text-left whitespace-nowrap"> Logout</span> 
                     </div>

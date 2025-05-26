@@ -11,9 +11,11 @@ function UserSettings() {
     address: '',
   });
 
+   const user = JSON.parse(window.localStorage.getItem("user"));
+
   const navigate = useNavigate();
   useEffect(() => {
-    const user = JSON.parse(window.localStorage.getItem("user"));
+   
     axios.get("/api/users", {
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -31,7 +33,6 @@ function UserSettings() {
 
     const handleUpdateInfo = (event) => {
     event.preventDefault();
-    const user = JSON.parse(window.localStorage.getItem("user"));
     axios.put("/api/users/", getInfo, {
       headers: {
         Authorization: `Bearer ${user.token}`,

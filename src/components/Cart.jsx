@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 
 function Cart() {
 
+
   const [getCartItems, setGetCartItems] = useState([]);
   const [getSubTotal, setGetSubTotal] = useState(0); // Cart
   const [Open, setOpen] = useState(false) //Coupon Modal
-
 
 
   useEffect(() => {
@@ -42,11 +42,16 @@ function Cart() {
       });
       const response = await userdata.data;
       const product = await axios.delete(
-          `/api/cart/${response.id}`,
+          `/api/cart/${response.id}`
+          ,
           {
-            productId: id.toString(),
-          })
-      console.log("Product removed from cart:", product);
+            data: { productId: id }
+          }
+        )
+      console.log("Product removed from cart:", product.data);
+      if(product.status === 201) {
+      window.location.reload() ;
+      } 
       } catch (error) {
         console.error("Error parsing user data:", error);   
       }}
@@ -57,12 +62,48 @@ function Cart() {
       const response = await axios.get(`/api/cart/${user_id}`);
       setGetSubTotal(parseFloat(response.data.data.cart_total));
       setGetCartItems(response.data.data.items);
+      setCartItemsQuantity(response.data.data.items.map(item => item.quantity));
   
       console.log(response.data.data.items);
     } catch (error) {
       console.error("Error fetching cart items:", error);
     }
   }
+
+
+  const handleAdjust = async (id, quantity, isIncrement,stock) => {
+    try {
+      const user = JSON.parse(window.localStorage.getItem("user"));
+      const userdata = await axios.get("/api/users", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const response = await userdata.data;
+      if (isIncrement) {
+        if (quantity < stock) {
+          quantity++;
+        } 
+     } else {
+        if (quantity > 1) {
+          quantity--;
+        }}
+      const product = await axios.put(
+          `/api/cart/${response.id}`
+          ,
+          {
+            productId: id,
+            quantity: quantity
+            }
+        )
+      console.log("Item is adjusted cart:", product.data);
+      if(product.status === 200) {
+      getCart(response.id);
+      } 
+      } catch (error) {
+        console.error("Error parsing user data:", error);   
+      }}
+
 
 
 
@@ -78,19 +119,22 @@ function Cart() {
 
         
           <div className="h-[480px] border-black border-2 pt-2 overflow-auto">
-            { getCartItems.map((d) => (
+
+            { getCartItems.map((d, index) => (
               <div className="bg-[#FFFFFF] w-[370px] h-[90px] px-1 py-1 mx-auto border-1 shadow-md shadow-black mb-5">
                 <div className="grid grid-cols-5 gap-1">
                   <img className="lg:h-[80px] lg:w-[80px] w-[40px] h-[40px] row-span-2 mx-3 py-1" />
                   <h1 className="font-bold col-span-3 text-center"> {d.name} </h1>
-                  <MdDeleteForever color='red' className="h-[30px] w-[30px]" onClick={handleRemove} />
-                  <FaPlus className="mx-auto h-[20px] w-[20px]"/>
-                  <FaMinus className="mx-auto h-[20px] w-[20px] " />
+                
+                  <MdDeleteForever color='red' className="h-[30px] w-[30px]" onClick={() => handleRemove(d.product_id)} />
+                  <FaPlus className="mx-auto h-[20px] w-[20px]" onClick={() => handleAdjust(d.product_id, d.quantity, true, d.stock_quantity )}/>
+                  <FaMinus className="mx-auto h-[20px] w-[20px] " onClick={() => handleAdjust(d.product_id, d.quantity, false, d.stock_quantity)}/>
                   <p className="mx-1 border-1 text-xl text-center"> {d.quantity}  </p>
                   <p className="mx-1 text-xl text-center">  </p>
                 </div>
               </div>
             ))}
+            
           </div>
 
           <div className="border-2 h-[150px] border-t-0  ">

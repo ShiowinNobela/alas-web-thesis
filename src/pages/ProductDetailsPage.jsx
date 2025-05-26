@@ -3,7 +3,7 @@ import Prod1 from "../components/images/product1.jpg";
 import Alapeno from "../components/images/Alapeno.webp";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function ProductDetailsPage() {
@@ -11,6 +11,7 @@ function ProductDetailsPage() {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [prodQuantity, setProdQuantity] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -34,6 +35,7 @@ function ProductDetailsPage() {
             productId: id.toString(),
             quantity: prodQuantity,
           })
+        navigate("/ProductListPage")
       } catch (error) {
         console.error("Error parsing user data:", error); 
       }}
@@ -85,13 +87,13 @@ function ProductDetailsPage() {
 
                 </h1>
 
-                <Link to="/ProductListPage">
+                
                 <div className="flex flex-row border-[#EA1A20] border-2 lg:px-6 px:1 py-2 gap-2 lg:w-[250px] w-[150px] justify-center shadow-md shadow-black cursor-pointer"
                   onClick={handleAddToCart}>
                   <FaShoppingCart className="lg:h-[40px] lg:w-[40px] h-[30px] w-[30px] " />
                   <p className="lg:text-2xl text-base"> Add to Cart </p>
                 </div>
-                </Link>
+               
                 <div
                   className="bg-[#EA1A20] lg:text-3xl text-xl px-6 py-2 text-[#FFFFFF] lg:w-[250px] w-[150px] text-center cursor-pointer shadow-md shadow-black"
                   onClick={() => setOpen(true)}
