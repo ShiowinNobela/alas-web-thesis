@@ -1,15 +1,16 @@
 import Sidebar from '../../components/sidebar.jsx'
-import UserEditPopUp from './UserEditPopUp.jsx';
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+
 
 
 
 function AccountManagement() {
 
   const {id} = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("user"));
     axios.get("/api/users", {
@@ -26,9 +27,6 @@ function AccountManagement() {
       console.error("Error fetching user data:", error);
     });
   }, []);
-
-  const [Open, setOpen] = useState(false) //Modal
-
 
     const [data, setData] = useState()
     useEffect(() => {
@@ -95,12 +93,11 @@ function AccountManagement() {
                     <td className="p-2.5 border-black border-1"> {d.role_name} </td>
                     <td className="p-2.5 border-black border-1"> {d.email} </td>
                     <td className="p-2.5 border-black border-1">
-                    <FaEdit className="mx-auto cursor-pointer w-[30px] h-[30px] " onClick={() => 
-                    {
-                      setOpen(true)
-                      
-                    }
-                     }/>
+                    <FaEdit className="mx-auto cursor-pointer w-[30px] h-[30px] "  onClick={
+                      () => {
+                        navigate(`/Admin/AdminUserEdit/${d.id}`);
+                      }
+                    }/>
                     </td>
                   </tr>
                 ))
@@ -108,41 +105,6 @@ function AccountManagement() {
                 } 
               </table>
             </div>
-
-            <UserEditPopUp open={Open}  onClose={() => setOpen(false)} > 
-
-
-              <div  className="flex justify-center text-3xl font-semibold"> <span>User Information</span></div>
-                <div className="flex flex-row gap-x-21.5">
-                    <h1>Username:</h1>
-                    <input className='border-b-1 w-[300px]' type="text" name="userName" id="userName" /> 
-                </div>
-                <div className="flex flex-row gap-x-18">
-                    <h1>Address:</h1>
-                    <input className='border-b-1 w-[500px]' type="text" name="userAddress" id="userAddress" />
-                </div>
-                <div className="flex flex-row gap-x-3">
-                    <h1>Contact Number:</h1>
-                    <input className='border-b-1' type="number" name="userNumber" id="userNumber"   />
-                </div>
-                <div className="flex flex-row gap-x-19">
-                    <label for="Role">Role:</label>
-                     <select name="Role" id="Role" className='ml-5'>
-                        
-                        {/* { Role.map( e => { return ( 
-                                <option value={e} selected={e === data.role} >{e}</option>
-                            )})
-                        } */}
-                    </select>    
-                </div>
-                <button
-                className=" mt-10 px-10 py-5 bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500 mx-auto text-xl rounded-4xl cursor-pointer">Save</button>
-                 
-
-
-            </UserEditPopUp>
-          
-
         </div>        
     </div>
 

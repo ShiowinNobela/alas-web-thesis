@@ -2,11 +2,13 @@ import Sidebar from "../../components/sidebar.jsx"
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 function Orders() {
 
   const [values, setValues] = useState([])
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("user"));
@@ -26,9 +28,9 @@ function Orders() {
 
   return (
     <>
-    <div className="h-screen w-screen ">
+    <div className="h-full w-screen ">
         <Sidebar/>
-        <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
+        <div className="h-full w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
             <h1 className='py-5 text-4xl font-semibold '>Orders</h1>
             <div className="w-7xl">
               <ul className="flex justify-between py-5">
@@ -66,23 +68,23 @@ function Orders() {
               <div className="flex justify-center items-center pt-10">
                 <table className="border-1 border-black w-7xl text-center">
                   <tr>
-                    <th className="p-2.5 border-black border-1">Username</th>
+                    <th className="p-2.5 border-black border-1">Date</th>
                     <th className="p-2.5 border-black border-1">Order ID</th>
                     <th className="p-2.5 border-black border-1">Total Amount</th>
-                    <th className="p-2.5 border-black border-1">Date</th>
                     <th className="p-2.5 border-black border-1">Status</th>
-                    <th className="p-2.5 border-black border-1">  Edit</th>
+                    <th className="p-2.5 border-black border-1">View</th>
                   </tr>
 
                   {values && values.map((d) => {
                     return (
                       <tr>
-                        <td className="p-2.5 border-black border-1"> {d.username} </td>
                         <td className="p-2.5 border-black border-1"> {d.id} </td>
                         <td className="p-2.5 border-black border-1"> ₱ {d.total_amount} </td>
-                        <td className="p-2.5 border-black border-1"> {d.date} </td>
+                        <td className="p-2.5 border-black border-1"> {d.order_date} </td>
                         <td className="p-2.5 border-black border-1"> {d.status} </td>
-                        <td className="p-2.5 border-black border-1"> 
+                        <td className="p-2.5 border-black border-1" onClick={ () => {
+                          navigate(`/admin/viewOrder/${d.id}`) }
+                        }> 
                           <FaEdit className="mx-auto cursor-pointer w-[30px] h-[30px] " />
                         </td>
                       </tr>

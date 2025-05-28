@@ -50,7 +50,7 @@ function Cart() {
         )
       console.log("Product removed from cart:", product.data);
       if(product.status === 201) {
-      window.location.reload() ;
+      response.data && setGetCartItems(response.data.items);
       } 
       } catch (error) {
         console.error("Error parsing user data:", error);   
@@ -63,7 +63,6 @@ function Cart() {
       setGetSubTotal(parseFloat(response.data.data.cart_total));
       setGetCartItems(response.data.data.items);
       setCartItemsQuantity(response.data.data.items.map(item => item.quantity));
-  
       console.log(response.data.data.items);
     } catch (error) {
       console.error("Error fetching cart items:", error);

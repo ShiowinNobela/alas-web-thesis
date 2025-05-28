@@ -19,12 +19,13 @@ import ProdManagement from './pages/adminPages/ProductManagement.jsx'
 import AccManagement from './pages/adminPages/AccountManagement.jsx'
 import Orders from './pages/adminPages/Orders.jsx'
 import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx'
-import UserEditPopUp from './pages/adminPages/UserEditPopUp.jsx'
 import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx'
 import EditOrder from './pages/adminPages/editOrder.jsx'
 import MainLayout from './pages/MainLayout.jsx'
 import AdminAddUser from './pages/adminPages/AdminAddUser.jsx'
 import CheckOutPage from './pages/CheckOutPage.jsx'
+import ViewOrder from './pages/adminPages/ViewOrder.jsx'
+import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx'
 function App() {
 
   return (
@@ -54,10 +55,11 @@ function App() {
       <Route path='AccountManagement' element={<AccManagement/>} ></Route>
       <Route path='Orders' element={<Orders/>} ></Route>
       <Route path='PopUpInfoPage' element={<PopUpInfoPage/>} ></Route>
-      <Route path='UserEditPopUp' element={<UserEditPopUp/>} ></Route>
       <Route path='BazaarOrdering' element={<BazaarOrdering/>} ></Route>
       <Route path='EditOrder' element={<EditOrder/>} ></Route>
       <Route path='AdminAddUser' element={<AdminAddUser/>} ></Route>
+      <Route path='ViewOrder/:id' element={<ViewOrder/>}></Route>
+      <Route path='AdminUserEdit/:id' element={<AdminUserEdit/>} ></Route>
       </Route>
     </Routes>
      

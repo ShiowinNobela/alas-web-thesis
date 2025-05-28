@@ -1,8 +1,30 @@
 import SideBar from '../../components/sidebar.jsx'
 import {Link} from 'react-router-dom'
 import { FcSalesPerformance } from "react-icons/fc";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function adminDashboard() {
+
+    const [values, setValues] = useState([])
+
+
+    useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    axios.get("/api/adminOrder", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }) 
+    .then((response) => {
+      setValues(response.data.data);
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching user data:", error);
+    });
+  }, []);
+
   return (
     <>
     <div className='h-screen max-w-screen overflow-hidden '>
@@ -13,7 +35,7 @@ function adminDashboard() {
                 <div className='grid grid-cols-3 gap-10'>
 
 
-                    <Link to='/Admin/Sales'>
+                    <Link to='/Admin/Orders'>
                     <div className='absolute ml-2.5 h-[200px] w-[200px] bg-red-200 shadow-2xl rounded-2xl'>
                         <div className='flex mt-10 items-center justify-center'>
                             <FcSalesPerformance className=' h-[100px] w-[100px]  ' />
@@ -22,7 +44,7 @@ function adminDashboard() {
                         <div className='flex justify-end text-center border-1 h-[180px] w-[400px] mt-15 rounded-2xl bg-white'>
                             <div className='flex flex-col '>
                                 <p className='text-2xl px-2 py-5 font-semibold '>Pending Orders</p>
-                                <h1 className='text-4xl px-2 py-5 font-bold '>3</h1>
+                                <h1 className='text-4xl px-2 py-5 font-bold '> {values.length} </h1>
                             </div>
                         </div>
                     </Link>

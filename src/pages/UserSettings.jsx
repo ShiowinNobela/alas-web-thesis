@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function UserSettings() {
   const [getInfo,setGetInfo] = useState({
@@ -13,7 +12,6 @@ function UserSettings() {
 
    const user = JSON.parse(window.localStorage.getItem("user"));
 
-  const navigate = useNavigate();
   useEffect(() => {
    
     axios.get("/api/users", {
@@ -40,7 +38,8 @@ function UserSettings() {
     })
     .then((response) => {
       console.log("User information updated successfully:", response.data);
-      navigate("/");
+      response.data && setGetInfo(response.data);
+      
     })  
     .catch((error) => {
       console.error("Error updating user information:", error);
