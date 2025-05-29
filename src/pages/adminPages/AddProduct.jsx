@@ -14,7 +14,6 @@ function AddProduct() {
     description: ''
   })
 
-
   const Navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -43,7 +42,7 @@ function AddProduct() {
                 <input type="text" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' onChange={e => setValues({...values, name: e.target.value})} />
                   <label for="category" className='font-bold text-xl '> Category </label>
                     
-                    <select name="category" id="category" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' onChange={e => setValues({...values, category: e.target.value})}>
+                    <select name="category" id="category" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.category} onChange={e => setValues({...values, category: e.target.value})}>
                     <option > Pick a Category</option>
                     <option value="HotSauce">HotSauce</option>
                     <option value="Pickled">Pickled</option>

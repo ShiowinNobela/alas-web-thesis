@@ -32,7 +32,7 @@ function Orders() {
         <Sidebar/>
         <div className="h-full w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
             <h1 className='py-5 text-4xl font-semibold '>Orders</h1>
-            <div className="w-7xl">
+            <div className="2xl:w-7xl w-5xl">
               <ul className="flex justify-between py-5">
                 <li > 
                   <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
@@ -78,9 +78,9 @@ function Orders() {
                   {values && values.map((d) => {
                     return (
                       <tr>
-                        <td className="p-2.5 border-black border-1"> {d.id} </td>
-                        <td className="p-2.5 border-black border-1"> ₱ {d.total_amount} </td>
-                        <td className="p-2.5 border-black border-1"> {d.order_date} </td> 
+                        <td className="p-2.5 border-black border-1">{d.order_date}  </td>
+                        <td className="p-2.5 border-black border-1">  {d.id} </td>
+                        <td className="p-2.5 border-black border-1"> ₱{d.total_amount} </td> 
                         <td className="p-2.5 border-black border-1"> {d.status} </td>
                         <td className="p-2.5 border-black border-1" onClick={ () => {
                           navigate(`/admin/viewOrder/${d.id}`) }

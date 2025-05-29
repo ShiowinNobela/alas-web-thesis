@@ -44,7 +44,7 @@ function AccountManagement() {
             <Link to ='/Admin/AdminAddUser'>
             <button className='fixed p-5 m-2 top-0 right-10 border-1 bg-orange-300 rounded-2xl'> Add Admin / Staff</button>
             </Link>
-            <div className="w-7xl">
+            <div className="2xl:w-7xl w-4xl">
               <div className='flex justify-center items-center'>
               <ul className="flex justify-between w-3xl py-5">
                 <li > 

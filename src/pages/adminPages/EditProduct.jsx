@@ -14,7 +14,8 @@ function AddProduct() {
     stock_quantity: '',
     price: '',
     image: '',
-    description: ''
+    description: '',
+    is_active: false
     })
 
   const Navigate = useNavigate();
@@ -26,15 +27,37 @@ function AddProduct() {
     .catch(err => console.log(err))
   }, [])
 
+  // const handleUpdate = (event) => {
+  //   event.preventDefault();
+  //   axios.put('/api/products/' + id, values)
+  //   .then(res => {
+  //     setValues({
+  //       is_active: Boolean(res.data.is_active)
+  //     })
+  //     console.log(res);
+  //     Navigate('/Admin/ProductManagement')
+  //   })
+  //   .catch(err =>console.log(err))
+  // }
+
+
   const handleUpdate = (event) => {
-    event.preventDefault();
-    axios.put('/api/products/' + id, values)
+  event.preventDefault();
+  const submitValues = {
+    ...values,
+    is_active: Boolean(values.is_active) // force boolean
+  };
+  axios.put('/api/products/' + id, submitValues)
     .then(res => {
+      setValues({
+        ...values,
+        is_active: Boolean(res.data.is_active)
+      });
       console.log(res);
-      Navigate('/Admin/ProductManagement')
+      Navigate('/Admin/ProductManagement');
     })
-    .catch(err =>console.log(err))
-  }
+    .catch(err => console.log(err));
+}
 
   return (
     <>
@@ -54,11 +77,11 @@ function AddProduct() {
               <h1 className='font-bold text-xl'>Name Of The Product</h1>
               <input type="text" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.name} onChange={e => setValues({...values, name: e.target.value})}/>
                 <label for="category" className='font-bold text-xl '> Category </label>
-                  <select name="category" id="category" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5'>
-                    { Category.map( e => { return ( 
-                      <option value={e} selected={e === values.category} >{e}</option>
-                      )})
-                    }
+                  <select name="category" id="category" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.category} onChange={e => setValues({...values, category: e.target.value})}>
+                    <option > Pick a Category</option>
+                    <option value="HotSauce">HotSauce</option>
+                    <option value="Pickled">Pickled</option>
+                    <option value="Chili Oils">Chili Oils</option>
                   </select>
                 <h1 className='font-bold text-xl'>Product Description</h1>
                 <textarea className='border-1 border-[#888686] bg-[#F9F7F7] ' name="ProductDescription" id="ProductDescription" cols="20" rows="5" placeholder=' Enter the product description' value={values.description} onChange={e => setValues({...values, description: e.target.value})}></textarea>
@@ -88,12 +111,14 @@ function AddProduct() {
               <div className='flex justify-center items-center h-[250px] w-[300px] rounded-2xl border-2 border-black cursor-pointer'>
                 <h1 className='font-bold text-xl'> Click to Upload an image </h1>
               </div>
-              <label for="Variant" className='font-bold text-xl '> Variant </label>
-                <select name="Variant" id="Variant" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5'>
-                  <option value="/">Placeholder</option>
-                  <option value="Chili Oils">Placeholder</option>
-                  <option value="Placeholder">Placeholder</option>
-                </select>
+              <label className='font-bold text-xl flex items-center gap-2'>
+                <input
+                  type="checkbox"
+                  checked={!!values.is_active}
+                  onChange={e => setValues({ ...values, is_active: e.target.checked })}
+                />
+                Active Product
+              </label>
               <h1 className='font-bold text-xl'>Pieces</h1>
               <input type="number" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.stock_quantity} onChange={e => setValues({...values, stock_quantity: e.target.value})} />
             </div> 
