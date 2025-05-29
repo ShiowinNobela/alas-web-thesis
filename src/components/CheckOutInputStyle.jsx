@@ -40,6 +40,3 @@ export const CheckOutTextArea = ({ ...props }) => (
     {...props}
   />
 );
-
-const navItemStyle =
-  "px-5 py-1 rounded-md bg-red text-black-700 hover:bg-yellow-300 hover:text-black hover:shadow-md transition-all cursor-pointer";
