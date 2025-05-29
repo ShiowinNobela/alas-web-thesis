@@ -20,7 +20,7 @@ function ContactUs() {
               </p>
             </div>
             <div className="row-span-2">
-              <img src={Contact_Pic} alt="Contact_Pic" className="h-[750px] " />
+              <img src={Contact_Pic} alt="Contact_Pic" className="h-[550px] w-[500px] " />
             </div>
             <div className="flex flex-col items-center justify-center gap-y-5">
               <div className="flex flex-row items-center justify-center ">
