@@ -3,6 +3,8 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import Logo from "../components/images/logowhite.png";
+const navItemStyle =
+  "px-5 py-1 rounded-md bg-red text-black-700 hover:bg-yellow-300 hover:text-black hover:shadow-md transition-all cursor-pointer";
 
 function navbar() {
   const [nav, setNav] = useState(true);
@@ -17,53 +19,66 @@ function navbar() {
         <img className=" h-20 w-40 cursor-pointer" src={Logo} alt="/" />
         <ul className="text-white hidden uppercase md:flex ">
           <Link to="/">
-            <li className="px-5 py-1 cursor-pointer">Home</li>
+            <li className={navItemStyle}>Home</li>
           </Link>
           <Link to="/ProductListPage">
-            <li className="px-5 py-1 cursor-pointer">products</li>
+            <li className={navItemStyle}>products</li>
           </Link>
           <Link to="/Faqs">
-          <li className="px-5 py-1 cursor-pointer">FAQs</li>
+            <li className={navItemStyle}>FAQs</li>
           </Link>
-          <li className="px-5 py-1 cursor-pointer">About Us</li>
+          <li className={navItemStyle}>About Us</li>
           <Link to="/ContactUs">
-            <li className="px-5 py-1 cursor-pointer">Contact Us</li>
+            <li className={navItemStyle}>Contact Us</li>
           </Link>
           {window.localStorage.getItem("user") ? (
-         
-              <button className="group relative px-5 py-1 rounded-2xl w-40 ">
-               SETTINGS 
-                <div className=" text-black absolute top-full right-0 rounded-2xl p-3 mt-1 shadow-lg scale-y-0 group-focus:scale-y-100 origin-top bg-white w-40">
-                  <div onClick={() => { window.location.href = "/UserSettings"}}>User Settings</div>
-                  <p onClick={() => {window.location.href = "/UserOrderPage"}}
-                  >Order List</p>
+            <button className="group relative px-5 py-1 rounded-2xl w-40 ">
+              SETTINGS
+              <div className=" text-black absolute top-full right-0 rounded-2xl p-3 mt-1 shadow-lg scale-y-0 group-focus:scale-y-100 origin-top bg-white w-40">
+                <div
+                  onClick={() => {
+                    window.location.href = "/UserSettings";
+                  }}
+                >
+                  User Settings
+                </div>
+                <p
+                  onClick={() => {
+                    window.location.href = "/UserOrderPage";
+                  }}
+                >
+                  Order List
+                </p>
 
-                  <p onClick={() => {
+                <p
+                  onClick={() => {
                     window.localStorage.removeItem("user");
                     window.location.href = "/LoginPage";
-                    }}>Logout
-                  </p>
-                </div>
-              </button>
-            
+                  }}
+                >
+                  Logout
+                </p>
+              </div>
+            </button>
           ) : (
             <Link to="/LoginPage">
               <li className="px-5 py-1 cursor-pointer">Sign In</li>
             </Link>
           )}
 
-          
           {window.localStorage.getItem("user") ? (
-          <Link to="/ProductListPage">
-            <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold" >
-            Order
-          </button> </Link>)  : ( <Link to="/LoginPage">
-          <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold" >
-            Order
-          </button> </Link>)}
-          
-          
-
+            <Link to="/ProductListPage">
+              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold">
+                Order
+              </button>{" "}
+            </Link>
+          ) : (
+            <Link to="/LoginPage">
+              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold">
+                Order
+              </button>{" "}
+            </Link>
+          )}
 
           {/* <Link to="//ProductListPage"></Link> */}
         </ul>
