@@ -3,7 +3,10 @@ import { useEffect } from "react";
 import axios from "axios";
 import ConfirmPopUp from "../components/ConfirmPopUp";
 import { useNavigate } from "react-router-dom";
-import { CheckOutInput, CheckOutTextArea } from "../components/CheckOutStyle";
+import {
+  CheckOutInput,
+  CheckOutTextArea,
+} from "../components/CheckOutInputStyle";
 
 function CheckOutPage() {
   const [getInfo, setGetInfo] = useState({
