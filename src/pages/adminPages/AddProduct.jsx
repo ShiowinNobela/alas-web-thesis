@@ -75,12 +75,12 @@ function AddProduct() {
                   <div className='flex justify-center items-center h-[250px] w-[300px] rounded-2xl border-2 border-black cursor-pointer'>
                     <input type="file" name='file' />
                   </div>
-                <label for="Variant" className='font-bold text-xl '> Variant </label>
+                {/* <label for="Variant" className='font-bold text-xl '> Variant </label>
                   <select name="Variant" id="Variant" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5'>
                     <option value="/">1</option>
                     <option value="Chili Oils">2</option>
                     <option value="Placeholder">3</option>
-                  </select>
+                  </select> */}
                 <h1 className='font-bold text-xl'>Pieces</h1>
                 <input type="number" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' onChange={e => setValues({...values, stock_quantity: e.target.value})} />
               </div>

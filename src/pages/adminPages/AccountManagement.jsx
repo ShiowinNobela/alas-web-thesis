@@ -75,11 +75,11 @@ function AccountManagement() {
             </div>
             <div className="flex justify-center items-center pt-10 ">
 
-              <table className="border-1 border-black w-7xl text-center">
+              <table className="border-1 border-black 2xl:w-7xl w-4xl text-center">
                <tr>
                   <th className="p-2.5 border-black border-1">Username</th>
-                  <th className="p-2.5 border-black border-1">Address</th>
-                  <th className="p-2.5 border-black border-1">Contact Num#</th>
+                  <th className="p-2.5 border-black border-1 2xl:table-cell hidden">Address</th>
+                  <th className="p-2.5 border-black border-1 2xl:table-cell hidden">Contact Num#</th>
                   <th className="p-2.5 border-black border-1">Role</th>
                   <th className='p-2.5 border-black border-1'>Email</th>
                   <th className="p-2.5 border-black border-1">Edit</th>
@@ -88,8 +88,8 @@ function AccountManagement() {
                 { data && data.map((d) => (
                   <tr>
                     <td className="p-2.5 border-black border-1"> {d.username} </td>
-                    <td className="p-2.5 border-black border-1"> {d.address} </td>
-                    <td className="p-2.5 border-black border-1"> {d.contact_number} </td>
+                    <td className="p-2.5 border-black border-1 2xl:table-cell hidden "> {d.address} </td>
+                    <td className="p-2.5 border-black border-1 2xl:table-cell hidden "> {d.contact_number} </td>
                     <td className="p-2.5 border-black border-1"> {d.role_name} </td>
                     <td className="p-2.5 border-black border-1"> {d.email} </td>
                     <td className="p-2.5 border-black border-1">
