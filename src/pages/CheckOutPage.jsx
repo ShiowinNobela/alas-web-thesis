@@ -47,7 +47,6 @@ function CheckOutPage() {
     //     reference_number: getInfo.reference_number,
     //     account_name:   getInfo.account_name,
     // },
-
     axios
       .post("/api/orders", getInfo, {
         headers: {
@@ -98,9 +97,12 @@ function CheckOutPage() {
                 Phone Number
               </label>
               <CheckOutInput
-                placeholder="Your Name"
+                placeholder="Your Phone Number"
                 required
                 value={getInfo?.contact_number}
+                onChange={(e) =>
+                  setGetInfo({...getInfo, contact_number: e.target.value})
+                }
               />
             </div>
             <div className="mb-4">
@@ -123,6 +125,9 @@ function CheckOutPage() {
                 placeholder="Your Address"
                 required
                 value={getInfo?.address}
+                onChange={(e) =>
+                  setGetInfo({...getInfo, address: e.target.value})
+                }
               />
             </div>
             <div className="mb-4">

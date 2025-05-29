@@ -8,7 +8,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 
 
 function AccountManagement() {
-
+  const [statusFilter, setStatusFilter] = useState("All");
   const {id} = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -35,6 +35,10 @@ function AccountManagement() {
       .catch(err => console.log(err))
     }, []) 
 
+     const filteredOrders = statusFilter === "All"
+    ? data
+    : data.filter(order => order.role_name.toLowerCase() === statusFilter.toLowerCase());
+
   return (
     <>
     <div className='h-screen w-screen'>
@@ -48,23 +52,27 @@ function AccountManagement() {
               <div className='flex justify-center items-center'>
               <ul className="flex justify-between w-3xl py-5">
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("All")}>
                     All
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("admin")}>
                     Admin
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("staff")}>
                     Staff
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
-                    User
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("customer")}>
+                    Customer
                   </button>
                 </li>
                 <li>
@@ -85,7 +93,7 @@ function AccountManagement() {
                   <th className="p-2.5 border-black border-1">Edit</th>
                 </tr>
 
-                { data && data.map((d) => (
+                { filteredOrders && filteredOrders.map((d) => (
                   <tr>
                     <td className="p-2.5 border-black border-1"> {d.username} </td>
                     <td className="p-2.5 border-black border-1 2xl:table-cell hidden "> {d.address} </td>

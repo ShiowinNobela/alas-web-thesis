@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function Orders() {
 
-  const [values, setValues] = useState([])
+  const [values, setValues] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("All");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +27,10 @@ function Orders() {
     });
   }, []);
 
+  const filteredOrders = statusFilter === "All"
+    ? values
+    : values.filter(order => order.status.toLowerCase() === statusFilter.toLowerCase());
+
   return (
     <>
     <div className="h-screen max-h-full w-screen ">
@@ -35,22 +40,26 @@ function Orders() {
             <div className="2xl:w-7xl w-5xl">
               <ul className="flex justify-between py-5">
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("All")}>
                     All
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("pending")}>
                     Pending
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
-                    Delivering
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("shipping")}>
+                    Shipping
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500">
+                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  onClick={() => setStatusFilter("delivered")}>
                     Delivered
                   </button>
                 </li>
@@ -75,7 +84,7 @@ function Orders() {
                     <th className="p-2.5 border-black border-1">View</th>
                   </tr>
 
-                  {values && values.map((d) => {
+                  {filteredOrders && filteredOrders.map((d) => {
                     return (
                       <tr>
                         <td className="p-2.5 border-black border-1">{d.order_date}  </td>
