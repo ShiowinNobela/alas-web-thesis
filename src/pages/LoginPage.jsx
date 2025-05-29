@@ -81,9 +81,9 @@ function LoginPage() {
             <div className="flex flex-col text-lg text-left gap-1">
               <span>Password</span>
               <input
-                type="text"
+                type="password"
                 className="rounded-md p-1 border-1 outline-none focus:border-black focus:bg-slate-100  focus:text-black text-white"
-                onChange={(e) => setPasswordLog(e.target.value)}
+                onChange={(e) => setPasswordLog(e.target.value)} 
               />
               <div className="flex gap-1 items-center">
                 <input type="checkbox" />

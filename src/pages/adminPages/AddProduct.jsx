@@ -10,7 +10,7 @@ function AddProduct() {
     category: '',
     stock_quantity: '',
     price: '',
-    image: '',
+    image: 'placeholderImg.png',
     description: ''
   })
 
@@ -42,11 +42,14 @@ function AddProduct() {
                 <h1 className='font-bold text-xl'>Name Of The Product</h1>
                 <input type="text" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' onChange={e => setValues({...values, name: e.target.value})} />
                   <label for="category" className='font-bold text-xl '> Category </label>
-                    <select name="category" id="category" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5'>
+                    
+                    <select name="category" id="category" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' onChange={e => setValues({...values, category: e.target.value})}>
+                    <option > Pick a Category</option>
                     <option value="HotSauce">HotSauce</option>
                     <option value="Pickled">Pickled</option>
                     <option value="Chili Oils">Chili Oils</option>
                     </select>
+
                   <h1 className='font-bold text-xl'>Product Description</h1>
                   <textarea className='border-1 border-[#888686] bg-[#F9F7F7] ' name="ProductDescription" id="ProductDescription" cols="20" rows="5" placeholder=' Enter the product description' onChange={e => setValues({...values, description: e.target.value})}></textarea>
                   <div className='flex flex-row gap-2' >

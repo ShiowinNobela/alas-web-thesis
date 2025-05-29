@@ -45,14 +45,15 @@ function ProductDetailsPage() {
 
   return (
     <>
-      <section className="bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat max-w-screen max-h-full h-full pt-5 ">
-        <div className="max-w-5xl mx-auto px-3 py-3 border-black border-3 mt-[80px] bg-white">
+      <section className="bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat max-w-screen max-h-full h-screen pt-5 flex flex-row items-center justify-center">
+      <div className="flex flex-row">
+        <div className="w-3xl h-[750px] pl-3 py-3 border-black border-3 mt-[80px] bg-[#E2E0E1]">
           <div className="flex flex-col ">
             <div className="border-b-3 mx-auto p-3">
               <img
                 src={Prod1}
                 alt="/"
-                className="lg:w-[400px] lg:h-[400px] w-[300px] h-[300px] "
+                className="lg:w-[400px] lg:h-[400px] w-[300px] h-[300px] shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] "
               />
             </div>
             <div className="flex flex-row justify-evenly border-b-2 pb-3">
@@ -135,12 +136,19 @@ function ProductDetailsPage() {
               <p> {data.description} </p>
             </div>
           </div>
+          
         </div>
-        <div className="flex flex-col items-center justify-center mt-10">
-          <h1 className="text-2xl">Reviews</h1>
-            
+        <div className=" pl-3 py-3 border-black border-3 mt-[80px] bg-[#E2E0E1] w-xl flex flex-col items-center ">
+          <h1 className="text-2xl text-center">Reviews</h1>
+          <h3>Total reviews: </h3>
+          <div className="mt-5 border-1 p-2 w-4/5 shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] ">
+              <h1>Name: Torogobro</h1>
+              <h2>Rating: 5 / 5</h2>
+              <h3>Review: </h3>
+               <p> The sauce are good and the delivery and process is fast </p>
+          </div>
         </div>
-      
+        </div>
       </section>
     </>
   );

@@ -26,6 +26,8 @@ import AdminAddUser from './pages/adminPages/AdminAddUser.jsx'
 import CheckOutPage from './pages/CheckOutPage.jsx'
 import ViewOrder from './pages/adminPages/ViewOrder.jsx'
 import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx'
+import UserOrderPage from './pages/UserOrderPage.jsx'
+import UserViewOrderDetails from './pages/UserViewOrderDetails.jsx'
 function App() {
 
   return (
@@ -44,6 +46,8 @@ function App() {
       <Route path='*' element={<h1>404 Not Found</h1>}></Route>
       <Route path='/Faqs' element={<Faqs/>}></Route>
       <Route path='/CheckOutPage' element={<CheckOutPage/>}></Route>
+      <Route path='/UserOrderPage' element={<UserOrderPage/>}></Route>
+      <Route path='/UserViewOrderDetails/:id' element={<UserViewOrderDetails/>}></Route>
       </Route>
 
       <Route path='/Admin'>

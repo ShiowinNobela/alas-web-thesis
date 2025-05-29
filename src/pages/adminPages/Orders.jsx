@@ -28,7 +28,7 @@ function Orders() {
 
   return (
     <>
-    <div className="h-full w-screen ">
+    <div className="h-screen max-h-full w-screen ">
         <Sidebar/>
         <div className="h-full w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
             <h1 className='py-5 text-4xl font-semibold '>Orders</h1>
@@ -80,7 +80,7 @@ function Orders() {
                       <tr>
                         <td className="p-2.5 border-black border-1"> {d.id} </td>
                         <td className="p-2.5 border-black border-1"> ₱ {d.total_amount} </td>
-                        <td className="p-2.5 border-black border-1"> {d.order_date} </td>
+                        <td className="p-2.5 border-black border-1"> {d.order_date} </td> 
                         <td className="p-2.5 border-black border-1"> {d.status} </td>
                         <td className="p-2.5 border-black border-1" onClick={ () => {
                           navigate(`/admin/viewOrder/${d.id}`) }

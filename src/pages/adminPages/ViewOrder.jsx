@@ -68,7 +68,18 @@ function ViewOrder() {
         fetchData();
     }, [id]);
 
-    // const updateStatus = (status) => {
+    const updateStatus = (e) => {
+        axios.patch(`/api/adminOrder/status-update/${id}`,{
+            status: detailsCart.status
+        } )
+        .then((response) => {
+            setOrderDetails(response.data.data)
+            window.location.reload();
+        })
+        .catch((err) =>{
+            console.error(err)
+        })}
+
 
 
 
@@ -90,17 +101,17 @@ function ViewOrder() {
                         <p class="me">Email: {detailsUser.email} </p>
                         <p class="me">Contact Number: {detailsUser.contact_number} </p>
                         <p class="me">Address: {detailsUser.address}</p>
-                        <p class="me">Payment Method:{detailsCart.payment_method}</p>
+                        <p class="me">Payment Method: {detailsCart.payment_method}</p>
                         <p class="me">Date: {detailsCart.order_date} </p>
                         <div className="flex justify-between">
                             <div>
                                 <label> 
                                     Update Order Process:  
                                     <select name="Status" id="Status" className="ml-2 p-2 border rounded-md mb-5 text-center"
-                                    value={detailsCart.status} onChange={(e) => { updateStatus(e.target.value) }}>
+                                    value={detailsCart.status} onChange={e => setOrderDetails({...detailsCart, status: e.target.value})}>
                                         <option value="pending"> pending</option>
                                         <option value="processing"> processing</option>
-                                        <option value="shipped"> shipped</option>
+                                        <option value="shipping"> shipping</option>
                                         <option value="delivered"> delivered</option>
                                         <option value="cancelled"> cancelled</option>
                                         <option value="refunded"> refunded</option>
@@ -108,7 +119,7 @@ function ViewOrder() {
                                 </label>
                             </div>
                             <div>
-                                <button className="ml-2 p-2 border rounded-md mb-5 cursor-pointer"> Update Status</button>
+                                <button className="ml-2 p-2 border rounded-md mb-5 cursor-pointer" onClick={updateStatus}> Update Status</button>
                             </div>
                         </div>
                         

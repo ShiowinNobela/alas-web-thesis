@@ -117,8 +117,9 @@ function CheckOutPage() {
                             value={getInfo?.payment_method}
                             onChange={(e) => setGetInfo({...getInfo, payment_method: e.target.value})}>
                                 <option value=""></option>
-                                <option value="Gcash">Gcash</option>
-                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="GCash">GCash</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="Maya">Maya</option>
                             </select>
                         </div>
                     </div>

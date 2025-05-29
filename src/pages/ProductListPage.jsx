@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+
 function ProductPage() {
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -35,7 +36,9 @@ function ProductPage() {
               </ul>
 
               <div className="grid lg:grid-cols-4 grid-cols-2 py-5 gap-3 cursor-pointer sm:w-7xl">
-                {data.map((d)  => (
+                {data
+                .filter(d => d.stock_quantity > 0)
+                .map((d)  => (
                   <Link to={`/ProductDetailsPage/${d.id}`}>
                     <div className="flex flex-col mx-auto justify-center items-center lg:w-[300px] lg:h-[300px] w-[200px] h-[200px] ">
                       <img

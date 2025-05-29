@@ -35,7 +35,8 @@ function navbar() {
                SETTINGS 
                 <div className=" text-black absolute top-full right-0 rounded-2xl p-3 mt-1 shadow-lg scale-y-0 group-focus:scale-y-100 origin-top bg-white w-40">
                   <div onClick={() => { window.location.href = "/UserSettings"}}>User Settings</div>
-                  <p>Order List</p>
+                  <p onClick={() => {window.location.href = "/UserOrderPage"}}
+                  >Order List</p>
 
                   <p onClick={() => {
                     window.localStorage.removeItem("user");
