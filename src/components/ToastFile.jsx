@@ -7,7 +7,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {children}
-        <Toaster />
+        <Toaster richColors="true"/>
       </body>
     </html>
   );

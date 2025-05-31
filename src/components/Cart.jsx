@@ -5,7 +5,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import CouponPopUp from "../pages/CouponPopUp";
 import { Link } from "react-router-dom";
-
+import { Toaster, toast } from 'sonner';
 
 function Cart() {
 
@@ -176,10 +176,12 @@ function Cart() {
               </div>
             </Link>
           ) : (
-            <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]">
+            <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]" 
+            onClick={ () => toast.error("You can't checkout without an item on your cart!")}>
                 Checkout
               </div>
           )}
+          <Toaster/>
           </div>
         </div>
     </div>
