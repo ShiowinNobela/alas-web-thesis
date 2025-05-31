@@ -13,6 +13,7 @@ function Cart() {
   const [getCartItems, setGetCartItems] = useState([]);
   const [getSubTotal, setGetSubTotal] = useState(0); // Cart
   const [Open, setOpen] = useState(false) //Coupon Modal
+  const cartCount = getCartItems.length;
 
 
   useEffect(() => {
@@ -49,9 +50,13 @@ function Cart() {
           }
         )
       console.log("Product removed from cart:", product.data);
-      if(product.status === 201) {
-      response.data && setGetCartItems(response.data.items);
-      } 
+      if (product.status === 200 || product.status === 201) {
+        getCart(response.id);
+      if (cartCount === 1) {
+        window.location.reload();
+      }
+        
+      }
       } catch (error) {
         console.error("Error parsing user data:", error);   
       }}
@@ -163,11 +168,18 @@ function Cart() {
           </div>
           
           <div className="flex items-center justify-center pb-6 border-l-2 border-b-2">
-          <Link to="/CheckoutPage">
-          <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]">
+          
+          {cartCount !== 0 ?(
+            <Link to="/CheckoutPage">
+              <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]">
                 Checkout
-          </div>
-          </Link>
+              </div>
+            </Link>
+          ) : (
+            <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]">
+                Checkout
+              </div>
+          )}
           </div>
         </div>
     </div>

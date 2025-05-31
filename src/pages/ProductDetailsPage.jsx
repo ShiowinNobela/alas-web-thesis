@@ -5,6 +5,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import BackButton from "../components/BackButton.jsx";
 
 function ProductDetailsPage() {
   const [Open, setOpen] = useState(false);
@@ -41,15 +42,19 @@ function ProductDetailsPage() {
 
   return (
     <>
-      <section className="bg-[url('./src/components/images/customer_bg2.png')] bg-cover bg-fixed bg-no-repeat max-w-screen max-h-full h-screen pt-5 flex flex-row items-center justify-center">
-        <div className="flex flex-row">
-          <div className="w-3xl h-[750px] pl-3 py-3 border-black border-3 mt-[80px] bg-[#E2E0E1]">
+    <BackButton 
+      onClick={() => {
+        window.location.href = "/ProductListPage";
+      }} />
+      <section className="bg-yellow-100 bg-cover max-w-screen max-h-full h-screen pt-5 flex flex-row items-center justify-center">
+        <div className="flex flex-row w-5xl">
+          <div className=" h-[650px] pl-3 py-3 border-black border-3 mt-[80px] bg-[#E2E0E1] w-2/3">
             <div className="flex flex-col ">
               <div className="border-b-3 mx-auto p-3">
                 <img
                   src={Prod1}
                   alt="/"
-                  className="lg:w-[400px] lg:h-[400px] w-[300px] h-[300px] shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] "
+                  className="lg:w-[150px] lg:h-[150px] w-[100px] h-[100px] shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] "
                 />
               </div>
               <div className="flex flex-row justify-evenly border-b-2 pb-3">
@@ -131,7 +136,7 @@ function ProductDetailsPage() {
               </div>
             </div>
           </div>
-          <div className=" pl-3 py-3 border-black border-3 mt-[80px] bg-[#E2E0E1] w-xl flex flex-col items-center ">
+          <div className=" pl-3 py-3 border-black border-3 mt-[80px] bg-[#E2E0E1] w-1/3 flex flex-col items-center ">
             <h1 className="text-2xl text-center">Reviews</h1>
             <h3>Total reviews: </h3>
             <div className="mt-5 border-1 p-2 w-4/5 shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] ">

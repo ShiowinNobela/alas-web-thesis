@@ -2,45 +2,21 @@ import Sidebar from "../../components/sidebar";
 import { useState, useEffect } from "react";    
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Toaster, toast } from 'sonner';
 
 function ViewOrder() {
-
-    // const [detailsCart, setOrderDetails] = useState("");
-    // const [detailsUser, setUserDetails] = useState("");
-  
-    // const { id } = useParams();
-    
-    // useEffect(() => {
-    //     const user = JSON.parse(window.localStorage.getItem("user"));
-    //     axios.get(`/api/adminOrder/${id}`, {
-    //         headers: {
-    //             Authorization: `Bearer ${user.token}`,
-    //         },
-    //     })
-    //     .then((response) => {
-    //         setOrderDetails(response.data.data);
-    //         console.log(response.data);
-    //     })
-    //     .catch((error) => {
-    //         console.error("Error fetching order details:", error);
-    //     });
-    // }, []); 
-
-    // useEffect(() => {
-    //     axios.get(`/api/adminUser/${detailsCart.customer_id}`)
-    //     .then((response) => {
-    //         setUserDetails(response.data.data);
-    //         console.log(response.data);
-    //     })
-    //     .catch((error) => {
-    //         console.error("Error fetching user details:", error);
-    //     });
-    // }, []);
-
-
     const [detailsCart, setOrderDetails] = useState("");
     const [detailsUser, setUserDetails] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState("");
     const { id } = useParams();
+    const statusFlow = [
+    "pending",
+    "processing",
+    "shipping",
+    "delivered",
+    "cancelled",
+    "refunded"
+    ];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -54,6 +30,7 @@ function ViewOrder() {
 
             const orderData = orderResponse.data.data;
             setOrderDetails(orderData);
+            setSelectedStatus(orderData.status);
             console.log("Order Data:", orderData);
 
             const userResponse = await axios.get(`/api/adminUser/${orderData.customer_id}`);
@@ -68,24 +45,43 @@ function ViewOrder() {
         fetchData();
     }, [id]);
 
-    const updateStatus = (e) => {
+    const updateStatus = () => {
         axios.patch(`/api/adminOrder/status-update/${id}`,{
-            status: detailsCart.status
+            status: selectedStatus
         } )
         .then((response) => {
             setOrderDetails(response.data.data)
-            window.location.reload();
+            toast.success('Order status updated successfully!');
         })
         .catch((err) =>{
-            console.error(err)
-        })}
+            if (err.response && err.response.status === 400) {
+            toast.error('Failed to update status: Bad Request');
+        } else {
+            toast.error('An unexpected error occurred');
+        }
+        console.error(err)
+           })
+    }
 
+    const getNextStatuses = (currentStatus) => {
+        const currentIndex = statusFlow.indexOf(currentStatus);
+        if (currentIndex === -1) return [];
+        let next = [];
+        if (currentIndex + 1 < statusFlow.length) {
+            next.push(statusFlow[currentIndex + 1]);
+        }
+        if (!["cancelled", "refunded"].includes(currentStatus)) {
+            next.push("cancelled", "refunded");
+        }
+        return [...new Set(next)];
+    };
 
 
 
   return (
     <>
         <div className="h-full w-screen ">
+            <Toaster />
             <Sidebar/>
             <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center  ">
                 <h1 className='py-5 text-4xl font-semibold '>Order Details</h1>
@@ -107,19 +103,21 @@ function ViewOrder() {
                             <div>
                                 <label> 
                                     Update Order Process:  
-                                    <select name="Status" id="Status" className="ml-2 p-2 border rounded-md mb-5 text-center"
-                                    value={detailsCart.status} onChange={e => setOrderDetails({...detailsCart, status: e.target.value})}>
-                                        <option value="pending"> pending</option>
-                                        <option value="processing"> processing</option>
-                                        <option value="shipping"> shipping</option>
-                                        <option value="delivered"> delivered</option>
-                                        <option value="cancelled"> cancelled</option>
-                                        <option value="refunded"> refunded</option>
+                                    <select name="Status" id="Status" className="ml-2 p-2 border rounded-md mb-5 w-[180px]"
+                                    value={selectedStatus} onChange={e => setSelectedStatus(e.target.value)}>
+                                         {detailsCart.status && (
+                                            <option value={detailsCart.status} disabled>
+                                                {detailsCart.status} (current)
+                                            </option>
+                                        )}
+                                        {getNextStatuses(detailsCart.status).map(status => (
+                                            <option key={status} value={status}>{status}</option>
+                                        ))}
                                     </select>
                                 </label>
                             </div>
                             <div>
-                                <button className="ml-2 p-2 border rounded-md mb-5 cursor-pointer" onClick={updateStatus}> Update Status</button>
+                                <button className="ml-2 p-2 border rounded-md mb-5 cursor-pointer" onClick={() => updateStatus() }> Update Status</button>
                             </div>
                         </div>
                         

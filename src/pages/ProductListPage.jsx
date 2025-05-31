@@ -70,7 +70,8 @@ function ProductPage() {
               </div>
             </div>
           </div>
-          <Cart />
+          {window.localStorage.getItem("user") && (<Cart />)}
+          
         </div>
       </section>
     </>
