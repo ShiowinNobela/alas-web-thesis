@@ -3,10 +3,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import ConfirmPopUp from "../components/ConfirmPopUp";
 import { useNavigate } from "react-router-dom";
-import {
-  CheckOutInput,
-  CheckOutTextArea,
-} from "../components/CheckOutInputStyle";
+import { Toaster, toast } from 'sonner';
+import { CheckOutInput, CheckOutTextArea } from "../components/CheckOutInputStyle";
 
 function CheckOutPage() {
   const [getInfo, setGetInfo] = useState({
@@ -58,15 +56,21 @@ function CheckOutPage() {
       })
       .then((response) => {
         console.log("Order confirmed successfully:", response.data);
+        toast.success('Order status updated successfully!');
         navigate("/ProductListPage");
       })
-      .catch((error) => {
-        console.error("Error confirming order:", error);
+      .catch((err) => {
+         if (err.response && err.response.status === 400) {
+            toast.error('Failed to update status: Bad Request');
+        } else {
+            toast.error('An unexpected error occurred');
+        }
       });
   };
 
   return (
     <>
+    <Toaster/>
       <section className="bg-gray-100 bg-cover bg-fixed bg-no-repeat h-screen ">
         <div className="max-w-3xl mx-auto pt-20">
           <div className="  p-6 mt-5">

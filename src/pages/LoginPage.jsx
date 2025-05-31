@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Toaster, toast } from 'sonner';
 
 function LoginPage() {
   const [username, setUserLog] = useState("");
@@ -26,25 +27,29 @@ function LoginPage() {
             const userData = response.data;
             console.log(userData);
             if (userData.role_name === "admin") {
-              window.location.href = "/Admin/DashBoard";
-              
+              toast.success('Login Successful Admin!');
+              setTimeout(() => {
+                  window.location.href = "/Admin/DashBoard";
+              }, 1000);
           } 
             else {
-              window.location.href = "/";
+              toast.success('Login Successful');
+              setTimeout(() => {
+                  window.location.href = "/";
+              }, 1000);
             }
           })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-          });
-        
-        } else {
-          console.log("Login failed");
+          
+  }})
+  .catch((err) => {
+            if (err.response && err.response.status === 401) {
+            toast.error('Please Input a Valid Account!');
+          } else {
+            toast.error('An unexpected error occurred');
         }
-      })
-      .catch((error) => {
-        console.error("Error during login:", error);
-      });
-  };
+          }
+)}
+
 
   if (window.localStorage.getItem("user")) {  
     window.location.href = "/";
@@ -54,6 +59,7 @@ function LoginPage() {
   return (
     <>
       <section className="min-h-screen flex items-center justify-center bg-[url('./src/components/images/bg-1.jpg')] bg-center bg-no-repeat ">
+      <Toaster/>
         <div className="flex h-[700px] w-[400px] flex-col items-center justify-center text-center p-10  rounded-2xl max-md:hidden">
           <h1 className="font-semibold text-7xl text-white">
             Spice up your life with{" "}
@@ -93,7 +99,7 @@ function LoginPage() {
 
             <button
               className="px-10 py-2 text-lg rounded-md bg-gradient-to-tr from-red-600 to-yellow-400 cursor-pointer"
-              onClick={handleLogin}
+              onClick={handleLogin }
             >
               Login
             </button>
