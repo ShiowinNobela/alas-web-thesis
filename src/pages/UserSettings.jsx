@@ -52,7 +52,7 @@ function UserSettings() {
 
   return (
     <>
-    <Toaster/>
+    <Toaster  richColors />
       <section className="max-w-screen md:h-full h-screen bg-yellow-100 bg-cover bg-fixed bg-no-repeat">
         <div className="flex flex-col items-center  pt-20">
           <div className="flex flex-row md:mb-10 mb-3">

@@ -6,8 +6,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Toaster/>
         {children}
-        <Toaster richColors="true"/>
       </body>
     </html>
   );

@@ -57,7 +57,10 @@ function CheckOutPage() {
       .then((response) => {
         console.log("Order confirmed successfully:", response.data);
         toast.success('Order status updated successfully!');
-        navigate("/ProductListPage");
+        setTimeout(() => {
+                 navigate("/ProductListPage");
+              }, 1000);
+       
       })
       .catch((err) => {
          if (err.response && err.response.status === 400) {
@@ -70,7 +73,7 @@ function CheckOutPage() {
 
   return (
     <>
-    <Toaster/>
+    <Toaster  richColors />
       <section className="bg-gray-100 bg-cover bg-fixed bg-no-repeat h-screen ">
         <div className="max-w-3xl mx-auto pt-20">
           <div className="  p-6 mt-5">
