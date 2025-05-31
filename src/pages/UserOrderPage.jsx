@@ -1,13 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import OrderHistoryModal from "../components/modals/orderHistoryModal";
+import StatusFilterDropdown from "../components/StatusFilterDropdown";
 
 function UserViewOrderPage() {
   const [orders, setOrders] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState("");
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelNote, setCancelNote] = useState("");
+  const [cancelingOrderId, setCancelingOrderId] = useState(null);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [historyData, setHistoryData] = useState(null);
+  const [error, setError] = useState(null);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
 
@@ -35,13 +41,6 @@ function UserViewOrderPage() {
     fetchOrders(filterStatus);
   }, [filterStatus, user.token]);
 
-  const toggleDropdown = () => setDropdownOpen((open) => !open);
-
-  const selectStatusFilter = (status) => {
-    setFilterStatus(status);
-    setDropdownOpen(false);
-  };
-
   const handleSort = (key) => {
     let direction = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -53,12 +52,18 @@ function UserViewOrderPage() {
   const getStatusColor = (status) => {
     switch (status) {
       case "pending":
+        return "bg-orange-200 text-orange-800";
+      case "processing":
         return "bg-yellow-200 text-yellow-800";
-      case "completed":
-      case "delivered":
+      case "shipping":
         return "bg-green-200 text-green-800";
+      case "delivered":
+        return "bg-blue-200 text-blue-800";
+      case "returned":
+        return "bg-pink-200 text-pink-800";
+      case "refunded":
+        return "bg-violet-200 text-violet-800";
       case "cancelled":
-      case "rejected":
         return "bg-red-200 text-red-800";
       default:
         return "bg-gray-200 text-gray-800";
@@ -78,113 +83,63 @@ function UserViewOrderPage() {
     return 0;
   });
 
-  return (
-    <section className="bg-yellow-100 min-h-screen pt-32">
-      <div className="max-w-6xl mx-auto px-3 py-5 bg-gray-100 rounded-md shadow-lg">
-        <div className="mb-4 relative inline-block">
-          <button
-            onClick={toggleDropdown}
-            id="dropdownActionButton"
-            className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-            type="button"
-          >
-            <span className="sr-only">Action button</span>
-            Filter: {filterStatus || "All"}
-            <svg
-              className="w-2.5 h-2.5 ms-2.5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m1 1 4 4 4-4"
-              />
-            </svg>
-          </button>
+  const cancelOrder = (orderId, note) => {
+    axios
+      .put(
+        `/api/orders/cancel/${orderId}`,
+        { notes: note },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+      .then(() => {
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId ? { ...order, cancel_requested: 1 } : order
+          )
+        );
+        setShowCancelModal(false);
+        setCancelNote("");
+        setCancelingOrderId(null);
+      })
+      .catch((err) => {
+        console.error("Cancel failed:", err);
+        alert("Failed to cancel order.");
+      });
+  };
 
-          {/* Dropdown menu */}
-          {dropdownOpen && (
-            <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-2">
-              <ul
-                className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownActionButton"
-              >
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    All
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("pending")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Pending
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("processing")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Processing
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("shipping")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Shipping
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("delivered")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Delivered
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("refunded")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Refunded
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("returned")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Returned
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => selectStatusFilter("cancelled")}
-                    className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Cancelled
-                  </button>
-                </li>
-              </ul>
-            </div>
-          )}
+  const fetchOrderHistory = (orderId) => {
+    axios
+      .get(`/api/orders/status-history/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        setHistoryData(res.data);
+        setShowHistoryModal(true);
+        setError(null);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch order history:", err);
+        alert("Failed to fetch order status history.");
+      });
+  };
+
+  return (
+    <section className="bg-amber-50 min-h-screen pt-25">
+      <div className="max-w-6xl mx-auto px-3 py-5 rounded-md">
+        <div>
+          <StatusFilterDropdown
+            selected={filterStatus}
+            onChange={setFilterStatus}
+          />
         </div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full min-w-[950px] text-sm text-left text-slate-800">
-            <caption className="p-5 text-lg font-semibold text-left rtl:text-right bg-amber-200">
+            <caption className="p-5 text-lg font-semibold text-left rtl:text-right bg-gray-50">
               Your Orders
               <p className="mt-1 text-sm font-normal">
                 Look at your orders because you ordered because when I wake up
@@ -192,7 +147,7 @@ function UserViewOrderPage() {
                 because I wake up
               </p>
             </caption>
-            <thead className="text-xs uppercase bg-amber-100 text-gray-700">
+            <thead className="text-xs uppercase bg-rose-200 text-gray-700">
               <tr>
                 <th className="px-6 py-3">Items</th>
 
@@ -241,7 +196,7 @@ function UserViewOrderPage() {
                     </svg>
                   </div>
                 </th>
-
+                <th className="px-6 py-3">Payment Method</th>
                 <th className="px-6 py-3">Order ID</th>
                 <th className="px-6 py-3">Status</th>
                 <th className="px-6 py-3">Notes</th>
@@ -257,7 +212,7 @@ function UserViewOrderPage() {
                     index % 2 === 0 ? "bg-white" : "bg-gray-50"
                   }`}
                 >
-                  <td className="px-6 py-4 min-w-[180px]">
+                  <td className="px-6 py-4 min-w-[200px]">
                     <ul className="list-disc list-inside break-words">
                       {order.items.map((item) => (
                         <li key={item.item_id}>
@@ -266,13 +221,23 @@ function UserViewOrderPage() {
                       ))}
                     </ul>
                   </td>
+
                   <td className="px-6 py-4">
                     {new Date(order.order_date).toLocaleString()}
                   </td>
+
                   <td className="px-6 py-4">
                     ₱ {parseFloat(order.total_amount).toLocaleString()}
                   </td>
-                  <td className="px-6 py-4 font-medium">{order.id}</td>
+
+                  <td className="px-6 py-4 capitalize">
+                    {order.payment_method}
+                  </td>
+
+                  <td className="px-6 py-4 text-xs text-gray-600">
+                    {order.id}
+                  </td>
+
                   <td className="px-6 py-4">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
@@ -282,27 +247,44 @@ function UserViewOrderPage() {
                       {order.status}
                     </span>
                   </td>
+
                   <td className="px-6 py-4 italic">{order.notes}</td>
+
                   <td className="px-6 py-4">
-                    <button
-                      onClick={() =>
-                        (window.location.href = `/GiveReview?orderId=${order.id}`)
-                      }
-                      className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
-                    >
-                      <FaEdit />
-                      Review
-                    </button>
+                    {order.status === "pending" &&
+                    order.cancel_requested === 0 ? (
+                      <button
+                        onClick={() => {
+                          setCancelingOrderId(order.id);
+                          setShowCancelModal(true);
+                        }}
+                        className="flex items-center gap-2 font-medium text-red-600 hover:underline"
+                      >
+                        Cancel Order
+                      </button>
+                    ) : order.status === "pending" &&
+                      order.cancel_requested === 1 ? (
+                      <span className="text-sm italic text-gray-500">
+                        Cancellation requested
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => fetchOrderHistory(order.id)}
+                        className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
+                      >
+                        View History
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="font-semibold text-gray-900 bg-gray-100">
+              <tr className="font-semibold text-gray-900 bg-rose-300">
                 <td colSpan={2} className="px-6 py-3 text-base">
                   Total Orders: {orders.length}
                 </td>
-                <td colSpan={5} className="px-6 py-3 text-right">
+                <td colSpan={6} className="px-6 py-3 text-right">
                   Total Amount: ₱ {totalAmount.toLocaleString()}
                 </td>
               </tr>
@@ -310,6 +292,95 @@ function UserViewOrderPage() {
           </table>
         </div>
       </div>
+      {showHistoryModal && (
+        <OrderHistoryModal
+          data={historyData?.data}
+          error={error}
+          onClose={() => {
+            setShowHistoryModal(false);
+            setHistoryData(null);
+          }}
+        />
+      )}
+      {showCancelModal && (
+        <div
+          className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full bg-black/50"
+          aria-hidden="true"
+          tabIndex={-1}
+        >
+          <div className="relative w-full max-w-2xl max-h-full">
+            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              {/* Header */}
+              <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  Cancel Order
+                </h2>
+                <button
+                  onClick={() => {
+                    setShowCancelModal(false);
+                    setCancelNote("");
+                    setCancelingOrderId(null);
+                  }}
+                  type="button"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  <svg
+                    className="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13"
+                    />
+                  </svg>
+                  <span className="sr-only">Close modal</span>
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="p-6 space-y-4">
+                <textarea
+                  value={cancelNote}
+                  onChange={(e) => setCancelNote(e.target.value)}
+                  placeholder="Enter cancellation reason..."
+                  className="w-full h-40 p-3 border border-gray-300 text-sm rounded-lg resize-none bg-gray-50 text-gray-900 dark:bg-gray-600 dark:border-gray-500 dark:text-white dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600"
+                />
+              </div>
+
+              {/* Footer */}
+              <div className="flex justify-end p-4 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button
+                  onClick={() => {
+                    setShowCancelModal(false);
+                    setCancelNote("");
+                    setCancelingOrderId(null);
+                  }}
+                  className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-700 dark:text-white dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    cancelOrder(cancelingOrderId, cancelNote);
+                    setShowCancelModal(false);
+                    setCancelNote("");
+                    setCancelingOrderId(null);
+                  }}
+                  className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-800"
+                >
+                  Confirm Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

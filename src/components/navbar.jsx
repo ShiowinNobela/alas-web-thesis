@@ -14,7 +14,7 @@ function navbar() {
   };
 
   return (
-    <div className="bg-[#EA1A20] top-0 fixed w-[100%]">
+    <div className="bg-[#EA1A20] top-0 fixed w-[100%] z-50">
       <div className="flex justify-between items-center h-20 mx-auto max-w-[1440px] px-4">
         <img className=" h-20 w-40 cursor-pointer" src={Logo} alt="/" />
         <ul className="text-white hidden uppercase md:flex ">
