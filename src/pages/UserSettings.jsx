@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 const InputStyle =
   "border-black border-2 rounded-md md:text-xl text-sm md:w-[300px] w-[200px] bg-gray-100 p-2 focus:ring-2 focus:outline-none focus:ring-black hover:ring-1 hover:ring-black transition-colors";
+import { Toaster, toast } from "sonner";
 
 function UserSettings() {
   const [getInfo, setGetInfo] = useState({
@@ -41,14 +42,17 @@ function UserSettings() {
       .then((response) => {
         console.log("User information updated successfully:", response.data);
         response.data && setGetInfo(response.data);
+        toast.success('Info Update Successful');
       })
       .catch((error) => {
         console.error("Error updating user information:", error);
+        toast.error('Invalid Input!');
       });
   };
 
   return (
     <>
+    <Toaster/>
       <section className="max-w-screen md:h-full h-screen bg-yellow-100 bg-cover bg-fixed bg-no-repeat">
         <div className="flex flex-col items-center  pt-20">
           <div className="flex flex-row md:mb-10 mb-3">
