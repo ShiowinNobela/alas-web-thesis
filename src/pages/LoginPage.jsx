@@ -59,7 +59,7 @@ function LoginPage() {
   return (
     <>
       <section className="min-h-screen flex items-center justify-center bg-[url('./src/components/images/bg-1.jpg')] bg-center bg-no-repeat ">
-      <Toaster/>
+      <Toaster  richColors />
         <div className="flex h-[700px] w-[400px] flex-col items-center justify-center text-center p-10  rounded-2xl max-md:hidden">
           <h1 className="font-semibold text-7xl text-white">
             Spice up your life with{" "}

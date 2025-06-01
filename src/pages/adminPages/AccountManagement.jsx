@@ -52,25 +52,33 @@ function AccountManagement() {
               <div className='flex justify-center items-center'>
               <ul className="flex justify-between w-3xl py-5">
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
-                  onClick={() => setStatusFilter("All")}>
+                  <button className={`text-center px-10 py-3 rounded-2xl font-semibold 
+                    ${statusFilter === "All" ? "bg-amber-800 text-white" : "bg-orange-300"} 
+                    hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500`}
+                  onClick={() =>  setStatusFilter("All")}>
                     All
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  <button className={`text-center px-10 py-3 rounded-2xl font-semibold 
+                    ${statusFilter === "admin" ? "bg-amber-800 text-white" : "bg-orange-300"} 
+                    hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500`}
                   onClick={() => setStatusFilter("admin")}>
                     Admin
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  <button className={`text-center px-10 py-3 rounded-2xl font-semibold 
+                    ${statusFilter === "staff" ? "bg-amber-800 text-white" : "bg-orange-300"} 
+                    hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500`}
                   onClick={() => setStatusFilter("staff")}>
                     Staff
                   </button>
                 </li>
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  <button className={`text-center px-10 py-3 rounded-2xl font-semibold 
+                    ${statusFilter === "customer" ? "bg-amber-800 text-white" : "bg-orange-300"} 
+                    hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500`}
                   onClick={() => setStatusFilter("customer")}>
                     Customer
                   </button>

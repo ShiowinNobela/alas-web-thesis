@@ -81,7 +81,7 @@ function ViewOrder() {
   return (
     <>
         <div className="h-full w-screen ">
-            <Toaster />
+            <Toaster  richColors />
             <Sidebar/>
             <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center  ">
                 <h1 className='py-5 text-4xl font-semibold '>Order Details</h1>

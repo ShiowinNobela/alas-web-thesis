@@ -181,7 +181,7 @@ function Cart() {
                 Checkout
               </div>
           )}
-          <Toaster/>
+          <Toaster  richColors />
           </div>
         </div>
     </div>

@@ -10,6 +10,7 @@ import BackButton from "../components/BackButton.jsx";
 function ProductDetailsPage() {
   const [Open, setOpen] = useState(false);
   const { id } = useParams();
+  const [reviewDetails, setReviewDetails] = useState([])
   const [data, setData] = useState([]);
   const [prodQuantity, setProdQuantity] = useState(1);
   const navigate = useNavigate();
@@ -19,6 +20,12 @@ function ProductDetailsPage() {
       .get("/api/products/" + id)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() =>{
+    axios.get("/api/reviews/" + id)
+    .then((response) => setReviewDetails(response.data.data))
+    .catch((err) => console.log(err));
   }, []);
 
   const handleAddToCart = async () => {
@@ -138,13 +145,15 @@ function ProductDetailsPage() {
           </div>
           <div className=" pl-3 py-3 border-black border-3 mt-[80px] bg-[#E2E0E1] w-1/3 flex flex-col items-center ">
             <h1 className="text-2xl text-center">Reviews</h1>
-            <h3>Total reviews: </h3>
-            <div className="mt-5 border-1 p-2 w-4/5 shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] ">
-              <h1>Name: Torogobro</h1>
-              <h2>Rating: 5 / 5</h2>
-              <h3>Review: </h3>
-              <p> The sauce are good and the delivery and process is fast </p>
-            </div>
+            <h3>Total reviews: {reviewDetails.length} </h3>
+              {reviewDetails.map  ((d) => (   
+                <div className="mt-5 border-1 p-2 w-4/5 shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] ">
+                  <h1>Name: {d.username}</h1>
+                  <h2>Rating: {d.rating}</h2>
+                  <h3>Review: </h3>
+                  <p> {d.review_text} </p>
+                </div>
+              ))}
           </div>
         </div>
       </section>
