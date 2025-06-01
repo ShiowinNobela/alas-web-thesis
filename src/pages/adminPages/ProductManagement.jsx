@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import NewSideBar from '../../components/newSideBar'
 import ItemPic from '../../components/images/lp1.jpg'
 import {Link} from 'react-router-dom'
-import { CgProfile } from "react-icons/cg";
+
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 import { Card } from "flowbite-react";
 import axios from 'axios'
+import AdminProfile from '../../components/Chinges/AdminProfile';
 
 
 function ProductManagement() {
@@ -22,15 +23,8 @@ function ProductManagement() {
     <NewSideBar/>
       <div className='min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto'>
         <div className='w-full pt-3 pr-7 flex justify-end'>
-          <div className='min-w-25 flex gap-1 justify-center items-center'>
-            <CgProfile className=" mx-3 h-10 w-10" />{" "}
-
-            <div>
-              <p>TestAdmin1</p> 
-              <p>TestAdmin1@gmail.com</p>
+              <AdminProfile />
             </div>
-          </div>
-        </div>
         <div className='w-full flex justify-between items-center'>
           <div className='h-10 w-70 bg-[#FAF9F6] pt-1 pl-3 rounded-2xl border-2 border-[#595959] flex justify-between'>
             <p>search</p>
@@ -55,7 +49,7 @@ function ProductManagement() {
               </h5>
               <div>
                 <Link to={`/Admin/EditProduct/${d.id}`} >
-                <div className='p-1 bg-[#d3723a] text-l font-medium mt-1 border-1 border-[#894a25] w-full h-[35px] rounded-2xl flex justify-center cursor-pointer ' >
+                <div className='p-1 bg-[#d3723a] text-l font-medium mt-1 border-1 border-[#894a25] drop-shadow-sm drop-shadow-black/60 w-full h-[30px] rounded-2xl flex justify-center cursor-pointer' >
                   <p>Edit</p>
                 </div>
               </Link> 
