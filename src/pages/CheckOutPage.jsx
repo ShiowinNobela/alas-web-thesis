@@ -3,8 +3,11 @@ import { useEffect } from "react";
 import axios from "axios";
 import ConfirmPopUp from "../components/ConfirmPopUp";
 import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from 'sonner';
-import { CheckOutInput, CheckOutTextArea } from "../components/CheckOutInputStyle";
+import { Toaster, toast } from "sonner";
+import {
+  CheckOutInput,
+  CheckOutTextArea,
+} from "../components/CheckOutInputStyle";
 
 function CheckOutPage() {
   const [getInfo, setGetInfo] = useState({
@@ -56,24 +59,23 @@ function CheckOutPage() {
       })
       .then((response) => {
         console.log("Order confirmed successfully:", response.data);
-        toast.success('Order status updated successfully!');
+        toast.success("Order status updated successfully!");
         setTimeout(() => {
-                 navigate("/ProductListPage");
-              }, 1000);
-       
+          navigate("/ProductListPage");
+        }, 1000);
       })
       .catch((err) => {
-         if (err.response && err.response.status === 400) {
-            toast.error('Failed to update status: Bad Request');
+        if (err.response && err.response.status === 400) {
+          toast.error("Failed to update status: Bad Request");
         } else {
-            toast.error('An unexpected error occurred');
+          toast.error("An unexpected error occurred");
         }
       });
   };
 
   return (
     <>
-    <Toaster  richColors />
+      <Toaster richColors />
       <section className="bg-gray-100 bg-cover bg-fixed bg-no-repeat h-screen ">
         <div className="max-w-3xl mx-auto pt-20">
           <div className="  p-6 mt-5">
@@ -107,12 +109,18 @@ function CheckOutPage() {
                 Phone Number
               </label>
               <CheckOutInput
+                type="number"
                 placeholder="Your Phone Number"
                 required
                 value={getInfo?.contact_number}
                 onChange={(e) =>
-                  setGetInfo({...getInfo, contact_number: e.target.value})
+                  setGetInfo({ ...getInfo, contact_number: e.target.value })
                 }
+                onKeyDown={(e) => {
+                  if (["e", "E", "+", "-"].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
               />
             </div>
             <div className="mb-4">
@@ -136,7 +144,7 @@ function CheckOutPage() {
                 required
                 value={getInfo?.address}
                 onChange={(e) =>
-                  setGetInfo({...getInfo, address: e.target.value})
+                  setGetInfo({ ...getInfo, address: e.target.value })
                 }
               />
             </div>
