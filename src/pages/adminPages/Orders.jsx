@@ -40,7 +40,9 @@ function Orders() {
             <div className="2xl:w-7xl w-5xl">
               <ul className="flex justify-between py-5">
                 <li > 
-                  <button className="text-center px-10 py-3 rounded-2xl font-semibold bg-orange-300 hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500"
+                  <button className={`text-center px-10 py-3 rounded-2xl font-semibold 
+                    ${statusFilter === "All" ? "bg-amber-800 text-white" : "bg-orange-300"} 
+                    hover:bg-orange-400 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 active:bg-red-500`}
                   onClick={() => setStatusFilter("All")}>
                     All
                   </button>
@@ -69,7 +71,7 @@ function Orders() {
                   </button>
                 </li>
                 <li>
-                  <input className="p-3 border-1 border-black rounded-2xl" type="text" name="Search" id="Search"  placeholder="Search!"/>
+                  <input className="p-3 border-1 border-black rounded-2xl text-center" type="text" name="Search" id="Search"  placeholder="Search!"/>
                 </li>
               </ul>
 
