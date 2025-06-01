@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Toaster, toast } from 'sonner';
+import { Toaster, toast } from "sonner";
 
 function LoginPage() {
   const [username, setUserLog] = useState("");
@@ -10,7 +10,8 @@ function LoginPage() {
   axios.defaults.withCredentials = true;
 
   const handleLogin = () => {
-    axios.post("/api/users/login/", {
+    axios
+      .post("/api/users/login/", {
         username: username,
         password: password,
       })
@@ -19,47 +20,48 @@ function LoginPage() {
           console.log("Login successful");
           window.localStorage.setItem("user", JSON.stringify(response.data));
 
-          return axios.get("/api/users", {
-            headers: {
-              Authorization: `Bearer ${response.data.token}`,
-            },
-          }).then((response) => {
-            const userData = response.data;
-            console.log(userData);
-            if (userData.role_name === "admin") {
-              toast.success('Login Successful Admin!');
-              setTimeout(() => {
+          return axios
+            .get("/api/users", {
+              headers: {
+                Authorization: `Bearer ${response.data.token}`,
+              },
+            })
+            .then((response) => {
+              const userData = response.data;
+              console.log(userData);
+              if (userData.role_name === "admin") {
+                toast.success("Login Successful Admin!");
+                setTimeout(() => {
                   window.location.href = "/Admin/DashBoard";
-              }, 1000);
-          } 
-            else {
-              toast.success('Login Successful');
-              setTimeout(() => {
+                }, 1000);
+              } else {
+                toast.success("Login Successful");
+                setTimeout(() => {
                   window.location.href = "/";
-              }, 1000);
-            }
-          })
-          
-  }})
-  .catch((err) => {
-            if (err.response && err.response.status === 401) {
-            toast.error('Please Input a Valid Account!');
-          } else {
-            toast.error('An unexpected error occurred');
+                }, 1000);
+              }
+            });
         }
-          }
-)}
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          toast.error("Please Input a Valid Account!");
+        } else if (err.response && err.response.status === 400) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error("An unexpected error occurred");
+        }
+      });
+  };
 
-
-  if (window.localStorage.getItem("user")) {  
+  if (window.localStorage.getItem("user")) {
     window.location.href = "/";
   }
-    
 
   return (
     <>
       <section className="min-h-screen flex items-center justify-center bg-[url('./src/components/images/bg-1.jpg')] bg-center bg-no-repeat ">
-      <Toaster  richColors />
+        <Toaster richColors />
         <div className="flex h-[700px] w-[400px] flex-col items-center justify-center text-center p-10  rounded-2xl max-md:hidden">
           <h1 className="font-semibold text-7xl text-white">
             Spice up your life with{" "}
@@ -79,7 +81,7 @@ function LoginPage() {
               <span>Username</span>
               <input
                 type="text"
-                className="rounded-md p-1 border-1 outline-none focus:border-black focus:bg-slate-100  focus:text-black text-black" 
+                className="rounded-md p-1 border-1 outline-none focus:border-black focus:bg-slate-100  focus:text-black text-black"
                 onChange={(e) => setUserLog(e.target.value)}
               />
             </div>
@@ -89,7 +91,7 @@ function LoginPage() {
               <input
                 type="password"
                 className="rounded-md p-1 border-1 outline-none focus:border-black focus:bg-slate-100  focus:text-black text-black"
-                onChange={(e) => setPasswordLog(e.target.value)} 
+                onChange={(e) => setPasswordLog(e.target.value)}
               />
               <div className="flex gap-1 items-center">
                 <input type="checkbox" />
@@ -99,7 +101,7 @@ function LoginPage() {
 
             <button
               className="px-10 py-2 text-lg rounded-md bg-gradient-to-tr from-red-600 to-yellow-400 cursor-pointer"
-              onClick={handleLogin }
+              onClick={handleLogin}
             >
               Login
             </button>

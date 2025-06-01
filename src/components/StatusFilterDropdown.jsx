@@ -25,7 +25,7 @@ export default function StatusFilterDropdown({ selected, onChange }) {
     <div className="mb-4 relative inline-block">
       <button
         onClick={toggleDropdown}
-        className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5"
         type="button"
       >
         Filter: {selected || "All"}
@@ -46,16 +46,16 @@ export default function StatusFilterDropdown({ selected, onChange }) {
       </button>
 
       {open && (
-        <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 absolute mt-2">
+        <div className="z-10 bg-rose-200 divide-y divide-gray-100 rounded-lg shadow-sm w-44 absolute mt-2">
           <ul
-            className="py-1 text-sm text-gray-700 dark:text-gray-200"
+            className="py-1 text-sm text-gray-700 dark:text-slate-800"
             aria-labelledby="dropdownActionButton"
           >
             {STATUS_OPTIONS.map(({ label, value }) => (
               <li key={value}>
                 <button
                   onClick={() => handleSelect(value)}
-                  className="w-full text-left block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="w-full text-left block px-4 py-2 hover:bg-amber-100 dark:hover:bg-amber-100 dark:hover:text-slate-800"
                 >
                   {label}
                 </button>

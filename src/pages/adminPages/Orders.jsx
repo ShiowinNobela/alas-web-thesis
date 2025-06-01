@@ -4,6 +4,7 @@ import axios from "axios";
 import OrderHistoryModal from "../../components/modals/orderHistoryModal";
 import StatusUpdateModal from "../../components/modals/statusUpdateModal";
 import StatusFilterDropdown from "../../components/StatusFilterDropdown";
+const tableHeadStyle = "px-6 py-3 text-center";
 
 function AdminViewOrderPage() {
   const [orders, setOrders] = useState([]);
@@ -89,24 +90,22 @@ function AdminViewOrderPage() {
     return 0;
   });
 
-  // Optional: If you want to allow viewing order status history
-  // const fetchOrderHistory = (orderId) => {
-  //   axios
-  //     .get(`/api/adminOrder/status-history/${orderId}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${user.token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       setHistoryData(res.data);
-  //       setShowHistoryModal(true);
-  //       setError(null);
-  //     })
-  //     .catch((err) => {
-  //       console.error("Failed to fetch order history:", err);
-  //       alert("Failed to fetch order status history.");
-  //     });
-  // };
+  const fetchOrderHistory = (orderId) => {
+    axios
+      .get(`/api/adminOrder/status-history/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        setHistoryData(res.data);
+        setShowHistoryModal(true);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch order history:", err);
+        alert("Failed to fetch order status history.");
+      });
+  };
 
   const statusUpdate = (orderId, note, status) => {
     const url = status
@@ -128,7 +127,7 @@ function AdminViewOrderPage() {
               ? {
                   ...order,
                   cancel_requested: 1,
-                  status: status || order.status,
+                  status: status || "cancelled",
                 }
               : order
           )
@@ -169,10 +168,10 @@ function AdminViewOrderPage() {
               </caption>
               <thead className="text-xs uppercase bg-rose-200 text-gray-700">
                 <tr>
-                  <th className="px-6 py-3">User Info</th>
-                  <th className="px-6 py-3">Order ID</th>
-                  <th className="px-6 py-3">Items</th>
-                  <th className="px-6 py-3">
+                  <th className={tableHeadStyle}>User Info</th>
+                  <th className={tableHeadStyle}>Order ID</th>
+                  <th className={tableHeadStyle}>Items</th>
+                  <th className={tableHeadStyle}>
                     <div
                       className="flex items-center cursor-pointer hover:underline"
                       onClick={() => handleSort("date")}
@@ -194,7 +193,7 @@ function AdminViewOrderPage() {
                       </svg>
                     </div>
                   </th>
-                  <th className="px-6 py-3">
+                  <th className={tableHeadStyle}>
                     <div
                       className="flex items-center cursor-pointer hover:underline"
                       onClick={() => handleSort("total")}
@@ -223,14 +222,15 @@ function AdminViewOrderPage() {
                       Method
                     </div>
                   </th>
-                  <th className="px-6 py-3">Status</th>
-                  <th className="px-6 py-3">Action</th>
+                  <th className={tableHeadStyle}>Status</th>
+                  <th className={tableHeadStyle}>Action</th>
+                  <th className={tableHeadStyle}>Status History</th>
                 </tr>
               </thead>
 
               <tbody>
                 {sortedOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-gray-200">
+                  <tr key={order.id} className="border-b border-gray-200 ">
                     <td className="px-6 py-4 text-xs text-gray-700 bg-gray-50">
                       <div>
                         <p className="font-semibold">{order.username}</p>
@@ -266,50 +266,94 @@ function AdminViewOrderPage() {
                     <td className="px-6 py-4 capitalize bg-gray-100">
                       {order.payment_method}
                     </td>
+
                     <td className="px-6 py-4 bg-gray-50">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                          order.status
-                        )}`}
-                      >
-                        {order.status}
-                      </span>
+                      <div className="flex justify-center items-center">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                            order.status
+                          )}`}
+                        >
+                          {order.status}
+                        </span>
+                      </div>
                     </td>
 
-                    <td className="px-6 py-4 bg-gray-100">
-                      {order.status === "pending" &&
-                      order.cancel_requested === 0 ? (
-                        <button
-                          onClick={() => {
-                            setStatusUpdateModal(true);
-                            setUpdatingId(order.id);
-                            setUpdateStatus("processing");
-                            setModalTitle("Process Order");
-                            setConfirmButtonLabel("Process Order");
-                          }}
-                          className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
-                        >
-                          Process Order
-                        </button>
-                      ) : order.status === "pending" &&
-                        order.cancel_requested === 1 ? (
-                        <button
-                          onClick={() => {
-                            setStatusUpdateModal(true);
-                            setUpdatingId(order.id);
-                            setUpdateStatus("cancelled");
-                            setModalTitle("Cancel Order");
-                            setConfirmButtonLabel("Cancel Order");
-                          }}
-                          className="flex items-center gap-2 font-medium text-red-600 hover:underline"
-                        >
-                          Cancel Order
-                        </button>
-                      ) : order.status === "cancelled" ? (
-                        <span className="text-sm italic text-gray-500">
-                          Order Cancelled
-                        </span>
-                      ) : null}
+                    <td className="px-6 py-4 bg-gray-100 justify-center text-center">
+                      <div className="flex justify-center items-center">
+                        {order.status === "pending" &&
+                        order.cancel_requested === 0 ? (
+                          <button
+                            onClick={() => {
+                              setStatusUpdateModal(true);
+                              setUpdatingId(order.id);
+                              setUpdateStatus("processing");
+                              setModalTitle("Process Order");
+                              setConfirmButtonLabel("Process Order");
+                            }}
+                            className="flex items-center gap-2 font-medium text-orange-600 hover:underline"
+                          >
+                            Process Order
+                          </button>
+                        ) : order.status === "pending" &&
+                          order.cancel_requested === 1 ? (
+                          <button
+                            onClick={() => {
+                              setStatusUpdateModal(true);
+                              setUpdatingId(order.id);
+                              setUpdateStatus("");
+                              setModalTitle("Cancel Order");
+                              setConfirmButtonLabel("Cancel Order");
+                            }}
+                            className="flex items-center gap-2 font-medium text-red-600 hover:underline"
+                          >
+                            Cancel Order
+                          </button>
+                        ) : order.status === "cancelled" ? (
+                          <span className="text-sm italic text-gray-500">
+                            Order Cancelled
+                          </span>
+                        ) : order.status === "processing" ? (
+                          <button
+                            onClick={() => {
+                              setStatusUpdateModal(true);
+                              setUpdatingId(order.id);
+                              setUpdateStatus("shipping");
+                              setModalTitle("Ship Order");
+                              setConfirmButtonLabel("Ship Order");
+                            }}
+                            className="flex items-center gap-2 font-medium text-green-600 hover:underline "
+                          >
+                            Ship Order
+                          </button>
+                        ) : order.status === "shipping" ? (
+                          <button
+                            onClick={() => {
+                              setStatusUpdateModal(true);
+                              setUpdatingId(order.id);
+                              setUpdateStatus("delivered");
+                              setModalTitle("Mark Order as Delivered");
+                              setConfirmButtonLabel("Confirm");
+                            }}
+                            className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
+                          >
+                            Mark Delivered
+                          </button>
+                        ) : order.status === "delivered" ? (
+                          <span className="text-sm bold text-gray-500">
+                            Order Completed
+                          </span>
+                        ) : null}
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 bg-gray-50">
+                      <button
+                        onClick={() => fetchOrderHistory(order.id)}
+                        className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
+                      >
+                        View History
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -320,7 +364,7 @@ function AdminViewOrderPage() {
                   <td colSpan={2} className="px-6 py-3 text-base">
                     Total Orders: {orders.length}
                   </td>
-                  <td colSpan={6} className="px-6 py-3 text-right">
+                  <td colSpan={7} className="px-6 py-3 text-right">
                     Total Amount: ₱ {totalAmount.toLocaleString()}
                   </td>
                 </tr>
