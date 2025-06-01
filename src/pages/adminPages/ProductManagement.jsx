@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Sidebar from '../../components/sidebar.jsx'
+import NewSideBar from '../../components/newSideBar'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
@@ -14,17 +14,22 @@ function ProductManagement() {
 
   return (
     <>
-    <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1]'>
-    <Sidebar/>
-      <div className='h-full w-screen ml-[256px] flex'>
-        <div className='flex flex-row'>
-          <h1 className='pl-10 pt-5 text-xl font-semibold '>Product Management</h1>
-          <Link to='/Admin/AddProduct'>
-          <button className=' fixed top-0 right-0 mr-15 mt-5 p-5 text-xl font-semibold bg-[#357a38] text-white rounded-3xl border-2 border-black '>Add Product</button>
-          </Link>
+    <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
+    <NewSideBar/>
+      <div className='min-h-full w-100% ml-5 flex flex-col gap-5'>
+        <div className='w-full flex '>
+          <div >
+            <p>admin</p>
+          </div>
         </div>
-        <div className='2xl:w-6xl w-3xl grid 2xl:grid-cols-3 grid-cols-2 mt-10  2xl:gap-x-10 gap-x-2 '>
-          
+        <div className='w-full flex justify-between'>
+          <p>search</p>
+            <Link to='/Admin/AddProduct'>
+            <button className='mr-10 mt-10 p-4 text-xl font-semibold bg-[#144f17] text-white rounded-2xl border-1 border-black'>Add Product</button>
+            </Link>
+            
+        </div>
+        <div className='w-full grid grid-cols-4 gap-5'>
           { data.map((d) => (
             <div className='flex flex-col items-center justify-center mb-10'>
               <img className='2xl:w-[300px] lg:h-[300px] w-[250px] h-[200px] shadow-2xl border-b border-2'  />
@@ -38,7 +43,7 @@ function ProductManagement() {
           ))}
 
         </div>
-      </div>  
+      </div>
     </div>
     </>
   )
