@@ -1,5 +1,6 @@
 import React  from 'react'
 import './App.css'
+import NewSideBar from './components/newSideBar.jsx'
 import NavBar from './components/navbar.jsx'
 import ContactUs from './pages/ContactUs.jsx'
 import LoginPage from './pages/LoginPage.jsx'
