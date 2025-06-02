@@ -3,6 +3,14 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Category } from '../constants.js'
 import { useNavigate, useParams } from 'react-router-dom'
+import AdminProfile from '../../components/Chinges/AdminProfile.jsx'
+import NewSideBar from '../../components/newSideBar'
+import BackButton from '../../components/Chinges/BackButton.jsx'
+import BaseInput from '../../components/Chinges/baseInput.jsx'
+import Description from '../../components/Chinges/Description.jsx'
+import DropDown from '../../components/Chinges/DropDown.jsx'
+import Upload from '../../components/Chinges/Upload.jsx'
+import UploadButton from '../../components/Chinges/UploadButton.jsx'
 
 
 function AddProduct() {
@@ -61,69 +69,39 @@ function AddProduct() {
 
   return (
     <>
-    <div className='w-screen h-screen'>
-      <Sidebar/>
-      <div className='flex flex-col items-center  h-screen w-screen bg-[#D9D9D9] pl-[256px]'>
-      
-        <h1 className='text-3xl font-bold mx-auto my-5 '>Edit Product</h1>
-        <form onSubmit={handleUpdate}>
-        <div className='flex flex-row items-center justify-center shadow-2xl w-6xl p-5 bg-[#FFFFFF] gap-5 rounded-4xl'>
-            
-          
-            <div className='flex flex-col bg-[#D9D9D9] p-10 w-xl gap-5 rounded-2xl'>
-              
-              <h1 className='font-bold text-xl'>Product ID: </h1>
-              <input type="text" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.id} onChange={e => setValues({...values, id: e.target.value})} />
-              <h1 className='font-bold text-xl'>Name Of The Product</h1>
-              <input type="text" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.name} onChange={e => setValues({...values, name: e.target.value})}/>
-                <label for="category" className='font-bold text-xl '> Category </label>
-                  <select name="category" id="category" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.category} onChange={e => setValues({...values, category: e.target.value})}>
-                    <option > Pick a Category</option>
-                    <option value="HotSauce">HotSauce</option>
-                    <option value="Pickled">Pickled</option>
-                    <option value="Chili Oils">Chili Oils</option>
-                  </select>
-                <h1 className='font-bold text-xl'>Product Description</h1>
-                <textarea className='border-1 border-[#888686] bg-[#F9F7F7] ' name="ProductDescription" id="ProductDescription" cols="20" rows="5" placeholder=' Enter the product description' value={values.description} onChange={e => setValues({...values, description: e.target.value})}></textarea>
-                <div className='flex flex-row gap-2'>
-                    <div className='flex flex-col w-2xl'>
-                      <h1 className='font-bold text-xl'>Pricing</h1>
-                      <input type="number" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.price} onChange={e => setValues({...values, price: e.target.value})}/>
-                    </div>
-                    <div className='flex flex-col'>
-                      <h1 className='font-bold text-xl'>Discount</h1>
-                      <input type="number" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5'/>
-                    </div>
-                </div>
-                <div className='flex flex-row justify-end gap-5 mt-10'>
-                  <div className='bg-[#FFAE67] p-3 rounded-xl font-medium'>
-                      <h1>Archive Product</h1>
-                  </div>
-                  <button>
-                  <div className='bg-[#E9484B] p-3 rounded-xl font-medium'>
-                      <h1>Save Changes</h1>
-                  </div>
-                  </button>
-                </div>
-            </div>
-            <div className='flex flex-col bg-[#D9D9D9] p-10 w-sm gap-5 rounded-2xl'>
-              <h1 className='font-bold text-xl'>Product Photo</h1>
-              <div className='flex justify-center items-center h-[250px] w-[300px] rounded-2xl border-2 border-black cursor-pointer'>
-                <h1 className='font-bold text-xl'> Click to Upload an image </h1>
-              </div>
-              <label className='font-bold text-xl flex items-center gap-2'>
-                <input
-                  type="checkbox"
-                  checked={!!values.is_active}
-                  onChange={e => setValues({ ...values, is_active: e.target.checked })}
-                />
-                Active Product
-              </label>
-              <h1 className='font-bold text-xl'>Pieces</h1>
-              <input type="number" className='border-1 border-[#888686] bg-[#F9F7F7] py-1.5' value={values.stock_quantity} onChange={e => setValues({...values, stock_quantity: e.target.value})} />
-            </div> 
+    <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
+      <NewSideBar/>
+      <div className='min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto'>
+        <div className='w-full pt-3 pr-7 flex justify-end'>
+          <AdminProfile />
         </div>
-        </form>
+        <div className='w-full flex justify-between items-center'>
+          <BackButton/>
+        </div>  
+        <div className='w-full h-135 grid grid-cols-2 gap-7 pl-4 pr-8'>
+          <div className='h-full bg-gray-800 rounded-2xl flex flex-col p-7 gap-3'>
+            <BaseInput className='pb-5'/>
+            <BaseInput/>
+            <Description/>
+              <div className='grid grid-cols-[0.6fr_0.4fr] gap-4'>
+                <BaseInput/>
+                <DropDown/>
+              </div>
+          </div>
+          <div className='h-full bg-gray-800 rounded-2xl'>
+            <div className='px-7 pt-8'><Upload/>
+            </div>
+            <div className="bg-gray-800 flex flex-col p-7 gap-3">
+              <DropDown />
+              <div className="w-full flex justify-between">
+                <BaseInput/>
+                <div className='mt-8'>
+                  <UploadButton/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     </>
