@@ -19,12 +19,10 @@ export default function StatusModal({
       tabIndex={-1}
     >
       <div className="relative w-full max-w-2xl max-h-full">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div className="relative bg-white rounded-lg shadow">
           {/* Header */}
-          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {title}
-            </h2>
+          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-300">
+            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
             <button
               onClick={onCancel}
               type="button"
@@ -37,6 +35,7 @@ export default function StatusModal({
                 fill="none"
                 viewBox="0 0 14 14"
               >
+                z``
                 <path
                   stroke="currentColor"
                   strokeLinecap="round"
@@ -50,20 +49,20 @@ export default function StatusModal({
           </div>
 
           {/* Body */}
-          <div className="p-6 space-y-4">
+          <div className="p-6 space-y-4 text-gray-50">
             <textarea
               value={textareaValue}
               onChange={onTextareaChange}
               placeholder="Enter your reason..."
-              className="w-full h-40 p-3 border border-gray-300 text-sm rounded-lg resize-none bg-gray-50 text-gray-900 dark:bg-gray-600 dark:border-gray-500 dark:text-white dark:placeholder-gray-400 focus:ring-red-600 focus:border-red-600"
+              className="w-full h-40 p-3 border border-gray-300 text-sm rounded-lg resize-none bg-gray-50 text-gray-900 dark:bg-gray-200 dark:border-gray-500 dark:text-black dark:placeholder-gray-500 focus:ring-rose-400 focus:border-rose-400"
             />
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end p-4 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+          <div className="flex justify-end p-4 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-300">
             <button
               onClick={onCancel}
-              className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-700 dark:text-white dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+              className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-300 dark:text-slate-800 dark:border-gray-500 dark:hover:bg-gray-400 dark:focus:ring-gray-600"
             >
               {cancelButtonLabel}
             </button>

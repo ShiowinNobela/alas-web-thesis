@@ -1,11 +1,6 @@
 @import "tailwindcss";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
-
-.striped-columns td:nth-child(odd) {
-  background-color: #f9fafb;
-}
-.striped-columns td:nth-child(even) {
-  background-color: #ffffff;
-}
