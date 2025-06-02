@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { FcSalesPerformance } from "react-icons/fc";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import NewSideBar from '../../components/newSideBar'
+import AdminProfile from '../../components/Chinges/AdminProfile';
 
 function adminDashboard() {
   const [values, setValues] = useState([]);
@@ -26,50 +28,25 @@ function adminDashboard() {
 
   return (
     <>
-      <div className="h-screen max-w-screen overflow-hidden ">
-        <SideBar />
-        <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px]">
-          <h1 className="text-3xl font-semibold px-5 py-5">Dash Board</h1>
-          <div className="flex flex-col items-center justify-around pt-3 ">
-            <div className="grid grid-cols-3 2xl:gap-10 2xl:w-7xl w-4xl">
-              <Link to="/Admin/Orders">
-                {/* <div className='absolute ml-2.5 2xl:h-[250px] h-[200px] 2xl:w-[400px] w-[250px] bg-red-200 shadow-2xl rounded-2xl'>
-                        <div className='flex mt-10 items-center justify-center'>
-                            
-                        </div>  
-                    </div> */}
-                <div className="flex justify-center text-center border-1 2xl:h-[250px] h-[200px] 2xl:w-[400px] w-[250px] rounded-2xl bg-white">
-                  <div className="flex flex-col items-center justify-center">
-                    {/* <FcSalesPerformance className=' h-[500px] w-[500px]  ' /> */}
-                    <p className="text-2xl px-2 py-5 font-semibold ">
-                      Pending Orders
-                    </p>
-                    <h1 className="text-4xl px-2 py-5 font-bold ">
-                      {" "}
-                      {values.length}{" "}
-                    </h1>
-                  </div>
-                </div>
-              </Link>
-
-              <Link to="/Admin/BazaarOrdering">
-                <div className="flex flex-col 2xl:h-[250px] h-[200px] 2xl:w-[400px] w-[250px] bg-red-200 text-center border-2 border-[#000000]">
-                  <h1>Bazaar Ordering</h1>
-                </div>
-              </Link>
-              <Link to="/Admin/AddProduct">
-                <div className="flex flex-col 2xl:h-[250px] h-[200px] 2xl:w-[400px] w-[250px] bg-red-200 text-center border-2 border-[#000000]">
-                  <h1>Add Product</h1>
-                </div>
-              </Link>
-            </div>
-
-            <div className="flex justify-center items-center h-[400px] w-[800px] bg-white mt-10 ">
-              <h1>For graphs! still looking.</h1>
-            </div>
-          </div>
+     <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
+    <NewSideBar/>
+    <div className='min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto'>
+        <div className='w-full pt-3 pr-7 flex justify-end'>
+              <AdminProfile />
         </div>
-      </div>
+        <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex flex-col items-center pb-10">
+                <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="/docs/images/people/profile-picture-3.jpg" alt="Bonnie image"/>
+                <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">Bonnie Green</h5>
+                <span class="text-sm text-gray-500 dark:text-gray-400">Visual Designer</span>
+                <div class="flex mt-4 md:mt-6">
+                    <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add friend</a>
+                    <a href="#" class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Message</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
     </>
   );
 }

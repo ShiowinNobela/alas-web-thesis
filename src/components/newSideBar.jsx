@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { IoHomeOutline } from "react-icons/io5";
+import { AiFillProduct } from "react-icons/ai";
 import {
   AiOutlineMoneyCollect,
   AiOutlineUser,
@@ -51,6 +52,14 @@ function NewSideBar() {
                 <AiOutlineUnorderedList className=" mx-3 h-[30px] w-[30px]" />
                 <span className="flex-1 ml-3 text-left whitespace-nowrap">
                   Product Management
+                </span>
+              </li>
+            </Link>
+            <Link to="/Admin/InventoryManagement" >
+              <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg text-white hover:bg-blue-950/70 group cursor-pointer">
+                <AiFillProduct className=" mx-3 h-[30px] w-[30px]" />
+                <span className="flex-1 ml-3 text-left whitespace-nowrap">
+                  Inventory Management
                 </span>
               </li>
             </Link>
