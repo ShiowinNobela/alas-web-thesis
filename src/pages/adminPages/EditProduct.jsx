@@ -1,5 +1,6 @@
 import Sidebar from '../../components/sidebar.jsx'
 import { useEffect, useState } from 'react'
+import { Toaster, toast } from "sonner";
 import axios from 'axios'
 import { Category } from '../constants.js'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -11,6 +12,7 @@ import Description from '../../components/Chinges/Description.jsx'
 import DropDown from '../../components/Chinges/DropDown.jsx'
 import Upload from '../../components/Chinges/Upload.jsx'
 import UploadButton from '../../components/Chinges/UploadButton.jsx'
+
 
 
 function AddProduct() {
@@ -26,7 +28,7 @@ function AddProduct() {
     is_active: false
     })
 
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     axios.get('/api/products/' + id)
     .then(res => {
@@ -62,9 +64,18 @@ function AddProduct() {
         is_active: Boolean(res.data.is_active)
       });
       console.log(res);
-      Navigate('/Admin/ProductManagement');
+     toast.success("Product Details updated successfully!");
+        setTimeout(() => {
+          navigate("/Admin/ProductManagement");
+        }, 1000);
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+        if (err.response && err.response.status === 404) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error("An unexpected error occurred");
+        }
+      }); 
 }
 
   return (
@@ -76,27 +87,47 @@ function AddProduct() {
           <AdminProfile />
         </div>
         <div className='w-full flex justify-between items-center'>
-          <BackButton/>
+          <BackButton 
+          onClick={() => navigate('/Admin/ProductManagement')}/>
         </div>  
         <div className='w-full h-135 grid grid-cols-2 gap-7 pl-4 pr-8'>
           <div className='h-full bg-gray-800 rounded-2xl flex flex-col p-7 gap-3'>
-            <BaseInput className='pb-5'/>
-            <BaseInput/>
-            <Description/>
+            <BaseInput label='Product Id' className='pb-5' value={values.id} />
+            <BaseInput label='Product Name ' value={values.name} onChange={e => setValues({...values, name: e.target.value})}/>
+            <Description label='Product Description' value={values.description} onChange={e => setValues({...values, description: e.target.value})}/>
               <div className='grid grid-cols-[0.6fr_0.4fr] gap-4'>
-                <BaseInput/>
-                <DropDown/>
+                <BaseInput label='Quantity' value={values.stock_quantity} onChange={e => setValues({...values, stock_quantity: e.target.value})}/>
+                <DropDown 
+                label='Category'
+                options={[
+                  { value: "hot_sauce", label: "Hot Sauce" },
+                  { value: "chili_oils", label: "Chili Oils" },
+                  { value: "pickled_jalopeno", label: "Pickled Jalopeno" },
+                  { value: "limited_item", label: "Limited Item" }
+                ]}
+                value={values.category} onChange={e => setValues({...values, category: e.target.value})}
+                />
               </div>
           </div>
           <div className='h-full bg-gray-800 rounded-2xl'>
             <div className='px-7 pt-8'><Upload/>
             </div>
             <div className="bg-gray-800 flex flex-col p-7 gap-3">
-              <DropDown />
+              <DropDown 
+              label='Spice Level (Future Addition)'
+                options={[
+                  { value: "Mild", label: "Mild" },
+                  { value: "Spicy", label: "Spicy" },
+                  { value: "Very Spicy", label: "Very Spicy" },
+                  { value: "Extreme", label: "Extreme" }
+                ]}/> 
               <div className="w-full flex justify-between">
-                <BaseInput/>
+                <BaseInput label='Price' 
+                  onlyNumber min="0" 
+                  value={values.price} onChange={e => setValues({...values, price: e.target.value})} />
                 <div className='mt-8'>
-                  <UploadButton/>
+                  <UploadButton 
+                  onClick={handleUpdate}/>
                 </div>
               </div>
             </div>
@@ -104,6 +135,12 @@ function AddProduct() {
         </div>
       </div>
     </div>
+        <input
+                  type="checkbox"
+                  checked={!!values.is_active}
+                  onChange={e => setValues({ ...values, is_active: e.target.checked })}
+                  hidden/>
+          <Toaster richColors/>
     </>
   )
 }

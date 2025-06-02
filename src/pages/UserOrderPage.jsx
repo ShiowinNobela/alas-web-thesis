@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { MdOutlineRateReview } from "react-icons/md";
 import OrderHistoryModal from "../components/modals/orderHistoryModal";
 import StatusFilterDropdown from "../components/StatusFilterDropdown";
+import UserOrderSidebar from "../components/UserOrderSidebar";
 
 function UserViewOrderPage() {
   const [orders, setOrders] = useState([]);
@@ -14,6 +16,7 @@ function UserViewOrderPage() {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [historyData, setHistoryData] = useState(null);
   const [error, setError] = useState(null);
+  const [activeSwitch, setActiveSwitch] = useState("notif")
 
   const user = JSON.parse(window.localStorage.getItem("user"));
 
@@ -129,169 +132,204 @@ function UserViewOrderPage() {
   };
 
   return (
-    <section className="bg-amber-50 min-h-screen pt-25">
-      <div className="max-w-6xl mx-auto px-3 py-5 rounded-md">
+    <section className="bg-amber-50 min-h-screen pt-20">
+      <div className="grid grid-cols-[0.15fr_0.85fr]">
+        <UserOrderSidebar setActiveSwitch={setActiveSwitch}/>
         <div>
-          <StatusFilterDropdown
-            selected={filterStatus}
-            onChange={setFilterStatus}
-          />
-        </div>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full min-w-[950px] text-sm text-left text-slate-800">
-            <caption className="p-5 text-lg font-semibold text-left rtl:text-right bg-gray-50">
-              Your Orders
-              <p className="mt-1 text-sm font-normal">
-                Look at your orders because you ordered because when I wake up
-                in the morning I order, so when I wake up I order and I order
-                because I wake up
-              </p>
-            </caption>
-            <thead className="text-xs uppercase bg-rose-200 text-gray-700">
-              <tr>
-                <th className="px-6 py-3">Items</th>
+          {activeSwitch === "orderList" && (
+          <div className="max-w-6xl mx-auto px-3 py-5 rounded-md"> 
+            <div>
+              <StatusFilterDropdown
+                selected={filterStatus}
+                onChange={setFilterStatus}
+              />
+            </div>
+            
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <table className="w-full min-w-[950px] text-sm text-left text-slate-800">
+                <caption className="p-5 text-lg font-semibold text-left rtl:text-right bg-gray-50">
+                  Your Orders
+                  <p className="mt-1 text-sm font-normal">
+                    Look at your orders because you ordered because when I wake up
+                    in the morning I order, so when I wake up I order and I order
+                    because I wake up
+                  </p>
+                </caption>
+                <thead className="text-xs uppercase bg-rose-200 text-gray-700">
+                  <tr>
+                    <th className="px-6 py-3">Items</th>
 
-                <th className="px-6 py-3">
-                  <div
-                    className="flex items-center cursor-pointer hover:underline"
-                    onClick={() => handleSort("date")}
-                  >
-                    Date
-                    <svg
-                      className="w-3 h-3 ms-1.5"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      {sortConfig.key === "date" &&
-                      sortConfig.direction === "asc" ? (
-                        <path d="M7 14l5-5 5 5H7z" /> // Up arrow
-                      ) : (
-                        <path d="M7 10l5 5 5-5H7z" /> // Down arrow
-                      )}
-                    </svg>
-                  </div>
-                </th>
-
-                <th className="px-6 py-3">
-                  <div
-                    className="flex items-center cursor-pointer hover:underline"
-                    onClick={() => handleSort("total")}
-                  >
-                    Total
-                    <svg
-                      className="w-3 h-3 ms-1.5"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      {sortConfig.key === "total" &&
-                      sortConfig.direction === "asc" ? (
-                        <path d="M7 14l5-5 5 5H7z" /> // Up arrow
-                      ) : (
-                        <path d="M7 10l5 5 5-5H7z" /> // Down arrow
-                      )}
-                    </svg>
-                  </div>
-                </th>
-                <th className="px-6 py-3">Payment Method</th>
-                <th className="px-6 py-3">Order ID</th>
-                <th className="px-6 py-3">Status</th>
-                <th className="px-6 py-3">Notes</th>
-                <th className="px-6 py-3">Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {sortedOrders.map((order, index) => (
-                <tr
-                  key={order.id}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                  }`}
-                >
-                  <td className="px-6 py-4 min-w-[200px]">
-                    <ul className="list-disc list-inside break-words">
-                      {order.items.map((item) => (
-                        <li key={item.item_id}>
-                          {item.product_name} x {item.quantity}
-                        </li>
-                      ))}
-                    </ul>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    {new Date(order.order_date).toLocaleString()}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    ₱ {parseFloat(order.total_amount).toLocaleString()}
-                  </td>
-
-                  <td className="px-6 py-4 capitalize">
-                    {order.payment_method}
-                  </td>
-
-                  <td className="px-6 py-4 text-xs text-gray-600">
-                    {order.id}
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                        order.status
-                      )}`}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
-
-                  <td className="px-6 py-4 italic">{order.notes}</td>
-
-                  <td className="px-6 py-4">
-                    {order.status === "pending" &&
-                    order.cancel_requested === 0 ? (
-                      <button
-                        onClick={() => {
-                          setCancelingOrderId(order.id);
-                          setShowCancelModal(true);
-                        }}
-                        className="flex items-center gap-2 font-medium text-red-600 hover:underline"
+                    <th className="px-6 py-3">
+                      <div
+                        className="flex items-center cursor-pointer hover:underline"
+                        onClick={() => handleSort("date")}
                       >
-                        Cancel Order
-                      </button>
-                    ) : order.status === "pending" &&
-                      order.cancel_requested === 1 ? (
-                      <span className="text-sm italic text-gray-500">
-                        Cancellation requested
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() => fetchOrderHistory(order.id)}
-                        className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
+                        Date
+                        <svg
+                          className="w-3 h-3 ms-1.5"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          {sortConfig.key === "date" &&
+                          sortConfig.direction === "asc" ? (
+                            <path d="M7 14l5-5 5 5H7z" /> // Up arrow
+                          ) : (
+                            <path d="M7 10l5 5 5-5H7z" /> // Down arrow
+                          )}
+                        </svg>
+                      </div>
+                    </th>
+
+                    <th className="px-6 py-3">
+                      <div
+                        className="flex items-center cursor-pointer hover:underline"
+                        onClick={() => handleSort("total")}
                       >
-                        View History
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr className="font-semibold text-gray-900 bg-rose-300">
-                <td colSpan={2} className="px-6 py-3 text-base">
-                  Total Orders: {orders.length}
-                </td>
-                <td colSpan={6} className="px-6 py-3 text-right">
-                  Total Amount: ₱ {totalAmount.toLocaleString()}
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+                        Total
+                        <svg
+                          className="w-3 h-3 ms-1.5"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          {sortConfig.key === "total" &&
+                          sortConfig.direction === "asc" ? (
+                            <path d="M7 14l5-5 5 5H7z" /> // Up arrow
+                          ) : (
+                            <path d="M7 10l5 5 5-5H7z" /> // Down arrow
+                          )}
+                        </svg>
+                      </div>
+                    </th>
+                    <th className="px-6 py-3">Payment Method</th>
+                    <th className="px-6 py-3">Order ID</th>
+                    <th className="px-6 py-3">Status</th>
+                    <th className="px-6 py-3">Notes</th>
+                    <th className="px-6 py-3">Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {sortedOrders.map((order, index) => (
+                    <tr
+                      key={order.id}
+                      className={`border-b ${
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td className="px-6 py-4 min-w-[200px]">
+                        <ul className="list-disc list-inside break-words">
+                          {order.items.map((item) => (
+                            <li key={item.item_id}>
+                              {item.product_name} x {item.quantity}
+                            </li>
+                          ))}
+                        </ul>
+                      </td>
+
+                      <td className="px-6 py-4">
+                        {new Date(order.order_date).toLocaleString()}
+                      </td>
+
+                      <td className="px-6 py-4">
+                        ₱ {parseFloat(order.total_amount).toLocaleString()}
+                      </td>
+
+                      <td className="px-6 py-4 capitalize text-gray-600">
+                        {order.payment_method}
+                      </td>
+
+                      <td className="px-6 py-4 text-xs text-gray-600">
+                        {order.id}
+                      </td>
+
+                      <td className="px-6 py-4">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                            order.status
+                          )}`}
+                        >
+                          {order.status}
+                        </span>
+                      </td>
+
+                      <td className="px-6 py-4 italic">{order.notes}</td>
+
+                      <td className="px-6 py-4">
+                        {order.status === "pending" &&
+                        order.cancel_requested === 0 ? (
+                          <button
+                            onClick={() => {
+                              setCancelingOrderId(order.id);
+                              setShowCancelModal(true);
+                            }}
+                            className="flex items-center gap-2 font-medium text-red-600 hover:underline"
+                          >
+                            Cancel Order
+                          </button>
+                        ) : order.status === "pending" &&
+                          order.cancel_requested === 1 ? (
+                          <span className="text-sm italic text-gray-500">
+                            Cancellation requested
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => fetchOrderHistory(order.id)}
+                            className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
+                          >
+                            View History
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="font-semibold text-gray-900 bg-rose-300">
+                    <td colSpan={2} className="px-6 py-3 text-base">
+                      Total Orders: {orders.length}
+                    </td>
+                    <td colSpan={6} className="px-6 py-3 text-right">
+                      Total Amount: ₱ {totalAmount.toLocaleString()}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          )}
+
+          {activeSwitch === "notif" && (
+            <div className="flex items-center justify-center min-h-[60vh]  w-full">
+              <div className="w-4xl bg-gray-50 h-50 mx-auto shadow-md drop-shadow-xl">
+                <caption className="text-xl font-bold p-5">Notifications</caption>
+                <div className="flex flex-col items-center justify-center">
+                  <div className="w-3xl grid grid-cols-[0.70fr_0.30fr] bg-white shadow-2xl">
+                    <div className="flex flex-col p-5 pl-10 justify-start">
+                      <h1 className="text-lg font-semi text-start ">
+                        Your Order ALAS123456789 has been Delivered
+                      </h1>
+                      <p className="text-sm">
+                        Your order has been delivered successfully! Make sure to leave a review and order more to receive coupons and vouchers!
+                      </p>
+                    </div>
+                    <div className="flex flex-col p-5 pr-10 justify-end items-end">
+                      <p>Leave a Review!</p>
+                      <MdOutlineRateReview className="h-15 w-15 " />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+         </div> 
       </div>
+
+      
+      
       {showHistoryModal && (
         <OrderHistoryModal
           data={historyData?.data}
@@ -381,6 +419,8 @@ function UserViewOrderPage() {
           </div>
         </div>
       )}
+
+      
     </section>
   );
 }

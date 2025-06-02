@@ -45,7 +45,7 @@ function ProductManagement() {
               imgSrc={ItemPic}
             >
               <h5 className="text-2xl font-bold tracking-tight text-white">
-                CATCH23
+                {d.name}
               </h5>
               <div>
                 <Link to={`/Admin/EditProduct/${d.id}`} >
