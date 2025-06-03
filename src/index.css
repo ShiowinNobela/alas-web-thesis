@@ -1,6 +1,34 @@
+@font-face {
+  font-family: Doto;
+  src: url("../src/assets/fonts/Doto-Regular.ttf");
+}
+
+@font-face {
+  font-family: Inter;
+  src: url("../src/assets/fonts/Inter_24pt-Regular.ttf");
+}
+
+@font-face {
+  font-family: Rubik;
+  src: url("../src/assets/fonts/Rubik-Regular.ttf");
+}
+
 @import "tailwindcss";
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
+
+@theme {
+  --font-*: initial;
+  --font-sans: Rubik, "serif";
+  --color-primary: #e74c3c;
+  --color-secondary: #febe00;
+  --color-admin: #121b2c;
+  --color-neutral: #e2e0e1;
+}
+
+@utility flowbite {
+  color: --color-admin;
+}
