@@ -1,36 +1,39 @@
 import NewSideBar from "../../components/newSideBar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import OrderHistoryModal from "../../components/modals/orderHistoryModal";
 import StatusUpdateModal from "../../components/modals/statusUpdateModal";
-import { Button, Datepicker, TextInput } from "flowbite-react";
-import { HiOutlineSearch } from "react-icons/hi";
+import {
+  Button,
+  Datepicker,
+  TextInput,
+  Dropdown,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  DropdownHeader,
+  DropdownItem,
+  DropdownDivider,
+  Tooltip,
+  Card,
+} from "flowbite-react";
+import {
+  HiOutlineSearch,
+  HiOutlineRefresh,
+  HiDotsVertical,
+} from "react-icons/hi";
 import StatusFilterDropdown from "../../components/StatusFilterDropdown";
 import dayjs from "dayjs";
 import { toast, Toaster } from "sonner";
 
 const tableHeadStyle = "px-6 py-3 text-center";
 
-// const customFlowbiteTheme = createTheme({
-//   textInput: {
-//     field: {
-//       input: {
-//         colors: {
-//           default:
-//             "bg-admin border-red-500 focus:ring-teal-500 focus:border-teal-500 text-gray-800 ",
-//           primary:
-//             "bg-primary border-red-500 focus:ring-teal-500 focus:border-teal-500 text-gray-800",
-//         },
-//       },
-//     },
-//   },
-// });
-
 function AdminViewOrderPage() {
   const [orders, setOrders] = useState([]);
-  //const [totalAmount, setTotalAmount] = useState(0);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [filterStatus, setFilterStatus] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [statusUpdateModal, setStatusUpdateModal] = useState(false);
   const [historyData, setHistoryData] = useState(null);
@@ -41,15 +44,15 @@ function AdminViewOrderPage() {
   const [confirmButtonLabel, setConfirmButtonLabel] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [searchId, setSearchId] = useState("");
+  const [summaryData, setSummaryData] = useState([]);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
 
-  useEffect(() => {
-    if (startDate && endDate && startDate > endDate) {
-      toast.error("Start date cannot be after end date");
-      return;
-    }
-    const fetchOrders = (status = "", startDateVal, endDateVal) => {
+  const fetchOrders = useCallback(
+    (status = "", startDateVal, endDateVal) => {
       const params = new URLSearchParams();
 
       if (status) params.append("status", status);
@@ -57,10 +60,9 @@ function AdminViewOrderPage() {
         params.append("startDate", dayjs(startDateVal).format("YYYY-MM-DD"));
       if (endDateVal)
         params.append("endDate", dayjs(endDateVal).format("YYYY-MM-DD"));
-      console.log("Effect triggered:", params.toString);
 
       const url = `/api/adminOrder?${params.toString()}`;
-      console.log("Effect triggered:", url);
+
       axios
         .get(url, {
           headers: {
@@ -69,17 +71,55 @@ function AdminViewOrderPage() {
         })
         .then((response) => {
           setOrders(response.data.data);
-          // const total = orders.reduce(
-          //   (sum, order) => sum + parseFloat(order.total_amount),
-          //   0
-          // );
-          // setTotalAmount(total);
+
+          const total = response.data.data.reduce(
+            (sum, order) => sum + parseFloat(order.total_amount),
+            0
+          );
+          setTotalAmount(total);
         })
         .catch((err) => console.error(err));
-    };
+    },
+    [user.token]
+  );
+
+  const fetchOrderSummary = useCallback(
+    (startDate, endDate) => {
+      const start = startDate ? dayjs(startDate) : dayjs();
+      const end = endDate ? dayjs(endDate) : dayjs();
+      const params = new URLSearchParams();
+      params.append("start", start.format("YYYY-MM-DD"));
+      params.append("end", end.format("YYYY-MM-DD"));
+
+      const url = `/api/reports/sales-summary-order?${params.toString()}`;
+
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        })
+        .then((res) => {
+          setSummaryData(res.data.data.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    [user.token]
+  );
+
+  useEffect(() => {
+    if (startDate && endDate && startDate > endDate) {
+      toast.error("Start date cannot be after end date");
+      return;
+    }
 
     fetchOrders(filterStatus, startDate, endDate);
-  }, [filterStatus, startDate, endDate, user.token]);
+    if (startDate && endDate) {
+      fetchOrderSummary(startDate, endDate);
+    }
+  }, [filterStatus, startDate, endDate, fetchOrders, fetchOrderSummary]);
 
   const handleSort = (key) => {
     let direction = "asc";
@@ -140,6 +180,23 @@ function AdminViewOrderPage() {
       });
   };
 
+  const fetchOrderDetails = (orderId) => {
+    axios
+      .get(`http://localhost:3000/api/adminOrder/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        setSelectedOrder(res.data);
+        setShowDetailsModal(true);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch order details:", err);
+        alert("Failed to fetch order details.");
+      });
+  };
+
   const statusUpdate = (orderId, note, status) => {
     const url = status
       ? `/api/adminOrder/status-update/${orderId}`
@@ -178,136 +235,150 @@ function AdminViewOrderPage() {
       });
   };
 
+  const handleSearchById = () => {
+    const trimmedId = searchId.trim();
+    if (!trimmedId) return;
+
+    axios
+      .get(`/api/adminOrder/${trimmedId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        const order = res.data?.data || res.data;
+        if (!order || !order.id) {
+          toast.error("Order not found.");
+          setOrders([]);
+        } else {
+          setOrders([order]);
+        }
+        setSearchId("");
+      })
+      .catch((err) => {
+        console.error("Search failed:", err);
+        toast.error("Order not found.");
+      });
+  };
+
+  console.log(summaryData);
   return (
     <>
       <Toaster />
       <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
         <NewSideBar />
         <main className="min-h-full flex flex-col gap-3 overflow-auto px-4 py-7">
-          <div className="bg-white rounded-xl p-20 shadow mb-1">
-            {/* You can add elements here later */}
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <TextInput
-              placeholder="Search orders..."
-              color="white"
-              className="w-[30%]"
-              icon={HiOutlineSearch}
-            />
-            <StatusFilterDropdown
-              selected={filterStatus}
-              onChange={setFilterStatus}
-            />
-            <Button>Reload</Button>
+          <div className="w-full h-[30%] bg-gray-100 flex items-center justify-center p-6">
+            <div className="flex flex-row w-full h-full bg-white rounded-xl shadow p-6 space-x-6">
+              <Card
+                title="Sales"
+                className="flex-none p-4 rounded-lg shadow w-1/4"
+              >
+                <h5 className="font-bold">Kamusta Admin</h5>
+              </Card>
 
-            <Datepicker
-              placeholder="Start date"
-              value={startDate}
-              onChange={(date) => {
-                setStartDate(date);
-              }}
-              maxDate={new Date()}
-              color="white"
-              theme={{
-                root: {
-                  base: "relative",
-                },
-                popup: {
-                  root: {
-                    base: "absolute top-10 z-50 block pt-2",
-                    inline: "relative top-0 z-auto",
-                    inner:
-                      "inline-block rounded-lg bg-white p-4 shadow-lg dark:bg-gray-700",
-                  },
-                  header: {
-                    base: "",
-                    title:
-                      "px-2 py-3 text-center font-semibold text-gray-900 dark:text-white",
-                    selectors: {
-                      base: "mb-2 flex justify-between",
-                      button: {
-                        base: "rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600",
-                        prev: "",
-                        next: "",
-                        view: "",
-                      },
-                    },
-                  },
-                  view: {
-                    base: "p-1",
-                  },
-                  footer: {
-                    base: "mt-2 flex space-x-2",
-                    button: {
-                      base: "w-full rounded-lg px-5 py-2 text-center text-sm font-medium focus:ring-4 focus:ring-cyan-300",
-                      today:
-                        "bg-cyan-700 text-white hover:bg-cyan-800 dark:bg-cyan-600 dark:hover:bg-cyan-700",
-                      clear:
-                        "border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600",
-                    },
-                  },
-                },
-                views: {
-                  days: {
-                    header: {
-                      base: "mb-1 grid grid-cols-7",
-                      title:
-                        "h-6 text-center text-sm font-medium leading-6 text-gray-500 dark:text-gray-400",
-                    },
-                    items: {
-                      base: "grid w-64 grid-cols-7",
-                      item: {
-                        base: "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
-                        selected: "bg-cyan-700 text-white hover:bg-cyan-600",
-                        disabled: "text-gray-500",
-                      },
-                    },
-                  },
-                  months: {
-                    items: {
-                      base: "grid w-64 grid-cols-4",
-                      item: {
-                        base: "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
-                        selected: "bg-cyan-700 text-white hover:bg-cyan-600",
-                        disabled: "text-gray-500",
-                      },
-                    },
-                  },
-                  years: {
-                    items: {
-                      base: "grid w-64 grid-cols-4",
-                      item: {
-                        base: "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
-                        selected: "bg-cyan-700 text-white hover:bg-cyan-600",
-                        disabled: "text-gray-500",
-                      },
-                    },
-                  },
-                  decades: {
-                    items: {
-                      base: "grid w-64 grid-cols-4",
-                      item: {
-                        base: "block flex-1 cursor-pointer rounded-lg border-0 text-center text-sm font-semibold leading-9 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600",
-                        selected: "bg-cyan-700 text-white hover:bg-cyan-600",
-                        disabled: "text-gray-500",
-                      },
-                    },
-                  },
-                },
-              }}
-            />
-            <h3>TO</h3>
-
-            <Datepicker
-              placeholder="End date"
-              value={endDate}
-              onChange={(date) => setEndDate(date)}
-              minDate={startDate}
-              maxDate={new Date()}
-              color="white"
-            />
+              <div className="flex flex-row flex-grow gap-x-2">
+                {summaryData.length > 0 ? (
+                  summaryData.map(({ status, totalOrders }) => (
+                    <div
+                      key={status}
+                      className="
+                                flex flex-col items-center justify-center bg-white rounded-lg shadow
+                                transition-transform duration-300 ease-in-out
+                                hover:scale-105 hover:shadow-lg
+                                cursor-pointer
+                                flex-1 min-w-0
+                                p-4
+                              "
+                      title={
+                        status.charAt(0).toUpperCase() +
+                        status.slice(1).replaceAll("_", " ")
+                      }
+                    >
+                      <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 text-center truncate">
+                        {status.charAt(0).toUpperCase() +
+                          status.slice(1).replaceAll("_", " ")}
+                      </span>
+                      <span className="text-4xl font-extrabold text-gray-900 dark:text-white">
+                        {totalOrders}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {totalOrders === 1 ? "order" : "orders"}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p>Edit the dates to see orders per status on that time</p>
+                )}
+              </div>
+            </div>
           </div>
+
+          <div className="flex justify-between items-center flex-wrap gap-3 w-full">
+            <div className="flex items-center gap-2 w-full sm:w-[30%]">
+              <TextInput
+                placeholder="Search order by ID..."
+                value={searchId}
+                icon={HiOutlineSearch}
+                onChange={(e) => setSearchId(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearchById();
+                }}
+                className="flex-1"
+              />
+              <Button
+                onClick={handleSearchById}
+                className="group bg-secondary text-black p-2 hover:bg-admin hover:text-white focus:outline-none focus:ring-0 active:scale-95"
+              >
+                Search
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-3 flex-wrap justify-end">
+              <div className="w-[25%]">
+                <Datepicker
+                  placeholder="Start date"
+                  value={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  maxDate={new Date()}
+                  color="white"
+                />
+              </div>
+              <h3>TO</h3>
+              <div className="w-[25%]">
+                <Datepicker
+                  placeholder="End date"
+                  value={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  minDate={startDate}
+                  maxDate={new Date()}
+                  color="white"
+                />
+              </div>
+
+              <StatusFilterDropdown
+                selected={filterStatus}
+                onChange={setFilterStatus}
+              />
+
+              <Button
+                color="light"
+                className="group bg-white p-2 rounded-full hover:bg-neutral border-gray-500 focus:ring-0"
+                onClick={() => fetchOrders(filterStatus, startDate, endDate)}
+              >
+                <HiOutlineRefresh className="w-5 h-5 transition-transform duration-300 group-active:rotate-180" />
+              </Button>
+            </div>
+          </div>
+
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="bg-admin text-white text-xs uppercase font-semibold px-6 py-3 rounded-t-lg">
+              <span>Total Orders: {orders.length}</span>
+              <span className="ml-4">
+                Total Amount: ₱{totalAmount.toLocaleString()}
+              </span>
+            </div>
+
             <table className="w-full text-sm text-left text-slate-800">
               <thead className="sticky top-0 text-xs uppercase bg-admin text-white">
                 <tr>
@@ -367,7 +438,7 @@ function AdminViewOrderPage() {
                   </th>
                   <th className={tableHeadStyle}>Status</th>
                   <th className={tableHeadStyle}>Action</th>
-                  <th className={tableHeadStyle}>Status History</th>
+                  <th className={tableHeadStyle}> </th>
                 </tr>
               </thead>
 
@@ -417,7 +488,8 @@ function AdminViewOrderPage() {
                             order.status
                           )}`}
                         >
-                          {order.status}
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
                         </span>
                       </div>
                     </td>
@@ -440,18 +512,23 @@ function AdminViewOrderPage() {
                           </button>
                         ) : order.status === "pending" &&
                           order.cancel_requested === 1 ? (
-                          <button
-                            onClick={() => {
-                              setStatusUpdateModal(true);
-                              setUpdatingId(order.id);
-                              setUpdateStatus("");
-                              setModalTitle("Cancel Order");
-                              setConfirmButtonLabel("Cancel Order");
-                            }}
-                            className="flex items-center gap-2 font-medium text-red-600 hover:underline"
+                          <Tooltip
+                            content="Order can't be processed. Customer has requested to cancel this order"
+                            placement="bottom-end"
                           >
-                            Cancel Order
-                          </button>
+                            <button
+                              onClick={() => {
+                                setStatusUpdateModal(true);
+                                setUpdatingId(order.id);
+                                setUpdateStatus("");
+                                setModalTitle("Cancel Order");
+                                setConfirmButtonLabel("Cancel Order");
+                              }}
+                              className="flex items-center gap-2 font-medium text-red-600 hover:underline"
+                            >
+                              Cancel Order
+                            </button>
+                          </Tooltip>
                         ) : order.status === "cancelled" ? (
                           <span className="text-sm italic text-gray-500">
                             Order Cancelled
@@ -491,12 +568,30 @@ function AdminViewOrderPage() {
                     </td>
 
                     <td className="px-6 py-4 bg-gray-50">
-                      <button
-                        onClick={() => fetchOrderHistory(order.id)}
-                        className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
+                      <Dropdown
+                        label=""
+                        inline
+                        renderTrigger={() => (
+                          <button className="text-gray-600 hover:text-blue-600">
+                            <HiDotsVertical />
+                          </button>
+                        )}
                       >
-                        View History
-                      </button>
+                        <DropdownHeader>Actions</DropdownHeader>
+                        <DropdownDivider />
+
+                        <DropdownItem
+                          onClick={() => fetchOrderDetails(order.id)}
+                        >
+                          View Order Details
+                        </DropdownItem>
+
+                        <DropdownItem
+                          onClick={() => fetchOrderHistory(order.id)}
+                        >
+                          View History
+                        </DropdownItem>
+                      </Dropdown>
                     </td>
                   </tr>
                 ))}
@@ -504,8 +599,17 @@ function AdminViewOrderPage() {
 
               <tfoot>
                 <tr className="font-semibold text-white bg-admin">
-                  <td colSpan={9} className="px-6 py-3">
-                    Tip: Click on a column header to sort orders.
+                  <td colSpan={9} className="px-6 py-6">
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>Click on a column header to sort orders.</li>
+                      <li>Use the search bar to find specific order IDs.</li>
+                      <li>
+                        Filter by order date range using the date pickers.
+                      </li>
+                      <li>
+                        Click Refresh to reset filters and reload the table.
+                      </li>
+                    </ul>
                   </td>
                 </tr>
               </tfoot>
@@ -522,6 +626,134 @@ function AdminViewOrderPage() {
             }}
           />
         )}
+
+        <Modal
+          show={showDetailsModal}
+          onClose={() => setShowDetailsModal(false)}
+        >
+          <ModalHeader>
+            Order Details – #{selectedOrder?.data?.id}
+            {selectedOrder?.data?.status && (
+              <span
+                className={`ml-2 inline-block rounded px-2 py-0.5 text-xs font-semibold ${getStatusColor(
+                  selectedOrder.data.status
+                )}`}
+              >
+                {selectedOrder.data.status.charAt(0).toUpperCase() +
+                  selectedOrder.data.status.slice(1)}
+              </span>
+            )}
+          </ModalHeader>
+
+          <ModalBody>
+            <div className="shadow px-3 py-3 rounded mb-7">
+              <div className="space-y-3 text-sm text-gray-800 ">
+                <h3 className="text-lg font-semibold mb-2">Order Summary</h3>
+                {selectedOrder?.data?.items?.map((item, index) => (
+                  <div key={index} className="flex justify-between">
+                    <span>
+                      {item.product_name} x{item.quantity}
+                    </span>
+                    <span>₱{parseFloat(item.subtotal).toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+
+              <hr className="my-3 border-gray-300" />
+
+              <div className="flex justify-between text-base font-semibold text-gray-900">
+                <span>Total</span>
+                <span>
+                  ₱{parseFloat(selectedOrder?.data?.total_amount).toFixed(2)}
+                </span>
+              </div>
+            </div>
+
+            <div className="shadow px-4 py-3 rounded mb-7">
+              <h3 className="text-lg font-semibold mb-3 text-gray-800">
+                Payment & Billing
+              </h3>
+
+              <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-700 items-stretch">
+                <div className="w-full md:w-1/2 space-y-2">
+                  <div>
+                    <p className="font-medium text-gray-600">Payment Method</p>
+                    <p>
+                      <span className="font-semibold">
+                        {selectedOrder?.data?.payment_method}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-600">Account Name</p>
+                    <p>
+                      <span className="font-semibold">
+                        {selectedOrder?.data?.account_name || "N/A"}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-600">Reference #</p>
+                    <p>
+                      <span className="font-semibold">
+                        {selectedOrder?.data?.reference_number || "N/A"}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-600">
+                      Cancel Requested
+                    </p>
+                    <p>
+                      <span className="font-semibold">
+                        {selectedOrder?.data?.cancel_requested ? "Yes" : "No"}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full md:w-1/2 h-full flex flex-col">
+                  <p className="font-medium text-gray-600 mb-1">Notes</p>
+                  <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm text-gray-800 flex-grow h-full">
+                    {selectedOrder?.data?.notes || "No notes provided."}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="px-4 py-3 rounded shadow-sm bg-white">
+              <h3 className="text-lg font-semibold mb-3 text-gray-800">
+                Customer Information
+              </h3>
+
+              <div className="text-sm text-gray-800 space-y-1">
+                <p className="font-semibold">
+                  {selectedOrder?.data?.username || "N/A"} –{" "}
+                  {selectedOrder?.data?.contact_number ? (
+                    selectedOrder.data.contact_number
+                  ) : (
+                    <span className="text-gray-400 font-normal">
+                      No contact info
+                    </span>
+                  )}
+                </p>
+                <p>
+                  {selectedOrder?.data?.email || (
+                    <span className="text-gray-400">No email</span>
+                  )}
+                </p>
+                <p>
+                  {selectedOrder?.data?.address || (
+                    <span className="text-gray-400">No address</span>
+                  )}
+                </p>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={() => setShowDetailsModal(false)}>Close</Button>
+          </ModalFooter>
+        </Modal>
 
         <StatusUpdateModal
           show={statusUpdateModal}
