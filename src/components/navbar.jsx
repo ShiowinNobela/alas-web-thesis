@@ -27,7 +27,9 @@ function navbar() {
           <Link to="/Faqs">
             <li className={navItemStyle}>FAQs</li>
           </Link>
-          <li className={navItemStyle}>About Us</li>
+          <Link to="/AboutUs">
+            <li className={navItemStyle}>About Us</li>
+          </Link>
           <Link to="/ContactUs">
             <li className={navItemStyle}>Contact Us</li>
           </Link>

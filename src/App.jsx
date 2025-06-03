@@ -28,6 +28,7 @@ import ViewOrder from './pages/adminPages/ViewOrder.jsx'
 import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx'
 import UserOrderPage from './pages/UserOrderPage.jsx'
 import UserViewOrderDetails from './pages/UserViewOrderDetails.jsx'
+import AboutUs from './pages/AbousUs.jsx'
 function App() {
 
   return (
@@ -48,6 +49,8 @@ function App() {
       <Route path='/CheckOutPage' element={<CheckOutPage/>}></Route>
       <Route path='/UserOrderPage' element={<UserOrderPage/>}></Route>
       <Route path='/UserViewOrderDetails/:id' element={<UserViewOrderDetails/>}></Route>
+      <Route path='/AboutUs' element={<AboutUs/>}></Route>
+      
       </Route>
 
       <Route path='/Admin'>
