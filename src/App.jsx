@@ -46,7 +46,7 @@ function App() {
           ></Route>
           <Route path="/ContactUs" element={<ContactUs />}></Route>
           <Route path="/UserSettings" element={<UserSettings />}></Route>
-          <Route path="/GiveReview" element={<GiveReview />}></Route>
+          <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
           <Route path="*" element={<h1>404 Not Found</h1>}></Route>
           <Route path="/Faqs" element={<Faqs />}></Route>
           <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>

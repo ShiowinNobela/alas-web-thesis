@@ -63,16 +63,17 @@ function InventoryManagement() {
                                         {d.stock_quantity}
                                     </div>
                                 </td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">1.47</td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">0.47</td>
+                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap "></td>
+                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap "></td>
                                 <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">
+                                    
                                 </td>
                                 <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">
                                     <div class="flex items-center">
-                                        1.6M
+                                     
                                     </div>
                                 </td>
-                                <td class="px-4 py-2">$3.2M</td>
+                                <td class="px-4 py-2"></td>
                                 <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">Just now</td>
                             </tr>
                             

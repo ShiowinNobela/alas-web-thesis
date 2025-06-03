@@ -4,6 +4,7 @@ import axios from "axios";
 const InputStyle =
   "border-black border-2 rounded-md md:text-xl text-sm md:w-[300px] w-[200px] bg-gray-100 p-2 focus:ring-2 focus:outline-none focus:ring-black hover:ring-1 hover:ring-black transition-colors";
 import { Toaster, toast } from "sonner";
+import UserOrderSidebar from "../components/UserOrderSidebar";
 
 function UserSettings() {
   const [getInfo, setGetInfo] = useState({
@@ -53,8 +54,10 @@ function UserSettings() {
   return (
     <>
     <Toaster  richColors />
-      <section className="max-w-screen md:h-full h-screen bg-yellow-100 bg-cover bg-fixed bg-no-repeat">
-        <div className="flex flex-col items-center  pt-20">
+      <section className="bg-amber-50 min-h-screen pt-20">
+        <div className="grid grid-cols-[0.15fr_0.85fr]">
+          <UserOrderSidebar className="h-full"/>
+        <div className="flex flex-col items-center">
           <div className="flex flex-row md:mb-10 mb-3">
             <div className="flex items-center justify-center bg-[#EA1A20] lg:w-[250px] w-[100px] md:h-[450px] h-[300px] rounded-2xl rounded-tr-none rounded-br-none shadow-lg p-8 mt-10 border-2 border-black">
               <h1 className="lg:text-4xl text-sm font-bold text-white text-center">
@@ -137,6 +140,7 @@ function UserSettings() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
     </>

@@ -56,7 +56,7 @@ function ProductPage() {
                   <Link to={`/ProductDetailsPage/${d.id}`}>
                     <div className="flex flex-col mx-auto justify-center items-center lg:w-[300px] lg:h-[300px] w-[200px] h-[200px] ">
                       <img
-                        src={Product}
+                        src={d.image}
                         alt="/"
                         className="lg:w-[250px] lg:h-[250px] w-[150px] h-[150px] pb-3"
                       />

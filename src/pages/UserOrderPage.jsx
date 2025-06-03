@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { MdOutlineRateReview } from "react-icons/md";
 import OrderHistoryModal from "../components/modals/orderHistoryModal";
 import StatusFilterDropdown from "../components/StatusFilterDropdown";
@@ -16,7 +17,10 @@ function UserViewOrderPage() {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [historyData, setHistoryData] = useState(null);
   const [error, setError] = useState(null);
-  const [activeSwitch, setActiveSwitch] = useState("notif")
+  const location = useLocation();
+  const initialTab = location.state?.tab || "orderList";
+  const [activeSwitch, setActiveSwitch] = useState(initialTab);
+  const [notifications, setNotifications] = useState([]); //notif
 
   const user = JSON.parse(window.localStorage.getItem("user"));
 
@@ -33,16 +37,27 @@ function UserViewOrderPage() {
           const orders = response.data.data;
           setOrders(orders);
 
-          const total = orders.reduce(
-            (sum, order) => sum + parseFloat(order.total_amount),
-            0
-          );
-          setTotalAmount(total);
-        })
-        .catch((err) => console.error(err));
-    };
-    fetchOrders(filterStatus);
-  }, [filterStatus, user.token]);
+          const delivered = orders.filter(
+          (order) => order.status === "delivered"
+        );
+        setNotifications(
+          delivered.map((order) => ({
+            id: order.id,
+            message: `Your order ${order.id} has been delivered!`,
+            date: order.order_date,
+          }))
+        );
+
+        const total = orders.reduce(
+          (sum, order) => sum + parseFloat(order.total_amount),
+          0
+        );
+        setTotalAmount(total);
+      })
+      .catch((err) => console.error(err));
+  };
+  fetchOrders(filterStatus);
+}, [filterStatus, user.token]);
 
   const handleSort = (key) => {
     let direction = "asc";
@@ -303,24 +318,34 @@ function UserViewOrderPage() {
           )}
 
           {activeSwitch === "notif" && (
-            <div className="flex items-center justify-center min-h-[60vh]  w-full">
+            <div className="flex items-center justify-center min-h-[60vh] w-full">
               <div className="w-4xl bg-gray-50 h-50 mx-auto shadow-md drop-shadow-xl">
                 <caption className="text-xl font-bold p-5">Notifications</caption>
                 <div className="flex flex-col items-center justify-center">
-                  <div className="w-3xl grid grid-cols-[0.70fr_0.30fr] bg-white shadow-2xl">
-                    <div className="flex flex-col p-5 pl-10 justify-start">
-                      <h1 className="text-lg font-semi text-start ">
-                        Your Order ALAS123456789 has been Delivered
-                      </h1>
-                      <p className="text-sm">
-                        Your order has been delivered successfully! Make sure to leave a review and order more to receive coupons and vouchers!
-                      </p>
-                    </div>
-                    <div className="flex flex-col p-5 pr-10 justify-end items-end">
-                      <p>Leave a Review!</p>
-                      <MdOutlineRateReview className="h-15 w-15 " />
-                    </div>
-                  </div>
+                  {notifications.length === 0 ? (
+                    <div className="text-gray-500 p-5">No notifications yet.</div>
+                  ) : (
+                    notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        className="w-3xl grid grid-cols-[0.70fr_0.30fr] bg-white shadow-2xl mb-4"
+                      >
+                        <div className="flex flex-col p-5 pl-10 justify-start">
+                          <h1 className="text-lg font-semi text-start ">
+                            {notif.message}
+                          </h1>
+                          <p className="text-sm">
+                            Delivered on: {new Date(notif.date).toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="flex flex-col p-5 pr-10 justify-end items-end" 
+                        onClick={() => { window.location.href = `/GiveReview/${notif.id} `}}>
+                          <p>Leave a Review!</p>
+                          <MdOutlineRateReview className="h-15 w-15 " />
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

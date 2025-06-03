@@ -2,7 +2,7 @@ import Sidebar from "../../components/sidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-
+import { Toaster, toast } from "sonner";
 
 function AdminUserEdit() {
 
@@ -39,10 +39,18 @@ function AdminUserEdit() {
         axios.put(`/api/adminUser/` + id, updatedData )
         .then((response) => {
             console.log("User updated successfully:", response.data);
-            navigate('/Admin/AccountManagement')
+            toast.success("Edit Successful");
+                setTimeout(() => {
+                  navigate("/Admin/AccountManagement");
+                }, 1000);
         })
-        .catch((error) => {
-            console.error("Error updating user:", error);
+        .catch((err) => {
+            if (err.response && err.response.status === 500) {
+                toast.error(err.response.data.message);
+            }
+            else {
+                toast.error("Unexpected Error Occur")
+            }
         });
     }
     
@@ -50,6 +58,7 @@ function AdminUserEdit() {
 
   return (
     <div className='h-screen w-screen'>
+    <Toaster richColors/>
     <Sidebar/>
         <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center ">
             <h1 className='py-5 text-3xl font-semibold '>Edit User</h1>

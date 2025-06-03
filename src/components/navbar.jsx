@@ -32,34 +32,11 @@ function navbar() {
             <li className={navItemStyle}>Contact Us</li>
           </Link>
           {window.localStorage.getItem("user") ? (
+            <Link to ="UserSettings">
             <button className="group relative px-5 py-1 rounded-2xl w-40 ">
               SETTINGS
-              <div className=" text-black absolute top-full right-0 rounded-2xl p-3 mt-1 shadow-lg scale-y-0 group-focus:scale-y-100 origin-top bg-white w-40">
-                <div
-                  onClick={() => {
-                    window.location.href = "/UserSettings";
-                  }}
-                >
-                  User Settings
-                </div>
-                <p
-                  onClick={() => {
-                    window.location.href = "/UserOrderPage";
-                  }}
-                >
-                  Order List
-                </p>
-
-                <p
-                  onClick={() => {
-                    window.localStorage.removeItem("user");
-                    window.location.href = "/LoginPage";
-                  }}
-                >
-                  Logout
-                </p>
-              </div>
             </button>
+            </Link>
           ) : (
             <Link to="/LoginPage">
               <li className="px-5 py-1 cursor-pointer">Sign In</li>

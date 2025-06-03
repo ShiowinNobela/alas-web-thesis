@@ -14,6 +14,8 @@ function Cart() {
   const [getSubTotal, setGetSubTotal] = useState(0); // Cart
   const [Open, setOpen] = useState(false) //Coupon Modal
   const cartCount = getCartItems.length;
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [couponValue, setCouponValue] = useState(0);
 
 
   useEffect(() => {
@@ -108,8 +110,25 @@ function Cart() {
         console.error("Error parsing user data:", error);   
       }}
 
-
-
+    
+    const handleCouponUse = async (coupon) => {
+      setSelectedCoupon(coupon);
+      try {
+        const user = JSON.parse(window.localStorage.getItem("user"));
+        const response = await axios.get(
+          `/api/coupons/apply/${coupon.code}`,
+          {
+            params: { userId: user.id }
+          }
+        );
+        console.log("Coupon API response:", response.data);
+        const amount = parseFloat(response.data.data.amount) || 0;
+        setCouponValue(amount);
+      } catch (err) {
+        console.log(err);
+        setCouponValue(0);
+      }
+    };
 
   return (
     <>
@@ -124,7 +143,7 @@ function Cart() {
         
           <div className="h-[480px] border-black border-2 pt-2 overflow-auto">
 
-            { getCartItems.map((d, index) => (
+            { getCartItems.map((d) => (
               <div className="bg-[#FFFFFF] w-[370px] h-[90px] px-1 py-1 mx-auto border-1 shadow-md shadow-black mb-5">
                 <div className="grid grid-cols-5 gap-1">
                   <img className="lg:h-[80px] lg:w-[80px] w-[40px] h-[40px] row-span-2 mx-3 py-1" />
@@ -146,7 +165,7 @@ function Cart() {
             <p className="flex items-start pl-3 text-xl font-bold"> Subtotal: </p>
             <p className="flex flex-col items-end pr-3 text-xl font-semibold "> ₱ {getSubTotal} </p>
             <p className="flex items-start pl-3 text-xl font-bold"> Coupon Value: </p>
-            <p className="flex flex-col items-end pr-3 text-xl font-semibold"> ₱  </p>
+            <p className="flex flex-col items-end pr-3 text-xl font-semibold"> ₱ {couponValue} </p>
             </div>
 
             <div className="flex flex-col items-center ">
@@ -157,14 +176,14 @@ function Cart() {
                       setOpen(true)
                       
                     }}> Coupon </div>
-                    <CouponPopUp open={Open}  onClose={() => setOpen(false)} /> 
+                    <CouponPopUp open={Open}  onClose={() => setOpen(false)} onApply={handleCouponUse} /> 
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 px-2 py-4 mx-auto border-l-2">
             <p className="flex flex-col items-start pl-3 text-xl font-bold"> Total: </p>
-            <p className="flex flex-col items-end pr-3 text-xl font-semibold"> ₱ {getSubTotal} </p>
+            <p className="flex flex-col items-end pr-3 text-xl font-semibold"> ₱ {getSubTotal - couponValue} </p>
           </div>
           
           <div className="flex items-center justify-center pb-6 border-l-2 border-b-2">

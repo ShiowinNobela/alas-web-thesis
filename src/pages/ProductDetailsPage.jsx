@@ -59,7 +59,7 @@ function ProductDetailsPage() {
             <div className="flex flex-col ">
               <div className="border-b-3 mx-auto p-3">
                 <img
-                  src={Prod1}
+                  src={data.image}
                   alt="/"
                   className="lg:w-[150px] lg:h-[150px] w-[100px] h-[100px] shadow-2xl drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)] "
                 />
@@ -81,14 +81,14 @@ function ProductDetailsPage() {
                       className="border-black border-1 w-[80px]"
                     />{" "}
                   </p>
-                  <p className="lg:text-2xl text-base">
+                  {/* <p className="lg:text-2xl text-base">
                     Size: =<select name="" id=""></select>{" "}
                   </p>
                   <div className="flex flex-row gap-x-1 items-center justify-center text-[#EA1A20] ">
-                    <img src={Alapeno} alt="/" className="w-[50px] h-[50px]" />
+                     <img src={Alapeno} alt="/" className="w-[50px] h-[50px]" />
                     <p>Rating:</p>
-                    <p> 3/5 </p>
-                  </div>
+                    <p> 3/5 </p> *
+                  </div> */}
                 </div>
                 <div className="flex flex-col items-end gap-y-5 ">
                   <h1 className="text-2xl pt-10">{data.price}</h1>

@@ -1,4 +1,4 @@
-import Sidebar from '../../components/sidebar.jsx'
+import NewSideBar from "../../components/newSideBar";
 import { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import axios from 'axios';
@@ -41,9 +41,9 @@ function AccountManagement() {
 
   return (
     <>
-    <div className='h-screen w-screen'>
-    <Sidebar/>
-        <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
+     <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
+        <NewSideBar />
+        <div className="h-screen w-100% bg-[#E2E0E1] flex flex-col items-center">
             <h1 className='py-5 text-3xl font-semibold '>Account Management</h1>
             <Link to ='/Admin/AdminAddUser'>
             <button className='fixed p-5 m-2 top-0 right-10 border-1 bg-orange-300 rounded-2xl'> Add Admin / Staff</button>

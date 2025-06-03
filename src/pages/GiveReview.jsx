@@ -1,11 +1,12 @@
 import { FaRegStar } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 
 function GiveReview() {
 
+  const {id} = useParams()
   const [showItems, setShowItems] = useState([])
   const [review, setReview] = useState({
     user_id : "",
@@ -16,28 +17,24 @@ function GiveReview() {
   const navigate = useNavigate();
 
   useEffect(() => {
-     //useEffect for user can be changed later with the use params id and cart items thingy kapag may button hook na sya XD. So later on it is viable na there's no useEffect here only useState
-    const user = JSON.parse(window.localStorage.getItem("user"));
-    axios
-      .get("/api/users", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then((response) => {
-        setShowItems(response.data);
-        setReview((prev) => ({ //Convertion thingy for future ref.
+  const user = JSON.parse(window.localStorage.getItem("user"));
+  axios.get(`/api/adminOrder/${id}`, {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  })
+    .then((response) => {
+      setShowItems(response.data.items || []);
+      setReview((prev) => ({
         ...prev,
-        user_id: response.data.id 
+        user_id: response.data.user_id,
       }));
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, []);
-
-  //currently for testing ill only put reviews on P001
+    })
+    .catch((err) => {
+      toast.error("Error");
+      console.log(err);
+    });
+}, [id]);
 
   
 
@@ -65,21 +62,58 @@ function GiveReview() {
             <h1 className="text-2xl font-semibold mb-5">
               Leave a review for us!
             </h1>
-            <div className="flex md:flex-row flex-col mb-5">
+            <div className="flex md:flex-row flex-col mb-5 gap-21">
               <div className="flex flex-col items-center justify-center mr-10">
                 <h1>Purchase Items:</h1>
-                <div className=" grid grid-cols-2 border-1 border-black rounded-lg p-2 mb-5 h-[100px] w-[250px] overflow-auto bg-[#FFFFFF] ">
-                </div>
+                {showItems.length === 0 ? (
+                  <span className="text-gray-400 col-span-2">No items found.</span>
+                  ) : (
+                  showItems.map((d) => (
+                    <div className="text-xs p-1">
+                      {d.product_name} x {d.quantity}
+                    </div>
+                  ))
+                )}
+                
               </div>
 
               <div className="flex flex-col items-center justify-center">
                 <h1 className="text-2xl">Rate Us using Stars!</h1>
                 <div className="flex flex-row gap-x-3 p-3">
-                  <FaRegStar className=" h-[50px] w-[50px] " />
-                  <FaRegStar className=" h-[50px] w-[50px] " />
-                  <FaRegStar className=" h-[50px] w-[50px] " />
-                  <FaRegStar className=" h-[50px] w-[50px] " />
-                  <FaRegStar className=" h-[50px] w-[50px] " />
+                  {/* Rating */}
+                    <div className="flex flex-row-reverse justify-end items-center">
+                      <input id="hs-ratings-readonly-1" type="radio" className="peer -ms-5 size-5 bg-transparent border-0 text-transparent cursor-pointer appearance-none checked:bg-none focus:bg-none focus:ring-0 focus:ring-offset-0" name="hs-ratings-readonly" value="1" />
+                      <label htmlFor="hs-ratings-readonly-1" className="peer-checked:text-yellow-400 text-gray-300 pointer-events-none">
+                        <svg className="shrink-0 size-10" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                        </svg>
+                      </label>
+                      <input id="hs-ratings-readonly-2" type="radio" className="peer -ms-5 size-5 bg-transparent border-0 text-transparent cursor-pointer appearance-none checked:bg-none focus:bg-none focus:ring-0 focus:ring-offset-0" name="hs-ratings-readonly" value="2" />
+                      <label htmlFor="hs-ratings-readonly-2" className="peer-checked:text-yellow-400 text-gray-300 pointer-events-none">
+                        <svg className="shrink-0 size-10" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                        </svg>
+                      </label>
+                      <input id="hs-ratings-readonly-3" type="radio" className="peer -ms-5 size-5 bg-transparent border-0 text-transparent cursor-pointer appearance-none checked:bg-none focus:bg-none focus:ring-0 focus:ring-offset-0" name="hs-ratings-readonly" value="3" />
+                      <label htmlFor="hs-ratings-readonly-3" className="peer-checked:text-yellow-400 text-gray-300 pointer-events-none">
+                        <svg className="shrink-0 size-10" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                        </svg>
+                      </label>
+                      <input id="hs-ratings-readonly-4" type="radio" className="peer -ms-5 size-5 bg-transparent border-0 text-transparent cursor-pointer appearance-none checked:bg-none focus:bg-none focus:ring-0 focus:ring-offset-0" name="hs-ratings-readonly" value="4" />
+                      <label htmlFor="hs-ratings-readonly-4" className="peer-checked:text-yellow-400 text-gray-300 pointer-events-none">
+                        <svg className="shrink-0 size-10" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                        </svg>
+                      </label>
+                      <input id="hs-ratings-readonly-5" type="radio" className="peer -ms-5 size-5 bg-transparent border-0 text-transparent cursor-pointer appearance-none checked:bg-none focus:bg-none focus:ring-0 focus:ring-offset-0" name="hs-ratings-readonly" value="5" />
+                      <label htmlFor="hs-ratings-readonly-5" className="peer-checked:text-yellow-400 text-gray-300 pointer-events-none">
+                        <svg className="shrink-0 size-10" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                        </svg>
+                      </label>
+                    </div>
+
                 </div>
               </div>
             </div>
