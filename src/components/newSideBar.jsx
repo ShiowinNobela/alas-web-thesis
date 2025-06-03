@@ -11,6 +11,7 @@ import {
   AiOutlineNotification,
 } from "react-icons/ai";
 import { LuLayoutDashboard } from "react-icons/lu";
+import { LuHandCoins } from "react-icons/lu";
 
 function NewSideBar() {
     return(
@@ -60,6 +61,14 @@ function NewSideBar() {
                 <AiFillProduct className=" mx-3 h-[30px] w-[30px]" />
                 <span className="flex-1 ml-3 text-left whitespace-nowrap">
                   Inventory Management
+                </span>
+              </li>
+            </Link>
+            <Link to="/Admin/SalesPage" >
+              <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg text-white hover:bg-blue-950/70 group cursor-pointer">
+                <LuHandCoins className=" mx-3 h-[30px] w-[30px]" />
+                <span className="flex-1 ml-3 text-left whitespace-nowrap">
+                  Sales
                 </span>
               </li>
             </Link>
