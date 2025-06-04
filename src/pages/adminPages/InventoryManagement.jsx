@@ -1,93 +1,260 @@
-import NewSideBar from '../../components/newSideBar'
-import { AiFillAlert } from "react-icons/ai";
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import NewSideBar from "../../components/newSideBar";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { HiOutlinePencil } from "react-icons/hi";
+import { MdToggleOn, MdToggleOff } from "react-icons/md";
+import { useState } from "react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "flowbite-react";
+
+const tableHeadStyle = "px-6 py-3 text-center";
 
 function InventoryManagement() {
+  const {
+    data = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["products"],
+    queryFn: () => axios.get("/api/products").then((res) => res.data),
+  });
 
-    const [data, setData] = useState([])
-  useEffect(() => {
-    axios.get('/api/products')
-    .then(res => setData(res.data))
-    .catch(err => console.log(err))
-  }, [])
+  const totalProducts = data.length;
+  const totalStock = data.reduce((sum, item) => sum + item.stock_quantity, 0);
+
+  const queryClient = useQueryClient();
+
+  const toggleProductStatus = useMutation({
+    mutationFn: ({ id, newStatus }) =>
+      axios.patch(`/api/products/toggle-status/${id}`, {
+        is_active: newStatus,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+    },
+    onError: (error) => {
+      console.error("Toggle error:", error.response?.data || error.message);
+    },
+  });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [formData, setFormData] = useState({
+    stock_quantity: "",
+    price: "",
+  });
+
+  function openEditModal(product) {
+    setEditingProduct(product);
+    setFormData({
+      stock_quantity: product.stock_quantity,
+      price: product.price,
+    });
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+    setEditingProduct(null);
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }
+
+  // Mutation for updating stock and price
+  const updateStockPrice = useMutation({
+    mutationFn: ({ id, stock_quantity, price }) =>
+      axios.patch(`/api/products/stock-price/${id}`, {
+        stock_quantity: Number(stock_quantity),
+        price: Number(price),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]);
+      closeModal();
+    },
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    updateStockPrice.mutate({
+      id: editingProduct.id,
+      stock_quantity: formData.stock_quantity,
+      price: formData.price,
+    });
+  }
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Failed to load products.</p>;
 
   return (
     <>
-    <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
-    <NewSideBar/>
+      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
+        <NewSideBar />
 
-        <section class="bg-gray-50  py-3 sm:py-5">
-            <div class="px-4 mx-auto max-w-screen-2xl lg:px-12">
-            <div class="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                <div class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
-                    <div class="flex items-center flex-1 space-x-4">
-                        <h5>
-                            <span class="text-gray-500">All Products:</span>
-                            <span class="text-gray-500"> 123456</span>
-                        </h5>
-                        <h5>
-                            <span class="text-gray-500">Total sales:</span>
-                            <span class="text-gray-500"> $88.4k</span>
-                        </h5>
-                    </div>
+        <section className="bg-gray-50 py-3 sm:py-5">
+          <div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
+            <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
+              {/* Summary Section */}
+              <div className="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
+                <div className="flex items-center flex-1 space-x-4">
+                  <h5>
+                    <span className="text-gray-500">Total Products:</span>{" "}
+                    <span className="font-semibold text-gray-700">
+                      {totalProducts}
+                    </span>
+                  </h5>
+                  <h5>
+                    <span className="text-gray-500">Total Stock:</span>{" "}
+                    <span className="font-semibold text-gray-700">
+                      {totalStock}
+                    </span>
+                  </h5>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 ">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
-                            <tr>
-                                <th scope="col" class="px-4 py-3">Product</th>
-                                <th scope="col" class="px-4 py-3">Category</th>
-                                <th scope="col" class="px-4 py-3">Stock</th>
-                                <th scope="col" class="px-4 py-3">Sales/Week</th>
-                                <th scope="col" class="px-4 py-3">Sales/Month</th>
-                                <th scope="col" class="px-4 py-3">Rating</th>
-                                <th scope="col" class="px-4 py-3">Sales</th>
-                                <th scope="col" class="px-4 py-3">Revenue</th>
-                                <th scope="col" class="px-4 py-3">Last Update</th>
-                            </tr>
-                        </thead>
+              </div>
 
-                        {data.map((d) => {
-                            return (
-                            <tr class="border-b  hover:bg-gray-100 ">
-                                <th scope="row" class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">
-                                    {d.name}
-                                </th>
-                                <td class="px-4 py-2">
-                                    <span class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded  ">{d.category}</span>
-                                </td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">
-                                    <div class="flex items-center">
-                                        <div class="inline-block w-4 h-4 mr-2 bg-red-700 rounded-full"></div>
-                                        {d.stock_quantity}
-                                    </div>
-                                </td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap "></td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap "></td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">
-                                    
-                                </td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">
-                                    <div class="flex items-center">
-                                     
-                                    </div>
-                                </td>
-                                <td class="px-4 py-2"></td>
-                                <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap ">Just now</td>
-                            </tr>
-                            
-
-                    ) })}
-                    </table>
-                </div>
+              {/* Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left text-slate-800">
+                  <thead className="sticky top-0 text-xs uppercase bg-admin text-white z-10">
+                    <tr>
+                      <th className={tableHeadStyle}>ID</th>
+                      <th className={tableHeadStyle}>Name</th>
+                      <th className={tableHeadStyle}>Category</th>
+                      <th className={tableHeadStyle}>Stock</th>
+                      <th className={tableHeadStyle}>Price</th>
+                      <th className={tableHeadStyle}>Active</th>
+                      <th className={tableHeadStyle}>Last Update</th>
+                      <th className={tableHeadStyle}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((d) => (
+                      <tr
+                        key={d.id}
+                        className="border-b hover:bg-gray-100 text-center"
+                      >
+                        <td className="px-6 py-2">{d.id}</td>
+                        <td className="px-6 py-2">{d.name}</td>
+                        <td className="px-6 py-2">{d.category}</td>
+                        <td className="px-6 py-2">{d.stock_quantity}</td>
+                        <td className="px-6 py-2">
+                          ₱{parseFloat(d.price).toFixed(2)}
+                        </td>
+                        <td className="px-6 py-2">
+                          <span
+                            className={`px-2 py-0.5 text-xs font-medium rounded ${
+                              d.is_active
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {d.is_active ? "Active" : "Inactive"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-2">
+                          {new Date(d.updated_at).toLocaleString()}
+                        </td>
+                        <td className="px-6 py-2 flex justify-center items-center gap-2">
+                          <button
+                            className="text-blue-500 hover:text-blue-700"
+                            onClick={() => openEditModal(d)}
+                          >
+                            <HiOutlinePencil size={18} />
+                          </button>
+                          <button
+                            onClick={() =>
+                              toggleProductStatus.mutate({
+                                id: d.id,
+                                newStatus: !d.is_active,
+                              })
+                            }
+                            className="text-gray-600 hover:text-gray-800"
+                            title="Toggle Active"
+                            disabled={toggleProductStatus.isLoading}
+                          >
+                            {d.is_active ? (
+                              <MdToggleOn
+                                size={24}
+                                className="text-green-500"
+                              />
+                            ) : (
+                              <MdToggleOff size={24} className="text-red-500" />
+                            )}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            </div>
+          </div>
         </section>
+      </div>
 
-    </div>
+      <Modal show={isModalOpen} size="md" onClose={closeModal}>
+        <ModalHeader>Edit Stock & Price</ModalHeader>
+        <ModalBody>
+          <form id="editForm" onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label
+                htmlFor="stock_quantity"
+                className="block mb-2 text-sm font-medium text-gray-700"
+              >
+                Stock Quantity
+              </label>
+              <input
+                type="number"
+                id="stock_quantity"
+                name="stock_quantity"
+                value={formData.stock_quantity}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="price"
+                className="block mb-2 text-sm font-medium text-gray-700"
+              >
+                Price
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                id="price"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </form>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            type="submit"
+            form="editForm"
+            disabled={updateStockPrice.isLoading}
+          >
+            {updateStockPrice.isLoading ? "Saving..." : "Save"}
+          </Button>
+          <Button color="gray" onClick={closeModal}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </>
-  )
+  );
 }
 
-export default InventoryManagement
+export default InventoryManagement;
