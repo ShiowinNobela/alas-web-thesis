@@ -282,7 +282,7 @@ function AdminViewOrderPage() {
   console.log(summaryData);
   return (
     <>
-      <Toaster />
+      <Toaster richColors/>
       <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
         <NewSideBar />
         <main className="min-h-full flex flex-col gap-3 overflow-auto px-4 py-7">
