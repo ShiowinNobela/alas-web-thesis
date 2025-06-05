@@ -50,7 +50,7 @@ function ProductManagement() {
                   }}
                   className="w-full h-48 object-cover rounded-t-lg"
                 />
-                <h5 className="text-2xl font-bold tracking-tight text-white">
+                <h5 className="text-2xl font-bold tracking-tight dark:text-white text-black">
                   {d.name}
                 </h5>
                 <div>
