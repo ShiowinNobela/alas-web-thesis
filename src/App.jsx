@@ -31,8 +31,9 @@ import UserOrderPage from "./pages/UserOrderPage.jsx";
 import UserViewOrderDetails from "./pages/UserViewOrderDetails.jsx";
 import InventoryManagement from "./pages/adminPages/InventoryManagement.jsx";
 import Sales from "./pages/adminPages/SalesPage.jsx";
+import WalkInOrderTable from "./pages/adminPages/WalkInOrdersTable.jsx"
+import WalkInOrdering from "./pages/adminPages/WalkInOrdering.jsx"
 import SalesPage from "./pages/adminPages/SalesPage.jsx";
-import WalkInOrders from "./pages/adminPages/WalkInOrders.jsx";
 
 function App() {
   return (
@@ -74,7 +75,8 @@ function App() {
           <Route path="AdminAddUser" element={<AdminAddUser />}></Route>
           <Route path="ViewOrder/:id" element={<ViewOrder />}></Route>
           <Route path="AdminUserEdit/:id" element={<AdminUserEdit />}></Route>
-          <Route path="WalkInOrders" element={<WalkInOrders />} />
+          <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
+          <Route path="WalkInOrdering" element={<WalkInOrdering/>}></Route>
           <Route path="SalesPage" element={<SalesPage />}></Route>
           <Route
             path="InventoryManagement"
