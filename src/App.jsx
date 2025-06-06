@@ -30,7 +30,7 @@ import InventoryManagement from "./pages/adminPages/InventoryManagement.jsx";
 import WalkInOrdering from "./pages/adminPages/WalkInOrdering.jsx";
 import SalesPage from "./pages/adminPages/SalesPage.jsx";
 import WalkInOrderTable from "./pages/adminPages/WalkInOrdersTable.jsx"
-
+import AboutUs from "./pages/AboutUs.jsx";
 
 function App() {
   return (
