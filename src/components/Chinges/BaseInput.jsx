@@ -17,7 +17,7 @@ function BaseInput ({label = "changable input", onlyNumber = false, ...props}){
     return(
         <div>
         <div className="mb-2 block">
-          <Label htmlFor="base">{label}</Label>
+          <Label htmlFor="base" className="text-white">{label}</Label>
         </div>
         <TextInput id="base"
         type={onlyNumber ? "text" : "text"}

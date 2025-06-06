@@ -30,7 +30,6 @@ import AdminUserEdit from "./pages/adminPages/AdminUserEdit.jsx";
 import UserOrderPage from "./pages/UserOrderPage.jsx";
 import UserViewOrderDetails from "./pages/UserViewOrderDetails.jsx";
 import InventoryManagement from "./pages/adminPages/InventoryManagement.jsx";
-import Sales from './pages/adminPages/SalesPage.jsx'
 import SalesPage from "./pages/adminPages/SalesPage.jsx";
 
 function App() {

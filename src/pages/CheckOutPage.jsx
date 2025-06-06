@@ -10,6 +10,8 @@ import {
 } from "../components/CheckOutInputStyle";
 
 function CheckOutPage() {
+
+  const [termsChecked, setTermsChecked] = useState(false)
   const [getInfo, setGetInfo] = useState({
     payment_method: "",
     address: "",
@@ -38,19 +40,8 @@ function CheckOutPage() {
       });
   }, []);
 
+
   const handleConfirmOrder = () => {
-    // Object.entries(getInfo).forEach(([key, value]) => {
-    //     console.log(`${key}: ${typeof value}`);
-
-    // });
-
-    //  {
-    //     payment_method: getInfo.payment_method,
-    //     address: getInfo.address,
-    //     notes: getInfo.notes,
-    //     reference_number: getInfo.reference_number,
-    //     account_name:   getInfo.account_name,
-    // },
     axios
       .post("/api/orders", getInfo, {
         headers: {
@@ -73,67 +64,85 @@ function CheckOutPage() {
       });
   };
 
+    
+
+   // Object.entries(getInfo).forEach(([key, value]) => {
+    //     console.log(`${key}: ${typeof value}`);
+
+    // });
+
+    //  {
+    //     payment_method: getInfo.payment_method,
+    //     address: getInfo.address,
+    //     notes: getInfo.notes,
+    //     reference_number: getInfo.reference_number,
+    //     account_name:   getInfo.account_name,
+    // },
   return (
     <>
       <Toaster richColors />
       <section className="bg-gray-100 bg-cover bg-fixed bg-no-repeat h-screen ">
-        <div className="max-w-3xl mx-auto pt-20">
+        <div className="max-w-3xl mx-auto pt-15">
           <div className="  p-6 mt-5">
             <h1 className="text-center uppercase tracking-wide font-semibold mb-3  text-2xl ">
               Checkout
             </h1>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Name
-              </label>
-              <CheckOutInput
-                placeholder="Your Name"
-                required
-                value={getInfo?.username}
-                readOnly
-              />
+            <div className="flex flex-row gap-1">
+              <div className="mb-4 w-1/2">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Name
+                </label>
+                <CheckOutInput
+                  placeholder="Your Name"
+                  required
+                  value={getInfo?.username}
+                  readOnly
+                />
+              </div>
+              <div className="mb-4 w-1/2">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Email
+                </label>
+                <CheckOutInput
+                  placeholder="Your Email"
+                  required
+                  value={getInfo?.email}
+                  readOnly
+                />
+              </div>
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Email
-              </label>
-              <CheckOutInput
-                placeholder="Your Email"
-                required
-                value={getInfo?.email}
-                readOnly
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Phone Number
-              </label>
-              <CheckOutInput
-                type="number"
-                placeholder="Your Phone Number"
-                required
-                value={getInfo?.contact_number}
-                onChange={(e) =>
-                  setGetInfo({ ...getInfo, contact_number: e.target.value })
-                }
-                onKeyDown={(e) => {
-                  if (["e", "E", "+", "-"].includes(e.key)) {
-                    e.preventDefault();
+            <div className="flex flex-row gap-1">
+              <div className="mb-4 w-1/2">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Phone Number
+                </label>
+                <CheckOutInput
+                  type="number"
+                  placeholder="Your Phone Number"
+                  required
+                  value={getInfo?.contact_number}
+                  onChange={(e) =>
+                    setGetInfo({ ...getInfo, contact_number: e.target.value })
                   }
-                }}
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Account Name
-              </label>
-              <CheckOutInput
-                placeholder="Your Gcash Or Bank Account Name"
-                required
-                onChange={(e) =>
-                  setGetInfo({ ...getInfo, account_name: e.target.value })
-                }
-              />
+                  onKeyDown={(e) => {
+                    if (["e", "E", "+", "-"].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+              </div>
+              <div className="mb-4 w-1/2">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Account Name
+                </label>
+                <CheckOutInput
+                  placeholder="Your Gcash Or Bank Account Name"
+                  required
+                  onChange={(e) =>
+                    setGetInfo({ ...getInfo, account_name: e.target.value })
+                  }
+                />
+              </div>
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -161,8 +170,8 @@ function CheckOutPage() {
               />
             </div>
 
-            <div className="flex justify-between gap-5 mb-4">
-              <div className="mb-4">
+            <div className="flex justify-between gap-5">
+              <div className="mb-4 w-2/5">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Reference Number
                 </label>
@@ -173,7 +182,7 @@ function CheckOutPage() {
                   }
                 />
               </div>
-              <div>
+              <div className="w-2/5">
                 <label
                   for="Payment Method"
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -196,26 +205,42 @@ function CheckOutPage() {
                             focus:ring-gray-500
                             hover:ring-2
                             hover:ring-gray-300
-                            transition-colors"
+                            transition-colors
+                            "
                   value={getInfo?.payment_method}
+                  
                   onChange={(e) =>
                     setGetInfo({ ...getInfo, payment_method: e.target.value })
                   }
                 >
-                  <option value=""></option>
+                  <option disabled value=""> -- select an option -- </option>
                   <option value="GCash">GCash</option>
                   <option value="bank_transfer">Bank Transfer</option>
                   <option value="Maya">Maya</option>
                 </select>
               </div>
+
+              
             </div>
+            <div className="flex flex-col">
+                <h1 className="font-semibold underline text-blue-400 cursor-pointer" 
+                onClick={() => {
+                  setOpen(true);
+                }}>Terms and Conditions</h1>
+                <div className="flex flex-row p-3 items-center gap-3 pl-0">
+                  <input type="checkbox" 
+                    checked={termsChecked}
+                    onChange={(e) => setTermsChecked(e.target.checked)}/>
+                  <p>I Accept All Terms and Condition</p>
+                </div>
+
+              </div>
 
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              // onClick={() => {
-              //         setOpen(true);
-              //     }}
+              disabled={!termsChecked}
               onClick={handleConfirmOrder}
+              style={{ opacity: termsChecked ? 1 : 0.5, cursor: termsChecked ? "pointer" : "not-allowed" }}
             >
               Checkout!
             </button>
@@ -223,19 +248,30 @@ function CheckOutPage() {
             <ConfirmPopUp open={open} onClose={() => setOpen(false)}>
               <div className="text-center">
                 <h2 className="text-2xl font-semibold mb-4">
-                  Confirm Your Order
+                  Terms and Conditions
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  Are you sure you want to proceed with the order?
+                  example terms and conditions 
                 </p>
+                <p className="text-gray-600 mb-6">
+                  example terms and conditions 
+                </p>
+                <p className="text-gray-600 mb-6">
+                  example terms and conditions 
+                </p>
+               
                 <div className="flex justify-center gap-4">
                   <button
-                    onClick={handleConfirmOrder}
+                    onClick={() => {
+                      setTermsChecked(true);
+                      setOpen(false);
+                    }}
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                   >
-                    Yes, Confirm
+                    Yes, I Accept
                   </button>
-                  <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                  <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                  onClick={() => setOpen(false)}>
                     Cancel
                   </button>
                 </div>

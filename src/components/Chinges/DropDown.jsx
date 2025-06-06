@@ -4,7 +4,7 @@ function DropDown({label = "changeable input", options = [], ...props}) {
   return (
     <div className="max-w-md">
       <div className="mb-2 block">
-        <Label htmlFor="spiciness">{label}:</Label>
+        <Label htmlFor="spiciness" className="text-white">{label}:</Label>
       </div>
       <Select id="spiciness" required {...props}>
          {options.map((option, idx) => (

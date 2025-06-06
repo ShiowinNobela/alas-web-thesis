@@ -5,6 +5,7 @@ import { FaBox } from "react-icons/fa";
 import { IoHomeOutline } from "react-icons/io5";
 import { AiFillProduct } from "react-icons/ai";
 import { MdOutlinePointOfSale } from "react-icons/md";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import {
   AiOutlineMoneyCollect,
   AiOutlineUser,
@@ -31,6 +32,14 @@ function NewSideBar() {
                 </span>
               </li>
             </Link>
+            <Link >
+              <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg text-white hover:bg-blue-950/70 group cursor-pointer">
+                <ShoppingBasketIcon fontSize="large" className=" mx-2 h-[30px] w-[30px]" />{" "}
+                <span className="flex-1 ml-3 text-left whitespace-nowrap">
+                  Walk In Ordering
+                </span>
+              </li>
+            </Link>
             <Link to="/Admin/AccountManagement">
               <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg text-white hover:bg-blue-950/70 group cursor-pointer">
                 <AiOutlineUser className=" mx-3 h-[30px] w-[30px]" />
@@ -43,7 +52,7 @@ function NewSideBar() {
               <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg text-white hover:bg-blue-950/70 group cursor-pointer">
                 <FaBox className="mx-4 h-[25px] w-[25px]" />{" "}
                 <span className="flex-1 ml-2 text-left whitespace-nowrap">
-                  Orders
+                  Orders Management
                 </span>
               </li>
             </Link>
@@ -67,27 +76,23 @@ function NewSideBar() {
               <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg text-white hover:bg-blue-950/70 group cursor-pointer">
                 <MdOutlinePointOfSale className=" mx-3 h-[30px] w-[30px]" />
                 <span className="flex-1 ml-3 text-left whitespace-nowrap">
-                  Sales
+                  Sales Summary
                 </span>
               </li>
             </Link>
-          </ul>
-
-          <div
-            className="fixed bottom-0 left-0 mb-3"
+            <li className="flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg text-white hover:bg-blue-950/70 group cursor-pointer"
             onClick={() => {
               window.localStorage.removeItem("user");
               window.location.href = "/LoginPage";
-            }}
-          >
-            <div className="flex items-center p-2 pb-4 pt-4 pr-6 ml-15 text-base  font-normal text-white rounded-lg hover:bg-blue-950/70 group cursor-pointer">
-              <IoIosLogOut className=" mx-2 h-[30px] w-[30px]" />{" "}
-              <span className="flex-1 ml-1 text-left whitespace-nowrap">
-                {" "}
+            }}>
+              <IoIosLogOut className=" mx-3 h-[30px] w-[30px]" />{" "}
+              <span className="flex-1 ml-3 text-left whitespace-nowrap">
                 Logout
               </span>
-            </div>
-          </div>
+            </li>
+          </ul>
+
+          
         </div>
       </div>
     </>

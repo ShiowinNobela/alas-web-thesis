@@ -46,7 +46,7 @@ function adminDashboard() {
   const salesRangeText = salesRange === 7 ? " (Last 7 Days)" : " (Last 30 Days)";
 
   const deliveredNotifications = values
-  .filter(order => order.status === "delivered")
+  .filter(order => order.status === "pending")
   .sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
   .slice(0, 4);
 
@@ -135,7 +135,7 @@ const handleSort = (key) => {
               <a href="#">
                   <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white"> ₱ {totalSalesAmount.toLocaleString()} </h5>
               </a>
-              <p class="mb-10 font-semibold text-md text-gray-700 dark:text-gray-400 "> Total Sales (Delivered): ₱{salesRangeText} </p>
+              <p class="mb-10 font-semibold text-md text-gray-700 dark:text-gray-400 "> Total Sales{salesRangeText} </p>
               <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                   Go to Sales
                   <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
@@ -160,7 +160,7 @@ const handleSort = (key) => {
                     <div className="font-semibold text-blue-800 mb-1 text-sm">
                       {order.username}’s order <span className="font-bold">#{order.id}</span>
                     </div>
-                    <div className="text-red-600 font-semibold mb-1">Delivered</div>
+                    <div className="text-red-600 font-semibold mb-1">Pending</div>
                     <div className="text-xs text-gray-500">
                       {dayjs(order.order_date).format("MMM D, YYYY h:mm A")}
                     </div>
