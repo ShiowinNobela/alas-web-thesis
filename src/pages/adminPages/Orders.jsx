@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import OrderHistoryModal from "../../components/modals/orderHistoryModal";
 import StatusUpdateModal from "../../components/modals/statusUpdateModal";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Datepicker,
@@ -22,6 +23,15 @@ import {
   HiOutlineSearch,
   HiOutlineRefresh,
   HiDotsVertical,
+  HiSwitchHorizontal,
+  HiUser,
+  HiPhone,
+  HiMail,
+  HiLocationMarker,
+  HiCreditCard,
+  HiUserCircle,
+  HiHashtag,
+  HiDocumentText,
 } from "react-icons/hi";
 import StatusFilterDropdown from "../../components/StatusFilterDropdown";
 import dayjs from "dayjs";
@@ -50,6 +60,7 @@ function AdminViewOrderPage() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [searchId, setSearchId] = useState("");
   const [summaryData, setSummaryData] = useState([]);
+  const [last30SummaryData, setLast30SummaryData] = useState([]);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
 
@@ -111,6 +122,30 @@ function AdminViewOrderPage() {
     [user.token]
   );
 
+  const fetchLast30OrderSummary = useCallback(() => {
+    const end = dayjs(); // today
+    const start = dayjs().subtract(30, "day"); // 30 days ago
+
+    const params = new URLSearchParams();
+    params.append("start", start.format("YYYY-MM-DD"));
+    params.append("end", end.format("YYYY-MM-DD"));
+
+    const url = `/api/reports/sales-summary-order?${params.toString()}`;
+
+    axios
+      .get(url, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+      .then((res) => {
+        setLast30SummaryData(res.data.data.data);
+      })
+      .catch((err) => console.error(err));
+  }, [user.token]);
+
+  useEffect(() => {
+    fetchLast30OrderSummary();
+  }, [fetchLast30OrderSummary]);
+
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
       toast.error("Start date cannot be after end date");
@@ -155,17 +190,19 @@ function AdminViewOrderPage() {
   const handleStartDateChange = (date) => {
     setStartDate(date);
     if (date === null) {
-      // Force re-render by updating the key
       setStartDateKey((prev) => prev + 1);
     }
+    setSummaryData([]);
   };
+
+  const navigate = useNavigate();
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
     if (date === null) {
-      // Force re-render by updating the key
       setEndDateKey((prev) => prev + 1);
     }
+    setSummaryData([]);
   };
 
   const sortedOrders = [...orders].sort((a, b) => {
@@ -282,32 +319,41 @@ function AdminViewOrderPage() {
   console.log(summaryData);
   return (
     <>
-      <Toaster richColors/>
+      <Toaster richColors />
       <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
         <NewSideBar />
         <main className="min-h-full flex flex-col gap-3 overflow-auto px-4 py-7">
-          <div className="w-full h-[30%] bg-gray-100 flex items-center justify-center p-6">
-            <div className="flex flex-row w-full h-full bg-white rounded-xl shadow p-6 space-x-6">
-              <Card
-                title="Sales"
-                className="flex-none p-4 rounded-lg shadow w-1/4"
-              >
-                <h5 className="font-bold">Kamusta Admin</h5>
-              </Card>
+          <div className="flex flex-row w-full h-[25%] bg-admin rounded-xl shadow p-6 space-x-6">
+            <Card
+              title="Sales"
+              className="flex-none p-4 rounded-lg shadow w-1/4 cursor-pointer hover:bg-secondary transition"
+              onClick={() => navigate("/Admin/WalkInOrders")}
+              role="button"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-bold text-lg mb-1">Order Management</h2>
+                  <p className="text-sm text-gray-600">Hello Admin!</p>
+                </div>
+                <HiSwitchHorizontal className="w-6 h-6 text-blue-600" />
+              </div>
+            </Card>
 
-              <div className="flex flex-row flex-grow gap-x-2">
-                {summaryData.length > 0 ? (
-                  summaryData.map(({ status, totalOrders }) => (
+            <div className="flex flex-row flex-grow gap-x-2">
+              {(summaryData.length > 0 ? summaryData : last30SummaryData)
+                .length > 0 ? (
+                (summaryData.length > 0 ? summaryData : last30SummaryData).map(
+                  ({ status, totalOrders }) => (
                     <div
                       key={status}
                       className="
-                                flex flex-col items-center justify-center bg-white rounded-lg shadow
-                                transition-transform duration-300 ease-in-out
-                                hover:scale-105 hover:shadow-lg
-                                cursor-pointer
-                                flex-1 min-w-0
-                                p-4
-                              "
+          flex flex-col items-center justify-center bg-white rounded-lg shadow
+          transition-transform duration-300 ease-in-out
+          hover:scale-105 hover:shadow-lg
+          cursor-pointer
+          flex-1 min-w-0
+          p-4
+        "
                       title={
                         status.charAt(0).toUpperCase() +
                         status.slice(1).replaceAll("_", " ")
@@ -324,11 +370,11 @@ function AdminViewOrderPage() {
                         {totalOrders === 1 ? "order" : "orders"}
                       </span>
                     </div>
-                  ))
-                ) : (
-                  <p>Edit the dates to see orders per status on that time</p>
-                )}
-              </div>
+                  )
+                )
+              ) : (
+                <p>Edit the dates to see orders per status on that time</p>
+              )}
             </div>
           </div>
 
@@ -346,14 +392,14 @@ function AdminViewOrderPage() {
               />
               <Button
                 onClick={handleSearchById}
-                className="group bg-secondary text-black p-2 hover:bg-admin hover:text-white focus:outline-none focus:ring-0 active:scale-95"
+                className="group w-[25%] bg-secondary text-black p-2 hover:bg-admin hover:text-white focus:outline-none focus:ring-0 active:scale-95"
               >
                 Search
               </Button>
             </div>
 
             <div className="flex items-center gap-3 flex-wrap justify-end">
-              <div className="w-[25%]">
+              <div className="w-[22%]">
                 <Datepicker
                   key={startDateKey}
                   placeholder="Start date"
@@ -364,7 +410,7 @@ function AdminViewOrderPage() {
                 />
               </div>
               <h3>TO</h3>
-              <div className="w-[25%]">
+              <div className="w-[22%]">
                 <Datepicker
                   key={endDateKey}
                   placeholder="End date"
@@ -384,7 +430,7 @@ function AdminViewOrderPage() {
               <Button
                 color="light"
                 className="group bg-white p-2 rounded-full hover:bg-neutral border-gray-500 focus:ring-0"
-                onClick={() => fetchOrders(filterStatus, startDate, endDate)}
+                onClick={() => window.location.reload()}
               >
                 <HiOutlineRefresh className="w-5 h-5 transition-transform duration-300 group-active:rotate-180" />
               </Button>
@@ -399,7 +445,7 @@ function AdminViewOrderPage() {
               </span>
             </div>
 
-            <table className="w-full text-sm text-left text-slate-800">
+            <table className="w-full text-sm text-left text-slate-800 rounded-2xl">
               <thead className="sticky top-0 text-xs uppercase bg-admin text-white">
                 <tr>
                   <th className={tableHeadStyle}>User Info</th>
@@ -666,22 +712,30 @@ function AdminViewOrderPage() {
           </ModalHeader>
 
           <ModalBody>
-            <div className="shadow px-3 py-3 rounded mb-7">
-              <div className="space-y-3 text-sm text-gray-800 ">
-                <h3 className="text-lg font-semibold mb-2">Order Summary</h3>
-                {selectedOrder?.data?.items?.map((item, index) => (
-                  <div key={index} className="flex justify-between">
-                    <span>
-                      {item.product_name} x{item.quantity}
-                    </span>
-                    <span>₱{parseFloat(item.subtotal).toFixed(2)}</span>
-                  </div>
-                ))}
+            <div className="shadow px-4 py-5 rounded mb-3 mt-1 bg-gray-100">
+              <div className="space-y-4 text-sm text-gray-800">
+                <h3 className="text-lg font-semibold mb-7">Order Summary</h3>
+
+                <div className="space-y-2">
+                  {selectedOrder?.data?.items?.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center"
+                    >
+                      <span className="truncate">
+                        {item.product_name} x{item.quantity}
+                      </span>
+                      <span className="text-black font-semibold">
+                        ₱{parseFloat(item.subtotal).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <hr className="my-3 border-gray-300" />
+              <hr className="my-4 border-gray-400" />
 
-              <div className="flex justify-between text-base font-semibold text-gray-900">
+              <div className="flex justify-between text-base font-extrabold text-black">
                 <span>Total</span>
                 <span>
                   ₱{parseFloat(selectedOrder?.data?.total_amount).toFixed(2)}
@@ -689,84 +743,103 @@ function AdminViewOrderPage() {
               </div>
             </div>
 
-            <div className="shadow px-4 py-3 rounded mb-7">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">
-                Payment & Billing
+            <div className="shadow px-4 py-5 rounded mb-7 bg-white">
+              <h3 className="text-lg font-semibold mb-8 text-black">
+                Customer, Payment & Billing Info
               </h3>
 
-              <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-700 items-stretch">
-                <div className="w-full md:w-1/2 space-y-2">
-                  <div>
-                    <p className="font-medium text-gray-600">Payment Method</p>
-                    <p>
-                      <span className="font-semibold">
-                        {selectedOrder?.data?.payment_method}
-                      </span>
-                    </p>
+              <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-700">
+                {/* Left Side */}
+                <div className="w-full md:w-1/2 space-y-4">
+                  <div className="flex items-start gap-2">
+                    <HiUser className="text-secondary mt-1" />
+                    <div>
+                      <p className="text-black">Customer Name</p>
+                      <p className="font-semibold">
+                        {selectedOrder?.data?.username || "N/A"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-600">Account Name</p>
-                    <p>
-                      <span className="font-semibold">
+
+                  <div className="flex items-start gap-2">
+                    <HiPhone className="text-secondary mt-1" />
+                    <div>
+                      <p className="text-black">Contact Number</p>
+                      <p className="font-semibold">
+                        {selectedOrder?.data?.contact_number || (
+                          <span className="text-gray-400">No contact info</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <HiMail className="text-secondary mt-1" />
+                    <div>
+                      <p className="text-black">Email</p>
+                      <p className="font-semibold">
+                        {selectedOrder?.data?.email || (
+                          <span className="text-gray-400">No email</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <HiLocationMarker className="text-secondary mt-1" />
+                    <div>
+                      <p className="text-black">Shipping Address</p>
+                      <p className="font-semibold">
+                        {selectedOrder?.data?.address || (
+                          <span className="text-gray-400">No address</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Side */}
+                <div className="w-full md:w-1/2 space-y-4">
+                  <div className="flex items-start gap-2">
+                    <HiCreditCard className="text-secondary mt-1" />
+                    <div>
+                      <p className="text-black">Payment Method</p>
+                      <p className="font-semibold">
+                        {selectedOrder?.data?.payment_method || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <HiUserCircle className="text-secondary mt-1" />
+                    <div>
+                      <p className="text-black">Account Name</p>
+                      <p className="font-semibold">
                         {selectedOrder?.data?.account_name || "N/A"}
-                      </span>
-                    </p>
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-600">Reference #</p>
-                    <p>
-                      <span className="font-semibold">
+
+                  <div className="flex items-start gap-2">
+                    <HiHashtag className="text-secondary mt-1" />
+                    <div>
+                      <p className="text-black">Reference #</p>
+                      <p className="font-semibold">
                         {selectedOrder?.data?.reference_number || "N/A"}
-                      </span>
-                    </p>
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-600">
-                      Cancel Requested
-                    </p>
-                    <p>
-                      <span className="font-semibold">
-                        {selectedOrder?.data?.cancel_requested ? "Yes" : "No"}
-                      </span>
-                    </p>
-                  </div>
-                </div>
 
-                <div className="w-full md:w-1/2 h-full flex flex-col">
-                  <p className="font-medium text-gray-600 mb-1">Notes</p>
-                  <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm text-gray-800 flex-grow h-full">
-                    {selectedOrder?.data?.notes || "No notes provided."}
+                  <div className="flex items-start gap-2">
+                    <HiDocumentText className="text-secondary mt-1" />
+                    <div className="w-full">
+                      <p className="text-black mb-1">Order Notes</p>
+                      <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm text-gray-800 min-h-[100px]">
+                        {selectedOrder?.data?.notes || "No notes provided."}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="px-4 py-3 rounded shadow-sm bg-white">
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">
-                Customer Information
-              </h3>
-
-              <div className="text-sm text-gray-800 space-y-1">
-                <p className="font-semibold">
-                  {selectedOrder?.data?.username || "N/A"} –{" "}
-                  {selectedOrder?.data?.contact_number ? (
-                    selectedOrder.data.contact_number
-                  ) : (
-                    <span className="text-gray-400 font-normal">
-                      No contact info
-                    </span>
-                  )}
-                </p>
-                <p>
-                  {selectedOrder?.data?.email || (
-                    <span className="text-gray-400">No email</span>
-                  )}
-                </p>
-                <p>
-                  {selectedOrder?.data?.address || (
-                    <span className="text-gray-400">No address</span>
-                  )}
-                </p>
               </div>
             </div>
           </ModalBody>

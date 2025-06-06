@@ -25,7 +25,7 @@ export default function StatusFilterDropdown({ selected, onChange }) {
     <div className="relative inline-block">
       <button
         onClick={toggleDropdown}
-        className="relative min-w-[11rem] pl-4 pr-8 py-2.5 text-black bg-white border border-gray-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-admin-100 font-medium rounded-lg text-sm text-left"
+        className="relative min-w-[10.5rem] pl-4 pr-8 py-2.5 text-black bg-white border border-gray-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-admin-100 font-medium rounded-lg text-sm text-left"
         type="button"
       >
         Filter: {selected || "All"}
