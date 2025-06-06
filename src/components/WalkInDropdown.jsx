@@ -2,17 +2,13 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 const STATUS_OPTIONS = [
-  { label: "All", value: "" },
   { label: "Pending", value: "pending" },
-  { label: "Processing", value: "processing" },
-  { label: "Shipping", value: "shipping" },
-  { label: "Delivered", value: "delivered" },
-  { label: "Refunded", value: "refunded" },
-  { label: "Returned", value: "returned" },
+  { label: "Completed", value: "completed" },
   { label: "Cancelled", value: "cancelled" },
+  { label: "All", value: "" },
 ];
 
-export default function StatusFilterDropdown({ selected, onChange }) {
+export default function WalkInDropdown({ selected, onChange }) {
   const [open, setOpen] = useState(false);
 
   const toggleDropdown = () => setOpen(!open);
@@ -25,8 +21,8 @@ export default function StatusFilterDropdown({ selected, onChange }) {
     <div className="relative inline-block">
       <button
         onClick={toggleDropdown}
-        className="relative min-w-[10.5rem] pl-4 pr-8 py-2.5 text-black bg-white border border-gray-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-admin-100 font-medium rounded-lg text-sm text-left"
         type="button"
+        className="relative min-w-[10.5rem] pl-4 pr-8 py-2.5 text-black bg-white border border-gray-500 focus:outline-none hover:bg-gray-100 focus:ring-1 focus:ring-admin-100 font-medium rounded-lg text-sm text-left"
       >
         Filter: {selected || "All"}
         <svg
@@ -36,26 +32,23 @@ export default function StatusFilterDropdown({ selected, onChange }) {
           viewBox="0 0 10 6"
         >
           <path
+            d="M1 1l4 4 4-4"
             stroke="currentColor"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
-            d="m1 1 4 4 4-4"
           />
         </svg>
       </button>
 
       {open && (
-        <div className="z-10 bg-neutral divide-y divide-gray-100 rounded-lg shadow-sm w-44 absolute mt-2">
-          <ul
-            className="py-1 text-sm text-black"
-            aria-labelledby="dropdownActionButton"
-          >
+        <div className="absolute mt-2 w-44 z-10 bg-neutral divide-y divide-gray-100 rounded-lg shadow-sm">
+          <ul className="py-1 text-sm text-black">
             {STATUS_OPTIONS.map(({ label, value }) => (
               <li key={value}>
                 <button
                   onClick={() => handleSelect(value)}
-                  className="w-full text-left block px-4 py-2 hover:bg-secondary"
+                  className="block w-full px-4 py-2 text-left hover:bg-secondary"
                 >
                   {label}
                 </button>
@@ -68,7 +61,7 @@ export default function StatusFilterDropdown({ selected, onChange }) {
   );
 }
 
-StatusFilterDropdown.propTypes = {
+WalkInDropdown.propTypes = {
   selected: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };

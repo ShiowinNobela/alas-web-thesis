@@ -2,7 +2,7 @@ import NewSideBar from "../../components/newSideBar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { HiOutlinePencil } from "react-icons/hi";
-import { MdToggleOn, MdToggleOff } from "react-icons/md";
+import { MdToggleOn, MdToggleOff, MdErrorOutline } from "react-icons/md";
 import { useState } from "react";
 import {
   Button,
@@ -143,7 +143,21 @@ function InventoryManagement() {
                         <td className="px-6 py-2">{d.id}</td>
                         <td className="px-6 py-2">{d.name}</td>
                         <td className="px-6 py-2">{d.category}</td>
-                        <td className="px-6 py-2">{d.stock_quantity}</td>
+
+                        <td className="px-6 py-2">
+                          {d.stock_quantity <= 10 ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-red-100 text-red-700 text-sm font-medium">
+                              {d.stock_quantity}
+                              <MdErrorOutline
+                                className="text-red-500"
+                                title="Low stock"
+                              />
+                            </span>
+                          ) : (
+                            d.stock_quantity
+                          )}
+                        </td>
+
                         <td className="px-6 py-2">
                           ₱{parseFloat(d.price).toFixed(2)}
                         </td>
