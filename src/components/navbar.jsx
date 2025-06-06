@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { IoIosArrowDropdown } from "react-icons/io";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Logo from "../components/images/logowhite.png";
 const navItemStyle =
-  "px-5 py-1 rounded-md bg-red text-black-700 hover:bg-yellow-300 hover:text-black hover:shadow-md transition-all cursor-pointer";
+  "px-5 py-1 border-b-2 border-transparent hover:border-yellow-300 hover:text-yellow-200 transition-all cursor-pointer";
 
 function navbar() {
   const [nav, setNav] = useState(true);
+  const location = useLocation();
 
   const navhandler = () => {
     setNav(!nav);
   };
+
+  const isActive = (path) => location.pathname === path;
+
+  const getNavItemClass = (path) =>
+    `${navItemStyle} ${
+      isActive(path) ? "border-yellow-300 text-yellow-200 font-semibold" : ""
+    }`;
 
   return (
     <div className="bg-[#EA1A20] w-[100%] z-50 sticky top-0">
@@ -19,23 +27,23 @@ function navbar() {
         <img className=" h-20 w-40 cursor-pointer" src={Logo} alt="/" />
         <ul className="text-white hidden uppercase md:flex ">
           <Link to="/">
-            <li className={navItemStyle}>Home</li>
+            <li className={getNavItemClass("/")}>Home</li>
           </Link>
           <Link to="/ProductListPage">
-            <li className={navItemStyle}>products</li>
+            <li className={getNavItemClass("/ProductListPage")}>Products</li>
           </Link>
           <Link to="/Faqs">
-            <li className={navItemStyle}>FAQs</li>
+            <li className={getNavItemClass("/Faqs")}>FAQs</li>
           </Link>
-          <li className={navItemStyle}>About Us</li>
+          <Link to="/AboutUs">
+            <li className={getNavItemClass("/AboutUs")}>About Us</li>
+          </Link>
           <Link to="/ContactUs">
-            <li className={navItemStyle}>Contact Us</li>
+            <li className={getNavItemClass("/ContactUs")}>Contact Us</li>
           </Link>
           {window.localStorage.getItem("user") ? (
-            <Link to ="UserSettings">
-            <button className="group relative px-5 py-1 rounded-2xl w-40 ">
-              SETTINGS
-            </button>
+            <Link to="UserSettings">
+              <button className={navItemStyle}>SETTINGS</button>
             </Link>
           ) : (
             <Link to="/LoginPage">
@@ -45,13 +53,13 @@ function navbar() {
 
           {window.localStorage.getItem("user") ? (
             <Link to="/ProductListPage">
-              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold">
+              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold ml-5">
                 Order
               </button>{" "}
             </Link>
           ) : (
             <Link to="/LoginPage">
-              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold">
+              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold ml-5">
                 Order
               </button>{" "}
             </Link>
