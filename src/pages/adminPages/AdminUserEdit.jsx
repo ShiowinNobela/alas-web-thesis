@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
+import NewSideBar from "../../components/newSideBar";
 
 function AdminUserEdit() {
 
@@ -57,10 +58,10 @@ function AdminUserEdit() {
 
 
   return (
-    <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
-      <NewSideBar/>
-        <div className="h-full w-100% flex flex-col items-center ">
-            <Toaster richColors/>
+    <div className='h-screen w-screen'>
+    <Toaster richColors/>
+    <Sidebar/>
+        <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center ">
             <h1 className='py-5 text-3xl font-semibold '>Edit User</h1>
             <div className="w-4xl bg-white p-5 rounded-lg shadow-md border-1 ">
               <form className='flex flex-col'>
@@ -131,12 +132,15 @@ function AdminUserEdit() {
                         <input type="password" placeholder="Confirm New Password" className="p-3 m-2 border-1 border-black rounded-2xl w-100" />
                     </div>
 
-                </div>
-                <button type="submit" className='p-3 m-2 bg-orange-300 rounded-xl w-50' onClick={handleUpdate}>Update User</button>
-              </form>
-            </div>
+                            <div className="flex justify-center">
+                                <button type="submit" className="px-6 py-3 bg-orange-400 hover:bg-orange-500 text-white font-medium rounded-lg transition">
+                                Update User
+                                </button>
+                            </div>
+                                </form>
+                            </div>
+                    </div>
         </div>
-    </div>
   )
 }
 

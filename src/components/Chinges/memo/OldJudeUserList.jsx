@@ -1,25 +1,19 @@
 import DisplayPicture from "../components/images/bg-1.jpg";
 import Product from "../components/images/product1.jpg";
-import Cart from "../components/Cart.jsx";
+import Cart from "../../Cart.jsx";
 import React, { useState, useEffect } from "react";
-import { PiMagnifyingGlassLight } from "react-icons/pi";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function ProductPage() {
+function OldJudeUserList() {
   const [data, setData] = useState([]);
   const [limData, setLimData] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
-  const [newData, setNewData] = useState([])
 
   useEffect(() => {
-    window.localStorage.getItem("user")
     axios
       .get("/api/products")
-      .then((res) => {
-        setData(res.data)
-        setNewData([...res.data, ...res.data])
-      } )
+      .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
 
@@ -34,17 +28,29 @@ function ProductPage() {
   // })
 
   return (
-      <div className="grid grid-cols-[0.75fr_0.25fr] max-w-screen bg-[#eae6e6] h-full">
-          {/* Left Side */}
-          <div className="pt-5 pl-5 flex flex-col gap-5 min-h-fit ">
-            {/* Search Box placeholder */}
-            <div className="h-10 w-2/5 bg-[#FAF9F6] pt-1 pl-3 rounded-2xl border-2 border-[#595959] flex justify-between cursor-pointer">
-              <p>search</p>
-              <PiMagnifyingGlassLight className=" mx-3 h-7 w-7" />{" "}
+    <>
+      <section className="max-w-screen max-h-full h-full bg-yellow-100 bg-cover bg-fixed bg-no-repeat  ">
+        <div className="grid lg:grid-cols-4 grid-cols-2">
+          <div className="lg:col-span-3 col-span-2 mx-auto py-5">
+            <div className="flex flex-col items-center justify-center">
+              <img
+                src={DisplayPicture}
+                alt="/"
+                className="sm:w-[1225px] lg:h-[200px] w-[350px] h-[200px] mx-auto "
+              />
             </div>
-            {/* Product List */}
-            <div className="grid grid-cols-4 gap-3  h-[89%] overflow-y-auto overflow-x-hidden">
-              {newData 
+
+            <div className="flex flex-col items-center justify-center mx-auto py-2 w-7xl">
+              <ul className="bg-[#EA1A2060] flex justify-between items-center lg:w-[1225px] w-[300px] px-4 rounded-lg font-black">
+                <li onClick={() => setStatusFilter("All")}>All</li>
+                <li> Sauces </li>
+                <li> Chili Oils </li>
+                <li> Spices </li>
+                <li onClick={() => setStatusFilter("Limited Offers")}>Limited Offers</li>
+              </ul>
+
+              <div className="grid lg:grid-cols-4 grid-cols-2 py-5 gap-3 cursor-pointer sm:w-7xl">
+                {data 
                 .filter(d => d.stock_quantity > 0)
                 .map((d)  => (
                   <Link to={`/ProductDetailsPage/${d.id}`}>
@@ -54,22 +60,22 @@ function ProductPage() {
                         alt="/"
                         className="lg:w-[250px] lg:h-[250px] w-[150px] h-[150px] pb-3"
                       />
-                      <div className="grid grid-cols-2 justify-around gap-8">
+                      <div className="flex flex-row justify-around gap-8">
                         <p className="font-semibold"> {d.name} </p>
                         <p className="font-bold"> {d.price} </p>
-                        
-                        {/* Add Button of Add to Cart and Buy Now! */}
-
                       </div>
                     </div>
                   </Link>
                 ))}
+              </div>
             </div>
           </div>
-          {/* Right Side */}
-          <Cart/>
+          {window.localStorage.getItem("user") && (<Cart />)}
+          
         </div>
+      </section>
+    </>
   );
 }
 
-export default ProductPage;
+export default OldJudeUserList;

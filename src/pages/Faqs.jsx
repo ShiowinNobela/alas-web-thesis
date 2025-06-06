@@ -14,7 +14,7 @@ function Faqs() {
   return (
     <>
       <section className="bg-yellow-100 bg-cover bg-fixed bg-no-repeat h-screen ">
-        <div className="max-w-xl mx-auto pt-35">
+        <div className="max-w-xl mx-auto pt-10">
           <h1 className="text-center uppercase tracking-wide font-semibold mb-3">
             Frequently Asked Questions
           </h1>

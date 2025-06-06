@@ -2,7 +2,6 @@ import Sidebar from "../../components/sidebar"
 import { useState, useEffect } from "react";
 import {useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { Sidebar } from "flowbite-react";
 
 
 function AdminAddUser() {
@@ -34,8 +33,8 @@ function AdminAddUser() {
         })
     }
 
-        return (
-            <>
+  return (
+    <>
 
     <div className='h-screen w-screen'>
         <Sidebar/>

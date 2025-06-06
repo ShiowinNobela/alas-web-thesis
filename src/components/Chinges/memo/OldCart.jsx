@@ -1,12 +1,11 @@
 import { MdDeleteForever } from "react-icons/md";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import {AiOutlineClose} from "react-icons/ai"
 import axios from "axios";
 import { useState, useEffect } from "react";
 import CouponPopUp from "../pages/CouponPopUp";
 import { Link } from "react-router-dom";
 import { Toaster, toast } from 'sonner';
-import { TiDeleteOutline } from "react-icons/ti"; 
-import { BsCart } from "react-icons/bs";
 
 function Cart() {
 
@@ -131,84 +130,81 @@ function Cart() {
       }
     };
 
-      return (
-          <div className="min-h-full full bg-[#f5f5f3] border-1 border-[#bdbdb8]">
-            <div className="flex justify-between items-center border-b border-[#cccabf] pl-3 py-2">
-              <div className="flex items-center h-10 w-70 text-3xl font-extrabold bg-[#FAF9F6] p-2 pb-4 pt-4 uppercase">
-                <p>My Cart</p>
-              <BsCart className="h-7 w-7 ml-2"/>{" "}
-              </div>
-            </div>
+  return (
+    <div className="bg-[#e7e6e2] h-full w-full">
+          <div className="flex flex-row justify-evenly items-center border-1 border-b-0 border-[#cccabf]">
+          <h1 className="text-3xl text-center font-bold mt-3 pb-3"> My Cart </h1>
+          <AiOutlineClose className="lg:hidden bg-[#000000] rounded-full p-3 w-[50px] h-[50px] mt-3 my-10 " /> 
+          </div>
 
-            {/* Item */}
-            <div className="overflow-y-auto h-85 screen p-4">
-              {getCartItems.map((d) => (
-                <div className="bg-[#ffffff] w-full rounded-xl shadow-sm border border-[#e0ded8] mb-4 p-4">
-                  <div className="flex justify-between items-center">
-                    <div className="flex flex-col">
-                      <h2 className="text-lg font-semibold text-[#1c1a1a] text-center mb-2">{d.name}</h2>
-                      <div className="grid grid-cols-3 gap-2 items-center">
-                        <FaPlus className="cursor-pointer text-[#1c1a1a] hover:text-[#EA1A20] mx-auto" onClick={() => handleAdjust(d.product_id, d.quantity, true, d.stock_quantity)} />
-                        <FaMinus className="cursor-pointer text-[#1c1a1a] hover:text-[#EA1A20] mx-auto" onClick={() => handleAdjust(d.product_id, d.quantity, false, d.stock_quantity)} />
-                        <p className="text-center font-bold text-[#1c1a1a]">{d.quantity}</p>
-                      </div>
+        
+          <div className="h-1/2 border-[#e7e6e2] border-2 pt-2 overflow-auto flex flex-col">
+            { getCartItems.map((d) => (
+              <div className="bg-[#FFFFFF] w-11/12 px-1 py-1 mx-auto border-1 shadow-md shadow-black mb-5">
+                <div className="flex gap-1 px-5 justify-between">
+                  {/* <img className="w-1/3 mx-3 py-1" /> */}
+                  <div className="flex flex-col">
+                    <h1 className="font-bold col-span-3 text-center"> {d.name} </h1>
+                    <div className="grid grid-cols-3 gap-1">
+                      <FaPlus className="mx-auto h-[20px] w-[20px]" onClick={() => handleAdjust(d.product_id, d.quantity, true, d.stock_quantity )}/>
+                      <FaMinus className="mx-auto h-[20px] w-[20px] " onClick={() => handleAdjust(d.product_id, d.quantity, false, d.stock_quantity)}/>
+                      <p className="mx-1 border-1 text-xl text-center"> {d.quantity}  </p>
                     </div>
-                    <TiDeleteOutline className="text-[#d80c0c] w-5 h-5 cursor-pointer" onClick={() => handleRemove(d.product_id)} />
+                  </div>
+                  
+                
+                  <div className="grid items-center">
+                    <MdDeleteForever color='red' className="h-8 w-8" onClick={() => handleRemove(d.product_id)} />
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
+            
+          </div>
+
+          <div className="border-2 h-[150px] border-t-0  ">
+            <div className="grid grid-cols-2 pb-3">
+            <p className="flex items-start pl-3 text-xl font-bold"> Subtotal: </p>
+            <p className="flex flex-col items-end pr-3 text-xl font-semibold "> ₱ {getSubTotal} </p>
+            <p className="flex items-start pl-3 text-xl font-bold"> Coupon Value: </p>
+            <p className="flex flex-col items-end pr-3 text-xl font-semibold"> ₱ {couponValue} </p>
             </div>
 
-            {/* Stubtotal */}
-            <div className="border-t border-[#bdbdb8] p-2">
-              <div className="flex justify-between text-md font-semibold text-[#403e3e]">
-                <p>Subtotal:</p>
-                <p>₱ {getSubTotal}</p>
-              </div>
-              <div className="flex justify-between text-md font-semibold text-[#403e3e]">
-                <p>Coupon Value:</p>
-                <p>₱ {couponValue}</p>
-              </div>
-              <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
-                <p>Total:</p>
-                <p>₱ {getSubTotal - couponValue}</p>
+            <div className="flex flex-col items-center ">
+              <div className="bg-[#FFFFFF] border-[#EA1A20] border-1 flex flex-row w-[350px] justify-around items-center px-3 py-3 shadow-md shadow-black">
+                <p className="text-xl font-semibold"> Pick Coupon: </p>
+                <div className="text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2" onClick={() => 
+                    {
+                      setOpen(true)
+                      
+                    }}> Coupon </div>
+                    <CouponPopUp open={Open}  onClose={() => setOpen(false)} onApply={handleCouponUse} /> 
               </div>
             </div>
+          </div>
 
-            {/* Coupon */}
-            <div className="flex justify-center my-1">
-              <div className="w-[90%] max-w-md bg-[#f5f5f3] border border-[#db2026] rounded-xl flex items-center justify-between px-6 py-3 shadow-sm">
-                <p className="text-md font-semibold text-[#403e3e] uppercase">Pick Coupon:</p>
-                <button
-                  onClick={() => setOpen(true)}
-                  className="bg-[#db2026] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase"
-                >
-                  Coupon
-                </button>
-                <CouponPopUp open={Open} onClose={() => setOpen(false)} onApply={handleCouponUse} />
+          <div className="grid grid-cols-2 px-2 py-4 mx-auto border-l-2">
+            <p className="flex flex-col items-start pl-3 text-xl font-bold"> Total: </p>
+            <p className="flex flex-col items-end pr-3 text-xl font-semibold"> ₱ {getSubTotal - couponValue} </p>
+          </div>
+          
+          <div className="flex items-center justify-center pb-3 border-l-2 border-b-2">
+          
+          {cartCount !== 0 ?(
+            <Link to="/CheckoutPage">
+              <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]">
+                Checkout
               </div>
-            </div>
-
-            {/* Checkout */}
-            <div className="flex justify-center pt-4">
-              {cartCount !== 0 ? (
-                <Link to="/CheckoutPage">
-                  <div className="w-60 max-w-md bg-[#db2026] text-white text-md font-semibold px-10 py-2 rounded-lg hover:bg-red-800 shadow-lg transition text-center">
-                    Checkout
-                  </div>
-                </Link>
-              ) : (
-                <div
-                  className="w-60 max-w-md bg-[#EA1A20] text-white text-md font-semibold px-10 py-3 rounded-lg shadow-lg text-center cursor-pointer uppercase"
-                  onClick={() => toast.error("You can't checkout without an item in your cart!")}
-                >
-                  Checkout
-                </div>
-      )}
-      <Toaster richColors />
-    </div>
-  </div>
-
+            </Link>
+          ) : (
+            <div className="text-center shadow-md shadow-black text-[#FFFFFF] text-xl font-semibold bg-[#EA1A20] px-8 py-2 w-[350px]" 
+            onClick={ () => toast.error("You can't checkout without an item on your cart!")}>
+                Checkout
+              </div>
+          )}
+          <Toaster  richColors />
+          </div>
+        </div>
   )
 }
 

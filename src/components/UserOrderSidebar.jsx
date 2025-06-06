@@ -6,7 +6,7 @@ import { useNavigate} from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 
 
-function UserOrderSidebar({setActiveSwitch}) {
+function UserOrderSidebar({setActiveSwitch}) { //OLD USER SIDEBAR
 
   const navigate = useNavigate();
   return (

@@ -72,6 +72,7 @@ function App() {
           <Route path="AdminAddUser" element={<AdminAddUser />}></Route>
           <Route path="ViewOrder/:id" element={<ViewOrder />}></Route>
           <Route path="AdminUserEdit/:id" element={<AdminUserEdit />}></Route>
+          <Route path="SalesPage" element={<SalesPage />}></Route>
           <Route
             path="InventoryManagement"
             element={<InventoryManagement />}
