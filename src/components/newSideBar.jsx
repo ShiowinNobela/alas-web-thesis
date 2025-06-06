@@ -8,7 +8,6 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { useLocation } from "react-router-dom";
 import { AiOutlineUser, AiOutlineUnorderedList } from "react-icons/ai";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { LuHandCoins } from "react-icons/lu";
 
 function NewSideBar() {
   const location = useLocation();
@@ -45,7 +44,9 @@ function NewSideBar() {
             </Link>
             <Link to="/Admin/WalkInOrders">
               <li className={getNavItemClass("/Admin/WalkInOrders")}>
-                <ShoppingBasketIcon className={getIconClass("/Admin/WalkInOrders")} />
+                <ShoppingBasketIcon
+                  className={getIconClass("/Admin/WalkInOrders")}
+                />
                 <span className="flex-1 ml-3 text-left whitespace-nowrap">
                   Walk In Ordering
                 </span>

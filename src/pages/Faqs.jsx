@@ -1,52 +1,74 @@
+import { useRef, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
-import React, { useState } from "react";
 import { questions } from "../questions.js";
 
 function Faqs() {
-  const [show, setShow] = useState(new Array(questions.length).fill(false));
-  const updateShow = (index) => {
+  const tabsRef = useRef(null);
+  const [activeTab, setActiveTab] = useState(0);
+  const [show, setShow] = useState(
+    questions.map((category) =>
+      new Array(category.questions.length).fill(false)
+    )
+  );
+
+  const updateShow = (catIndex, questionIndex) => {
     setShow((prevShow) =>
-      prevShow.map((item, i) => (i === index ? !item : item))
+      prevShow.map((cat, i) =>
+        i === catIndex
+          ? cat.map((val, j) => (j === questionIndex ? !val : val))
+          : cat
+      )
     );
   };
-  console.log(show);
 
   return (
-    <>
-      <section className="bg-yellow-100 bg-cover bg-fixed bg-no-repeat h-screen ">
-        <div className="max-w-xl mx-auto pt-10">
-          <h1 className="text-center uppercase tracking-wide font-semibold mb-3">
-            Frequently Asked Questions
-          </h1>
-          <div className="grid grid-cols-1 gap-4">
-            {questions.map((question, index) => (
-              <div
-                key={index}
-                className="border-2 border-gray-500 rounded-lg bg-white shadow-md"
-              >
-                <article className="flex justify-between items-center p-4">
-                  <h1>{question.question}</h1>
-                  <ul>
-                    <li>
-                      <button onClick={() => updateShow(index)}>
-                        {show[index] ? <FaMinus /> : <FaPlus />}
-                      </button>
-                    </li>
-                  </ul>
-                </article>
-                <article
-                  className={`${
-                    show[index] && "border-t-2 border-gray-500 mt-2 p-4"
+    <section className="bg-yellow-100 min-h-screen py-10">
+      <div className="max-w-6xl mx-auto px-4">
+        <h1 className="text-center uppercase tracking-wide font-semibold mb-8 text-2xl">
+          Frequently Asked Questions
+        </h1>
+
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="md:w-1/4">
+            <div className="flex flex-col space-y-2">
+              {questions.map((category, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveTab(index)}
+                  className={`text-left p-3 rounded-lg font-medium ${
+                    activeTab === index
+                      ? "bg-primary text-white "
+                      : "bg-yellow-100 text-gray-700 hover:bg-secondary"
                   }`}
                 >
-                  {show[index] && question.answer}
-                </article>
-              </div>
-            ))}
+                  {category.category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="md:w-3/4">
+            <div className="grid grid-cols-1 gap-4">
+              {questions[activeTab].questions.map((question, qIndex) => (
+                <div key={qIndex} className="rounded-lg bg-white shadow">
+                  <article className="flex justify-between items-center p-4">
+                    <h3 className="font-medium">{question.question}</h3>
+                    <button onClick={() => updateShow(activeTab, qIndex)}>
+                      {show[activeTab][qIndex] ? <FaMinus /> : <FaPlus />}
+                    </button>
+                  </article>
+                  {show[activeTab][qIndex] && (
+                    <article className="border-t-2 border-gray-500 p-4">
+                      {question.answer}
+                    </article>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 

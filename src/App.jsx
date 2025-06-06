@@ -1,7 +1,4 @@
-import React from "react";
 import "./App.css";
-import NewSideBar from "./components/newSideBar.jsx";
-import NavBar from "./components/navbar.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegPage from "./pages/RegistrationPage.jsx";
@@ -30,9 +27,9 @@ import AdminUserEdit from "./pages/adminPages/AdminUserEdit.jsx";
 import UserOrderPage from "./pages/UserOrderPage.jsx";
 import UserViewOrderDetails from "./pages/UserViewOrderDetails.jsx";
 import InventoryManagement from "./pages/adminPages/InventoryManagement.jsx";
-import Sales from "./pages/adminPages/SalesPage.jsx";
 import SalesPage from "./pages/adminPages/SalesPage.jsx";
 import WalkInOrders from "./pages/adminPages/WalkInOrders.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
 
 function App() {
   return (
@@ -54,6 +51,7 @@ function App() {
           <Route path="/Faqs" element={<Faqs />}></Route>
           <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
           <Route path="/UserOrderPage" element={<UserOrderPage />}></Route>
+          <Route path="/AboutUs" element={<AboutUs />}></Route>
           <Route
             path="/UserViewOrderDetails/:id"
             element={<UserViewOrderDetails />}
