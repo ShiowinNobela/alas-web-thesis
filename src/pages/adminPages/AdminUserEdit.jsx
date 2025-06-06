@@ -1,4 +1,4 @@
-import Sidebar from "../../components/sidebar";
+import NewSideBar from "../../components/newSideBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -58,68 +58,79 @@ function AdminUserEdit() {
 
 
   return (
-        <div className='max-h-screen w-screen'>
-            <Toaster richColors/>
-                <NewSideBar/>
-                    <div className="min-h-[60vh] w-full bg-[#E2E0E1] pl-[256px] flex flex-col items-center py-10">
-                            <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg border">
-                                <p className="text-2xl font-semibold text-center mb-6 uppercase">user Information</p>
-                                <form className="space-y-6" onSubmit={handleUpdate}>
-                            
-                            {/* Basic Info */}
-                            {[
-                                { label: "Username", value: data.username, key: "username" },
-                                { label: "Email", value: data.email, key: "email" },
-                                { label: "Address", value: data.address, key: "address" },
-                                { label: "Contact Number", value: data.contact_number, key: "contact_number" },
-                            ].map(({ label, value, key }) => (
-                                <div className="flex items-center" key={key}>
-                                <label className="w-1/4 font-medium">{label}:</label>
-                                <input
-                                    type="text"
-                                    placeholder={label}
-                                    className="w-full p-3 border border-gray-400 rounded-lg"
-                                    value={value || ""}
-                                    onChange={e => setData({ ...data, [key]: e.target.value })}
-                                    required
-                                />
-                                </div>
-                            ))}
+    <div className='h-screen w-screen'>
+    <Toaster richColors/>
+    <Sidebar/>
+        <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center ">
+            <h1 className='py-5 text-3xl font-semibold '>Edit User</h1>
+            <div className="w-4xl bg-white p-5 rounded-lg shadow-md border-1 ">
+              <form className='flex flex-col'>
+                <div className="flex flex-row">
+                    <div className="flex flex-col justify-center w-1/4  ">
+                        <p class="me">Username :</p>
+                    </div>
+                    <input type="text" placeholder="Username" className="p-3 m-2 border-1 border-black rounded-2xl w-100" 
+                    value={data.username || ""} onChange={e => setData({...data, username: e.target.value})} required/>
+                </div>
+                
+                <div className="flex flex-row">
+                    <div className="flex flex-col justify-center w-1/4">
+                        <p class="me">Email :</p>
+                    </div>
+                    <input type="text" placeholder="Email" className="p-3 m-2 border-1 border-black rounded-2xl w-100" 
+                    value={data.email || ""} onChange={e => setData({...data, email: e.target.value})} required/>
+                </div>
 
-                            {/* User Role */}
-                            <div className="flex items-center">
-                                <label className="w-1/4 font-medium">User Role:</label>
-                                <select
-                                className="w-full p-3 border border-gray-400 rounded-lg"
-                                value={data.role_name || ""}
-                                onChange={e => setData({ ...data, role_name: e.target.value })}
-                                required
-                                >
-                                <option value="">Select role</option>
-                                <option value="admin">admin</option>
-                                <option value="staff">staff</option>
-                                <option value="customer">customer</option>
-                                </select>
-                            </div>
+                <div className="flex flex-row">
+                    <div className="flex flex-col justify-center w-1/4">
+                        <p class="me">Address :</p>
+                    </div>
+                    <input type="text" placeholder="Address" className="p-3 m-2 border-1 border-black rounded-2xl w-100"
+                    value={data.address || ""} onChange={e => setData({...data, address: e.target.value})} required />
+                </div>
 
-        <hr className="my-6 border-[#474646]" />
+                <div className="flex flex-row">
+                    <div className="flex flex-col justify-center w-1/4">
+                        <p class="me">Contact Number :</p>
+                    </div>
+                    <input type="text" placeholder="Contact Number" className="p-3 m-2 border-1 border-black rounded-2xl w-100"
+                    value={data.contact_number || ""} onChange={e => setData({...data, contact_number: e.target.value})} required/>
+                </div>
+                
+                <div className="flex flex-row mb-5">
+                    <div className="flex flex-col justify-center w-1/4">
+                        <p class="me">User Role :</p>
+                    </div>
+                        <select className="p-3 m-2 border-1 border-black rounded-2xl w-100"
+                        value={data.role_name || ""} onChange={e => setData({...data, role_name: e.target.value})} required>
+                            <option value={"admin"}>admin</option>
+                            <option value={"staff"}>staff</option>
+                            <option value={"customer"}>customer</option>
+                        </select>
+                </div>
+                
+                <hr />
+                <div className="flex flex-col mt-5 mb-5">
+                    <h1 className="text-2xl font-semibold mb-5 text-center">Admin Password Update</h1>
 
-                            {/* Password Update */}
-                            <div>
-                                <p className="text-2xl font-semibold text-center mb-6 uppercase">password</p>
-
-                                {["Current Password", "New Password", "Confirm New Password"].map((label, idx) => (
-                                <div className="flex items-center mb-4" key={label}>
-                                    <label className="w-1/4 font-medium">{label}:</label>
-                                    <input
-                                    type="password"
-                                    placeholder={label}
-                                    className="w-full p-3 border border-gray-400 rounded-lg"
-                                    required={idx !== 0} // Only current password is optional in some systems
-                                    />
-                                </div>
-                                ))}
-                            </div>
+                    <div className="flex flex-row">
+                        <div className="flex flex-col justify-center w-1/4">
+                            <p class="me"> Current Password :</p>
+                        </div>
+                        <input type="password" placeholder="Current Password" className="p-3 m-2 border-1 border-black rounded-2xl w-100" />
+                    </div>
+                    <div className="flex flex-row">
+                        <div className="flex flex-col justify-center w-1/4">
+                            <p class="me"> New Password :</p>
+                        </div>
+                        <input type="password" placeholder="New Password" className="p-3 m-2 border-1 border-black rounded-2xl w-100" />
+                    </div>
+                    <div className="flex flex-row">
+                        <div className="flex flex-col justify-center w-1/4">
+                            <p class="me"> Confirm New Password :</p>
+                        </div>
+                        <input type="password" placeholder="Confirm New Password" className="p-3 m-2 border-1 border-black rounded-2xl w-100" />
+                    </div>
 
                             <div className="flex justify-center">
                                 <button type="submit" className="px-6 py-3 bg-orange-400 hover:bg-orange-500 text-white font-medium rounded-lg transition">

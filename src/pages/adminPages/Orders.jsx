@@ -43,7 +43,9 @@ function AdminViewOrderPage() {
   const [modalTitle, setModalTitle] = useState("");
   const [confirmButtonLabel, setConfirmButtonLabel] = useState("");
   const [startDate, setStartDate] = useState(null);
+  const [startDateKey, setStartDateKey] = useState(0);
   const [endDate, setEndDate] = useState(null);
+  const [endDateKey, setEndDateKey] = useState(0);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [searchId, setSearchId] = useState("");
@@ -147,6 +149,22 @@ function AdminViewOrderPage() {
         return "bg-red-200 text-red-800";
       default:
         return "bg-gray-200 text-gray-800";
+    }
+  };
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    if (date === null) {
+      // Force re-render by updating the key
+      setStartDateKey((prev) => prev + 1);
+    }
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+    if (date === null) {
+      // Force re-render by updating the key
+      setEndDateKey((prev) => prev + 1);
     }
   };
 
@@ -264,7 +282,7 @@ function AdminViewOrderPage() {
   console.log(summaryData);
   return (
     <>
-      <Toaster />
+      <Toaster richColors/>
       <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
         <NewSideBar />
         <main className="min-h-full flex flex-col gap-3 overflow-auto px-4 py-7">
@@ -337,9 +355,10 @@ function AdminViewOrderPage() {
             <div className="flex items-center gap-3 flex-wrap justify-end">
               <div className="w-[25%]">
                 <Datepicker
+                  key={startDateKey}
                   placeholder="Start date"
                   value={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={handleStartDateChange}
                   maxDate={new Date()}
                   color="white"
                 />
@@ -347,9 +366,10 @@ function AdminViewOrderPage() {
               <h3>TO</h3>
               <div className="w-[25%]">
                 <Datepicker
+                  key={endDateKey}
                   placeholder="End date"
                   value={endDate}
-                  onChange={(date) => setEndDate(date)}
+                  onChange={handleEndDateChange}
                   minDate={startDate}
                   maxDate={new Date()}
                   color="white"

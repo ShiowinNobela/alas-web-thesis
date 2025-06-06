@@ -77,6 +77,7 @@ function App() {
             path="InventoryManagement"
             element={<InventoryManagement />}
           ></Route>
+          <Route path="SalesPage" element={<SalesPage/>}></Route>
         </Route>
       </Routes>
     </>
