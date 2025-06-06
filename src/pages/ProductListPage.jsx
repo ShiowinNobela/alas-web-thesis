@@ -12,13 +12,14 @@ function ProductPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [newData, setNewData] = useState([])
 
+  const user = window.localStorage.getItem("user");
   useEffect(() => {
     window.localStorage.getItem("user")
     axios
       .get("/api/products")
       .then((res) => {
         setData(res.data)
-        setNewData([...res.data, ...res.data])
+        setNewData([...res.data])
       } )
       .catch((err) => console.log(err));
   }, []);
@@ -67,7 +68,7 @@ function ProductPage() {
             </div>
           </div>
           {/* Right Side */}
-          <Cart/>
+          {user && <Cart/>}
         </div>
   );
 }

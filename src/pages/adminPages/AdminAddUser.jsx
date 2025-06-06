@@ -1,8 +1,9 @@
-import Sidebar from "../../components/sidebar"
+
 import { useState, useEffect } from "react";
 import {useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { Sidebar } from "flowbite-react";
+import NewSideBar from "../../components/newSideBar";
+
 
 
 function AdminAddUser() {
@@ -37,9 +38,9 @@ function AdminAddUser() {
         return (
             <>
 
-    <div className='h-screen w-screen'>
-        <Sidebar/>
-        <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center">
+    <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
+        <NewSideBar/>
+        <div className="h-screen w-100% bg-[#E2E0E1] flex flex-col items-center">
             <h1 className="text-3xl pt-3 font-bold">Admin Add User</h1>
             <div className="flex justify-center items-center pt-10 ">
                 <form className="flex flex-col gap-4" onSubmit={handleCreatAdminUser}> 

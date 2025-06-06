@@ -1,4 +1,3 @@
-import NewSideBar from "../../components/newSideBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -60,7 +59,7 @@ function AdminUserEdit() {
   return (
     <div className='h-screen w-screen'>
     <Toaster richColors/>
-    <Sidebar/>
+    <NewSideBar/>
         <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center ">
             <h1 className='py-5 text-3xl font-semibold '>Edit User</h1>
             <div className="w-4xl bg-white p-5 rounded-lg shadow-md border-1 ">
@@ -137,9 +136,10 @@ function AdminUserEdit() {
                                 Update User
                                 </button>
                             </div>
-                                </form>
-                            </div>
-                    </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
   )
 }

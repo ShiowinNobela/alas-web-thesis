@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { MdOutlineRateReview } from "react-icons/md";
 import OrderHistoryModal from "../components/modals/orderHistoryModal";
 import StatusFilterDropdown from "../components/StatusFilterDropdown";
-import UserOrderSidebar from "../components/UserOrderSidebar";
+import UserSideBar from "./UserSideBar";
 
 function UserViewOrderPage() {
   const [orders, setOrders] = useState([]);
@@ -147,9 +147,9 @@ function UserViewOrderPage() {
   };
 
   return (
-    <section className="bg-amber-50 min-h-screen pt-20">
+    <section className="bg-amber-50 min-h-screen pt-20 ">
       <div className="grid grid-cols-[0.15fr_0.85fr]">
-        <UserOrderSidebar setActiveSwitch={setActiveSwitch}/>
+        <UserSideBar setActiveSwitch={setActiveSwitch}/>
         <div>
           {activeSwitch === "orderList" && (
           <div className="max-w-6xl mx-auto px-3 py-5 rounded-md"> 
