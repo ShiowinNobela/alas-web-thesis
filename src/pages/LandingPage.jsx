@@ -16,7 +16,6 @@ const LandingPage = () => {
   return (
     <>
       <section className="bg-[url('./src/components/images/bg-2.png')] bg-cover bg-center shadow-inner shadow-[#000000 - 500]">
-        <Navbar />
         <div className="max-w-7xl mx-auto pt-35 px-6 h-screen">
           <div className="flex flex-col items-center mt-6 lg:mt-20">
             <h1 className="text-6xl lg:text-8xl text-center tracking-wide text-[#FFFFFF]">

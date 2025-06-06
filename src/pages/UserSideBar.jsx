@@ -3,8 +3,36 @@ import { LuShoppingBag } from "react-icons/lu";
 import { RiArchiveStackLine } from "react-icons/ri";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { MdOutlineLogout } from "react-icons/md";
+import { useNavigate} from "react-router-dom";
+import { useEffect, useState} from "react";
+import axios from "axios";
 
-function UserSideBar() {
+function UserSideBar() { //NEW USER SIDEBAR
+
+  const navigate = useNavigate();
+  const [getInfo, setGetInfo] = useState({
+      username: "",
+      email: "",
+      contact_number: "",
+      address: "",
+    });
+
+  useEffect(() => {
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    axios.get("/api/users", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+    .then((response) => {
+      setGetInfo(response.data);
+      console.log("User data:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching user data:", error);
+    });
+    }, []); 
+  
     return (
       <div className="h-screen w-10% bg-gradient-to-b from-[#e8e6c2] to-[#eaeae7] flex justify-center items-center px-4 pt-16">
         
@@ -22,19 +50,19 @@ function UserSideBar() {
             {/* Sidebar content */}
             <li>
                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white text-xl font-semibold">
-                  <span class="ms-3">Hi there, username1</span>
+                  <span class="ms-3">Hi there, {getInfo?.username}</span>
                 </a>
             </li>
 
             {/* User settings ) */}
-            <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+            <button onClick={() => navigate("/UserSettings") }
+                type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
                   <LuUserPen className="h-6 w-8"/>
                   <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">User Settings</span>
-                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                  </svg>
             </button>
-            <li>
+            <li onClick={() => { 
+                  navigate("/UserOrderPage");
+                  }}>
                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                   <svg class="h-8 w-8 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                    <LuShoppingBag/>
@@ -62,7 +90,11 @@ function UserSideBar() {
           
           {/* Logout */}
           <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
-            <li>
+            
+            <li onClick={() => {
+                window.localStorage.removeItem("user");
+                window.location.href = "/LoginPage";
+              }}>
                 <a href="#" class="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                   <svg class="h-8 w-8 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 17 20">
                       <MdOutlineLogout />

@@ -5,7 +5,7 @@ function ContactUs() {
   return (
     <>
   {/* Background */}
-  <div className="min-h-screen bg-gradient-to-b from-[#e8e6c2] to-[#eaeae7] flex justify-center items-center px-4 pt-15">
+  <div className="h-full bg-gradient-to-b from-[#e8e6c2] to-[#eaeae7] flex justify-center py-10">
       
       {/* Base */}
       <div className="w-full max-w-4/6 bg-[#edecec] border-2 border-[#e7e2e2] rounded-3xl grid grid-cols-2">
@@ -13,7 +13,7 @@ function ContactUs() {
         {/* Contact Info */}
         <div className="bg-[#d47849] border-[#bf663a] text-[#ffffff] p-8 rounded-l-3xl flex flex-col justify-center">
           <p className="text-4xl font-bold mb-4 uppercase">contact us</p>
-          <p className="mb-6 text-lg">Whether you’re a long-time chili head or just starting your spicy journey, we’re always excited to hear from you! Got questions about our sauces? Need help picking the perfect trio for a gift box? Thinking about partnering with us or placing a bulk order? Whatever it is, we’re here and happy to help. We love connecting with our community—so don’t hesitate to reach out.</p>
+          <p className="mb-6 text-lg text-justify">Whether you’re a long-time chili head or just starting your spicy journey, we’re always excited to hear from you! Got questions about our sauces? Need help picking the perfect trio for a gift box? Thinking about partnering with us or placing a bulk order? Whatever it is, we’re here and happy to help. We love connecting with our community—so don’t hesitate to reach out.</p>
           
           {/* Logo */}
         <div className="pt-2 text-xl font-semibold uppercase">
