@@ -1,12 +1,15 @@
 function AboutUs() {
   return (
-    <section className='w-full h-screen bg-[url("./src/components/images/customer_bg.png")] bg-cover bg-no-repeat'>
-      <div className="flex items-center justify-center h-full px-4">
-        <div className="w-4/5 bg-black/40 text-white p-12 rounded-3xl shadow-xl text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-wide mb-6 uppercase">
-            ALAS DELIS <span className="text-green-400">AND HOT SAUCE</span>
-          </h1>
-          <p className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+    <section className="bg-yellow-100 min-h-screen justify-center py-10">
+      <div className="text-center">
+        <h1 className="uppercase tracking-wide font-semibold mb-8 text-2xl">
+          About Us
+        </h1>
+        <div className="max-w-4xl bg-white/70 backdrop-blur-sm text-black p-10 md:p-16 rounded-3xl shadow-2xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-widest uppercase mb-8">
+            Alas Delis and<span className="text-red-600"> Hot Sauce</span>
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl leading-relaxed">
             My journey into the world of hot sauces began in my own kitchen,
             experimenting with flavors to add a kick to my meals. What started
             as a personal quest for the perfect blend soon turned into a passion

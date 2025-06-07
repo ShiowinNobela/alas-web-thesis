@@ -50,7 +50,7 @@ function Faqs() {
           <div className="md:w-3/4">
             <div className="grid grid-cols-1 gap-4">
               {questions[activeTab].questions.map((question, qIndex) => (
-                <div key={qIndex} className="rounded-lg bg-white shadow">
+                <div key={qIndex} className="rounded-lg bg-white/70 shadow">
                   <article className="flex justify-between items-center p-4">
                     <h3 className="font-medium">{question.question}</h3>
                     <button onClick={() => updateShow(activeTab, qIndex)}>
