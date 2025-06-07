@@ -45,7 +45,9 @@ function NewSideBar() {
             </Link>
             <Link to="/Admin/WalkInOrdering">
               <li className={getNavItemClass("/Admin/WalkInOrdering")}>
-                <ShoppingBasketIcon className={getIconClass("/Admin/WalkInOrdering")} />
+                <ShoppingBasketIcon
+                  className={getIconClass("/Admin/WalkInOrdering")}
+                />
                 <span className="flex-1 ml-3 text-left whitespace-nowrap">
                   Walk In Ordering
                 </span>
@@ -53,13 +55,14 @@ function NewSideBar() {
             </Link>
             <Link to="/Admin/WalkInOrdersTable">
               <li className={getNavItemClass("/Admin/WalkInOrdersTable")}>
-                <ShoppingBasketIcon className={getIconClass("/Admin/WalkInOrdersTable")} />
+                <ShoppingBasketIcon
+                  className={getIconClass("/Admin/WalkInOrdersTable")}
+                />
                 <span className="flex-1 ml-3 text-left whitespace-nowrap">
                   Walk In Orders
                 </span>
               </li>
             </Link>
-
             <Link to="/Admin/AccountManagement">
               <li className={getNavItemClass("/Admin/AccountManagement")}>
                 <AiOutlineUser

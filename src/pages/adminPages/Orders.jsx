@@ -32,6 +32,7 @@ import {
   HiUserCircle,
   HiHashtag,
   HiDocumentText,
+  HiCheckCircle,
 } from "react-icons/hi";
 import StatusFilterDropdown from "../../components/StatusFilterDropdown";
 import dayjs from "dayjs";
@@ -316,6 +317,18 @@ function AdminViewOrderPage() {
       });
   };
 
+  const customTextInputTheme = {
+    field: {
+      input: {
+        base: "block w-full border rounded-2xl focus:outline-none focus:ring-2",
+        colors: {
+          custom:
+            "border-admin bg-white text-admin placeholder-gray-400 focus:border-admin focus:ring-admin",
+        },
+      },
+    },
+  };
+
   console.log(summaryData);
   return (
     <>
@@ -327,7 +340,7 @@ function AdminViewOrderPage() {
             <Card
               title="Sales"
               className="flex-none p-4 rounded-lg shadow w-1/4 cursor-pointer hover:bg-secondary transition"
-              onClick={() => navigate("/Admin/WalkInOrders")}
+              onClick={() => navigate("/Admin/WalkInOrdersTable")}
               role="button"
             >
               <div className="flex items-center justify-between">
@@ -346,27 +359,25 @@ function AdminViewOrderPage() {
                   ({ status, totalOrders }) => (
                     <div
                       key={status}
-                      className="
-          flex flex-col items-center justify-center bg-white rounded-lg shadow
-          transition-transform duration-300 ease-in-out
-          hover:scale-105 hover:shadow-lg
-          cursor-pointer
-          flex-1 min-w-0
-          p-4
-        "
+                      className={`
+            flex flex-col items-center justify-center
+            ${getStatusColor(status)}
+            rounded-lg shadow transition-transform duration-300 ease-in-out
+            hover:scale-105 hover:shadow-lg cursor-pointer flex-1 min-w-0 p-4
+          `}
                       title={
                         status.charAt(0).toUpperCase() +
                         status.slice(1).replaceAll("_", " ")
                       }
                     >
-                      <span className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 text-center truncate">
+                      <span className="text-sm font-semibold mb-1 text-center truncate">
                         {status.charAt(0).toUpperCase() +
                           status.slice(1).replaceAll("_", " ")}
                       </span>
-                      <span className="text-4xl font-extrabold text-gray-900 dark:text-white">
+                      <span className="text-4xl font-extrabold">
                         {totalOrders}
                       </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                      <span className="text-xs">
                         {totalOrders === 1 ? "order" : "orders"}
                       </span>
                     </div>
@@ -378,7 +389,7 @@ function AdminViewOrderPage() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center flex-wrap gap-3 w-full">
+          <div className="flex justify-between items-center flex-wrap gap-3 w-full px-2">
             <div className="flex items-center gap-2 w-full sm:w-[30%]">
               <TextInput
                 placeholder="Search order by ID..."
@@ -388,7 +399,8 @@ function AdminViewOrderPage() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSearchById();
                 }}
-                className="flex-1"
+                theme={customTextInputTheme}
+                color="custom"
               />
               <Button
                 onClick={handleSearchById}
@@ -438,7 +450,7 @@ function AdminViewOrderPage() {
           </div>
 
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <div className="bg-admin text-white text-xs uppercase font-semibold px-6 py-3 rounded-t-lg">
+            <div className="bg-admin text-secondary text-xs uppercase font-semibold px-6 py-3 rounded-t-lg">
               <span>Total Orders: {orders.length}</span>
               <span className="ml-4">
                 Total Amount: ₱{totalAmount.toLocaleString()}
@@ -550,7 +562,7 @@ function AdminViewOrderPage() {
                     <td className="px-6 py-4 bg-gray-50">
                       <div className="flex justify-center items-center">
                         <span
-                          className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                          className={`px-2 py-1 rounded text-xs font-semibold ${getStatusColor(
                             order.status
                           )}`}
                         >
@@ -626,19 +638,19 @@ function AdminViewOrderPage() {
                             Mark Delivered
                           </button>
                         ) : order.status === "delivered" ? (
-                          <span className="text-sm bold text-gray-500">
-                            Order Completed
-                          </span>
+                          <div className="flex items-center text-sm text-green-800">
+                            <HiCheckCircle className="w-5 h-5 mr-1" />
+                          </div>
                         ) : null}
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 bg-gray-50">
+                    <td className="px-6 py-4 bg-gray-100 justify-start">
                       <Dropdown
                         label=""
                         inline
                         renderTrigger={() => (
-                          <button className="text-gray-600 hover:text-blue-600">
+                          <button className="text-black font-bold hover:text-blue-600">
                             <HiDotsVertical />
                           </button>
                         )}
@@ -696,6 +708,7 @@ function AdminViewOrderPage() {
         <Modal
           show={showDetailsModal}
           onClose={() => setShowDetailsModal(false)}
+          size="5xl"
         >
           <ModalHeader>
             Order Details – #{selectedOrder?.data?.id}
@@ -711,131 +724,140 @@ function AdminViewOrderPage() {
             )}
           </ModalHeader>
 
-          <ModalBody>
-            <div className="shadow px-4 py-5 rounded mb-3 mt-1 bg-gray-100">
-              <div className="space-y-4 text-sm text-gray-800">
-                <h3 className="text-lg font-semibold mb-7">Order Summary</h3>
+          <ModalBody className="bg-neutral">
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Order Summary - Left */}
+              <div className="md:w-1/2 shadow px-4 py-5 rounded bg-white">
+                <div className="space-y-4 text-sm text-black">
+                  <h3 className="text-lg font-semibold mb-5">Order Summary</h3>
 
-                <div className="space-y-2">
-                  {selectedOrder?.data?.items?.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-between items-center"
-                    >
-                      <span className="truncate">
-                        {item.product_name} x{item.quantity}
-                      </span>
-                      <span className="text-black font-semibold">
-                        ₱{parseFloat(item.subtotal).toFixed(2)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                  <hr className="my-4 border-gray-400" />
 
-              <hr className="my-4 border-gray-400" />
-
-              <div className="flex justify-between text-base font-extrabold text-black">
-                <span>Total</span>
-                <span>
-                  ₱{parseFloat(selectedOrder?.data?.total_amount).toFixed(2)}
-                </span>
-              </div>
-            </div>
-
-            <div className="shadow px-4 py-5 rounded mb-7 bg-white">
-              <h3 className="text-lg font-semibold mb-8 text-black">
-                Customer, Payment & Billing Info
-              </h3>
-
-              <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-700">
-                {/* Left Side */}
-                <div className="w-full md:w-1/2 space-y-4">
-                  <div className="flex items-start gap-2">
-                    <HiUser className="text-secondary mt-1" />
-                    <div>
-                      <p className="text-black">Customer Name</p>
-                      <p className="font-semibold">
-                        {selectedOrder?.data?.username || "N/A"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2">
-                    <HiPhone className="text-secondary mt-1" />
-                    <div>
-                      <p className="text-black">Contact Number</p>
-                      <p className="font-semibold">
-                        {selectedOrder?.data?.contact_number || (
-                          <span className="text-gray-400">No contact info</span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2">
-                    <HiMail className="text-secondary mt-1" />
-                    <div>
-                      <p className="text-black">Email</p>
-                      <p className="font-semibold">
-                        {selectedOrder?.data?.email || (
-                          <span className="text-gray-400">No email</span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-2">
-                    <HiLocationMarker className="text-secondary mt-1" />
-                    <div>
-                      <p className="text-black">Shipping Address</p>
-                      <p className="font-semibold">
-                        {selectedOrder?.data?.address || (
-                          <span className="text-gray-400">No address</span>
-                        )}
-                      </p>
-                    </div>
+                  <div className="space-y-2">
+                    {selectedOrder?.data?.items?.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center text-gray-600"
+                      >
+                        <span className="truncate">
+                          {item.product_name} x {item.quantity}
+                        </span>
+                        <span className="font-semibold">
+                          ₱{parseFloat(item.subtotal).toFixed(2)}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Right Side */}
-                <div className="w-full md:w-1/2 space-y-4">
-                  <div className="flex items-start gap-2">
-                    <HiCreditCard className="text-secondary mt-1" />
-                    <div>
-                      <p className="text-black">Payment Method</p>
-                      <p className="font-semibold">
-                        {selectedOrder?.data?.payment_method || "N/A"}
-                      </p>
+                <hr className="my-4 border-gray-400" />
+
+                <div className="flex justify-between text-base font-extrabold text-admin">
+                  <span>Total</span>
+                  <span>
+                    ₱{parseFloat(selectedOrder?.data?.total_amount).toFixed(2)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="md:w-1/2 shadow px-4 py-5 rounded bg-white">
+                <h3 className="text-lg font-semibold mb-5 text-black">
+                  Customer, Payment & Billing Info
+                </h3>
+
+                <hr className="my-4 border-gray-400" />
+
+                <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-700">
+                  {/* Left Side */}
+                  <div className="w-full md:w-1/2 space-y-4">
+                    <div className="flex items-start gap-2">
+                      <HiUser className="text-secondary mt-1" />
+                      <div>
+                        <p className="text-black">Customer Name</p>
+                        <p className="font-semibold">
+                          {selectedOrder?.data?.username || "N/A"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <HiPhone className="text-secondary mt-1" />
+                      <div>
+                        <p className="text-black">Contact Number</p>
+                        <p className="font-semibold">
+                          {selectedOrder?.data?.contact_number || (
+                            <span className="text-gray-400">
+                              No contact info
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <HiMail className="text-secondary mt-1" />
+                      <div>
+                        <p className="text-black">Email</p>
+                        <p className="font-semibold">
+                          {selectedOrder?.data?.email || (
+                            <span className="text-gray-400">No email</span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <HiLocationMarker className="text-secondary mt-1" />
+                      <div>
+                        <p className="text-black">Shipping Address</p>
+                        <p className="font-semibold">
+                          {selectedOrder?.data?.address || (
+                            <span className="text-gray-400">No address</span>
+                          )}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-2">
-                    <HiUserCircle className="text-secondary mt-1" />
-                    <div>
-                      <p className="text-black">Account Name</p>
-                      <p className="font-semibold">
-                        {selectedOrder?.data?.account_name || "N/A"}
-                      </p>
+                  {/* Right Side */}
+                  <div className="w-full md:w-1/2 space-y-4">
+                    <div className="flex items-start gap-2">
+                      <HiCreditCard className="text-secondary mt-1" />
+                      <div>
+                        <p className="text-black">Payment Method</p>
+                        <p className="font-semibold">
+                          {selectedOrder?.data?.payment_method || "N/A"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-start gap-2">
-                    <HiHashtag className="text-secondary mt-1" />
-                    <div>
-                      <p className="text-black">Reference #</p>
-                      <p className="font-semibold">
-                        {selectedOrder?.data?.reference_number || "N/A"}
-                      </p>
+                    <div className="flex items-start gap-2">
+                      <HiUserCircle className="text-secondary mt-1" />
+                      <div>
+                        <p className="text-black">Account Name</p>
+                        <p className="font-semibold">
+                          {selectedOrder?.data?.account_name || "N/A"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-start gap-2">
-                    <HiDocumentText className="text-secondary mt-1" />
-                    <div className="w-full">
-                      <p className="text-black mb-1">Order Notes</p>
-                      <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm text-gray-800 min-h-[100px]">
-                        {selectedOrder?.data?.notes || "No notes provided."}
+                    <div className="flex items-start gap-2">
+                      <HiHashtag className="text-secondary mt-1" />
+                      <div>
+                        <p className="text-black">Reference #</p>
+                        <p className="font-semibold">
+                          {selectedOrder?.data?.reference_number || "N/A"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <HiDocumentText className="text-secondary mt-1" />
+                      <div className="w-full">
+                        <p className="text-black mb-1">Order Notes</p>
+                        <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm text-gray-800 min-h-[100px]">
+                          {selectedOrder?.data?.notes || "No notes provided."}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -843,6 +865,7 @@ function AdminViewOrderPage() {
               </div>
             </div>
           </ModalBody>
+
           <ModalFooter>
             <Button onClick={() => setShowDetailsModal(false)}>Close</Button>
           </ModalFooter>
