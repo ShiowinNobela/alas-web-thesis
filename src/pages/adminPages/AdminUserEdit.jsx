@@ -55,12 +55,10 @@ function AdminUserEdit() {
         });
     }
     
-
-
   return (
-        <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
+        <div className='h-screen max-h-full w-screen bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
                 <NewSideBar/>
-                    <div className="min-h-[60vh] w-100% bg-[#E2E0E1] pl-[256px] flex flex-col items-center py-10">
+                    <div className="bg-[#E2E0E1] flex flex-col overflow-auto items-center py-10">
                             <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg border">
                                 <p className="text-2xl font-semibold text-center mb-6 uppercase">user Information</p>
                                 <form className="space-y-6" onSubmit={handleUpdate}>
