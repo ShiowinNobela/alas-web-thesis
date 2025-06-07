@@ -1,6 +1,7 @@
 import UserSideBar from "./UserSideBar";
 import axios from "axios";
 import { useEffect, useState} from "react";
+import {Toaster, toast} from 'sonner'
 
 function UserSettings() {
 
@@ -27,6 +28,26 @@ function UserSettings() {
     });
     }, []); 
 
+    const handleUpdateInfo = (event) => {
+    event.preventDefault();
+    const user = JSON.parse(window.localStorage.getItem("user"));
+    axios
+      .put("/api/users/", getInfo, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((response) => {
+        console.log("User information updated successfully:", response.data);
+        response.data && setGetInfo(response.data);
+        toast.success('Info Update Successful');
+      })
+      .catch((error) => {
+        console.error("Error updating user information:", error);
+        toast.error('Invalid Input!');
+      });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e8e6c2] to-[#eaeae7] grid grid-cols-[0.1fr_0.9fr]">
       <UserSideBar/>
@@ -41,6 +62,8 @@ function UserSettings() {
               <p className="mb-2 text-[#ffffff]">Username</p>
                 <input
                   value={getInfo?.username}
+                  onChange={(e) =>
+                  setGetInfo({ ...getInfo, username: e.target.value })}
                   type="text"
                   id="name"
                   className="h-12 px-4 rounded-md text-[#000000]"
@@ -52,6 +75,10 @@ function UserSettings() {
               <input
                 type="email"
                 id="email"
+                value={getInfo?.email}
+                onChange={(e) =>
+                  setGetInfo({ ...getInfo, email: e.target.value })
+                }
                 className="h-12 px-4 rounded-md text-[#000000]"
               />
               </div>
@@ -63,6 +90,10 @@ function UserSettings() {
               type="text"
               id="subject"
               className="h-12 px-4 rounded-md text-[#000000]"
+              value={getInfo?.contact_number}
+                onChange={(e) =>
+                  setGetInfo({ ...getInfo, contact_number: e.target.value })
+                }
               />
             </div>
 
@@ -72,10 +103,15 @@ function UserSettings() {
               id="message"
               rows={2}
               className="px-4 py-3 rounded-md text-[#000000] resize-none"
+              value={getInfo?.address}
+                onChange={(e) =>
+                  setGetInfo({ ...getInfo, address: e.target.value })
+                }
               />
             </div>
 
-              <button className="mt-8 h-12 w-full bg-[#ffffff] border-1 border-[#5b5b58] text-[#000000] uppercase font-semibold rounded-md hover:bg-[#6c6c6a] hover:text-[#ffffff] transition">
+              <button className="mt-8 h-12 w-full bg-[#ffffff] border-1 border-[#5b5b58] text-[#000000] uppercase font-semibold rounded-md hover:bg-[#6c6c6a] hover:text-[#ffffff] transition"
+              onClick={handleUpdateInfo}>
             Save Info
               </button>
             </div>
@@ -119,7 +155,7 @@ function UserSettings() {
               </button>
         </div>
           </div>
-    
+    <Toaster richColors/>
     </div>
 
   );
