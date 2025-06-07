@@ -8,16 +8,20 @@ import axios from "axios";
 import AdminProfile from "../../components/Chinges/AdminProfile";
 import { useNavigate } from "react-router-dom";
 import CreateLimited from "./CreateLimited";
+import {Toaster, toast} from "sonner";
 
 function ProductManagement() {
   const [openLimitedProduct, setOpenLimitedProduct] = useState(null);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const getToday = () => new Date().toISOString().split('T')[0];
+
   const [createLimited, setCreateLimited] = useState({
-    product_id : "",
-    discouted_price: 0,
+    product_id: "",
+    discounted_price: 0,
+    start_date: getToday(),
     end_date: ""
-  })
+  });
 
   const [productType, setProductType] = useState("regular");
 
@@ -36,11 +40,24 @@ function ProductManagement() {
       });
   }, [productType]);
 
-  // const handleCreateLimited = () => {
-  //   axios.post("/api/limited-offer")
-  //   .then
-
-  // }
+  const handleCreateLimited = async () => {
+  if (!openLimitedProduct) return;
+  try {
+    await axios.post("/api/limited-offer", {
+      product_id: createLimited.product_id,
+      discounted_price: Number(createLimited.discounted_price),
+      start_date: createLimited.start_date,
+      end_date: createLimited.end_date
+    });
+    setOpenLimitedProduct(null);
+    setCreateLimited({ product_id: "", discounted_price: 0, end_date: "" });
+    setProductType("limited");
+    toast.success("Limited product created!");
+  } catch (err) {
+    toast.error("Failed to create limited product");
+    console.error(err);
+  }
+};
 
   return (
     <>
@@ -79,18 +96,29 @@ function ProductManagement() {
           <div className="w-full pr-7 pl-3 pt-5 grid grid-cols-4 gap-5">
             {data.map((d) => (
               <Card className="max-w-sm" key={d.id}>
-                <img
-                  src={d.image}
-                  alt={d.name || "Product image"}
-                  onError={(e) => {
-                    e.target.onerror = null; // prevent infinite loop
-                    e.target.src = Placeholder;
-                  }}
-                  className="w-full h-48 object-cover rounded-t-lg"
-                />
+               
+                {productType === "regular" ? (
+                  <img
+                    src={d.image}
+                    alt={d.name || "Product image"}
+                    onError={(e) => {
+                      e.target.onerror = null; 
+                      e.target.src = Placeholder;
+                    }}
+                    className="w-full h-48 object-cover rounded-t-lg"
+                  />
+                ) : (
+                  <div className="w-full h-48 flex items-center justify-center bg-gray-200 rounded-t-lg text-xl font-bold text-gray-700">
+                    Product ID: {d.id}
+                  </div>
+                )}
                 <h5 className="text-2xl font-bold tracking-tight dark:text-white text-black">
                   {d.name}
                 </h5>
+                
+                <p className="text-lg font-semibold text-[#d3723a] mb-2">
+                  ₱ {productType === "limited" ? d.discounted_price : d.price}
+                </p>
                 <div className="flex flex-row w-full text-center gap-3">
                   <div
                     className="p-1 bg-[#d3723a] text-l font-medium mt-1 border-1 border-[#894a25] drop-shadow-sm drop-shadow-black/60 w-1/2 h-[30px] rounded-2xl  cursor-pointer"
@@ -98,36 +126,68 @@ function ProductManagement() {
                       navigate(`/Admin/EditProduct/${d.id}`);
                     }}
                   >
-                    <p>Edit</p>
+                    <p>Edit</p> 
                   </div>
-
                   {productType === "regular" && (
-                    
-                      <div
-                        className="p-1 bg-[#d3723a] text-l font-medium mt-1 border-1 border-[#894a25] drop-shadow-sm drop-shadow-black/60 w-1/2 h-[30px] rounded-2xl cursor-pointer"
-                        onClick={() => setOpenLimitedProduct(d)}
-                      >
-                        <p>Create Limited</p>
-                      </div>
-                     
-                    
+                    <div
+                      className="p-1 bg-[#d3723a] text-l font-medium mt-1 border-1 border-[#894a25] drop-shadow-sm drop-shadow-black/60 w-1/2 h-[30px] rounded-2xl cursor-pointer"
+                      onClick={() => {
+                        setOpenLimitedProduct(d);
+                        setCreateLimited({
+                          product_id: d.id,
+                          discounted_price: 0,
+                          start_date: getToday(),
+                          end_date: ""
+                        });
+                      }}
+                    >
+                      <p>Create Limited</p>
+                    </div>
                   )}
                 </div>
               </Card>
-            ))}{openLimitedProduct && (
-            <CreateLimited open={!!openLimitedProduct} onClose={() => setOpenLimitedProduct(null)}>
-              <div className="w-full h-full bg-gray-50 rounded-2xl flex flex-col p-7 gap-3">
-                <label> Product ID:</label>
-                <input type="text" value={openLimitedProduct.id} readOnly />
-                <label> Discounted Price:</label>
-                <input type="number" onChange={(e) => { e.target.value }} />
-                <button className="bg-[#d3723a] p-2 mt-10 rounded-2xl shadow-2xl drop-shadow-xl"
-                onClick={handleCreateLimited}> Create Limited Product</button>
-              </div>
-            </CreateLimited>
-          )}
+            ))}
+                {openLimitedProduct && (
+                  <CreateLimited open={!!openLimitedProduct} onClose={() => setOpenLimitedProduct(null)}>
+                    <div className="w-full h-full bg-gray-50 rounded-2xl flex flex-col p-7 gap-3">
+                      <label> Product ID:</label>
+                      <input type="text" value={createLimited.product_id} readOnly />
+                      <label> Discounted Price:</label>
+                      <input
+                        type="number"
+                        value={createLimited.discounted_price}
+                        onChange={e => setCreateLimited(cl => ({
+                          ...cl,
+                          discounted_price: e.target.value
+                        }))}
+                      />
+                      <label>Start Date:</label>
+                      <input
+                        type="date"
+                        value={createLimited.start_date}
+                        readOnly
+                      />
+                      <label> End Date:</label>
+                      <input
+                        type="date"
+                        value={createLimited.end_date}
+                        onChange={e => setCreateLimited(cl => ({
+                          ...cl,
+                          end_date: e.target.value
+                        }))}
+                      />
+                      <button
+                        className="bg-[#d3723a] p-2 mt-10 rounded-2xl shadow-2xl drop-shadow-xl"
+                        onClick={handleCreateLimited}
+                      >
+                        Create Limited Product
+                      </button>
+                    </div>
+                  </CreateLimited>
+                )}
           </div>
         </div>
+        <Toaster richColors/>
       </div>
 
       

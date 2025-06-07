@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import NewSideBar from "../../components/newSideBar.jsx"
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
@@ -54,10 +55,9 @@ function AdminUserEdit() {
   };
 
   return (
-    <div className='h-screen w-screen'>
-    <Toaster richColors/>
-    <Sidebar/>
-        <div className="h-screen w-screen bg-[#E2E0E1] pl-[256px] flex flex-col items-center ">
+    <div className='h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]'>
+      <NewSideBar/>
+      <div className='min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto'>
             <h1 className='py-5 text-3xl font-semibold '>Edit User</h1>
             <div className="w-4xl bg-white p-5 rounded-lg shadow-md border-1 ">
               <form className='flex flex-col' onSubmit={handleUpdate}>
@@ -127,7 +127,9 @@ function AdminUserEdit() {
               </form>
             </div>
         </div>
+         <Toaster richColors/>
         </div>
+       
   )
 }
 
