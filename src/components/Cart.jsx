@@ -8,7 +8,7 @@ import { Toaster, toast } from 'sonner';
 import { TiDeleteOutline } from "react-icons/ti"; 
 import { BsCart } from "react-icons/bs";
 
-function Cart() {
+function Cart({cartUpdated}) {
 
 
   const [getCartItems, setGetCartItems] = useState([]);
@@ -33,7 +33,7 @@ function Cart() {
     .catch((error) => {
       console.error("Error fetching user data:", error);
     });
-  }, []);
+  }, [cartUpdated]);
 
 
   const handleRemove = async (id) => {
