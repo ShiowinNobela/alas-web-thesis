@@ -21,7 +21,7 @@ function InventoryManagement() {
     error,
   } = useQuery({
     queryKey: ["products"],
-    queryFn: () => axios.get("/api/products").then((res) => res.data),
+    queryFn: () => axios.get("/api/products/admin").then((res) => res.data),
   });
 
   const totalProducts = data.length;

@@ -190,10 +190,13 @@ function AdminViewOrderPage() {
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
+
     if (date === null) {
       setStartDateKey((prev) => prev + 1);
+      setLast30SummaryData([]);
+      setSummaryData([]);
+      fetchLast30OrderSummary();
     }
-    setSummaryData([]);
   };
 
   const navigate = useNavigate();
@@ -203,7 +206,7 @@ function AdminViewOrderPage() {
     if (date === null) {
       setEndDateKey((prev) => prev + 1);
     }
-    setSummaryData([]);
+    fetchLast30OrderSummary();
   };
 
   const sortedOrders = [...orders].sort((a, b) => {
@@ -284,6 +287,11 @@ function AdminViewOrderPage() {
         setUpdateStatus("");
         setModalTitle("");
         setConfirmButtonLabel("");
+        if (startDate && endDate) {
+          fetchOrderSummary(startDate, endDate);
+        } else {
+          fetchLast30OrderSummary();
+        }
       })
       .catch((err) => {
         console.error("Cancel failed:", err);
@@ -522,26 +530,31 @@ function AdminViewOrderPage() {
 
               <tbody>
                 {sortedOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-gray-200 ">
-                    <td className="px-6 py-4 text-xs text-gray-700 bg-gray-50">
+                  <tr
+                    key={order.id}
+                    className="border-b border-gray-200 even:bg-gray-50 odd:bg-gray-100 hover:bg-gray-300 transition-colors"
+                  >
+                    <td className="px-6 py-4 text-xs text-gray-700">
                       <div>
                         <p className="font-primary">{order.username}</p>
                         <p className="text-gray-500 text-xs">{order.email}</p>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-xs text-gray-600 bg-gray-100">
+
+                    <td className="px-6 py-4 text-xs text-gray-600">
                       {order.id}
                     </td>
-                    <td className="px-6 py-4 min-w-[190px] bg-gray-50">
-                      <ul className="list-disc list-inside break-words">
+
+                    <td className="px-6 py-4 min-w-[190px]">
+                      <div className="break-words space-y-1">
                         {order.items.map((item) => (
-                          <li key={item.item_id}>
+                          <div key={item.item_id}>
                             {item.product_name} x {item.quantity}
-                          </li>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 bg-gray-100">
+                    <td className="px-6 py-4">
                       <div className="text-sm font-medium text-gray-800">
                         {new Date(order.order_date).toLocaleDateString()}
                       </div>
@@ -552,14 +565,43 @@ function AdminViewOrderPage() {
                         })}
                       </div>
                     </td>
-                    <td className="px-6 py-4 bg-gray-50">
+                    <td className="px-6 py-4">
                       ₱ {parseFloat(order.total_amount).toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 capitalize bg-gray-100">
-                      {order.payment_method}
+                    <td className="px-6 py-4 ">
+                      <div className="flex flex-col items-center justify-center text-xs text-center">
+                        {order.payment_method === "GCash" && (
+                          <>
+                            <img
+                              src="../src/components/images/gcash-logo.png"
+                              alt="GCash"
+                              className="h-6 mb-1"
+                            />
+                            <span>GCash</span>
+                          </>
+                        )}
+
+                        {order.payment_method === "Maya" && (
+                          <>
+                            <img
+                              src="../src/components/images/maya-icon.png"
+                              alt="Maya"
+                              className="h-6 mb-1"
+                            />
+                            <span>Maya</span>
+                          </>
+                        )}
+
+                        {order.payment_method === "bank_transfer" && (
+                          <>
+                            <span>Bank</span>
+                            <span>Transfer</span>
+                          </>
+                        )}
+                      </div>
                     </td>
 
-                    <td className="px-6 py-4 bg-gray-50">
+                    <td className="px-6 py-4 ">
                       <div className="flex justify-center items-center">
                         <span
                           className={`px-2 py-1 rounded text-xs font-semibold ${getStatusColor(
@@ -572,7 +614,7 @@ function AdminViewOrderPage() {
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 bg-gray-100 justify-center text-center">
+                    <td className="px-6 py-4 justify-center text-center">
                       <div className="flex justify-center items-center">
                         {order.status === "pending" &&
                         order.cancel_requested === 0 ? (
@@ -645,7 +687,7 @@ function AdminViewOrderPage() {
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 bg-gray-100 justify-start">
+                    <td className="px-6 py-4 justify-start">
                       <Dropdown
                         label=""
                         inline
