@@ -1,11 +1,10 @@
-  import Modal from "../components/ThankYouPopUp.jsx";
-import Prod1 from "../components/images/product1.jpg";
-import Alapeno from "../components/images/Alapeno.webp";
+import Modal from "../components/ThankYouPopUp.jsx";
 import { FaShoppingCart } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BackButton from "../components/Chinges/BackButton.jsx";
+import StarImg from "../components/images/star.png"
 
 function ProductDetailsPage() {
   const [Open, setOpen] = useState(false);
@@ -120,7 +119,10 @@ function ProductDetailsPage() {
                           className="border border-gray-300 p-4 rounded shadow-lg bg-white ml-3"
                         >
                           <h3 className="font-semibold">Name: {d.username}</h3>
-                          <h4>Rating: {d.rating}</h4>
+                          <div className="flex flex-row items-center gap-x-3">
+                          <h4>Rating: {d.rating} / 5 </h4>
+                          <img src={StarImg} alt="/" className="h-8 w-8" />
+                          </div>
                           <h4>Review:</h4>
                           <p>{d.review_text}</p>
                         </div>

@@ -1,23 +1,83 @@
 import NewSideBar from "../../components/newSideBar";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function SalesPage() {
+
+  const [orders, setOrders] = useState([]); 
+  const [topProducts, setTopProducts] = useState([]);
+  const [leastProducts, setLeastProducts] = useState([]);
+  const [fulfillmentRate, setFulfillmentRate] = useState(0);
+
+  const [summary, setSummary] = useState ({
+    totalRevenue: 0,
+    websiteSales: 0,
+    walkInSales: 0,
+  })
+
+   useEffect(() => {
+    axios.get("/api/reports/top-products?start=2025-05-01&end=2025-06-10")
+      .then((res) => {
+        const products = res.data.data.topProducts;
+        setTopProducts(products.slice(0, 5));
+        const least = [...products].sort((a, b) => a.totalSold - b.totalSold).slice(0, 5);
+        setLeastProducts(least);
+      })
+      .catch((err) => {
+        setTopProducts([]);
+        setLeastProducts([]);
+        console.error("Failed to fetch top products", err);
+      });
+  }, []);
+
+  useEffect(() => {
+  axios.get("/api/reports/sales-summary?start=2025-05-01&end=2025-06-28")
+    .then((res) => {
+      const data = res.data.data || {};
+      console.log(data)
+      setSummary({
+        totalRevenue: Number(data.totalSales || 0),
+        totalOrders: Number(data.totalOrders || 0),
+        totalItemsSold: Number(data.totalItemsSold || 0),
+      });
+    })
+    .catch(() => setSummary({ totalRevenue: 0, totalOrders: 0, totalItemsSold: 0 }));
+}, []);
+
+useEffect(() => {
+  axios.get("/api/adminOrder")
+    .then((res) => {
+      const ordersData = res.data.data || [];
+      setOrders(ordersData);
+
+      const totalOrders = ordersData.length;
+      const nonCancelled = ordersData.filter(
+        (order) => order.status && order.status.toLowerCase() !== "cancelled"
+      ).length;
+
+      const rate = totalOrders > 0 ? ((nonCancelled / totalOrders) * 100).toFixed(2) : 0;
+      setFulfillmentRate(rate);
+    })
+    .catch(() => setFulfillmentRate(0));
+}, []);
   return (
     <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
       <NewSideBar />
-      <div className="flex flex-col h-full overflow-x-auto bg-[#ffffff] shadow p-6 space-y-6">
-        <div>
+      <div className="flex flex-col h-full overflow-x-auto bg-[#ffffff] p-6 space-y-6">
+
 
           {/* tiles */}
-          <div className="bg-admin h-36 rounded-md border border-[#0b284e]">
-            <div className="flex flex-row gap-8 p-7">
+          <div>
+            <div className="flex flex-row gap-x-8 p-7">
               <div
-                className="p-4 rounded-lg shadow w-1/4 cursor-pointer bg-[#ebeb43] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
                 role="button"
-              >
+                >
                 <div className="flex justify-between">
                   <div>
-                    <h2 className="font-bold text-lg mb-1 uppercase">Sales</h2>
-                    <p className="text-sm text-gray-600">Total sales</p>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Revenue</h2>
+                    <p className="text-md text-gray-600 mb-1 ">Total Revenue</p>
+                    <p className="font-semibold text-lg">₱ {summary.totalRevenue.toLocaleString()}</p>
                   </div>
                   <svg
                     className="w-6 h-6 text-blue-600"
@@ -32,12 +92,14 @@ function SalesPage() {
                 </div>
               </div>
               <div
-                className="p-4 rounded-lg shadow w-1/4 cursor-pointer bg-[#73cd55] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
                 role="button"
-              >
-                <div className="flex items-center justify-between">
+                >
+                <div className="flex justify-between">
                   <div>
-                    <h2 className="font-bold text-lg mb-1 uppercase">fast-moving item/s</h2>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Website</h2>
+                    <p className="text-md text-gray-600 mb-1 ">Total Website Sales</p>
+                    <p className="font-semibold text-lg">₱ {summary.totalRevenue.toLocaleString()} </p>
                   </div>
                   <svg
                     className="w-6 h-6 text-blue-600"
@@ -52,12 +114,58 @@ function SalesPage() {
                 </div>
               </div>
               <div
-                className="p-4 rounded-lg shadow w-1/4 cursor-pointer bg-[#eb8643] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
                 role="button"
-              >
-                <div className="flex items-center justify-between">
+                >
+                <div className="flex justify-between">
                   <div>
-                    <h2 className="font-bold text-lg mb-1 uppercase">slow-moving item/s</h2>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Walk-In</h2>
+                    <p className="text-md text-gray-600 mb-1 ">Total Walk-In Sales</p>
+                    <p className="font-semibold text-lg">₱ 0</p>
+                  </div>
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                role="button"
+                >
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Orders</h2>
+                    <p className="text-md text-gray-600 mb-1 ">Total Orders</p>
+                    <p className="font-semibold text-lg"> {summary.totalOrders}</p>
+                  </div>
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                role="button"
+                >
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Items</h2>
+                    <p className="text-md text-gray-600 mb-1 ">Total Items Sold</p>
+                    <p className="font-semibold text-lg"> {summary.totalItemsSold} </p>
                   </div>
                   <svg
                     className="w-6 h-6 text-blue-600"
@@ -72,348 +180,111 @@ function SalesPage() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* table */}
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full p-5">
-          <div className="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
-            <div>
-              
-              {/* filter (fast moving and slow moving items )*/}
-              <button
-                id="dropdownRadioButton"
-                data-dropdown-toggle="dropdownRadio"
-                className="inline-flex items-center mr-3 text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600"
-                type="button"
-              >
-                <svg
-                  className="w-3 h-3 text-gray-500 dark:text-gray-400 me-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+            <div className="flex flex-row justify-around gap-x-8 px-7 pb-7">
+              <div
+                className="p-4 rounded-lg shadow-xl w-1/4 h-55 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                role="button"
                 >
-                  <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                </svg>
-                Filter
-                <svg
-                  className="w-2.5 h-2.5 ms-2.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-
-              {/* last 30 days */}
-              <button
-                id="dropdownRadioButton"
-                data-dropdown-toggle="dropdownRadio"
-                className="inline-flex items-center text-gray-800 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600"
-                type="button"
-              >
-                <svg
-                  className="w-3 h-3 text-gray-500 dark:text-gray-400 me-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-                </svg>
-                Last 30 days
-                <svg
-                  className="w-2.5 h-2.5 ms-2.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            {/* search button */}
-            <label htmlFor="table-search" className="sr-only">
-              Search
-            </label>
-
-            <div className="relative border border-gray-100 sm:rounded-lg">
-              <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Fullfilment Rate</h2>
+                    <p className="font-semibold text-lg"> {fulfillmentRate}%</p>
+                  </div>
+                </div>
               </div>
 
-              <input
-                type="text"
-                id="table-search"
-                className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search for items"
-              />
-            </div>
-          </div>
+              <div
+                className="p-4 rounded-lg shadow-xl w-1/4 h-55 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition "
+                role="button"
+                >
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Least Selling Products</h2>
+                    {leastProducts.length === 0 ? (
+                      <p>No data available.</p>
+                    ) : (
+                      leastProducts.map((product) => (
+                        <div key={product.id} className="flex flex-row justify-between items-center">
+                          <h2 className="font-light text-md p-1">{product.name}</h2>
+                          <p>{product.totalSold}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
 
-          {/* table contetn */}
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs round text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-[#ffffff]">
-              <tr>
-                <th scope="col" className="px-8 py-3">
-                  Product ID
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Item ID
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Stock Level
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr key="alas001" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              <div
+                className="p-4 rounded-lg shadow-xl w-2/4 h-55 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                role="button" 
                 >
-                  ALAS001
-                </th>
-                <td className="px-6 py-4">Catch 23</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#6d99e6] hover:underline"
-                  >
-                    Good
-                  </a>
-                </td>
-              </tr>
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="font-bold text-xl mb-1 uppercase">Graph last month vs this month</h2>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div className=" p-7">
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-xl">
+                <thead className="text-xs round text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-[#ffffff]">
+                  <tr>
+                    <th scope="col" className="px-8 py-3">
+                      Product Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Orders
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Revenue
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Price
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+              {topProducts.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="text-center py-4">
+                    No data available.
+                  </td>
+                </tr>
+              ) : (
+                topProducts.map((product) => (
+                  <tr key={product.id}>
+                    <td className="px-8 py-3">{product.name}</td>
+                    <td className="px-6 py-3">{product.totalSold}</td>
+                    <td className="px-6 py-3">₱ {product.totalRevenue}</td>
+                    <td className="px-6 py-3">₱{parseFloat(product.unitPrice).toFixed(2)}</td>
+                    <td className="px-6 py-3">
+                      <span
+                        className={`px-2 py-0.5 text-xs font-medium rounded ${
+                          product.is_active
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {product.is_active ? "Active" : "Inactive"}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
-            <tbody>
-              <tr key="alas002" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS002
-                </th>
-                <td className="px-6 py-4">The Ballad Q</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#6d99e6] hover:underline"
-                  >
-                    Good
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas003" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS003
-                </th>
-                <td className="px-6 py-4">Le Blanc</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#6f6d6d] hover:underline"
-                  >
-                    Out of stock
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas004-1" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas004-2" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas004-3" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas004-4" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas004-5" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas004-6" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr key="alas004-7" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+              </table>
+            </div>
+
+          </div>
       </div>
+
+        
     </div>
   );
 }

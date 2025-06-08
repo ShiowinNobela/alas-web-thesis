@@ -150,7 +150,7 @@ const handleSort = (key) => {
             </a>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {deliveredNotifications.length === 0 ? (
-                <div className="text-gray-500 text-sm col-span-2">No delivered orders yet.</div>
+                <div className="text-gray-500 text-sm col-span-2">No pending orders yet.</div>
               ) : (
                 deliveredNotifications.map((order) => (
                   <div

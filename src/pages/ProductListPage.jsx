@@ -12,8 +12,11 @@ function ProductPage() {
   const [newData, setNewData] = useState([])
   const navigate = useNavigate();
   const [cartUpdated, setCartUpdated] = useState(false);
+  
 
   const user = window.localStorage.getItem("user");
+  const isLoggedIn = !!user;
+
   useEffect(() => {
     window.localStorage.getItem("user")
     axios
@@ -28,40 +31,52 @@ function ProductPage() {
   
 
     const handleAddToCart = async (product) => {
-    try {
-      const user = JSON.parse(window.localStorage.getItem("user"));
-      const userdata = await axios.get("/api/users", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      const response = await userdata.data;
-      await axios.post(`/api/cart/${response.id}`, {
-        productId: product.id.toString(),
-        quantity: 1, 
-      });
-      setCartUpdated((prev) => !prev);
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-    }
-  };
+      const user = window.localStorage.getItem("user");
+      if (!user) {
+        navigate("/LoginPage");
+        return;
+      }
+      try {
+        const parsedUser = JSON.parse(user);
+        const userdata = await axios.get("/api/users", {
+          headers: {
+            Authorization: `Bearer ${parsedUser.token}`,
+          },
+        });
+        const response = userdata.data;
+        await axios.post(`/api/cart/${response.id}`, {
+          productId: product.id.toString(),
+          quantity: 1, 
+        });
+        setCartUpdated((prev) => !prev);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+      }
+    };
 
 
   return (
-      <div className="grid grid-cols-[0.75fr_0.25fr] max-w-screen bg-[#f2efef] h-full">
+      <div
+        className={
+          isLoggedIn
+            ? "grid grid-cols-[0.75fr_0.25fr] max-w-screen bg-[#f2efef] h-full"
+            : "max-w-screen bg-[#f2efef] h-full"
+        }
+      >
           {/* Left Side */}
-          <div className="pt-5 pl-5 flex flex-col gap-5 min-h-fit ">
-            {/* Search Box placeholder */}
-            <div className="h-10 w-2/5 bg-[#FAF9F6] pt-1 pl-3 rounded-2xl border-2 border-[#595959] flex justify-between cursor-pointer">
-              <p>search</p>
-              <PiMagnifyingGlassLight className=" mx-3 h-7 w-7" />{" "}
-            </div>
-            {/* Product List */}
-            <div className="grid grid-cols-4 gap-4 h-[89%] ml- overflow-y-auto overflow-x-hidden">
-              {newData 
-                .filter(d => d.stock_quantity > 0)
-                .map((d)  => (
-                  
+          <div className={isLoggedIn ? "" : "w-full"}>
+            <div className="pt-5 pl-5 flex flex-col gap-5 min-h-fit ">
+              {/* Search Box placeholder */}
+              <div className="h-10 w-2/5 bg-[#FAF9F6] pt-1 pl-3 rounded-2xl border-2 border-[#595959] flex justify-between cursor-pointer">
+                <p>search</p>
+                <PiMagnifyingGlassLight className=" mx-3 h-7 w-7" />{" "}
+              </div>
+              {/* Product List */}
+              <div className="grid grid-cols-4 gap-4 h-[89%] ml- overflow-y-auto overflow-x-hidden">
+                {newData 
+                  .filter(d => d.stock_quantity > 0)
+                  .map((d)  => (
+                    
                   // products
                     <div className="flex flex-col items-center justify-center bg-[#e1dfdf] p-6 mr-5 rounded-md shadow-md">
                       <img
@@ -91,8 +106,11 @@ function ProductPage() {
                   ))}
               </div>
             </div>
+          </div>  
           {/* Right Side */}
-          {user && <Cart cartUpdated={cartUpdated} />}
+          {isLoggedIn && (
+            <Cart cartUpdated={cartUpdated} />
+          )}
         </div>
   );
 }
