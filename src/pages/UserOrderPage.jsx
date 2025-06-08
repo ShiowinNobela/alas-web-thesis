@@ -289,6 +289,7 @@ function UserViewOrderPage() {
                     order because I wake up
                   </p>
                 </caption>
+<<<<<<< Updated upstream
                 <thead className="text-xs uppercase bg-gray-600 text-white">
                   <tr>
                     <th className="px-6 py-3">Items</th>
@@ -342,6 +343,20 @@ function UserViewOrderPage() {
                           className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
                             order.status
                           )}`}
+=======
+                <div className="w-4xl bg-gray-50 overflow-y-auto h-150 mx-auto shadow-md drop-shadow-xl p-5">
+                
+                  <div className="flex flex-col items-center justify-center">
+                    {notifications.length === 0 ? (
+                      <div className="text-gray-500 p-5">
+                        No notifications yet.
+                      </div>
+                    ) : (
+                      notifications.map((notif) => (
+                        <div
+                          key={notif.id}
+                          className="w-3xl grid grid-cols-[0.70fr_0.30fr] bg-white shadow-2xl mb-4"
+>>>>>>> Stashed changes
                         >
                           {order.status}
                         </span>
