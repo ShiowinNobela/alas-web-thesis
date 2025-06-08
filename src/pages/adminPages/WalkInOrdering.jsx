@@ -161,7 +161,7 @@ function WalkInOrdering() {
                           setSelectedProduct(d);
                         }}
                       >
-                        <div className="bg-red-300 w-30 h-30"></div>
+                        <img src={d.image} alt="/" className="w-35 h-35" />
                         <h1>{d.name}</h1>
                         <p>{d.price}</p>
 
