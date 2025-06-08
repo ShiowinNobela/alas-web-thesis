@@ -126,37 +126,37 @@ function AccountManagement() {
                     <tr>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-s font-semibold text-[#224160] uppercase tracking-wider rounded-2xl"
+                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider roundedl-2xl"
                       >
                         username
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-s font-semibold text-[#224160] uppercase tracking-wider hidden lg:table-cell"
+                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider hidden lg:table-cell"
                       >
                         address
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-s font-semibold text-[#224160] uppercase tracking-wider hidden lg:table-cell"
+                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider hidden lg:table-cell"
                       >
                         contact number
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-s font-semibold text-[#224160] uppercase tracking-wider"
+                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider"
                       >
                         role
                       </th>
                       <th
                         scope="col"
-                        className="px-6 py-3 text-left text-s font-semibold text-[#224160] uppercase tracking-wider"
+                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider"
                       >
                         email
                       </th>
                       <th
                         scope="col"
-                        className="relative rounded-2xl px-6 py-3"
+                        className="relative roundedr-2xl bg-admin px-6 py-3"
                       >
                         <span className="sr-only">Edit</span>
                       </th>
