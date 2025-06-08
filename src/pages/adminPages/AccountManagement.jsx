@@ -1,209 +1,231 @@
 import NewSideBar from "../../components/newSideBar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { MdToggleOn, MdToggleOff } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { IoPersonAddOutline } from "react-icons/io5";
+import {
+  HiUserCircle,
+  HiUserGroup,
+  HiOutlineUsers,
+  HiIdentification,
+} from "react-icons/hi";
+
+const fetchUser = async () => {
+  const user = JSON.parse(window.localStorage.getItem("user"));
+  const res = await axios.get("/api/users", {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  });
+  return res.data;
+};
+
+const fetchAdminUsers = async () => {
+  const res = await axios.get("/api/adminUser");
+  return res.data.data || [];
+};
 
 function AccountManagement() {
   const [statusFilter, setStatusFilter] = useState("All");
   const navigate = useNavigate();
-  useEffect(() => {
-    const user = JSON.parse(window.localStorage.getItem("user"));
-    axios
-      .get("/api/users", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then((response) => {
-        const userData = response.data;
-        if (userData.role_name !== "admin") {
-          window.location.href = "/";
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, []);
+  const queryClient = useQueryClient();
 
-  const [data, setData] = useState();
-  useEffect(() => {
-    axios
-      .get("/api/adminUser")
-      .then((res) => setData(res.data.data || []))
-      .catch((err) => console.log(err));
-  }, []);
+  useQuery({
+    queryKey: ["currentUser"],
+    queryFn: fetchUser,
+    onSuccess: (data) => {
+      if (data.role_name !== "admin") {
+        window.location.href = "/";
+      }
+    },
+    onError: () => {
+      console.error("Unable to fetch user.");
+    },
+  });
+
+  const {
+    data: users = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["adminUsers"],
+    queryFn: fetchAdminUsers,
+  });
+
+  const roleTabs = [
+    { label: "All", value: "All", icon: HiUserCircle },
+    { label: "Admin", value: "admin", icon: HiUserGroup },
+    { label: "Staff", value: "staff", icon: HiOutlineUsers },
+    { label: "Customer", value: "customer", icon: HiIdentification },
+  ];
+
+  const toggleUserStatus = useMutation({
+    mutationFn: async ({ id, newStatus }) => {
+      const response = await axios.patch(`/api/adminUser/manage/${id}`, {
+        is_active: newStatus,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries("users");
+    },
+  });
 
   const filteredOrders =
     statusFilter === "All"
-      ? data
-      : data.filter(
-          (order) =>
-            order.role_name.toLowerCase() === statusFilter.toLowerCase()
+      ? users
+      : users.filter(
+          (user) => user.role_name.toLowerCase() === statusFilter.toLowerCase()
         );
 
   return (
-    <>
-      <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
-        <NewSideBar />
-        <main className="min-h-full flex flex-col gap-3 overflow-auto px-4 py-7">
-          {/* Background */}
-          <div className="bg-[#E2E0E1] items-center h-full overflow-hidden">
-            {/* Add role button */}
-            <div className="flex justify-end px-4 pt-7 pb-3">
+    <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
+      <NewSideBar />
+      <div className="min-h-full w-full flex flex-col gap-5 overflow-auto">
+        <main className="min-h-full bg-[#E2E0E1] px-4 py-7">
+          <div className="max-w-screen-2xl mx-auto bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
+            {/* Tabs + Add Button */}
+            <div className="flex flex-col gap-4 px-4 py-4 border-b sm:flex-row sm:items-center sm:justify-between sm:gap-0">
+              <div className="flex flex-wrap gap-2">
+                {["All", "admin", "staff", "customer"].map((role) => (
+                  <button
+                    key={role}
+                    onClick={() => setStatusFilter(role)}
+                    className={`rounded-md px-4 py-2 text-sm font-semibold capitalize transition ${
+                      statusFilter === role
+                        ? "bg-admin text-white shadow"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {role}
+                  </button>
+                ))}
+              </div>
+
               <Link to="/Admin/AdminAddUser">
                 <button
                   type="button"
-                  className="text-[#ffffff] bg-[#44a830] hover:bg-[#2d801c] focus:ring-1 focus:outline-none focus:ring-[#4e9140] font-medium rounded-lg text-md px-5 py-2.5 text-center inline-flex items-center me-2"
+                  className="inline-flex items-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm font-semibold text-black shadow hover:bg-secondary/80 focus:ring-2 focus:ring-secondary"
                 >
-                  <svg
-                    className="w-8 h-8 me-1 pt-1"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 18 21"
-                  >
-                    <IoPersonAddOutline />
-                  </svg>
-                  ADD ROLE
+                  <IoPersonAddOutline className="h-5 w-5" />
+                  Add User
                 </button>
               </Link>
             </div>
-            {/* Filter buttons */}
-            <div className="flex justify-center p-2 gap-6">
-              <button
-                className={`text-center px-6 rounded-2xl font-semibold ${
-                  statusFilter === "All"
-                    ? "bg-[#2d6096] text-[#ffffff]"
-                    : "bg-[#2d6096]"
-                } hover:bg-[#123e6c] border-1 border-[#2d6096] focus:outline-2 focus:outline-offset-2 focus:outline-[#2d6096]`}
-                onClick={() => setStatusFilter("All")}
-              >
-                All
-              </button>
-
-              <button
-                className={`text-center px-10 py-3 rounded-2xl font-semibold 
-                    ${
-                      statusFilter === "admin"
-                        ? "bg-[#737679] text-[#ffffff]"
-                        : "bg-[#737679]"
-                    } hover:bg-[#6e7072] border-1 border-[#4c4d4f] focus:outline-2 focus:outline-offset-2 focus:outline-[#999da2]`}
-                onClick={() => setStatusFilter("admin")}
-              >
-                Admin
-              </button>
-
-              <button
-                className={`text-center px-10 py-3 rounded-2xl font-semibold ${
-                  statusFilter === "staff"
-                    ? "bg-[#737679] text-[#ffffff]"
-                    : "bg-[#737679]"
-                } hover:bg-[#6e7072] border-1 border-[#4c4d4f] focus:outline-2 focus:outline-offset-2 focus:outline-[#999da2]`}
-                onClick={() => setStatusFilter("staff")}
-              >
-                Staff
-              </button>
-
-              <button
-                className={`text-center px-10 py-3 rounded-2xl font-semibold ${
-                  statusFilter === "customer"
-                    ? "bg-[#737679] text-[#ffffff]"
-                    : "bg-[#737679]"
-                } hover:bg-[#6e7072] border-1 border-[#4c4d4f] focus:outline-2 focus:outline-offset-2 focus:outline-[#999da2]`}
-                onClick={() => setStatusFilter("customer")}
-              >
-                Customer
-              </button>
-            </div>
 
             {/* Table */}
-            <div className="flex justify-center rounded-2xl mt-5 h-full">
-              <div className="h-5/8 overflow-auto bg-[#ffffff] rounded-2xl pb-5">
-                <table className="min-w-full divide-y divide-[#a1a2a3]">
-                  <thead className="bg-[#ffffff]">
+            {isLoading ? (
+              <div className="p-6 text-center text-gray-600">
+                Loading users...
+              </div>
+            ) : isError ? (
+              <div className="p-6 text-center text-red-600">
+                Failed to load users.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full table-fixed divide-y divide-gray-200">
+                  <thead className="sticky top-0 z-10 bg-admin text-white uppercase text-xs">
                     <tr>
-                      <th
-                        scope="col"
-                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider roundedl-2xl"
-                      >
-                        username
+                      <th className="w-[21%] px-6 py-3">Username</th>
+                      <th className="w-[5%] px-6 py-3">Role</th>
+
+                      <th className="w-[35%] px-6 py-3 hidden lg:table-cell">
+                        Address
                       </th>
-                      <th
-                        scope="col"
-                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider hidden lg:table-cell"
-                      >
-                        address
+                      <th className="w-[15%] px-6 py-3 hidden lg:table-cell">
+                        Contact
                       </th>
-                      <th
-                        scope="col"
-                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider hidden lg:table-cell"
-                      >
-                        contact number
-                      </th>
-                      <th
-                        scope="col"
-                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider"
-                      >
-                        role
-                      </th>
-                      <th
-                        scope="col"
-                        className="bg-admin px-6 py-3 text-left text-s font-semibold text-[#ffffff] uppercase tracking-wider"
-                      >
-                        email
-                      </th>
-                      <th
-                        scope="col"
-                        className="relative roundedr-2xl bg-admin px-6 py-3"
-                      >
-                        <span className="sr-only">Edit</span>
-                      </th>
+                      <th className="w-[24%] px-6 py-3">Status</th>
+                      <th className="w-[18%] px-6 py-3">Actions</th>
                     </tr>
                   </thead>
+                  <tbody className="bg-white divide-y divide-gray-100">
+                    {filteredOrders.map((user) => (
+                      <tr
+                        key={user.id}
+                        className="hover:bg-gray-50 transition duration-150 ease-in-out"
+                      >
+                        <td className="w-[21%] px-6 py-4 text-sm text-gray-800">
+                          <div className="font-medium text-blue-600">
+                            {user.username ?? "–"}
+                          </div>
+                          <div className="text-gray-500 text-xs">
+                            {user.email ?? "–"}
+                          </div>
+                        </td>
 
-                  {/* Users */}
-                  <tbody className="bg-[#ffffff] divide-y divide-[#a1a2a3]">
-                    {filteredOrders &&
-                      filteredOrders.map((d) => (
-                        <tr
-                          key={d.id}
-                          className="hover:bg-[#c8c5c5] transition duration-150 ease-in-out"
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[#3888d8]">
-                            {d.username}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[#636567] hidden lg:table-cell">
-                            {d.address}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[#636567] hidden lg:table-cell">
-                            {d.contact_number}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[#636567]">
-                            {d.role_name}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-[#636567]">
-                            {d.email}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <FaEdit
-                              className="mx-auto cursor-pointer w-6 h-6 text-[#123992]"
-                              onClick={() => {
-                                navigate(`/Admin/AdminUserEdit/${d.id}`);
-                              }}
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                        <td className="w-[5%] px-6 py-4 text-sm text-gray-600 capitalize">
+                          {user.role_name ?? "–"}
+                        </td>
+
+                        <td className="w-[35%] px-6 py-4 text-sm text-gray-600 hidden lg:table-cell">
+                          {user.address ?? "–"}
+                        </td>
+
+                        <td className="w-[18%] px-6 py-4 text-sm text-gray-600 hidden lg:table-cell">
+                          {user.contact_number ?? "–"}
+                        </td>
+
+                        <td className="w-[24%] px-6 py-4 text-sm text-center">
+                          <span
+                            className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${
+                              user.is_active
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-600"
+                            }`}
+                          >
+                            {user.is_active ? "Active" : "Inactive"}
+                          </span>
+                        </td>
+
+                        <td className="w-[18%] px-6 py-4 text-center flex items-center gap-3">
+                          {/* Toggle Active Button */}
+                          <button
+                            onClick={() =>
+                              toggleUserStatus.mutate({
+                                id: user.id,
+                                newStatus: !user.is_active,
+                              })
+                            }
+                            className="text-gray-600 hover:text-gray-800"
+                            title="Toggle Active"
+                            disabled={toggleUserStatus.isLoading}
+                          >
+                            {user.is_active ? (
+                              <MdToggleOn
+                                size={24}
+                                className="text-green-500"
+                              />
+                            ) : (
+                              <MdToggleOff size={24} className="text-red-500" />
+                            )}
+                          </button>
+
+                          {/* Edit Button */}
+                          <button
+                            onClick={() =>
+                              navigate(`/Admin/AdminUserEdit/${user.id}`)
+                            }
+                            className="text-indigo-600 hover:text-indigo-900 transition"
+                            title="Edit User"
+                          >
+                            <FaEdit className="w-5 h-5" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
-            </div>
+            )}
           </div>
         </main>
       </div>
-    </>
+    </div>
   );
 }
 

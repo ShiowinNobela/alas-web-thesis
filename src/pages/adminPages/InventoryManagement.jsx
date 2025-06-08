@@ -98,7 +98,7 @@ function InventoryManagement() {
       <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
         <NewSideBar />
 
-        <section className="bg-gray-50 py-3 sm:py-5">
+        <section className="bg-gray-50 py-7 px-4">
           <div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
             <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
               {/* Summary Section */}

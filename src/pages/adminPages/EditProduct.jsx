@@ -78,28 +78,49 @@ function AddProduct() {
   };
 
   return (
-    <>
-      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
-        <NewSideBar />
-        <div className="min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto">
-          <div className="w-full pt-3 pr-7 flex justify-end">
-            <AdminProfile />
-          </div>
-          <div className="w-full flex justify-between items-center">
-            <BackButton onClick={() => navigate("/Admin/ProductManagement")} />
-          </div>
-          <div className="w-full h-135 grid grid-cols-2 gap-7 pl-4 pr-8">
-            <div className="h-full bg-gray-800 rounded-2xl flex flex-col p-7 gap-3">
-              <BaseInput
-                label="Product Id"
-                className="pb-5"
-                value={values.id}
+    <div className="h-full w-full grid md:grid-cols-[260px_1fr] bg-neutral overflow-y-auto">
+      {/* Sidebar */}
+      <NewSideBar />
+
+      {/* Main Content */}
+      <main className="flex flex-col gap-2 p-6">
+        {/* Top bar with Back Button */}
+        <div className="flex items-center justify-start">
+          <button
+            onClick={() => navigate("/Admin/ProductManagement")}
+            className="flex items-center gap-2 text-black bg-white hover:bg-gray-200 px-4 py-2 rounded-lg shadow transition-colors duration-200"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
               />
+            </svg>
+            <span className="font-medium text-sm">Back</span>
+          </button>
+        </div>
+
+        {/* Form Card */}
+        <section className="bg-white rounded-xl shadow-lg p-8">
+          <div className="grid gap-3 md:grid-cols-[1.2fr_0.8fr]">
+            <div className="flex flex-col gap-1">
+              <h2 className="text-lg font-semibold text-black">Basic Info</h2>
+
+              <BaseInput label="Product ID" value={values.id} readOnly />
+
               <BaseInput
-                label="Product Name "
+                label="Product Name"
                 value={values.name}
                 onChange={(e) => setValues({ ...values, name: e.target.value })}
               />
+
               <Description
                 label="Product Description"
                 value={values.description}
@@ -107,9 +128,12 @@ function AddProduct() {
                   setValues({ ...values, description: e.target.value })
                 }
               />
-              <div className="grid grid-cols-[0.6fr_0.4fr] gap-4">
+
+              <div className="grid gap-4 sm:grid-cols-2">
                 <BaseInput
-                  label="Quantity"
+                  label="Stock Quantity"
+                  onlyNumber
+                  min="0"
                   value={values.stock_quantity}
                   onChange={(e) =>
                     setValues({ ...values, stock_quantity: e.target.value })
@@ -129,53 +153,56 @@ function AddProduct() {
                   }
                 />
               </div>
-            </div>
-            <div className="h-full bg-gray-800 rounded-2xl">
-              <div className="px-7 pt-8">
-                <Upload
-                  onUploadSuccess={(url) =>
-                    setValues({ ...values, image: url })
-                  }
-                />
-              </div>
 
-              <div className="bg-gray-800 flex flex-col p-7 gap-3">
-                <DropDown
-                  label="Spice Level (Future Addition)"
-                  options={[
-                    { value: "Mild", label: "Mild" },
-                    { value: "Spicy", label: "Spicy" },
-                    { value: "Very Spicy", label: "Very Spicy" },
-                    { value: "Extreme", label: "Extreme" },
-                  ]}
+              <BaseInput
+                label="Price (₱)"
+                onlyNumber
+                min="0"
+                value={values.price}
+                onChange={(e) =>
+                  setValues({ ...values, price: e.target.value })
+                }
+              />
+
+              <div className="flex items-center gap-3 mt-2">
+                <label
+                  htmlFor="active"
+                  className="text-sm font-medium text-black"
+                >
+                  Active
+                </label>
+                <input
+                  id="active"
+                  type="checkbox"
+                  checked={!!values.is_active}
+                  onChange={(e) =>
+                    setValues({ ...values, is_active: e.target.checked })
+                  }
+                  className="h-5 w-5 accent-[#d3723a] rounded-md"
                 />
-                <div className="w-full flex justify-between">
-                  <BaseInput
-                    label="Price"
-                    onlyNumber
-                    min="0"
-                    value={values.price}
-                    onChange={(e) =>
-                      setValues({ ...values, price: e.target.value })
-                    }
-                  />
-                  <div className="mt-8">
-                    <UploadButton onClick={handleUpdate} />
-                  </div>
-                </div>
               </div>
+            </div>
+
+            {/* Right Column – Image Upload */}
+            <div className="flex flex-col gap-2">
+              <h2 className="text-lg font-semibold text-black">
+                Product Image
+              </h2>
+              <Upload
+                onUploadSuccess={(url) => setValues({ ...values, image: url })}
+              />
             </div>
           </div>
-        </div>
-      </div>
-      <input
-        type="checkbox"
-        checked={!!values.is_active}
-        onChange={(e) => setValues({ ...values, is_active: e.target.checked })}
-        hidden
-      />
-      <Toaster richColors />
-    </>
+
+          {/* Save Button Centered */}
+          <div className="flex justify-center mt-10">
+            <UploadButton onClick={handleUpdate}>Save</UploadButton>
+          </div>
+        </section>
+
+        <Toaster richColors />
+      </main>
+    </div>
   );
 }
 

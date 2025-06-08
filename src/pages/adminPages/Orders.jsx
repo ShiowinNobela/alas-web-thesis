@@ -51,6 +51,7 @@ function AdminViewOrderPage() {
   const [adminNote, setAdminNote] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
   const [updateStatus, setUpdateStatus] = useState("");
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const [modalTitle, setModalTitle] = useState("");
   const [confirmButtonLabel, setConfirmButtonLabel] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -91,10 +92,19 @@ function AdminViewOrderPage() {
             0
           );
           setTotalAmount(total);
+
+          const quantity = orders.reduce((sum, order) => {
+            return (
+              sum +
+              order.items.reduce((itemSum, item) => itemSum + item.quantity, 0)
+            );
+          }, 0);
+          setTotalQuantity(quantity);
         })
+
         .catch((err) => console.error(err));
     },
-    [user.token]
+    [user.token, orders]
   );
 
   const fetchOrderSummary = useCallback(
@@ -125,7 +135,7 @@ function AdminViewOrderPage() {
 
   const fetchLast30OrderSummary = useCallback(() => {
     const end = dayjs(); // today
-    const start = dayjs().subtract(30, "day"); // 30 days ago
+    const start = dayjs().subtract(100, "day"); // 30 days ago
 
     const params = new URLSearchParams();
     params.append("start", start.format("YYYY-MM-DD"));
@@ -460,9 +470,11 @@ function AdminViewOrderPage() {
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div className="bg-admin text-secondary text-xs uppercase font-semibold px-6 py-3 rounded-t-lg">
               <span>Total Orders: {orders.length}</span>
-              <span className="ml-4">
+              <span className="ml-10">
                 Total Amount: ₱{totalAmount.toLocaleString()}
               </span>
+              <span className="ml-10"></span>
+              <span className="ml-4">Total Items: {totalQuantity}</span>
             </div>
 
             <table className="w-full text-sm text-left text-slate-800 rounded-2xl">
@@ -537,7 +549,7 @@ function AdminViewOrderPage() {
                     <td className="px-6 py-4 text-xs text-gray-700">
                       <div>
                         <p className="font-primary">{order.username}</p>
-                        <p className="text-gray-500 text-xs">{order.email}</p>
+                        {/*<p className="text-gray-500 text-xs">{order.email}</p>*/}
                       </div>
                     </td>
 
