@@ -1,8 +1,8 @@
-import { MdDeleteForever } from "react-icons/md";
+//import { MdDeleteForever } from "react-icons/md";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import CouponPopUp from "../pages/CouponPopUp";
+//import CouponPopUp from "../pages/CouponPopUp";
 import { Link } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import { TiDeleteOutline } from "react-icons/ti";
@@ -11,9 +11,10 @@ import { BsCart } from "react-icons/bs";
 function Cart({ cartUpdated }) {
   const [getCartItems, setGetCartItems] = useState([]);
   const [getSubTotal, setGetSubTotal] = useState(0); // Cart
-  const [Open, setOpen] = useState(false); //Coupon Modal
+  //const [Open, setOpen] = useState(false); //Coupon Modal
   const cartCount = getCartItems.length;
-  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  //const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [cartItemsQuantity, setCartItemsQuantity] = useState([]);
   const [couponValue, setCouponValue] = useState(0);
 
   useEffect(() => {
@@ -102,38 +103,27 @@ function Cart({ cartUpdated }) {
     }
   };
 
-  const handleCouponUse = async (coupon) => {
-    setSelectedCoupon(coupon);
-    try {
-      const user = JSON.parse(window.localStorage.getItem("user"));
-      const response = await axios.get(`/api/coupons/apply/${coupon.code}`, {
-        params: { userId: user.id },
-      });
-      console.log("Coupon API response:", response.data);
-      const amount = parseFloat(response.data.data.amount) || 0;
-      setCouponValue(amount);
-    } catch (err) {
-      console.log(err);
-      setCouponValue(0);
-    }
-  };
-
   return (
     <div className="min-h-full full bg-[#f5f5f3] border-1 border-[#bdbdb8]">
+      {/* Header */}
       <div className="flex justify-between items-center border-b border-[#cccabf] pl-3 py-2">
         <div className="flex items-center h-10 w-70 text-3xl font-extrabold bg-[#FAF9F6] p-2 pb-4 pt-4 uppercase">
           <p>My Cart</p>
-          <BsCart className="h-7 w-7 ml-2" />{" "}
+          <BsCart className="h-7 w-7 ml-2" />
         </div>
       </div>
 
-      {/* Item */}
+      {/* Cart Items */}
       <div className="overflow-y-auto h-85 screen p-4">
         {getCartItems.map((d) => (
-          <div className="bg-[#ffffff] w-full rounded-xl shadow-sm border border-[#e0ded8] mb-4 p-4">
-            <div className="flex justify-between items-center">
-              <div className="flex flex-col">
-                <h2 className="text-lg font-semibold text-[#1c1a1a] text-center mb-2">
+          <div
+            key={d.product_id}
+            className="bg-[#ffffff] w-full rounded-xl shadow-sm border border-[#e0ded8] mb-4 p-4"
+          >
+            <div className="flex justify-between items-start">
+              {/* Left: Name and Quantity */}
+              <div>
+                <h2 className="text-lg font-semibold text-[#1c1a1a] mb-2 text-center">
                   {d.name}
                 </h2>
                 <div className="grid grid-cols-3 gap-2 items-center">
@@ -164,8 +154,19 @@ function Cart({ cartUpdated }) {
                   </p>
                 </div>
               </div>
+
+              {/* Right: Price & Subtotal */}
+              <div className="text-right">
+                <p className="text-sm text-[#6b6b6b]">
+                  ₱ {parseFloat(d.price).toFixed(2)} each
+                </p>
+                <p className="text-lg font-semibold text-[#1c1a1a]">
+                  ₱ {(parseFloat(d.price) * d.quantity).toFixed(2)}
+                </p>
+              </div>
+
               <TiDeleteOutline
-                className="text-[#d80c0c] w-5 h-5 cursor-pointer"
+                className="text-[#d80c0c] w-5 h-5 cursor-pointer ml-4"
                 onClick={() => handleRemove(d.product_id)}
               />
             </div>
@@ -173,37 +174,15 @@ function Cart({ cartUpdated }) {
         ))}
       </div>
 
-      {/* Stubtotal */}
-      <div className="border-t border-[#bdbdb8] p-2">
-        <div className="flex justify-between text-md font-semibold text-[#403e3e]">
-          <p>Subtotal:</p>
-          <p>₱ {getSubTotal}</p>
-        </div>
-        <div className="flex justify-between text-md font-semibold text-[#403e3e]">
-          <p>Coupon Value:</p>
-          <p>₱ {couponValue}</p>
-        </div>
+      {/* Total */}
+      <div className="border-t border-[#bdbdb8] p-2 px-6">
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
           <p>Total:</p>
-          <p>₱ {getSubTotal - couponValue}</p>
+          <p>₱ {(getSubTotal - couponValue).toFixed(2)}</p>
         </div>
       </div>
 
-      {/* Coupon
-            <div className="flex justify-center my-1">
-              <div className="w-[90%] max-w-md bg-[#f5f5f3] border border-[#db2026] rounded-xl flex items-center justify-between px-6 py-3 shadow-sm">
-                <p className="text-md font-semibold text-[#403e3e] uppercase">Pick Coupon:</p>
-                <button
-                  onClick={() => setOpen(true)}
-                  className="bg-[#db2026] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase"
-                >
-                  Coupon
-                </button>
-                <CouponPopUp open={Open} onClose={() => setOpen(false)} onApply={handleCouponUse} />
-              </div>
-            </div> */}
-
-      {/* Checkout */}
+      {/* Checkout Button */}
       <div className="flex justify-center pt-4">
         {cartCount !== 0 ? (
           <Link to="/CheckoutPage">
@@ -228,3 +207,48 @@ function Cart({ cartUpdated }) {
 }
 
 export default Cart;
+
+{
+  /* Coupon
+            <div className="flex justify-center my-1">
+              <div className="w-[90%] max-w-md bg-[#f5f5f3] border border-[#db2026] rounded-xl flex items-center justify-between px-6 py-3 shadow-sm">
+                <p className="text-md font-semibold text-[#403e3e] uppercase">Pick Coupon:</p>
+                <button
+                  onClick={() => setOpen(true)}
+                  className="bg-[#db2026] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase"
+                >
+                  Coupon
+                </button>
+                <CouponPopUp open={Open} onClose={() => setOpen(false)} onApply={handleCouponUse} />
+              </div>
+            </div> */
+
+  {
+    /* <div className="flex justify-between text-md font-semibold text-[#403e3e]">
+          <p>Subtotal:</p>
+          <p>₱ {getSubTotal}</p>
+        </div> */
+  }
+  {
+    /* <div className="flex justify-between text-md font-semibold text-[#403e3e]">
+          <p>Coupon Value:</p>
+          <p>₱ {couponValue}</p>
+        </div> */
+  }
+
+  // const handleCouponUse = async (coupon) => {
+  //   setSelectedCoupon(coupon);
+  //   try {
+  //     const user = JSON.parse(window.localStorage.getItem("user"));
+  //     const response = await axios.get(`/api/coupons/apply/${coupon.code}`, {
+  //       params: { userId: user.id },
+  //     });
+  //     console.log("Coupon API response:", response.data);
+  //     const amount = parseFloat(response.data.data.amount) || 0;
+  //     setCouponValue(amount);
+  //   } catch (err) {
+  //     console.log(err);
+  //     setCouponValue(0);
+  //   }
+  // };
+}

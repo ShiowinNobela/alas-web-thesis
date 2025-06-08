@@ -110,12 +110,12 @@ function ProductDetailsPage() {
                     Add to Cart
                   </div>
 
-                  <div
+                  {/* <div
                     className="bg-[#EA1A20] text-white text-xl text-center px-6 py-3 font-bold rounded-md cursor-pointer shadow-md hover:bg-red-800 transition uppercase"
                     onClick={() => setOpen(true)}
                   >
                     Buy Now
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

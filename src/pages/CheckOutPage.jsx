@@ -10,8 +10,7 @@ import {
 } from "../components/CheckOutInputStyle";
 
 function CheckOutPage() {
-
-  const [termsChecked, setTermsChecked] = useState(false)
+  const [termsChecked, setTermsChecked] = useState(false);
   const [getInfo, setGetInfo] = useState({
     payment_method: "",
     address: "",
@@ -40,7 +39,6 @@ function CheckOutPage() {
       });
   }, []);
 
-
   const handleConfirmOrder = () => {
     axios
       .post("/api/orders", getInfo, {
@@ -64,32 +62,47 @@ function CheckOutPage() {
       });
   };
 
-    
+  // Object.entries(getInfo).forEach(([key, value]) => {
+  //     console.log(`${key}: ${typeof value}`);
 
-   // Object.entries(getInfo).forEach(([key, value]) => {
-    //     console.log(`${key}: ${typeof value}`);
+  // });
 
-    // });
-
-    //  {
-    //     payment_method: getInfo.payment_method,
-    //     address: getInfo.address,
-    //     notes: getInfo.notes,
-    //     reference_number: getInfo.reference_number,
-    //     account_name:   getInfo.account_name,
-    // },
+  //  {
+  //     payment_method: getInfo.payment_method,
+  //     address: getInfo.address,
+  //     notes: getInfo.notes,
+  //     reference_number: getInfo.reference_number,
+  //     account_name:   getInfo.account_name,
+  // },
   return (
     <>
       <Toaster richColors />
-      <section className="bg-gray-100 bg-cover bg-fixed bg-no-repeat h-screen ">
-        <div className="max-w-3xl mx-auto pt-15">
-          <div className="  p-6 mt-5">
-            <h1 className="text-center uppercase tracking-wide font-semibold mb-3  text-2xl ">
+      <section className="bg-yellow-100 min-h-full flex items-center justify-center py-5">
+        <div className="max-w-4xl w-full mx-auto px-6 py-8 bg-white shadow-lg rounded-2xl space-y-8">
+          {/* HEADER */}
+          <div className="relative mb-2 text-center">
+            <button
+              className="absolute left-0 text-blue-500 hover:text-blue-700 text-sm font-medium"
+              onClick={() => window.history.back()}
+            >
+              ← Back
+            </button>
+            <h1 className="text-2xl font-bold text-gray-900 uppercase tracking-wide">
               Checkout
             </h1>
-            <div className="flex flex-row gap-1">
-              <div className="mb-4 w-1/2">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+          </div>
+
+          {/* FORM */}
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* LEFT COLUMN - Customer Info */}
+            <div className="flex-1 space-y-6 bg-gray-50 p-6 rounded-xl shadow-md">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Billing Information
+              </h2>
+
+              {/* Name */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
                   Name
                 </label>
                 <CheckOutInput
@@ -99,21 +112,10 @@ function CheckOutPage() {
                   readOnly
                 />
               </div>
-              <div className="mb-4 w-1/2">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Email
-                </label>
-                <CheckOutInput
-                  placeholder="Your Email"
-                  required
-                  value={getInfo?.email}
-                  readOnly
-                />
-              </div>
-            </div>
-            <div className="flex flex-row gap-1">
-              <div className="mb-4 w-1/2">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+
+              {/* Phone Number */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
                   Phone Number
                 </label>
                 <CheckOutInput
@@ -131,8 +133,82 @@ function CheckOutPage() {
                   }}
                 />
               </div>
-              <div className="mb-4 w-1/2">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+
+              {/* Address */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
+                  Address
+                </label>
+                <CheckOutTextArea
+                  placeholder="Your Address"
+                  required
+                  value={getInfo?.address}
+                  onChange={(e) =>
+                    setGetInfo({ ...getInfo, address: e.target.value })
+                  }
+                />
+              </div>
+
+              {/* Note */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
+                  Note
+                </label>
+                <CheckOutTextArea
+                  placeholder="Order Notes"
+                  required
+                  onChange={(e) =>
+                    setGetInfo({ ...getInfo, notes: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN - Payment Info */}
+            <div className="flex-1 space-y-6 bg-gray-50 p-6 rounded-xl shadow-md">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Payment Information
+              </h2>
+
+              {/* Email */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
+                  Email
+                </label>
+                <CheckOutInput
+                  placeholder="Your Email"
+                  required
+                  value={getInfo?.email}
+                  readOnly
+                />
+              </div>
+
+              {/* Payment Method */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
+                  Payment Method
+                </label>
+                <select
+                  name="Payment Method"
+                  id="Payment Method"
+                  className="shadow-inner w-full py-2 px-3 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                  value={getInfo?.payment_method}
+                  onChange={(e) =>
+                    setGetInfo({ ...getInfo, payment_method: e.target.value })
+                  }
+                >
+                  <option disabled value="">
+                    -- select an option --
+                  </option>
+                  <option value="GCash">GCash</option>
+                  <option value="bank_transfer">Bank Transfer</option>
+                  <option value="Maya">Maya</option>
+                </select>
+              </div>
+
+              {/* Account Name */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
                   Account Name
                 </label>
                 <CheckOutInput
@@ -143,36 +219,10 @@ function CheckOutPage() {
                   }
                 />
               </div>
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Address
-              </label>
-              <CheckOutTextArea
-                placeholder="Your Address"
-                required
-                value={getInfo?.address}
-                onChange={(e) =>
-                  setGetInfo({ ...getInfo, address: e.target.value })
-                }
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Note
-              </label>
-              <CheckOutTextArea
-                placeholder="Order Notes"
-                required
-                onChange={(e) =>
-                  setGetInfo({ ...getInfo, notes: e.target.value })
-                }
-              />
-            </div>
 
-            <div className="flex justify-between gap-5">
-              <div className="mb-4 w-2/5">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
+              {/* Reference Number */}
+              <div>
+                <label className="block text-gray-700 text-xs font-medium mb-1">
                   Reference Number
                 </label>
                 <CheckOutInput
@@ -182,102 +232,84 @@ function CheckOutPage() {
                   }
                 />
               </div>
-              <div className="w-2/5">
-                <label
-                  for="Payment Method"
-                  className="block text-gray-700 text-sm font-bold mb-2"
+
+              {/* Terms and Checkout */}
+              <div className="border-t border-gray-300 pt-4 space-y-3">
+                <button
+                  type="button"
+                  className="text-blue-500 underline font-semibold text-left text-sm"
+                  onClick={() => setOpen(true)}
                 >
-                  {" "}
-                  Payment Method{" "}
-                </label>
-                <select
-                  name="Payment Method"
-                  id="Payment Method"
-                  className="
-                            shadow-md
-                            w-full
-                            py-2 px-3
-                            text-gray-700
-                            border border-gray-300
-                            rounded
-                            focus:outline-none
-                            focus:ring-2
-                            focus:ring-gray-500
-                            hover:ring-2
-                            hover:ring-gray-300
-                            transition-colors
-                            "
-                  value={getInfo?.payment_method}
-                  
-                  onChange={(e) =>
-                    setGetInfo({ ...getInfo, payment_method: e.target.value })
-                  }
-                >
-                  <option disabled value=""> -- select an option -- </option>
-                  <option value="GCash">GCash</option>
-                  <option value="bank_transfer">Bank Transfer</option>
-                  <option value="Maya">Maya</option>
-                </select>
-              </div>
-
-              
-            </div>
-            <div className="flex flex-col">
-                <h1 className="font-semibold underline text-blue-400 cursor-pointer" 
-                onClick={() => {
-                  setOpen(true);
-                }}>Terms and Conditions</h1>
-                <div className="flex flex-row p-3 items-center gap-3 pl-0">
-                  <input type="checkbox" 
-                    checked={termsChecked}
-                    onChange={(e) => setTermsChecked(e.target.checked)}/>
-                  <p>I Accept All Terms and Condition</p>
-                </div>
-
-              </div>
-
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              disabled={!termsChecked}
-              onClick={handleConfirmOrder}
-              style={{ opacity: termsChecked ? 1 : 0.5, cursor: termsChecked ? "pointer" : "not-allowed" }}
-            >
-              Checkout!
-            </button>
-
-            <ConfirmPopUp open={open} onClose={() => setOpen(false)}>
-              <div className="text-center">
-                <h2 className="text-2xl font-semibold mb-4">
                   Terms and Conditions
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  example terms and conditions 
-                </p>
-                <p className="text-gray-600 mb-6">
-                  example terms and conditions 
-                </p>
-                <p className="text-gray-600 mb-6">
-                  example terms and conditions 
-                </p>
-               
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={() => {
-                      setTermsChecked(true);
-                      setOpen(false);
-                    }}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                  >
-                    Yes, I Accept
-                  </button>
-                  <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                  onClick={() => setOpen(false)}>
-                    Cancel
-                  </button>
+                </button>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={termsChecked}
+                    onChange={(e) => setTermsChecked(e.target.checked)}
+                  />
+                  <p className="text-sm text-gray-700">
+                    I Accept All Terms and Conditions
+                  </p>
                 </div>
+
+                <button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={!termsChecked}
+                  onClick={handleConfirmOrder}
+                >
+                  Checkout!
+                </button>
               </div>
-            </ConfirmPopUp>
+            </div>
           </div>
+
+          {/* Confirm Pop Up */}
+          <ConfirmPopUp open={open} onClose={() => setOpen(false)}>
+            <div className="text-center p-6">
+              <h2 className="text-xl font-semibold mb-4">
+                Terms and Conditions
+              </h2>
+              <p className="text-gray-600 text-sm mb-4">
+                All sales are subject to product availability. In the event that
+                an item is out of stock, you will be notified and refunded if
+                necessary.
+              </p>
+              <p className="text-gray-600 text-sm mb-4">
+                Please ensure that all shipping and contact information provided
+                is accurate. We are not responsible for delays or failed
+                deliveries due to incorrect information.
+              </p>
+              <p className="text-gray-600 text-sm mb-4">
+                Orders can only be cancelled prior to processing. Once an order
+                has been processed and prepared for shipment, it cannot be
+                cancelled or refunded.
+              </p>
+              <p className="text-gray-600 text-sm mb-6">
+                By placing an order, you agree to these terms and acknowledge
+                that sauces are non-returnable and non-refundable once delivered
+                unless the product is defective or damaged during shipping.
+              </p>
+
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={() => {
+                    setTermsChecked(true);
+                    setOpen(false);
+                  }}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Yes, I Accept
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                  onClick={() => setOpen(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </ConfirmPopUp>
         </div>
       </section>
     </>

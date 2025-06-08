@@ -55,8 +55,8 @@ function ProductPage() {
     <div
       className={
         isLoggedIn
-          ? "grid grid-cols-[0.75fr_0.25fr] max-w-screen bg-yellow-100 min-h-full"
-          : "max-w-screen bg-[#f2efef] h-full"
+          ? "grid grid-cols-[3fr_1fr] w-full bg-yellow-100 min-h-full"
+          : "w-full bg-[#f2efef] h-full"
       }
     >
       {/* Left Side */}
@@ -67,12 +67,12 @@ function ProductPage() {
                 <PiMagnifyingGlassLight className=" mx-3 h-7 w-7" />{" "}
               </div> */}
           {/* Product List */}
-          <div className="grid grid-cols-4 gap-4 h-[89%] ml- overflow-y-auto overflow-x-hidden">
+          <div className="grid grid-cols-4 gap-4 h-[89%] overflow-y-auto overflow-x-hidden">
             {newData
               .filter((d) => d.stock_quantity > 0)
               .map((d) => (
                 // products
-                <div className="flex flex-col items-center justify-center bg-white/70 p-6 mr-5 rounded-md shadow-md">
+                <div className="flex flex-col items-center justify-center bg-white/70 p-6 mr-4 rounded-md shadow-md">
                   <img
                     src={d.image}
                     alt={d.name}
