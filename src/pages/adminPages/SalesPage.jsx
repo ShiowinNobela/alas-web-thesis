@@ -1,6 +1,7 @@
 import NewSideBar from "../../components/newSideBar";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import dayjs from "dayjs";
 
 function SalesPage() {
 
@@ -15,8 +16,12 @@ function SalesPage() {
     walkInSales: 0,
   })
 
+  const startDate = "2025-05-01";
+  const endDate = dayjs().add(2, "day").format("YYYY-MM-DD");
+  
+
    useEffect(() => {
-    axios.get("/api/reports/top-products?start=2025-05-01&end=2025-06-10")
+    axios.get(`/api/reports/top-products?start=${startDate}&end=${endDate}`)
       .then((res) => {
         const products = res.data.data.topProducts;
         setTopProducts(products.slice(0, 5));
@@ -28,10 +33,10 @@ function SalesPage() {
         setLeastProducts([]);
         console.error("Failed to fetch top products", err);
       });
-  }, []);
+  }, [startDate, endDate]);
 
   useEffect(() => {
-  axios.get("/api/reports/sales-summary?start=2025-05-01&end=2025-06-28")
+  axios.get(`/api/reports/sales-summary?start=${startDate}&end=${endDate}`)
     .then((res) => {
       const data = res.data.data || {};
       console.log(data)
@@ -42,7 +47,7 @@ function SalesPage() {
       });
     })
     .catch(() => setSummary({ totalRevenue: 0, totalOrders: 0, totalItemsSold: 0 }));
-}, []);
+}, [startDate, endDate]);
 
 useEffect(() => {
   axios.get("/api/adminOrder")
@@ -60,6 +65,7 @@ useEffect(() => {
     })
     .catch(() => setFulfillmentRate(0));
 }, []);
+
   return (
     <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
       <NewSideBar />
@@ -70,29 +76,18 @@ useEffect(() => {
           <div>
             <div className="flex flex-row gap-x-8 p-7">
               <div
-                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition"
                 role="button"
                 >
                 <div className="flex justify-between">
                   <div>
-                    <h2 className="font-bold text-xl mb-1 uppercase">Revenue</h2>
-                    <p className="text-md text-gray-600 mb-1 ">Total Revenue</p>
-                    <p className="font-semibold text-lg">₱ {summary.totalRevenue.toLocaleString()}</p>
+                    <h2 className="font-bold text-xl mb-1 uppercase"> Order Fullfilment Rate</h2>
+                    <p className="font-semibold text-lg">{fulfillmentRate}% </p>
                   </div>
-                  <svg
-                    className="w-6 h-6 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 17l-4 4m0 0l-4-4m4 4V3" />
-                  </svg>
                 </div>
               </div>
               <div
-                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition"
                 role="button"
                 >
                 <div className="flex justify-between">
@@ -114,7 +109,7 @@ useEffect(() => {
                 </div>
               </div>
               <div
-                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition"
                 role="button"
                 >
                 <div className="flex justify-between">
@@ -136,7 +131,7 @@ useEffect(() => {
                 </div>
               </div>
               <div
-                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition"
                 role="button"
                 >
                 <div className="flex justify-between">
@@ -158,7 +153,7 @@ useEffect(() => {
                 </div>
               </div>
               <div
-                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-35 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition"
                 role="button"
                 >
                 <div className="flex justify-between">
@@ -183,19 +178,20 @@ useEffect(() => {
 
             <div className="flex flex-row justify-around gap-x-8 px-7 pb-7">
               <div
-                className="p-4 rounded-lg shadow-xl w-1/4 h-55 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/4 h-55 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition"
                 role="button"
                 >
                 <div className="flex justify-between">
-                  <div>
-                    <h2 className="font-bold text-xl mb-1 uppercase">Fullfilment Rate</h2>
-                    <p className="font-semibold text-lg"> {fulfillmentRate}%</p>
+                  <div>                 
+                    <h2 className="font-bold text-3xl mb-8 uppercase">Revenue</h2>
+                    <p className="text-lg text-gray-600 mb-1 ">Total Revenue</p>
+                    <p className="font-semibold text-4xl">₱ {summary.totalRevenue.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
 
               <div
-                className="p-4 rounded-lg shadow-xl w-1/4 h-55 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition "
+                className="p-4 rounded-lg shadow-xl w-1/4 h-55 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition "
                 role="button"
                 >
                 <div className="flex justify-between">
@@ -216,7 +212,7 @@ useEffect(() => {
               </div>
 
               <div
-                className="p-4 rounded-lg shadow-xl w-2/4 h-55 cursor-pointer bg-[#dcdcdc] hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-2/4 h-55 cursor-pointer bg-white drop-shadow-xl hover:bg-secondary transition"
                 role="button" 
                 >
                 <div className="flex justify-between">
@@ -230,7 +226,7 @@ useEffect(() => {
 
             <div className=" p-7">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-xl">
-                <thead className="text-xs round text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-[#ffffff]">
+                <thead className="text-xs round text-white uppercase bg-admin ">
                   <tr>
                     <th scope="col" className="px-8 py-3">
                       Product Name
@@ -244,10 +240,7 @@ useEffect(() => {
                     <th scope="col" className="px-6 py-3">
                       Price
                     </th>
-                    <th scope="col" className="px-6 py-3">
-                      Status
-                    </th>
-                  </tr>
+                  </tr> 
                 </thead>
                 <tbody>
               {topProducts.length === 0 ? (
@@ -258,22 +251,12 @@ useEffect(() => {
                 </tr>
               ) : (
                 topProducts.map((product) => (
-                  <tr key={product.id}>
+                  <tr>
                     <td className="px-8 py-3">{product.name}</td>
                     <td className="px-6 py-3">{product.totalSold}</td>
                     <td className="px-6 py-3">₱ {product.totalRevenue}</td>
                     <td className="px-6 py-3">₱{parseFloat(product.unitPrice).toFixed(2)}</td>
-                    <td className="px-6 py-3">
-                      <span
-                        className={`px-2 py-0.5 text-xs font-medium rounded ${
-                          product.is_active
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {product.is_active ? "Active" : "Inactive"}
-                      </span>
-                    </td>
+                    
                   </tr>
                 ))
               )}
