@@ -172,6 +172,21 @@ function UserViewOrderPage() {
     });
   };
 
+    useEffect(() => {
+    const delivered = orders.filter((order) => order.status === "delivered");
+    const sortedDelivered = delivered.sort(
+      (a, b) => new Date(b.order_date) - new Date(a.order_date)
+    );
+    setNotifications(
+      sortedDelivered.map((order) => ({
+        id: order.id,
+        message: `Your order ${order.id} has been delivered!`,
+        date: order.order_date,
+      }))
+    );
+    setDeliveredOrderIds(sortedDelivered.map((order) => order.id));
+  }, [orders]);
+
   const getStatusColor = (status) => {
     switch (status) {
       case "pending":
@@ -289,7 +304,6 @@ function UserViewOrderPage() {
                     order because I wake up
                   </p>
                 </caption>
-<<<<<<< Updated upstream
                 <thead className="text-xs uppercase bg-gray-600 text-white">
                   <tr>
                     <th className="px-6 py-3">Items</th>
@@ -343,20 +357,6 @@ function UserViewOrderPage() {
                           className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
                             order.status
                           )}`}
-=======
-                <div className="w-4xl bg-gray-50 overflow-y-auto h-150 mx-auto shadow-md drop-shadow-xl p-5">
-                
-                  <div className="flex flex-col items-center justify-center">
-                    {notifications.length === 0 ? (
-                      <div className="text-gray-500 p-5">
-                        No notifications yet.
-                      </div>
-                    ) : (
-                      notifications.map((notif) => (
-                        <div
-                          key={notif.id}
-                          className="w-3xl grid grid-cols-[0.70fr_0.30fr] bg-white shadow-2xl mb-4"
->>>>>>> Stashed changes
                         >
                           {order.status}
                         </span>
@@ -417,38 +417,41 @@ function UserViewOrderPage() {
         )}
 
         {activeSwitch === "notif" && (
-          <div className="flex items-center justify-center min-h-[60vh] w-full">
-            <div className="w-4xl bg-gray-50 h-50 mx-auto shadow-md drop-shadow-xl">
+          <div className="flex items-center justify-center min-h-[60vh] w-full mt-10">
+            <div>
               <caption className="text-xl font-bold p-5">Notifications</caption>
-              <div className="flex flex-col items-center justify-center">
-                {notifications.length === 0 ? (
-                  <div className="text-gray-500 p-5">No notifications yet.</div>
-                ) : (
-                  notifications.map((notif) => (
-                    <div
-                      key={notif.id}
-                      className="w-3xl grid grid-cols-[0.70fr_0.30fr] bg-white shadow-2xl mb-4"
-                    >
-                      <div className="flex flex-col p-5 pl-10 justify-start">
-                        <h1 className="text-lg font-semi text-start ">
-                          {notif.message}
-                        </h1>
-                        <p className="text-sm">
-                          Delivered on: {new Date(notif.date).toLocaleString()}
-                        </p>
-                      </div>
+              <div className="w-4xl bg-gray-50 h-150 overflow-y-auto mx-auto shadow-md drop-shadow-xl p-5">
+                
+                <div className="flex flex-col items-center justify-center">
+                  {notifications.length === 0 ? (
+                    <div className="text-gray-500 p-5">No notifications yet.</div>
+                  ) : (
+                    notifications.map((notif) => (
                       <div
-                        className="flex flex-col p-5 pr-10 justify-end items-end"
-                        onClick={() => {
-                          window.location.href = `/GiveReview/${notif.id} `;
-                        }}
+                        key={notif.id}
+                        className="w-3xl grid grid-cols-[0.70fr_0.30fr] bg-white shadow-2xl mb-4"
                       >
-                        <p>Leave a Review!</p>
-                        <MdOutlineRateReview className="h-15 w-15 " />
+                        <div className="flex flex-col p-5 pl-10 justify-start">
+                          <h1 className="text-lg font-semi text-start ">
+                            {notif.message}
+                          </h1>
+                          <p className="text-sm">
+                            Delivered on: {new Date(notif.date).toLocaleString()}
+                          </p>
+                        </div>
+                        <div
+                          className="flex flex-col p-5 pr-10 justify-end items-end"
+                          onClick={() => {
+                            window.location.href = `/GiveReview/${notif.id} `;
+                          }}
+                        >
+                          <p>Leave a Review!</p>
+                          <MdOutlineRateReview className="h-15 w-15 " />
+                        </div>
                       </div>
-                    </div>
-                  ))
-                )}
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
