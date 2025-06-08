@@ -117,7 +117,7 @@ function ProductDetailsPage() {
                       {reviewDetails.map((d, index) => (
                         <div
                           key={index}
-                          className="border border-gray-300 p-4 rounded shadow-lg bg-white"
+                          className="border border-gray-300 p-4 rounded shadow-lg bg-white ml-3"
                         >
                           <h3 className="font-semibold">Name: {d.username}</h3>
                           <h4>Rating: {d.rating}</h4>

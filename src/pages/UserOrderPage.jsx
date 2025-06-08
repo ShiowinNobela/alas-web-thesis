@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MdOutlineRateReview } from "react-icons/md";
@@ -20,9 +20,11 @@ function UserViewOrderPage() {
   const initialTab = location.state?.tab || "orderList";
   const [activeSwitch, setActiveSwitch] = useState(initialTab);
   const [notifications, setNotifications] = useState([]);
+  const [deliveredOrderIds, setDeliveredOrderIds] = useState([]);
 
   const user = JSON.parse(window.localStorage.getItem("user"));
   const queryClient = useQueryClient();
+
 
   const fetchOrders = async () => {
     const url = filterStatus
@@ -54,6 +56,18 @@ function UserViewOrderPage() {
       );
     },
   });
+
+  useEffect(() => {
+    const delivered = orders.filter((order) => order.status === "delivered");
+    setNotifications(
+      delivered.map((order) => ({
+        id: order.id,
+        message: `Your order ${order.id} has been delivered!`,
+        date: order.order_date,
+      }))
+    );
+  setDeliveredOrderIds(delivered.map((order) => order.id));
+}, [orders]);
 
   const totalAmount = orders.reduce(
     (sum, order) => sum + parseFloat(order.total_amount),
@@ -143,8 +157,10 @@ function UserViewOrderPage() {
     cancelOrderMutation.mutate({ orderId: cancelingOrderId, note: cancelNote });
   };
 
+  
+
   return (
-    <section className="bg-amber-50 min-h-screen pt-20 ">
+    <section className="bg-amber-50 min-h-full pt-20 ">
       <div className="grid grid-cols-[0.15fr_0.85fr]">
         <UserSideBar setActiveSwitch={setActiveSwitch} />
         <div>

@@ -22,7 +22,7 @@ function Faqs() {
   };
 
   return (
-    <section className="bg-yellow-100 min-h-screen py-10">
+    <section className="bg-yellow-100 min-h-full py-10">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-center uppercase tracking-wide font-semibold mb-8 text-2xl">
           Frequently Asked Questions
