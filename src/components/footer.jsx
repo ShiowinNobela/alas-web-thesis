@@ -1,37 +1,59 @@
-import redDiamond from '../components/images/reddiamond.png'
-import Logo from '../components/images/logowhite.png'
+import Logo from '../components/images/AlasLogo.png'
+
 import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
 function footer() {
   return (
     <>
-        <div className='max-w-screen flex justify-center items-center '>
-            <img className=' grid grid-cols-1  h-[100px] w-7xl' src={redDiamond} alt="/"  />
-        </div>
-        <div className='max-w-screen flex justify-around items-center mb-10'>
-        <img src={Logo} alt="/" className='flex justify-start lg:h-[150px] lg:w-[300px] h-[100px] w-[150px] cursor-pointer ' />
-                <ul className='lg:flex justify-end max-w-[600px] gap-4 text-center '> 
-                    <li className='text-[#FFFFFF] lg:text-xl lg:mb-0 mb-4 text-sm cursor-pointer'> Products </li>
-                    <li className='text-[#FFFFFF] lg:text-xl lg:mb-0 mb-4 text-sm cursor-pointer'> About Us </li>
-                    <li className='text-[#FFFFFF] lg:text-xl lg:mb-0 mb-2 text-sm cursor-pointer'> Contact Us </li>
-                </ul>
-        </div>
-        <div className='flex flex-col justify-center items-center'>
-            <ul className='grid grid-cols-4  max-w-3xl mx-auto py-3 gap-5'>
-            <li> <FaFacebook color='white ' className='cursor-pointer'/> </li> 
-            <li> <FaInstagram color='white' className='cursor-pointer'/> </li> 
-            <li> <FaTiktok color='white' className='cursor-pointer' /> </li> 
-            <li> <MdEmail color='white' className='cursor-pointer'/> </li> 
+        <footer className="w-full bg-black text-white px-6 py-12">
+          {/* logo */}
+          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center mb-10 space-y-8 lg:space-y-0">
+            <div className="flex items-center space-x-4">
+              <img
+                src={Logo}
+                alt="Alas Logo"
+                className="h-[80px] lg:h-[120px] object-contain cursor-pointer"
+              />
+              <span className="text-white text-lg lg:text-2xl font-semibold">
+                Alas Deli’s and Spices
+              </span>
+            </div>
+            
+            <ul className="flex flex-col lg:flex-row items-center gap-6 text-center text-sm lg:text-base">
+              <li className="cursor-pointer hover:text-[#EA1A20] transition">Products</li>
+              <li className="cursor-pointer hover:text-[#EA1A20] transition">About Us</li>
+              <li className="cursor-pointer hover:text-[#EA1A20] transition">Contact Us</li>
             </ul>
-            <p className='text-[#ffffff] mb-2'>2025 Alas Deli’s and Spices. All rights reserved.</p>
-            <ul className='grid grid-cols-2'>
-                <li className='text-[#ffffff] cursor-pointer'>Privacy</li>
-                <li className='text-[#ffffff] cursor-pointer'>Cookie Policy</li>
-            </ul>
-        </div>
-        
+          </div>
 
+          <div className="border-t border-gray-700 my-6"></div>
+
+          {/* socials */}
+          <div className="max-w-4xl mx-auto flex flex-col items-center space-y-6">
+            <ul className="flex gap-6 text-xl">
+              <li>
+                <FaFacebook className="cursor-pointer hover:text-[#4267B2] transition" />
+              </li>
+              <li>
+                <FaInstagram className="cursor-pointer hover:text-[#C13584] transition" />
+              </li>
+              <li>
+                <FaTiktok className="cursor-pointer hover:text-[#69C9D0] transition" />
+              </li>
+              <li>
+                <MdEmail className="cursor-pointer hover:text-[#EA1A20] transition" />
+              </li>
+            </ul>
+            <p className="text-xs text-gray-400 text-center">
+              © 2025 Alas Deli’s and Spices. All rights reserved.
+            </p>
+            <ul className="flex gap-6 text-xs text-gray-400">
+              <li className="cursor-pointer hover:underline">Privacy</li>
+              <li className="cursor-pointer hover:underline">Cookie Policy</li>
+            </ul>
+          </div>
+        </footer>
     </>
   )
 }
