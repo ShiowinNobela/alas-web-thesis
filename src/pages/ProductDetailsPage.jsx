@@ -59,62 +59,65 @@ function ProductDetailsPage() {
           />
         </div>
 
-        <div className="grid grid-cols-[60fr_40fr] gap-10 w-4/5 h-screen bg-[#f9f9f9] p-6 rounded-lg shadow-lg border-1 border-[#b4afaf]">
-          <div className="flex flex-col">
-
+        <div className="grid grid-cols-[60fr_40fr] gap-10 w-4/5 max-h-4/5 bg-[#f9f9f9] p-6 rounded-lg shadow-lg border-1 border-[#b4afaf]">
+          <div className="grid grid-cols-[40fr_60fr]">
+            <div className="flex items-center justify-center">
+            <img src={data.image} alt="/" className="h-100 w-100 mx-auto shadow-md drop-shadow-xl" />
+            </div>
             {/* product name */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
+            <div className="flex flex-col justify-around mb-6 ml-10">
+              <div>
               <h1 className="font-black text-4xl mb-4 lg:mb-0">{data.name}</h1>
-              <div className="flex flex-col lg:flex-row gap-1">
-
-              {/* quantity + price */}
-              <div className="mb-6">
-                <label className="text-lg font-semibold mr-1">Quantity:</label>
-                <input
-                  type="number"
-                  min={1}
-                  value={prodQuantity}
-                  onChange={(e) => setProdQuantity(e.target.value)}
-                  max={data.stock_quantity}
-                  className="border border-black px-2 py-1 w-24 rounded"
-                />
-              <h2 className="text-3xl font-bold text-green-700 ml-20 mt-2">{data.price}</h2>
+              <h2 className="text-2xl font-bold text-green-700 mt-2 "> ₱ {data.price}</h2>
               </div>
+              <div>
+              <h1 className="text-xl pb-1">What to expect?</h1>
+              <p className="font-extralight text-gray-700">{data.description}</p>
+              </div>
+              <div className="flex flex-col gap-1">
 
-              {/* add to cart + buy now */}
-              <div className="flex flex-col gap-4 lg:ml-10">
-                <div className="flex items-center justify-center border border-[#EA1A20] px-6 py-3 text-l font-semibold shadow-md rounded-md cursor-pointer hover:bg-[#fdd] transition uppercase"
-                  onClick={handleAddToCart}
-                >
-                <FaShoppingCart className="mr-2 h-6 w-6" />
-                  Add to Cart
+                {/* quantity + price */}
+                <div className="mb-6">
+                  <label className="text-lg font-semibold mr-1">Quantity:</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={prodQuantity}
+                    onChange={(e) => setProdQuantity(e.target.value)}
+                    max={data.stock_quantity}
+                    className="border border-black px-2 py-1 w-24 rounded"
+                  />
+                
                 </div>
 
-              <div className="bg-[#EA1A20] text-white text-xl text-center px-6 py-3 font-bold rounded-md cursor-pointer shadow-md hover:bg-red-800 transition uppercase"
-                  onClick={() => setOpen(true)}
-                >
-                Buy Now
-              </div>
-              </div>
-            </div>
-      </div>
+                {/* add to cart + buy now */}
+                <div className="flex flex-col gap-4 ">
+                  <div className="flex items-center justify-center border border-[#EA1A20] px-6 py-3 text-l font-semibold shadow-md rounded-md cursor-pointer hover:bg-[#fdd] transition uppercase"
+                    onClick={handleAddToCart}
+                  >
+                  <FaShoppingCart className="mr-2 h-6 w-6" />
+                    Add to Cart
+                  </div>
 
-              {/* description */}
-              <div className="h-screen mb-6">
-                <h2 className="text-3xl font-extrabold mb-2 uppercase">Description</h2>
-                <p className="text-justify">{data.description}</p>
+                <div className="bg-[#EA1A20] text-white text-xl text-center px-6 py-3 font-bold rounded-md cursor-pointer shadow-md hover:bg-red-800 transition uppercase"
+                    onClick={() => setOpen(true)}
+                  >
+                  Buy Now
+                </div>
+                </div>
               </div>
             </div>
+          </div>
 
               {/* reviews */}
-              <div className="flex flex-col">
+              <div className="flex flex-col border-l">
                 <h2 className="text-2xl font-bold text-center mb-4">Reviews</h2>
-                  <h3 className="text-lg mb-4">Total reviews: {reviewDetails.length}</h3>
+                  <h3 className="text-lg ml-3 mb-4">Total reviews: {reviewDetails.length}</h3>
                     <div className="space-y-4 overflow-y-auto max-h-[500px] pr-2">
                       {reviewDetails.map((d, index) => (
                         <div
                           key={index}
-                          className="border border-gray-300 p-4 rounded shadow-lg bg-white"
+                          className="border border-gray-300 p-4 rounded shadow-lg bg-white ml-3"
                         >
                           <h3 className="font-semibold">Name: {d.username}</h3>
                           <h4>Rating: {d.rating}</h4>

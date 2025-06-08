@@ -1,6 +1,6 @@
 function AboutUs() {
   return (
-    <section className="bg-yellow-100 min-h-screen justify-center py-10">
+    <section className="bg-yellow-100 min-h-full justify-center py-10">
       <div className="text-center">
         <h1 className="uppercase tracking-wide font-semibold mb-8 text-2xl">
           About Us

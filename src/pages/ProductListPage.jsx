@@ -66,7 +66,7 @@ function ProductPage() {
                       <img
                         src={d.image}
                         alt="/"
-                        className="lg:w-[250px] lg:h-[250px] w-[150px] h-[150px] pb-3"
+                        className="lg:w-[250px] lg:h-[250px] w-[150px] h-[150px] mb-3 shadow-lg drop-shadow-xl"
                       />
                       <div className="grid grid-cols-2 justify-around gap-x-4">
                         <p className="font-semibold mx-auto p-2"> {d.name} </p>

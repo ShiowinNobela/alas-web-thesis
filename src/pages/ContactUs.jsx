@@ -8,7 +8,7 @@ import { MdOutlineMailOutline, MdPhone } from "react-icons/md";
 
 function ContactUs() {
   return (
-    <section className="bg-yellow-100 min-h-screen py-10">
+    <section className="bg-yellow-100 min-h-full py-10">
       <div className="text-center">
         <h1 className="uppercase tracking-wide font-semibold mb-8 text-2xl text-black">
           Contact Us

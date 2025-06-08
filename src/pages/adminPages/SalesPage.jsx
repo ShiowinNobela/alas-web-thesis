@@ -4,12 +4,83 @@ function SalesPage() {
   return (
     <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
       <NewSideBar />
-      <div className="flex flex-row relative overflow-x-auto bg-[#ffffff] rounded-xl shadow p-6 space-x-6">
-        {/* Table */}
-        <div className="relative overflow-x-auto border-1 border-[#d3cccc] shadow-md sm:rounded-lg w-full p-5">
-          <div className="flex flex-col-2 sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
+      <div className="flex flex-col h-full overflow-x-auto bg-[#ffffff] shadow p-6 space-y-6">
+        <div>
+
+          {/* tiles */}
+          <div className="bg-admin h-36 rounded-md border border-[#0b284e]">
+            <div className="flex flex-row gap-8 p-7">
+              <div
+                className="p-4 rounded-lg shadow w-1/4 cursor-pointer bg-[#ebeb43] hover:bg-secondary transition"
+                role="button"
+              >
+                <div className="flex justify-between">
+                  <div>
+                    <h2 className="font-bold text-lg mb-1 uppercase">Sales</h2>
+                    <p className="text-sm text-gray-600">Total sales</p>
+                  </div>
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                className="p-4 rounded-lg shadow w-1/4 cursor-pointer bg-[#73cd55] hover:bg-secondary transition"
+                role="button"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-bold text-lg mb-1 uppercase">fast-moving item/s</h2>
+                  </div>
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                  </svg>
+                </div>
+              </div>
+              <div
+                className="p-4 rounded-lg shadow w-1/4 cursor-pointer bg-[#eb8643] hover:bg-secondary transition"
+                role="button"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-bold text-lg mb-1 uppercase">slow-moving item/s</h2>
+                  </div>
+                  <svg
+                    className="w-6 h-6 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* table */}
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full p-5">
+          <div className="flex flex-col sm:flex-row flex-wrap space-y-4 sm:space-y-0 items-center justify-between pb-4">
             <div>
-              {/* Filter (Fast-moving, slow-moving items)*/}
+              
+              {/* filter (fast moving and slow moving items )*/}
               <button
                 id="dropdownRadioButton"
                 data-dropdown-toggle="dropdownRadio"
@@ -43,7 +114,7 @@ function SalesPage() {
                 </svg>
               </button>
 
-              {/* Last 30 days */}
+              {/* last 30 days */}
               <button
                 id="dropdownRadioButton"
                 data-dropdown-toggle="dropdownRadio"
@@ -78,11 +149,12 @@ function SalesPage() {
               </button>
             </div>
 
-            {/* Search button */}
+            {/* search button */}
             <label htmlFor="table-search" className="sr-only">
               Search
             </label>
-            <div className="relative border-1 border-gray-100 sm:rounded-lg">
+
+            <div className="relative border border-gray-100 sm:rounded-lg">
               <div className="absolute inset-y-0 left-0 flex items-center ps-3 pointer-events-none">
                 <svg
                   className="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -108,7 +180,7 @@ function SalesPage() {
             </div>
           </div>
 
-          {/* TABLE LIST */}
+          {/* table contetn */}
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs round text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-[#ffffff]">
               <tr>
@@ -130,7 +202,7 @@ function SalesPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas001" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -151,7 +223,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas002" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -172,7 +244,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas003" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -193,7 +265,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas004-1" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -214,7 +286,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas004-2" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -235,7 +307,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas004-3" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -256,7 +328,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas004-4" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -277,7 +349,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas004-5" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -298,7 +370,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas004-6" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -319,70 +391,7 @@ function SalesPage() {
               </tr>
             </tbody>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  ALAS004
-                </th>
-                <td className="px-6 py-4">Zero Blitz</td>
-                <td className="px-6 py-4">400.00</td>
-                <td className="px-6 py-4">50x</td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-[#d86262] hover:underline"
-                  >
-                    Low
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <tr key="alas004-7" className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
