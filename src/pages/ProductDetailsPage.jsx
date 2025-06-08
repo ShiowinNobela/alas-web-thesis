@@ -59,10 +59,10 @@ function ProductDetailsPage() {
           />
         </div>
 
-        <div className="grid grid-cols-[60fr_40fr] gap-10 w-4/5 max-h-4/5 bg-[#f9f9f9] p-6 rounded-lg shadow-lg border-1 border-[#b4afaf]">
+        <div className="grid grid-cols-[60fr_40fr] gap-10 w-4/5 max-h-4/5 bg-[#f8f7f7] p-6 rounded-lg shadow-lg border-1 border-[#b4afaf]">
           <div className="grid grid-cols-[40fr_60fr]">
             <div className="flex items-center justify-center">
-            <img src={data.image} alt="/" className="h-100 w-100 mx-auto shadow-md drop-shadow-xl" />
+            <img src={data.image} alt="/" className="h-100 w-100 mx-auto rounded-sm  border-1 border-[#dfdddd] shadow-sm" />
             </div>
             {/* product name */}
             <div className="flex flex-col justify-around mb-6 ml-10">
