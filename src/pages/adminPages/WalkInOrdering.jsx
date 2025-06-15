@@ -89,15 +89,13 @@ function WalkInOrdering() {
 
   return (
     <>
-      <div className="h-full w-screen bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
+      <div className="w-full h-screen bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
         <NewSideBar />
-        <div className="  h-full w-full flex flex-col items-center justify-center gap-5 overflow-auto">
-          <div className="flex flex-row shadow-2xl drop-shadow-2xl">
-            
+        <div className="min-h-full w-full flex flex-col overflow-auto p-5">
+          <div className="flex flex-row shadow-2xl drop-shadow-2xl rounded-2xl overflow-hidden max-w-[1400px] mx-auto w-full">
             {/* form */}
-            <div className="p-10 bg-white border-r rounded-l-2xl">
-              <form className="max-w-5xl" onSubmit={handleSubmit}>
-                
+            <div className="flex-grow p-10 bg-white border-r">
+              <form className="w-full" onSubmit={handleSubmit}>
                 {/* customer info */}
                 <div className="grid md:grid-cols-2 md:gap-6 mb-5">
                   <div className="relative z-0 w-full group">
@@ -107,7 +105,10 @@ function WalkInOrdering() {
                       required
                       value={userInput.customer_name}
                       onChange={(e) =>
-                        setUserInput({ ...userInput, customer_name: e.target.value })
+                        setUserInput({
+                          ...userInput,
+                          customer_name: e.target.value,
+                        })
                       }
                       id="floating_customer_name"
                       placeholder=" "
@@ -128,7 +129,10 @@ function WalkInOrdering() {
                       required
                       value={userInput.customer_email}
                       onChange={(e) =>
-                        setUserInput({ ...userInput, customer_email: e.target.value })
+                        setUserInput({
+                          ...userInput,
+                          customer_email: e.target.value,
+                        })
                       }
                       id="floating_customer_email"
                       placeholder=" "
@@ -138,7 +142,7 @@ function WalkInOrdering() {
                       htmlFor="floating_customer_email"
                       className="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:text-blue-600 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >
-                      Remarks
+                      Email
                     </label>
                   </div>
                 </div>
@@ -146,63 +150,70 @@ function WalkInOrdering() {
                 {/* remarks */}
                 <Description
                   label="Notes"
+                  textColor="text-black"
                   value={userInput.notes}
                   onChange={(e) =>
                     setUserInput({ ...userInput, notes: e.target.value })
                   }
                 />
 
-                {/* prodlist */}
+                {/* product list */}
                 <div className="flex flex-col items-center justify-center">
-                  <div className="my-5 p-3 grid grid-cols-3 gap-4 max-h-[300px] overflow-y-auto">
-                      {data.map((d) => (
-                        <div
-                          key={d.id}
-                          className="flex flex-col items-center justify-center border p-3 rounded shadow-sm cursor-pointer"
-                          onClick={() => {
-                            setOpen(true);
-                            setSelectedProduct(d);
-                          }}
-                        >
-                          <img src={d.image} alt="/" className="w-35 h-35 mb-2" />
-                          <h1 className="font-semibold">{d.name}</h1>
-                          <p className="text-gray-700">₱ {d.price}</p>
+                  <div className="my-5 p-3 grid grid-cols-4 gap-4 max-h-[350px] overflow-y-auto w-full">
+                    {data.map((d) => (
+                      <div
+                        key={d.id}
+                        className="flex flex-col items-center justify-center border p-3 rounded shadow-sm cursor-pointer"
+                        onClick={() => {
+                          setOpen(true);
+                          setSelectedProduct(d);
+                        }}
+                      >
+                        <img
+                          src={d.image}
+                          alt="/"
+                          className="w-[100px] h-[100px] mb-2 object-contain"
+                        />
+                        <h1 className="font-semibold text-center">{d.name}</h1>
+                        <p className="text-gray-700">₱ {d.price}</p>
 
-                          <WalkInPopUp
-                            open={open && selectedProduct?.id === d.id}
-                            onClose={() => setOpen(false)}
-                          >
-                            <div className="p-3">
-                              <h1 className="mb-2">{d.name}</h1>
-                              <input
-                                type="number"
-                                min={1}
-                                value={quantity}
-                                onChange={(e) => setQuantity(Number(e.target.value))}
-                                className="w-full border rounded px-2 py-1"
-                              />
-                            </div>
-                            <div className="flex justify-center gap-4 mt-4">
-                              <button
-                                type="button"
-                                onClick={handleAddToCart}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                              >
-                                Add to Cart
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setOpen(false)}
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </WalkInPopUp>
-                        </div>
-                      ))}
-                    </div>
+                        <WalkInPopUp
+                          open={open && selectedProduct?.id === d.id}
+                          onClose={() => setOpen(false)}
+                        >
+                          <div className="p-3">
+                            <h1 className="mb-2">{d.name}</h1>
+                            <input
+                              type="number"
+                              min={1}
+                              value={quantity}
+                              onChange={(e) =>
+                                setQuantity(Number(e.target.value))
+                              }
+                              className="w-full border rounded px-2 py-1"
+                            />
+                          </div>
+                          <div className="flex justify-center gap-4 mt-4">
+                            <button
+                              type="button"
+                              onClick={handleAddToCart}
+                              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            >
+                              Add to Cart
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setOpen(false)}
+                              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </WalkInPopUp>
+                      </div>
+                    ))}
                   </div>
+                </div>
 
                 {/* checkout button */}
                 <button
@@ -214,83 +225,90 @@ function WalkInOrdering() {
               </form>
             </div>
 
-                {/* cart */}
-                <div className="flex flex-col h-full bg-white w-full max-w-md p-5 rounded-r-md">
-                  <div className="flex flex-col items-center justify-center mb-4">
-                    <h1 className="font-semibold text-2xl mb-4">Cart</h1>
+            {/* cart */}
+            <div className="w-[350px] flex flex-col h-full bg-white p-5">
+              <div className="flex flex-col items-center justify-center mb-4">
+                <h1 className="font-semibold text-2xl mb-4">Cart</h1>
 
-                          <div className="min-h-[400px] max-h-[500px] flex flex-col">
-                            <div className="flex-1 overflow-y-auto">
-                            {cartItems.length === 0 ? (
-                              <p className="text-center text-gray-500">No items in cart</p>
-                            ) : (
-                              cartItems.map((item) => (
-                                <div
-                                  key={item.id}
-                                  className="flex justify-between items-center mb-2"
-                                >
-                                  <div className="flex flex-col w-2/3">
-                                    <h2 className="text-lg font-semibold text-center mb-2">
-                                      {item.name}
-                                    </h2>
-                                    <div className="grid grid-cols-3 gap-2 items-center">
-                                      <FaPlus
-                                        className="cursor-pointer hover:text-[#EA1A20] mx-auto"
-                                        onClick={() => handleChangeCartQuantity(item.id, 1)}
-                                      />
-                                      <FaMinus
-                                        className="cursor-pointer hover:text-[#EA1A20] mx-auto"
-                                        onClick={() => handleChangeCartQuantity(item.id, -1)}
-                                      />
-                                      <p className="text-center font-bold">
-                                        ₱ {item.price} x {item.quantity}
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <TiDeleteOutline
-                                    className="text-[#d80c0c] w-5 h-5 cursor-pointer"
-                                    onClick={() => handleRemoveFromCart(item.id)}
-                                  />
-                                </div>
-                              ))
-                            )}
+                <div className="min-h-[400px] max-h-[500px] flex flex-col">
+                  <div className="flex-1 overflow-y-auto">
+                    {cartItems.length === 0 ? (
+                      <p className="text-center text-gray-500">
+                        No items in cart
+                      </p>
+                    ) : (
+                      cartItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex justify-between items-center mb-2"
+                        >
+                          <div className="flex flex-col w-2/3">
+                            <h2 className="text-lg font-semibold text-center mb-2">
+                              {item.name}
+                            </h2>
+                            <div className="grid grid-cols-3 gap-2 items-center">
+                              <FaPlus
+                                className="cursor-pointer hover:text-[#EA1A20] mx-auto"
+                                onClick={() =>
+                                  handleChangeCartQuantity(item.id, 1)
+                                }
+                              />
+                              <FaMinus
+                                className="cursor-pointer hover:text-[#EA1A20] mx-auto"
+                                onClick={() =>
+                                  handleChangeCartQuantity(item.id, -1)
+                                }
+                              />
+                              <p className="text-center font-bold">
+                                ₱ {item.price} x {item.quantity}
+                              </p>
+                            </div>
                           </div>
+                          <TiDeleteOutline
+                            className="text-[#d80c0c] w-5 h-5 cursor-pointer"
+                            onClick={() => handleRemoveFromCart(item.id)}
+                          />
+                        </div>
+                      ))
+                    )}
+                  </div>
 
-                      {/* total */}
-                      <div className="pt-4">
-                      <div className="border-t pt-4 w-full">
-                        <div className="flex justify-between text-md font-semibold mb-2">
-                          <p>Subtotal:</p>
-                          <p>₱ {subtotal}</p>
+                  {/* total */}
+                  <div className="pt-4">
+                    <div className="border-t pt-4 w-full">
+                      <div className="flex justify-between text-md font-semibold mb-2">
+                        <p>Subtotal:</p>
+                        <p>₱ {subtotal}</p>
+                      </div>
+                      <div className="flex justify-between items-center text-md font-semibold mb-2">
+                        <p>Discount:</p>
+                        <div className="flex flex-row items-center gap-2">
+                          <p>₱</p>
+                          <input
+                            type="number"
+                            className="h-10 w-20 border-b border-gray-400 px-2"
+                            value={discount_amount}
+                            min={0}
+                            max={subtotal}
+                            onChange={(e) => setDiscount(e.target.value)}
+                          />
                         </div>
-                        <div className="flex justify-between items-center text-md font-semibold mb-2">
-                          <p>Discount:</p>
-                          <div className="flex flex-row items-center gap-2">
-                            <p>₱</p>
-                            <input
-                              type="number"
-                              className="h-10 w-20 border-b border-gray-400 px-2"
-                              value={discount_amount}
-                              min={0}
-                              max={subtotal}
-                              onChange={(e) => setDiscount(e.target.value)}
-                            />
-                          </div>
-                        </div>
+                      </div>
 
-                        <div className="flex justify-between text-xl font-extrabold uppercase">
-                          <p>Total:</p>
-                          <p>₱ {total}</p>
-                        </div>
+                      <div className="flex justify-between text-xl font-extrabold uppercase">
+                        <p>Total:</p>
+                        <p>₱ {total}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          <Toaster richColors />
           </div>
+
+          <Toaster richColors />
         </div>
+      </div>
     </>
   );
 }

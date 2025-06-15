@@ -1,34 +1,34 @@
 import UserSideBar from "./UserSideBar";
 import axios from "axios";
-import { useEffect, useState} from "react";
-import {Toaster, toast} from 'sonner'
+import { useEffect, useState } from "react";
+import { Toaster, toast } from "sonner";
 
 function UserSettings() {
-
   const [getInfo, setGetInfo] = useState({
-      username: "",
-      email: "",
-      contact_number: "",
-      address: "",
-    });
+    username: "",
+    email: "",
+    contact_number: "",
+    address: "",
+  });
 
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("user"));
-    axios.get("/api/users", {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    })
-    .then((response) => {
-      setGetInfo(response.data);
-      console.log("User data:", response.data);
-    })
-    .catch((error) => {
-      console.error("Error fetching user data:", error);
-    });
-    }, []); 
+    axios
+      .get("/api/users", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((response) => {
+        setGetInfo(response.data);
+        console.log("User data:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
 
-    const handleUpdateInfo = (event) => {
+  const handleUpdateInfo = (event) => {
     event.preventDefault();
     const user = JSON.parse(window.localStorage.getItem("user"));
     axios
@@ -40,38 +40,41 @@ function UserSettings() {
       .then((response) => {
         console.log("User information updated successfully:", response.data);
         response.data && setGetInfo(response.data);
-        toast.success('Info Update Successful');
+        toast.success("Info Update Successful");
       })
       .catch((error) => {
         console.error("Error updating user information:", error);
-        toast.error('Invalid Input!');
+        toast.error("Invalid Input!");
       });
   };
 
   return (
     <div className="min-h-full bg-gradient-to-b from-[#e8e6c2] to-[#eaeae7] grid grid-cols-[0.1fr_0.9fr]">
-      <UserSideBar/>
-        {/* User Information */}
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 p-10 h-full">
-            {/* Left Side */}
-            <div className="bg-[#8d8987] text-[#ffffff] p-8 rounded-3xl shadow-md flex flex-col h-8/11">
-              <p className="text-3xl lg:text-4xl font-bold mb-5 uppercase">User Info</p>
+      <UserSideBar />
+      {/* User Information */}
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 p-10 h-full">
+        {/* Left Side */}
+        <div className="bg-white/70 text-black p-8 rounded-3xl shadow-md flex flex-col h-9/11 ">
+          <p className="text-3xl lg:text-4xl font-bold mb-5 uppercase">
+            User Info
+          </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex flex-col">
-              <p className="mb-2 text-[#ffffff]">Username</p>
-                <input
-                  value={getInfo?.username}
-                  onChange={(e) =>
-                  setGetInfo({ ...getInfo, username: e.target.value })}
-                  type="text"
-                  id="name"
-                  className="h-12 px-4 rounded-md text-[#000000]"
-                />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col">
+              <p className="mb-2 text-black">Username</p>
+              <input
+                value={getInfo?.username}
+                onChange={(e) =>
+                  setGetInfo({ ...getInfo, username: e.target.value })
+                }
+                type="text"
+                id="name"
+                className="h-12 px-4 rounded-md text-[#000000]"
+              />
+            </div>
 
-              <div className="flex flex-col">
-              <p className="mb-2 text-[#ffffff]">Email</p>
+            <div className="flex flex-col">
+              <p className="mb-2 text-black">Email</p>
               <input
                 type="email"
                 id="email"
@@ -81,49 +84,52 @@ function UserSettings() {
                 }
                 className="h-12 px-4 rounded-md text-[#000000]"
               />
-              </div>
             </div>
+          </div>
 
-            <div className="flex flex-col mt-6">
-              <p className="mb-2 text-[#ffffff]">Contact Number</p>
-              <input
+          <div className="flex flex-col mt-6">
+            <p className="mb-2 text-black">Contact Number</p>
+            <input
               type="text"
               id="subject"
               className="h-12 px-4 rounded-md text-[#000000]"
               value={getInfo?.contact_number}
-                onChange={(e) =>
-                  setGetInfo({ ...getInfo, contact_number: e.target.value })
-                }
-              />
-            </div>
+              onChange={(e) =>
+                setGetInfo({ ...getInfo, contact_number: e.target.value })
+              }
+            />
+          </div>
 
-            <div className="flex flex-col mt-6">
-              <p className="mb-2 text-[#ffffff]">Address</p>
-              <textarea
+          <div className="flex flex-col mt-6">
+            <p className="mb-2 text-black">Address</p>
+            <textarea
               id="message"
               rows={2}
               className="px-4 py-3 rounded-md text-[#000000] resize-none"
               value={getInfo?.address}
-                onChange={(e) =>
-                  setGetInfo({ ...getInfo, address: e.target.value })
-                }
-              />
-            </div>
+              onChange={(e) =>
+                setGetInfo({ ...getInfo, address: e.target.value })
+              }
+            />
+          </div>
+          <div className="pb-8">
+            <button
+              className="mt-8 h-12 w-full bg-secondary border-1 border-[#5b5b58] text-[#000000] uppercase font-semibold rounded-md hover:bg-[#6c6c6a] hover:text-black transition "
+              onClick={handleUpdateInfo}
+            >
+              Save Info
+            </button>
+          </div>
+        </div>
 
-              <button className="mt-8 h-12 w-full bg-[#ffffff] border-1 border-[#5b5b58] text-[#000000] uppercase font-semibold rounded-md hover:bg-[#6c6c6a] hover:text-[#ffffff] transition"
-              onClick={handleUpdateInfo}>
-            Save Info
-              </button>
-            </div>
-
-        {/* User Password */}
+        {/* User Password
         {/* Right Side */}
-          <div className="flex-1 bg-[#8d8987] text-[#ffffff] p-8 rounded-3xl shadow-md flex flex-col h-5/9">
+        {/* <div className="flex-1 bg-[#8d8987] text-black p-8 rounded-3xl shadow-md flex flex-col h-5/9">
             <p className="text-3xl lg:text-4xl font-bold mb-5 uppercase">User Password</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col">
-                <p className="mb-2 text-[#ffffff]">Current Password</p>
+                <p className="mb-2 text-black">Current Password</p>
                 <input
                 type="password"
                 id="currentPassword"
@@ -132,7 +138,7 @@ function UserSettings() {
               </div>
 
               <div className="flex flex-col">
-                <p className="mb-2 text-[#ffffff]">New Password</p>
+                <p className="mb-2 text-black">New Password</p>
                 <input
                 type="password"
                 id="newPassword"
@@ -142,7 +148,7 @@ function UserSettings() {
             </div>
 
               <div className="flex flex-col mt-6">
-                <p className="mb-2 text-[#ffffff]">Confirm New Password</p>
+                <p className="mb-2 text-black">Confirm New Password</p>
                 <input
               type="password"
               id="confirmPassword"
@@ -150,15 +156,14 @@ function UserSettings() {
                 />
               </div>
 
-              <button className="mt-8 h-12 w-full bg-[#ffffff] border-1 border-[#5b5b58] text-[#000000] uppercase font-semibold rounded-md hover:bg-[#6c6c6a] hover:text-[#ffffff] transition">
+              <button className="mt-8 h-12 w-full bg-[#ffffff] border-1 border-[#5b5b58] text-[#000000] uppercase font-semibold rounded-md hover:bg-[#6c6c6a] hover:text-black transition">
                 Update Password
               </button>
-        </div>
-          </div>
-    <Toaster richColors/>
+        </div> */}
+      </div>
+      <Toaster richColors />
     </div>
-
   );
 }
 
-export default UserSettings
+export default UserSettings;

@@ -122,7 +122,7 @@ function ProductManagement() {
 
                   <button
                     onClick={() => navigate(`/Admin/EditProduct/${d.id}`)}
-                    className="w-full bg-admin text-white py-2 rounded-2xl shadow hover:bg-secondary/70 transition"
+                    className="w-full bg-admin text-white py-2 rounded-2xl shadow hover:bg-secondary/70 transition hover:text-black"
                   >
                     Edit
                   </button>

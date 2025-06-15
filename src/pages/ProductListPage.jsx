@@ -4,6 +4,7 @@ import { PiMagnifyingGlassLight } from "react-icons/pi";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { TiShoppingCart } from "react-icons/ti";
 
 function ProductPage() {
   const [data, setData] = useState([]);
@@ -79,17 +80,18 @@ function ProductPage() {
                     className="mb-4 w-50 h-55  object-cover rounded-sm"
                   />
                   <div className="text-center mb-2">
-                    <p className="text-lg font-semibold mb-1">{d.name}</p>
+                    <p className="text-lg font-semibold mb-1">{d.name} </p>
                     <p className="text-xl font-bold text-[#000000]">
                       {d.price}
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-4 w-full">
                     <button
-                      className="bg-[#db2026] text-[#ffffff] font-semibold text-sm py-2 px-4 rounded hover:bg-red-800 transition"
+                      className="bg-[#db2026] text-[#ffffff] font-semibold text-sm py-2 px-4 rounded hover:bg-red-800 transition flex justify-center"
                       onClick={() => handleAddToCart(d)}
                     >
-                      Add To Cart
+                      <TiShoppingCart className="h-10 w-10" />
+                      {d.stock_quantity}
                     </button>
                     <button
                       className="bg-gray-200 text-[#363535] font-semibold text-s py-2 px-4 rounded hover:bg-gray-400 transition"

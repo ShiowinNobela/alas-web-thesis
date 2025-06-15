@@ -35,6 +35,11 @@ function WalkInOrders() {
     retry: 1,
   });
 
+  const totalAmount = orders?.reduce(
+    (sum, order) => sum + parseFloat(order.total_amount || 0),
+    0
+  );
+
   return (
     <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
       <NewSideBar />
@@ -60,7 +65,7 @@ function WalkInOrders() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center flex-wrap gap-3 w-full">
+        {/* <div className="flex justify-between items-center flex-wrap gap-3 w-full">
           <div className="flex items-center gap-2 w-full sm:w-[25%]">
             <TextInput
               placeholder="Search order by ID..."
@@ -99,7 +104,7 @@ function WalkInOrders() {
               <HiOutlineRefresh className="w-5 h-5 transition-transform duration-300 group-active:rotate-180" />
             </Button>
           </div>
-        </div>
+        </div> */}
 
         {isLoading && (
           <div className="flex justify-center items-center h-full">
@@ -120,7 +125,12 @@ function WalkInOrders() {
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div className="bg-admin text-white text-xs uppercase font-semibold px-6 py-3 rounded-t-lg">
               <span>Total Orders: {orders.length}</span>
-              <span className="ml-4">Total Amount:</span>
+              <span className="ml-4">
+                Total Amount: ₱{" "}
+                {totalAmount.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </div>
             <table className="w-full text-sm text-left text-slate-800 rounded-2xl">
               <thead className="sticky top-0 text-xs uppercase bg-admin text-white">

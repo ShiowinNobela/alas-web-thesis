@@ -124,6 +124,7 @@ function AddProduct() {
               <Description
                 label="Product Description"
                 value={values.description}
+                textColor="text-black"
                 onChange={(e) =>
                   setValues({ ...values, description: e.target.value })
                 }

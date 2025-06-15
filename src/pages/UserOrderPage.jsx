@@ -172,7 +172,7 @@ function UserViewOrderPage() {
     });
   };
 
-    useEffect(() => {
+  useEffect(() => {
     const delivered = orders.filter((order) => order.status === "delivered");
     const sortedDelivered = delivered.sort(
       (a, b) => new Date(b.order_date) - new Date(a.order_date)
@@ -420,11 +420,12 @@ function UserViewOrderPage() {
           <div className="flex items-center justify-center min-h-[60vh] w-full mt-10">
             <div>
               <caption className="text-xl font-bold p-5">Notifications</caption>
-              <div className="w-4xl bg-gray-50 h-150 overflow-y-auto mx-auto shadow-md drop-shadow-xl p-5">
-                
+              <div className="w-4xl bg-gray-50 h-100 overflow-y-auto mx-auto shadow-md drop-shadow-xl p-5">
                 <div className="flex flex-col items-center justify-center">
                   {notifications.length === 0 ? (
-                    <div className="text-gray-500 p-5">No notifications yet.</div>
+                    <div className="text-gray-500 p-5">
+                      No notifications yet.
+                    </div>
                   ) : (
                     notifications.map((notif) => (
                       <div
@@ -436,7 +437,8 @@ function UserViewOrderPage() {
                             {notif.message}
                           </h1>
                           <p className="text-sm">
-                            Delivered on: {new Date(notif.date).toLocaleString()}
+                            Delivered on:{" "}
+                            {new Date(notif.date).toLocaleString()}
                           </p>
                         </div>
                         <div

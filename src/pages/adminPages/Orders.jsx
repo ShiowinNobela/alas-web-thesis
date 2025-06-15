@@ -104,7 +104,7 @@ function AdminViewOrderPage() {
 
         .catch((err) => console.error(err));
     },
-    [user.token, orders]
+    [user.token]
   );
 
   const fetchOrderSummary = useCallback(
@@ -474,7 +474,6 @@ function AdminViewOrderPage() {
                 Total Amount: ₱{totalAmount.toLocaleString()}
               </span>
               <span className="ml-10"></span>
-              <span className="ml-4">Total Items: {totalQuantity}</span>
             </div>
 
             <table className="w-full text-sm text-left text-slate-800 rounded-2xl">
