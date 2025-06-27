@@ -45,14 +45,14 @@ function InventoryManagement() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [formData, setFormData] = useState({
-    stock_quantity: "",
-    price: "",
+    restock_quantity: 0,
+    price: 0,
   });
 
   function openEditModal(product) {
     setEditingProduct(product);
     setFormData({
-      stock_quantity: product.stock_quantity,
+      restock_quantity: null,
       price: product.price,
     });
     setIsModalOpen(true);
@@ -70,9 +70,9 @@ function InventoryManagement() {
 
   // Mutation for updating stock and price
   const updateStockPrice = useMutation({
-    mutationFn: ({ id, stock_quantity, price }) =>
+    mutationFn: ({ id, restock_quantity, price }) =>
       axios.patch(`/api/products/stock-price/${id}`, {
-        stock_quantity: Number(stock_quantity),
+        restock_quantity: Number(restock_quantity),
         price: Number(price),
       }),
     onSuccess: () => {
@@ -85,7 +85,7 @@ function InventoryManagement() {
     e.preventDefault();
     updateStockPrice.mutate({
       id: editingProduct.id,
-      stock_quantity: formData.stock_quantity,
+      restock_quantity: formData.restock_quantity,
       price: formData.price,
     });
   }
@@ -161,7 +161,7 @@ function InventoryManagement() {
                         <td className="px-6 py-2">
                           ₱{parseFloat(d.price).toFixed(2)}
                         </td>
-                        <td className="px-6 py-2">
+                        <td className="px-6 py-2 min-w-[110px]">
                           <span
                             className={`px-2 py-0.5 text-xs font-medium rounded ${
                               d.is_active
@@ -219,16 +219,16 @@ function InventoryManagement() {
           <form id="editForm" onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
-                htmlFor="stock_quantity"
+                htmlFor="retock_quantity"
                 className="block mb-2 text-sm font-medium text-gray-700"
               >
-                Stock Quantity
+                Restock Amount
               </label>
               <input
                 type="number"
-                id="stock_quantity"
-                name="stock_quantity"
-                value={formData.stock_quantity}
+                id="restock_quantity"
+                name="restock_quantity"
+                value={formData.restock_quantity}
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

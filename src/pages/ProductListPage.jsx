@@ -69,39 +69,35 @@ function ProductPage() {
               </div> */}
           {/* Product List */}
           <div className="grid grid-cols-4 gap-4 h-[89%] overflow-y-auto overflow-x-hidden">
-            {newData
-              .filter((d) => d.stock_quantity > 0)
-              .map((d) => (
-                // products
-                <div className="flex flex-col items-center justify-center bg-white/70 p-6 mr-4 rounded-md shadow-md">
-                  <img
-                    src={d.image}
-                    alt={d.name}
-                    className="mb-4 w-50 h-55  object-cover rounded-sm"
-                  />
-                  <div className="text-center mb-2">
-                    <p className="text-lg font-semibold mb-1">{d.name} </p>
-                    <p className="text-xl font-bold text-[#000000]">
-                      {d.price}
-                    </p>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 w-full">
-                    <button
-                      className="bg-[#db2026] text-[#ffffff] font-semibold text-sm py-2 px-4 rounded hover:bg-red-800 transition flex justify-center"
-                      onClick={() => handleAddToCart(d)}
-                    >
-                      <TiShoppingCart className="h-10 w-10" />
-                      {d.stock_quantity}
-                    </button>
-                    <button
-                      className="bg-gray-200 text-[#363535] font-semibold text-s py-2 px-4 rounded hover:bg-gray-400 transition"
-                      onClick={() => navigate(`/ProductDetailsPage/${d.id}`)}
-                    >
-                      View Details
-                    </button>
-                  </div>
+            {newData.map((d) => (
+              // products
+              <div className="flex flex-col items-center justify-center bg-white/70 p-6 mr-4 rounded-md shadow-md">
+                <img
+                  src={d.image}
+                  alt={d.name}
+                  className="mb-4 w-50 h-55  object-cover rounded-sm"
+                />
+                <div className="text-center mb-2">
+                  <p className="text-lg font-semibold mb-1">{d.name} </p>
+                  <p className="text-xl font-bold text-[#000000]">{d.price}</p>
                 </div>
-              ))}
+                <div className="grid grid-cols-2 gap-4 w-full">
+                  <button
+                    className="bg-[#db2026] text-[#ffffff] font-semibold text-sm py-2 px-4 rounded hover:bg-red-800 transition flex justify-center"
+                    onClick={() => handleAddToCart(d)}
+                  >
+                    <TiShoppingCart className="h-10 w-10" />
+                    {d.stock_quantity}
+                  </button>
+                  <button
+                    className="bg-gray-200 text-[#363535] font-semibold text-s py-2 px-4 rounded hover:bg-gray-400 transition"
+                    onClick={() => navigate(`/ProductDetailsPage/${d.id}`)}
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
