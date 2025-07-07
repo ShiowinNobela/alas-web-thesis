@@ -1,6 +1,6 @@
 @font-face {
-  font-family: Doto;
-  src: url("../src/assets/fonts/Doto-Regular.ttf");
+  font-family: Bebas;
+  src: url("../src/assets/fonts/Jost-Semibold.ttf");
 }
 
 @font-face {
@@ -23,12 +23,22 @@
 @theme {
   --font-*: initial;
   --font-sans: Rubik, "serif";
-  --color-primary: #e74c3c;
-  --color-secondary: #febe00;
+  --font-heading: Bebas, "serif";
+  --color-primary: #d47849;
+  --color-content: #4b322a;
+  --color-red: #ef4444;
+  --color-secondary: #b88a2c;
   --color-admin: #121b2c;
-  --color-neutral: #e2e0e1;
+  --color-neutral: #f6f3e7;
+  --color-background: #f5f5eb;
 }
 
 @utility flowbite {
   color: --color-admin;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }

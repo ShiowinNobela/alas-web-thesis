@@ -1,4 +1,5 @@
 import "./App.css";
+import { ThemeConfig } from "flowbite-react";
 import ContactUs from "./pages/ContactUs.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegPage from "./pages/RegistrationPage.jsx";
@@ -29,12 +30,14 @@ import UserViewOrderDetails from "./pages/UserViewOrderDetails.jsx";
 import InventoryManagement from "./pages/adminPages/InventoryManagement.jsx";
 import WalkInOrdering from "./pages/adminPages/WalkInOrdering.jsx";
 import SalesPage from "./pages/adminPages/SalesPage.jsx";
-import WalkInOrderTable from "./pages/adminPages/WalkInOrdersTable.jsx"
+import WalkInOrderTable from "./pages/adminPages/WalkInOrdersTable.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
+import UserDashboardLayout from "./components/UserDashboardLayout.jsx";
 
 function App() {
   return (
     <>
+      <ThemeConfig dark={false} />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/LoginPage" element={<LoginPage />}></Route>
@@ -46,18 +49,20 @@ function App() {
             element={<ProductDetailsPage />}
           ></Route>
           <Route path="/ContactUs" element={<ContactUs />}></Route>
-          <Route path="/UserSettings" element={<UserSettings />}></Route>
           <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
           <Route path="*" element={<h1>404 Not Found</h1>}></Route>
           <Route path="/Faqs" element={<Faqs />}></Route>
           <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
-          <Route path="/UserOrderPage" element={<UserOrderPage />}></Route>
           <Route path="/AboutUs" element={<AboutUs />}></Route>
+          <Route path="/UserOrderPage" element={<UserOrderPage />} />
+          <Route path="/UserSettings" element={<UserSettings />} />
           <Route
             path="/UserViewOrderDetails/:id"
             element={<UserViewOrderDetails />}
           ></Route>
         </Route>
+
+        <Route element={<UserDashboardLayout />}></Route>
 
         <Route path="/Admin">
           <Route index element={<Login />}></Route>
@@ -74,7 +79,7 @@ function App() {
           <Route path="ViewOrder/:id" element={<ViewOrder />}></Route>
           <Route path="AdminUserEdit/:id" element={<AdminUserEdit />}></Route>
           <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
-          <Route path="WalkInOrdering" element={<WalkInOrdering/>}></Route>
+          <Route path="WalkInOrdering" element={<WalkInOrdering />}></Route>
           <Route path="SalesPage" element={<SalesPage />}></Route>
           <Route
             path="InventoryManagement"

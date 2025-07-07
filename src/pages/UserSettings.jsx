@@ -50,7 +50,6 @@ function UserSettings() {
 
   return (
     <div className="min-h-full bg-gradient-to-b from-[#e8e6c2] to-[#eaeae7] grid grid-cols-[0.1fr_0.9fr]">
-      <UserSideBar />
       {/* User Information */}
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 p-10 h-full">
         {/* Left Side */}

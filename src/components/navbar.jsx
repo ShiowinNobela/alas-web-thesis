@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import CTAButton from "../components/CTAButton";
 import Logo from "../components/images/logowhite.png";
+import UserDropdown from "./UserDropdown";
 const navItemStyle =
-  "px-5 py-1 border-b-2 border-transparent hover:border-yellow-300 hover:text-yellow-200 transition-all cursor-pointer";
+  "px-2 py-2 border-b-2 border-transparent hover:border-primary hover:text-primary transition-all cursor-pointer";
 
-function navbar() {
+function parseJwt(token) {
+  if (!token) return null;
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  try {
+    return JSON.parse(atob(base64));
+  } catch (e) {
+    return null;
+  }
+}
+
+function Navbar() {
   const [nav, setNav] = useState(true);
   const location = useLocation();
+  const storedUser = JSON.parse(window.localStorage.getItem("user"));
+  const userInfo = storedUser ? parseJwt(storedUser.token) : null;
 
   const navhandler = () => {
     setNav(!nav);
@@ -17,20 +33,24 @@ function navbar() {
   const isActive = (path) => location.pathname === path;
 
   const getNavItemClass = (path) =>
-    `${navItemStyle} ${
-      isActive(path) ? "border-yellow-300 text-yellow-200 font-semibold" : ""
-    }`;
+    `${navItemStyle} ${isActive(path) ? "text-primary" : ""}`;
 
   return (
-    <div className="bg-[#EA1A20] w-[100%] z-50 sticky top-0">
-      <div className="flex justify-between items-center h-20 mx-auto max-w-[1440px] px-4">
-        <img className=" h-20 w-40 cursor-pointer" src={Logo} alt="/" />
-        <ul className="text-white hidden uppercase md:flex ">
+    <div className="bg-white w-full z-50 sticky top-0 shadow">
+      <div className="flex justify-between items-center mx-auto max-w-[1440px] px-6 py-4 md:px-4">
+        <Link to="/">
+          <img
+            className="h-10 w-auto md:h-15 cursor-pointer transition-all duration-200"
+            src={Logo}
+            alt="/"
+          />
+        </Link>
+        <ul className="text-content text-lg hidden uppercase md:flex font-heading gap-4">
           <Link to="/">
             <li className={getNavItemClass("/")}>Home</li>
           </Link>
           <Link to="/ProductListPage">
-            <li className={getNavItemClass("/ProductListPage")}>Products</li>
+            <li className={getNavItemClass("/ProductListPage")}>Menu</li>
           </Link>
           <Link to="/Faqs">
             <li className={getNavItemClass("/Faqs")}>FAQs</li>
@@ -39,30 +59,25 @@ function navbar() {
             <li className={getNavItemClass("/AboutUs")}>About Us</li>
           </Link>
           <Link to="/ContactUs">
-            <li className={getNavItemClass("/ContactUs")}>Contact Us</li>
+            <li className={getNavItemClass("/ContactUs")}>Contact</li>
           </Link>
-          {window.localStorage.getItem("user") ? (
-            <Link to="UserSettings">
-              <button className={navItemStyle}>SETTINGS</button>
-            </Link>
+          {storedUser ? (
+            <li>
+              <UserDropdown user={userInfo} />
+            </li>
           ) : (
             <Link to="/LoginPage">
-              <li className="px-5 py-1 cursor-pointer">Sign In</li>
+              <li className={getNavItemClass("/LoginPage")}>
+                <PersonOutlineIcon fontSize="large" className="mr-2" />
+                Sign In
+              </li>
             </Link>
           )}
 
-          {window.localStorage.getItem("user") ? (
-            <Link to="/ProductListPage">
-              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold ml-5">
-                Order
-              </button>{" "}
-            </Link>
+          {storedUser ? (
+            <CTAButton to="/ProductListPage">Order</CTAButton>
           ) : (
-            <Link to="/LoginPage">
-              <button className="px-5 py-1 cursor-pointer text-[#000000] bg-[#FFD700] mx-auto rounded-2xl font-semibold ml-5">
-                Order
-              </button>{" "}
-            </Link>
+            <CTAButton to="/LoginPage">Order</CTAButton>
           )}
 
           {/* <Link to="//ProductListPage"></Link> */}
@@ -98,4 +113,4 @@ function navbar() {
   );
 }
 
-export default navbar;
+export default Navbar;

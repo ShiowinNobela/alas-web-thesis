@@ -1,16 +1,37 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
+import TextInput from "../components/TextInput";
+import PasswordInput from "../components/PasswordInput";
+import PromptLink from "../components/PromptLink";
+import PrimaryButton from "../components/PrimaryButton";
 
 function LoginPage() {
-  const [username, setUserLog] = useState("");
-  const [password, setPasswordLog] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+  });
 
-  axios.defaults.withCredentials = true;
+  const handleLogin = (event) => {
+    event.preventDefault();
 
-  const handleLogin = () => {
+    const newErrors = {
+      username: username.trim() ? "" : "Username is required",
+      password: password.trim() ? "" : "Password is required",
+    };
+
+    setErrors(newErrors);
+
+    if (newErrors.username || newErrors.password) {
+      toast.error("Please fill in all required fields!");
+
+      return;
+    }
+
+    axios.defaults.withCredentials = true;
+
     axios
       .post("/api/users/login/", {
         username,
@@ -19,6 +40,7 @@ function LoginPage() {
       .then((response) => {
         if (response.status === 200) {
           window.localStorage.setItem("user", JSON.stringify(response.data));
+
           return axios
             .get("/api/users", {
               headers: {
@@ -27,24 +49,36 @@ function LoginPage() {
             })
             .then((res) => {
               const userData = res.data;
-              toast.success(
-                `Login Successful${
-                  userData.role_name === "admin" ? " Admin" : ""
-                }!`
-              );
-              setTimeout(() => {
-                window.location.href =
-                  userData.role_name === "admin" ? "/Admin/DashBoard" : "/";
-              }, 1000);
+
+              window.location.href =
+                userData.role_name === "admin" ? "/Admin/DashBoard" : "/";
             });
         }
       })
       .catch((err) => {
-        const msg =
-          err.response?.status === 401
-            ? "Please input a valid account!"
-            : err.response?.data?.message || "An unexpected error occurred";
+        const res = err.response;
+
+        if (!res) {
+          toast.error("No response from server!");
+          return;
+        }
+
+        if (res.status === 401) {
+          toast.error("Please input a valid account!");
+          return;
+        }
+
+        // Show general message
+        const msg = res.data?.message || "An unexpected error occurred";
         toast.error(msg);
+
+        // If we have per-field errors, update state
+        if (res.data?.error) {
+          setErrors((prev) => ({
+            ...prev,
+            ...res.data.error,
+          }));
+        }
       });
   };
 
@@ -54,112 +88,81 @@ function LoginPage() {
 
   return (
     <>
-      <section className="w-full h-full overflow-y-hidden flex justify-center items-center bg-[url('./src/components/images/bg-1.jpg')] bg-cover bg-center">
-        <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl max-w-md w-full max-h-[95vh] p-6 flex flex-col gap-4 text-center text-black overflow-auto">
-          <img
-            src="./src/components/images/logo-alas1.jpg"
-            alt="Alas Delis Logo"
-            className="mx-auto w-24 h-24 object-contain mb-2 shrink-0"
-          />
-
-          <h1 className="text-xl font-bold uppercase">
-            Welcome to{" "}
-            <span className="text-[#d47849]">Alas Delis and Spices</span>
-          </h1>
-
-          <div className="flex flex-col gap-3 text-left">
-            <label className="text-sm font-semibold">Username</label>
-            <input
-              type="text"
-              onChange={(e) => setUserLog(e.target.value)}
-              className="rounded-md p-2 border border-gray-300 outline-none focus:ring-2 focus:ring-[#d47849]"
-            />
-
-            <label className="text-sm font-semibold">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setPasswordLog(e.target.value)}
-                className="rounded-md p-2 border border-gray-300 outline-none focus:ring-2 focus:ring-[#d47849] w-full pr-10"
+      <section className="min-h-full bg-gray-50 flex flex-col justify-start sm:justify-center items-center px-4 py-8">
+        <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6 sm:p-8 text-content">
+          <div className="space-y-6">
+            <div className="space-y-1">
+              <img
+                src="./src/components/images/logo-alas1.jpg"
+                alt="Alas Delis Logo"
+                className="mx-auto w-20 h-20 object-contain shrink-0"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-2 flex items-center text-gray-600 hover:text-gray-900"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.269-2.943-9.543-7a10.058 10.058 0 012.59-4.282M3 3l18 18"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9.88 9.88a3 3 0 104.24 4.24"
-                    />
-                  </svg>
-                )}
-              </button>
+              <h1 className="text-3xl font-bold leading-tight tracking-tight text-center font-heading">
+                SIGN IN
+              </h1>
+              <p className="text-sm text-gray-500 text-center">
+                Welcome to Alas Delis and Spices.
+              </p>
             </div>
 
-            <label className="flex items-center gap-2 text-sm mt-2">
-              <input type="checkbox" />
-              Remember me
-            </label>
+            <form className="space-y-4" onSubmit={handleLogin}>
+              <TextInput
+                label="Username"
+                type="text"
+                value={username}
+                onChange={setUsername}
+                placeholder="username"
+                error={errors.username}
+              />
+
+              <PasswordInput
+                label="Password"
+                value={password}
+                onChange={setPassword}
+                placeholder="********"
+                error={errors.password}
+              />
+
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-primary"
+                  />
+                  Remember me
+                </label>
+                <a
+                  href="#"
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  Forgot password?
+                </a>
+              </div>
+
+              <PrimaryButton type="submit">Sign In</PrimaryButton>
+
+              <PromptLink
+                promptText="Don’t have an account yet?"
+                linkText="CREATE ACCOUNT"
+                to="/RegPage"
+              />
+
+              <p className="text-xs text-gray-400 text-center">
+                By clicking continue, you agree to our{" "}
+                <a href="#" className="underline hover:text-primary">
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a href="#" className="underline hover:text-primary">
+                  Privacy Policy
+                </a>
+                .
+              </p>
+            </form>
           </div>
-
-          <button
-            onClick={handleLogin}
-            className="mt-3 bg-[#d47849] hover:bg-[#bf663a] text-white px-6 py-2 rounded-md transition-all uppercase"
-          >
-            Login
-          </button>
-
-          <p className="text-sm">
-            New Here?{" "}
-            <Link
-              to="/RegPage"
-              className="text-[#d47849] font-semibold hover:underline"
-            >
-              Create an account now!
-            </Link>
-          </p>
         </div>
       </section>
-
-      <Toaster richColors />
+      <Toaster richColors visibleToasts={1} />
     </>
   );
 }
