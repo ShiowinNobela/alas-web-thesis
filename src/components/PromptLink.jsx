@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const PromptLink = ({ promptText, linkText, to }) => (
-  <p className="text-sm font-light text-gray-500 text-center">
-    {promptText}{" "}
+  <p className="text-center text-sm font-light text-gray-500">
+    {promptText}{' '}
     <Link
       to={to}
-      className="w-full block mt-2 border border-primary text-primary hover:bg-primary/10 focus:ring-4 focus:outline-none focus:ring-primary/30 font-medium rounded-lg text-sm px-5 py-2.5 text-center uppercase transition-all font-heading"
+      className="border-primary text-primary hover:bg-primary/10 focus:ring-primary/30 font-heading mt-2 block w-full rounded-lg border px-5 py-2 text-center text-sm font-medium uppercase transition-all focus:ring-4 focus:outline-none"
     >
       {linkText}
     </Link>

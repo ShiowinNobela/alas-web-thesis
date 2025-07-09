@@ -1,31 +1,31 @@
-import { useState } from "react";
-import axios from "axios";
-import { Toaster, toast } from "sonner";
-import TextInput from "../components/TextInput";
-import PasswordInput from "../components/PasswordInput";
-import PromptLink from "../components/PromptLink";
-import PrimaryButton from "../components/PrimaryButton";
+import { useState } from 'react';
+import axios from 'axios';
+import { Toaster, toast } from 'sonner';
+import TextInput from '../components/TextInput';
+import PasswordInput from '../components/PasswordInput';
+import PromptLink from '../components/PromptLink';
+import PrimaryButton from '../components/PrimaryButton';
 
 function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
-    username: "",
-    password: "",
+    username: '',
+    password: '',
   });
 
   const handleLogin = (event) => {
     event.preventDefault();
 
     const newErrors = {
-      username: username.trim() ? "" : "Username is required",
-      password: password.trim() ? "" : "Password is required",
+      username: username.trim() ? '' : 'Username is required',
+      password: password.trim() ? '' : 'Password is required',
     };
 
     setErrors(newErrors);
 
     if (newErrors.username || newErrors.password) {
-      toast.error("Please fill in all required fields!");
+      toast.error('Please fill in all required fields!');
 
       return;
     }
@@ -33,16 +33,16 @@ function LoginPage() {
     axios.defaults.withCredentials = true;
 
     axios
-      .post("/api/users/login/", {
+      .post('/api/users/login/', {
         username,
         password,
       })
       .then((response) => {
         if (response.status === 200) {
-          window.localStorage.setItem("user", JSON.stringify(response.data));
+          window.localStorage.setItem('user', JSON.stringify(response.data));
 
           return axios
-            .get("/api/users", {
+            .get('/api/users', {
               headers: {
                 Authorization: `Bearer ${response.data.token}`,
               },
@@ -51,7 +51,7 @@ function LoginPage() {
               const userData = res.data;
 
               window.location.href =
-                userData.role_name === "admin" ? "/Admin/DashBoard" : "/";
+                userData.role_name === 'admin' ? '/Admin/DashBoard' : '/';
             });
         }
       })
@@ -59,17 +59,17 @@ function LoginPage() {
         const res = err.response;
 
         if (!res) {
-          toast.error("No response from server!");
+          toast.error('No response from server!');
           return;
         }
 
         if (res.status === 401) {
-          toast.error("Please input a valid account!");
+          toast.error('Please input a valid account!');
           return;
         }
 
         // Show general message
-        const msg = res.data?.message || "An unexpected error occurred";
+        const msg = res.data?.message || 'An unexpected error occurred';
         toast.error(msg);
 
         // If we have per-field errors, update state
@@ -82,25 +82,25 @@ function LoginPage() {
       });
   };
 
-  if (window.localStorage.getItem("user")) {
-    window.location.href = "/";
+  if (window.localStorage.getItem('user')) {
+    window.location.href = '/';
   }
 
   return (
     <>
-      <section className="min-h-full bg-gray-50 flex flex-col justify-start sm:justify-center items-center px-4 py-8">
-        <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6 sm:p-8 text-content">
+      <section className="flex min-h-full flex-col items-center justify-start px-4 py-8 sm:justify-center">
+        <div className="text-content bg-card w-full max-w-md rounded-lg p-6 shadow-md sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
                 src="./src/components/images/logo-alas1.jpg"
                 alt="Alas Delis Logo"
-                className="mx-auto w-20 h-20 object-contain shrink-0"
+                className="mx-auto h-20 w-20 shrink-0 object-contain"
               />
-              <h1 className="text-3xl font-bold leading-tight tracking-tight text-center font-heading">
+              <h1 className="font-heading text-center text-3xl leading-tight font-bold tracking-tight">
                 SIGN IN
               </h1>
-              <p className="text-sm text-gray-500 text-center">
+              <p className="text-center text-sm text-gray-500">
                 Welcome to Alas Delis and Spices.
               </p>
             </div>
@@ -127,13 +127,13 @@ function LoginPage() {
                 <label className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-2 focus:ring-primary"
+                    className="focus:ring-primary h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-2"
                   />
                   Remember me
                 </label>
                 <a
                   href="#"
-                  className="text-sm font-medium text-primary hover:underline"
+                  className="text-primary text-sm font-medium hover:underline"
                 >
                   Forgot password?
                 </a>
@@ -147,13 +147,13 @@ function LoginPage() {
                 to="/RegPage"
               />
 
-              <p className="text-xs text-gray-400 text-center">
-                By clicking continue, you agree to our{" "}
-                <a href="#" className="underline hover:text-primary">
+              <p className="text-center text-xs text-gray-400">
+                By clicking continue, you agree to our{' '}
+                <a href="#" className="hover:text-primary underline">
                   Terms of Service
-                </a>{" "}
-                and{" "}
-                <a href="#" className="underline hover:text-primary">
+                </a>{' '}
+                and{' '}
+                <a href="#" className="hover:text-primary underline">
                   Privacy Policy
                 </a>
                 .

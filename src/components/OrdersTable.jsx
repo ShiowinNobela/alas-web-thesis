@@ -5,8 +5,8 @@ import {
   TableHead,
   TableHeadCell,
   TableRow,
-} from "flowbite-react";
-import PropTypes from "prop-types";
+} from 'flowbite-react';
+import PropTypes from 'prop-types';
 
 export default function OrdersTable({
   orders,
@@ -15,9 +15,9 @@ export default function OrdersTable({
   onFetchOrderHistory,
 }) {
   return (
-    <div className="overflow-x-auto rounded shadow max-h-[50vh] overflow-y-auto">
-      <Table striped>
-        <TableHead className="sticky top-0 z-10 bg-white">
+    <div className="max-h-[50vh] overflow-x-auto overflow-y-auto rounded">
+      <Table hoverable className="shadow">
+        <TableHead className="sticky top-0 z-10">
           <TableRow>
             <TableHeadCell>Items</TableHeadCell>
             <TableHeadCell>Date</TableHeadCell>
@@ -33,11 +33,11 @@ export default function OrdersTable({
           </TableRow>
         </TableHead>
 
-        <TableBody>
+        <TableBody className="divide-y">
           {orders.map((order) => (
             <TableRow key={order.id} className="bg-white">
               <TableCell className="font-medium text-gray-900">
-                <ul className="list-disc list-inside break-words">
+                <ul className="list-inside list-disc break-words">
                   {order.items.map((item) => (
                     <li key={item.item_id}>
                       {item.product_name} x {item.quantity}
@@ -58,7 +58,7 @@ export default function OrdersTable({
               </TableCell>
 
               <TableCell className="flex flex-col capitalize">
-                {order.payment_method.split("_").map((word, idx) => (
+                {order.payment_method.split('_').map((word, idx) => (
                   <span key={idx}>{word}</span>
                 ))}
               </TableCell>
@@ -67,7 +67,7 @@ export default function OrdersTable({
 
               <TableCell>
                 <span
-                  className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                  className={`rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(
                     order.status
                   )}`}
                 >
@@ -76,16 +76,16 @@ export default function OrdersTable({
               </TableCell>
 
               <TableCell>
-                {order.status === "pending" && order.cancel_requested === 0 ? (
+                {order.status === 'pending' && order.cancel_requested === 0 ? (
                   <button
                     onClick={() => onCancelOrder(order.id)}
                     className="font-medium text-red-600 hover:underline"
                   >
                     Cancel Order
                   </button>
-                ) : order.status === "pending" &&
+                ) : order.status === 'pending' &&
                   order.cancel_requested === 1 ? (
-                  <span className="text-sm italic text-gray-500">
+                  <span className="text-sm text-gray-500 italic">
                     Cancellation requested
                   </span>
                 ) : (
@@ -102,7 +102,7 @@ export default function OrdersTable({
         </TableBody>
       </Table>
 
-      <div className="bg-gray-100 text-gray-800 flex justify-between items-center text-base font-semibold px-6 py-3">
+      <div className="flex items-center justify-between bg-gray-100 px-6 py-3 text-base font-semibold text-gray-800">
         <span>Hello</span>
         <span>Alas Delis and Spices</span>
       </div>

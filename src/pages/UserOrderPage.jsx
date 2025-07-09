@@ -145,7 +145,7 @@ function UserViewOrderPage() {
 
   return (
     <>
-      <div className="bg-neutral text-content px-6 py-2 shadow-md">
+      <div className="bg-neutral text-content border-b border-gray-400 px-6 py-2">
         <div className="mx-auto flex max-w-4xl flex-col items-center md:flex-row md:items-stretch">
           {/* LEFT SIDE */}
           <div className="flex flex-1 flex-col items-start px-6 py-4">
@@ -162,7 +162,7 @@ function UserViewOrderPage() {
           </div>
 
           {/* DIVIDER */}
-          <div className="my-4 hidden h-auto border-l border-gray-400 md:block"></div>
+          <div className="my-4 hidden h-auto border-l border-gray-300 md:block"></div>
 
           {/* RIGHT SIDE */}
           <div className="flex flex-1 flex-col items-start px-6 py-4">
@@ -190,12 +190,14 @@ function UserViewOrderPage() {
         </div>
       </div>
 
-      <main className="mx-auto flex w-full flex-1 flex-col overflow-hidden px-4 sm:px-8 lg:px-40">
-        <div className="relative overflow-x-hidden sm:rounded-lg">
-          <div className="flex flex-col gap-4 rounded-2xl px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-            {/* LEFT: Text Summary */}
-            <div className="flex flex-1 items-center gap-4">
-              <TextInput placeholder="Search Here" />
+      <main className="mx-auto flex min-h-full w-full flex-1 flex-col overflow-hidden bg-gray-100 px-4 py-4 sm:px-8 lg:px-40">
+        <div className="relative overflow-x-hidden bg-white shadow sm:rounded-lg">
+          <div className="flex flex-col px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-1 items-center">
+              <TextInput
+                placeholder="Search Here"
+                className="w-full max-w-md"
+              />
             </div>
 
             {/* RIGHT: Dropdown + Sort Buttons */}

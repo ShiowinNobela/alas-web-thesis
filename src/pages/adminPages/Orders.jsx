@@ -1,11 +1,12 @@
-import NewSideBar from "../../components/newSideBar";
-import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import OrderHistoryModal from "../../components/modals/orderHistoryModal";
-import StatusUpdateModal from "../../components/modals/statusUpdateModal";
-import { useNavigate } from "react-router-dom";
+import NewSideBar from '../../components/newSideBar';
+import { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
+import OrderHistoryModal from '../../components/modals/orderHistoryModal';
+import StatusUpdateModal from '../../components/modals/statusUpdateModal';
+import { Button } from '../../components/ui/Button';
+import { useNavigate } from 'react-router-dom';
 import {
-  Button,
+  //Button,
   Datepicker,
   TextInput,
   Dropdown,
@@ -18,7 +19,7 @@ import {
   DropdownDivider,
   Tooltip,
   Card,
-} from "flowbite-react";
+} from 'flowbite-react';
 import {
   HiOutlineSearch,
   HiOutlineRefresh,
@@ -33,48 +34,47 @@ import {
   HiHashtag,
   HiDocumentText,
   HiCheckCircle,
-} from "react-icons/hi";
-import StatusFilterDropdown from "../../components/StatusFilterDropdown";
-import dayjs from "dayjs";
-import { toast, Toaster } from "sonner";
+} from 'react-icons/hi';
+import StatusFilterDropdown from '../../components/StatusFilterDropdown';
+import dayjs from 'dayjs';
+import { toast, Toaster } from 'sonner';
 
-const tableHeadStyle = "px-6 py-3 text-center";
+const tableHeadStyle = 'px-6 py-3 text-center';
 
 function AdminViewOrderPage() {
   const [orders, setOrders] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-  const [filterStatus, setFilterStatus] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [filterStatus, setFilterStatus] = useState('');
   const [totalAmount, setTotalAmount] = useState(0);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [statusUpdateModal, setStatusUpdateModal] = useState(false);
   const [historyData, setHistoryData] = useState(null);
-  const [adminNote, setAdminNote] = useState("");
+  const [adminNote, setAdminNote] = useState('');
   const [updatingId, setUpdatingId] = useState(null);
-  const [updateStatus, setUpdateStatus] = useState("");
-  const [totalQuantity, setTotalQuantity] = useState(0);
-  const [modalTitle, setModalTitle] = useState("");
-  const [confirmButtonLabel, setConfirmButtonLabel] = useState("");
+  const [updateStatus, setUpdateStatus] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
+  const [confirmButtonLabel, setConfirmButtonLabel] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [startDateKey, setStartDateKey] = useState(0);
   const [endDate, setEndDate] = useState(null);
   const [endDateKey, setEndDateKey] = useState(0);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [searchId, setSearchId] = useState("");
+  const [searchId, setSearchId] = useState('');
   const [summaryData, setSummaryData] = useState([]);
   const [last30SummaryData, setLast30SummaryData] = useState([]);
 
-  const user = JSON.parse(window.localStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem('user'));
 
   const fetchOrders = useCallback(
-    (status = "", startDateVal, endDateVal) => {
+    (status = '', startDateVal, endDateVal) => {
       const params = new URLSearchParams();
 
-      if (status) params.append("status", status);
+      if (status) params.append('status', status);
       if (startDateVal)
-        params.append("startDate", dayjs(startDateVal).format("YYYY-MM-DD"));
+        params.append('startDate', dayjs(startDateVal).format('YYYY-MM-DD'));
       if (endDateVal)
-        params.append("endDate", dayjs(endDateVal).format("YYYY-MM-DD"));
+        params.append('endDate', dayjs(endDateVal).format('YYYY-MM-DD'));
 
       const url = `/api/adminOrder?${params.toString()}`;
 
@@ -92,14 +92,6 @@ function AdminViewOrderPage() {
             0
           );
           setTotalAmount(total);
-
-          const quantity = orders.reduce((sum, order) => {
-            return (
-              sum +
-              order.items.reduce((itemSum, item) => itemSum + item.quantity, 0)
-            );
-          }, 0);
-          setTotalQuantity(quantity);
         })
 
         .catch((err) => console.error(err));
@@ -112,8 +104,8 @@ function AdminViewOrderPage() {
       const start = startDate ? dayjs(startDate) : dayjs();
       const end = endDate ? dayjs(endDate) : dayjs();
       const params = new URLSearchParams();
-      params.append("start", start.format("YYYY-MM-DD"));
-      params.append("end", end.format("YYYY-MM-DD"));
+      params.append('start', start.format('YYYY-MM-DD'));
+      params.append('end', end.format('YYYY-MM-DD'));
 
       const url = `/api/reports/sales-summary-order?${params.toString()}`;
 
@@ -135,11 +127,11 @@ function AdminViewOrderPage() {
 
   const fetchLast30OrderSummary = useCallback(() => {
     const end = dayjs(); // today
-    const start = dayjs().subtract(100, "day"); // 30 days ago
+    const start = dayjs().subtract(100, 'day'); // 30 days ago
 
     const params = new URLSearchParams();
-    params.append("start", start.format("YYYY-MM-DD"));
-    params.append("end", end.format("YYYY-MM-DD"));
+    params.append('start', start.format('YYYY-MM-DD'));
+    params.append('end', end.format('YYYY-MM-DD'));
 
     const url = `/api/reports/sales-summary-order?${params.toString()}`;
 
@@ -159,7 +151,7 @@ function AdminViewOrderPage() {
 
   useEffect(() => {
     if (startDate && endDate && startDate > endDate) {
-      toast.error("Start date cannot be after end date");
+      toast.error('Start date cannot be after end date');
       return;
     }
 
@@ -170,31 +162,31 @@ function AdminViewOrderPage() {
   }, [filterStatus, startDate, endDate, fetchOrders, fetchOrderSummary]);
 
   const handleSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
     }
     setSortConfig({ key, direction });
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "pending":
-        return "bg-orange-200 text-orange-800";
-      case "processing":
-        return "bg-yellow-200 text-yellow-800";
-      case "shipping":
-        return "bg-green-200 text-green-800";
-      case "delivered":
-        return "bg-blue-200 text-blue-800";
-      case "returned":
-        return "bg-pink-200 text-pink-800";
-      case "refunded":
-        return "bg-violet-200 text-violet-800";
-      case "cancelled":
-        return "bg-red-200 text-red-800";
+      case 'pending':
+        return 'bg-orange-200 text-orange-800';
+      case 'processing':
+        return 'bg-yellow-200 text-yellow-800';
+      case 'shipping':
+        return 'bg-green-200 text-green-800';
+      case 'delivered':
+        return 'bg-blue-200 text-blue-800';
+      case 'returned':
+        return 'bg-pink-200 text-pink-800';
+      case 'refunded':
+        return 'bg-violet-200 text-violet-800';
+      case 'cancelled':
+        return 'bg-red-200 text-red-800';
       default:
-        return "bg-gray-200 text-gray-800";
+        return 'bg-gray-200 text-gray-800';
     }
   };
 
@@ -220,12 +212,12 @@ function AdminViewOrderPage() {
   };
 
   const sortedOrders = [...orders].sort((a, b) => {
-    if (sortConfig.key === "date") {
+    if (sortConfig.key === 'date') {
       const dateA = new Date(a.order_date);
       const dateB = new Date(b.order_date);
-      return sortConfig.direction === "asc" ? dateA - dateB : dateB - dateA;
-    } else if (sortConfig.key === "total") {
-      return sortConfig.direction === "asc"
+      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+    } else if (sortConfig.key === 'total') {
+      return sortConfig.direction === 'asc'
         ? a.total_amount - b.total_amount
         : b.total_amount - a.total_amount;
     }
@@ -244,8 +236,8 @@ function AdminViewOrderPage() {
         setShowHistoryModal(true);
       })
       .catch((err) => {
-        console.error("Failed to fetch order history:", err);
-        alert("Failed to fetch order status history.");
+        console.error('Failed to fetch order history:', err);
+        alert('Failed to fetch order status history.');
       });
   };
 
@@ -261,8 +253,8 @@ function AdminViewOrderPage() {
         setShowDetailsModal(true);
       })
       .catch((err) => {
-        console.error("Failed to fetch order details:", err);
-        alert("Failed to fetch order details.");
+        console.error('Failed to fetch order details:', err);
+        alert('Failed to fetch order details.');
       });
   };
 
@@ -286,17 +278,17 @@ function AdminViewOrderPage() {
               ? {
                   ...order,
                   cancel_requested: 1,
-                  status: status || "cancelled",
+                  status: status || 'cancelled',
                 }
               : order
           )
         );
         setStatusUpdateModal(false);
-        setAdminNote("");
+        setAdminNote('');
         setUpdatingId(null);
-        setUpdateStatus("");
-        setModalTitle("");
-        setConfirmButtonLabel("");
+        setUpdateStatus('');
+        setModalTitle('');
+        setConfirmButtonLabel('');
         if (startDate && endDate) {
           fetchOrderSummary(startDate, endDate);
         } else {
@@ -304,8 +296,8 @@ function AdminViewOrderPage() {
         }
       })
       .catch((err) => {
-        console.error("Cancel failed:", err);
-        alert("Failed to cancel order.");
+        console.error('Cancel failed:', err);
+        alert('Failed to cancel order.');
       });
   };
 
@@ -322,26 +314,26 @@ function AdminViewOrderPage() {
       .then((res) => {
         const order = res.data?.data || res.data;
         if (!order || !order.id) {
-          toast.error("Order not found.");
+          toast.error('Order not found.');
           setOrders([]);
         } else {
           setOrders([order]);
         }
-        setSearchId("");
+        setSearchId('');
       })
       .catch((err) => {
-        console.error("Search failed:", err);
-        toast.error("Order not found.");
+        console.error('Search failed:', err);
+        toast.error('Order not found.');
       });
   };
 
   const customTextInputTheme = {
     field: {
       input: {
-        base: "block w-full border rounded-2xl focus:outline-none focus:ring-2",
+        base: 'block w-full border rounded-2xl focus:outline-none focus:ring-2',
         colors: {
           custom:
-            "border-admin bg-white text-admin placeholder-gray-400 focus:border-admin focus:ring-admin",
+            'border-admin bg-white text-admin placeholder-gray-400 focus:border-admin focus:ring-admin',
         },
       },
     },
@@ -351,52 +343,47 @@ function AdminViewOrderPage() {
   return (
     <>
       <Toaster richColors />
-      <div className="h-screen w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
+      <div className="bg-muted grid h-screen w-screen grid-cols-[0.20fr_0.80fr] overflow-x-clip overflow-y-auto">
         <NewSideBar />
-        <main className="min-h-full flex flex-col gap-3 overflow-auto px-4 py-7">
-          <div className="flex flex-row w-full h-[25%] bg-admin rounded-xl shadow p-6 space-x-6">
+        <main className="flex min-h-full flex-col gap-3 overflow-auto px-4 py-7">
+          <div className="bg-admin flex h-[25%] w-full flex-row space-x-6 rounded-xl p-6 shadow">
             <Card
               title="Sales"
-              className="flex-none p-4 rounded-lg shadow w-1/4 cursor-pointer hover:bg-secondary transition"
-              onClick={() => navigate("/Admin/WalkInOrdersTable")}
+              className="hover:bg-secondary w-1/4 flex-none cursor-pointer rounded-lg p-4 shadow transition"
+              onClick={() => navigate('/Admin/WalkInOrdersTable')}
               role="button"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="font-bold text-lg mb-1">Order Management</h2>
+                  <h2 className="mb-1 text-lg font-bold">Order Management</h2>
                   <p className="text-sm text-gray-600">Hello Admin!</p>
                 </div>
-                <HiSwitchHorizontal className="w-6 h-6 text-blue-600" />
+                <HiSwitchHorizontal className="h-6 w-6 text-blue-600" />
               </div>
             </Card>
 
-            <div className="flex flex-row flex-grow gap-x-2">
+            <div className="flex flex-grow flex-row gap-x-2">
               {(summaryData.length > 0 ? summaryData : last30SummaryData)
                 .length > 0 ? (
                 (summaryData.length > 0 ? summaryData : last30SummaryData).map(
                   ({ status, totalOrders }) => (
                     <div
                       key={status}
-                      className={`
-            flex flex-col items-center justify-center
-            ${getStatusColor(status)}
-            rounded-lg shadow transition-transform duration-300 ease-in-out
-            hover:scale-105 hover:shadow-lg cursor-pointer flex-1 min-w-0 p-4
-          `}
+                      className={`flex flex-col items-center justify-center ${getStatusColor(status)} min-w-0 flex-1 cursor-pointer rounded-lg p-4 shadow transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg`}
                       title={
                         status.charAt(0).toUpperCase() +
-                        status.slice(1).replaceAll("_", " ")
+                        status.slice(1).replaceAll('_', ' ')
                       }
                     >
-                      <span className="text-sm font-semibold mb-1 text-center truncate">
+                      <span className="mb-1 truncate text-center text-sm font-semibold">
                         {status.charAt(0).toUpperCase() +
-                          status.slice(1).replaceAll("_", " ")}
+                          status.slice(1).replaceAll('_', ' ')}
                       </span>
                       <span className="text-4xl font-extrabold">
                         {totalOrders}
                       </span>
                       <span className="text-xs">
-                        {totalOrders === 1 ? "order" : "orders"}
+                        {totalOrders === 1 ? 'order' : 'orders'}
                       </span>
                     </div>
                   )
@@ -407,28 +394,23 @@ function AdminViewOrderPage() {
             </div>
           </div>
 
-          <div className="flex justify-between items-center flex-wrap gap-3 w-full px-2">
-            <div className="flex items-center gap-2 w-full sm:w-[30%]">
+          <div className="flex w-full flex-wrap items-center justify-between gap-3 px-2">
+            <div className="flex w-full items-center gap-2 sm:w-[30%]">
               <TextInput
                 placeholder="Search order by ID..."
                 value={searchId}
                 icon={HiOutlineSearch}
                 onChange={(e) => setSearchId(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSearchById();
+                  if (e.key === 'Enter') handleSearchById();
                 }}
                 theme={customTextInputTheme}
                 color="custom"
               />
-              <Button
-                onClick={handleSearchById}
-                className="group w-[25%] bg-secondary text-black p-2 hover:bg-admin hover:text-white focus:outline-none focus:ring-0 active:scale-95"
-              >
-                Search
-              </Button>
+              <Button onClick={handleSearchById}>Search</Button>
             </div>
 
-            <div className="flex items-center gap-3 flex-wrap justify-end">
+            <div className="flex flex-wrap items-center justify-end gap-3">
               <div className="w-[22%]">
                 <Datepicker
                   key={startDateKey}
@@ -459,16 +441,16 @@ function AdminViewOrderPage() {
 
               <Button
                 color="light"
-                className="group bg-white p-2 rounded-full hover:bg-neutral border-gray-500 focus:ring-0"
+                className="group hover:bg-neutral rounded-full border-gray-500 bg-white p-2 focus:ring-0"
                 onClick={() => window.location.reload()}
               >
-                <HiOutlineRefresh className="w-5 h-5 transition-transform duration-300 group-active:rotate-180" />
+                <HiOutlineRefresh className="h-5 w-5 transition-transform duration-300 group-active:rotate-180" />
               </Button>
             </div>
           </div>
 
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <div className="bg-admin text-secondary text-xs uppercase font-semibold px-6 py-3 rounded-t-lg">
+            <div className="bg-admin text-secondary rounded-t-lg px-6 py-3 text-xs font-semibold uppercase">
               <span>Total Orders: {orders.length}</span>
               <span className="ml-10">
                 Total Amount: ₱{totalAmount.toLocaleString()}
@@ -476,27 +458,27 @@ function AdminViewOrderPage() {
               <span className="ml-10"></span>
             </div>
 
-            <table className="w-full text-sm text-left text-slate-800 rounded-2xl">
-              <thead className="sticky top-0 text-xs uppercase bg-admin text-white">
+            <table className="w-full rounded-2xl text-left text-sm text-slate-800">
+              <thead className="bg-admin sticky top-0 text-xs text-white uppercase">
                 <tr>
                   <th className={tableHeadStyle}>User Info</th>
                   <th className={tableHeadStyle}>Order ID</th>
                   <th className={tableHeadStyle}>Items</th>
                   <th className={tableHeadStyle}>
                     <div
-                      className="flex items-center cursor-pointer hover:underline"
-                      onClick={() => handleSort("date")}
+                      className="flex cursor-pointer items-center hover:underline"
+                      onClick={() => handleSort('date')}
                     >
                       Date
                       <svg
-                        className="w-3 h-3 ms-1.5"
+                        className="ms-1.5 h-3 w-3"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        {sortConfig.key === "date" &&
-                        sortConfig.direction === "asc" ? (
+                        {sortConfig.key === 'date' &&
+                        sortConfig.direction === 'asc' ? (
                           <path d="M7 14l5-5 5 5H7z" />
                         ) : (
                           <path d="M7 10l5 5 5-5H7z" />
@@ -506,19 +488,19 @@ function AdminViewOrderPage() {
                   </th>
                   <th className={tableHeadStyle}>
                     <div
-                      className="flex items-center cursor-pointer hover:underline"
-                      onClick={() => handleSort("total")}
+                      className="flex cursor-pointer items-center hover:underline"
+                      onClick={() => handleSort('total')}
                     >
                       Total
                       <svg
-                        className="w-3 h-3 ms-1.5"
+                        className="ms-1.5 h-3 w-3"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        {sortConfig.key === "total" &&
-                        sortConfig.direction === "asc" ? (
+                        {sortConfig.key === 'total' &&
+                        sortConfig.direction === 'asc' ? (
                           <path d="M7 14l5-5 5 5H7z" />
                         ) : (
                           <path d="M7 10l5 5 5-5H7z" />
@@ -543,7 +525,7 @@ function AdminViewOrderPage() {
                 {sortedOrders.map((order) => (
                   <tr
                     key={order.id}
-                    className="border-b border-gray-200 even:bg-gray-50 odd:bg-gray-100 hover:bg-gray-300 transition-colors"
+                    className="border-b border-gray-200 transition-colors odd:bg-gray-100 even:bg-gray-50 hover:bg-gray-300"
                   >
                     <td className="px-6 py-4 text-xs text-gray-700">
                       <div>
@@ -556,8 +538,8 @@ function AdminViewOrderPage() {
                       {order.id}
                     </td>
 
-                    <td className="px-6 py-4 min-w-[190px]">
-                      <div className="break-words space-y-1">
+                    <td className="min-w-[190px] px-6 py-4">
+                      <div className="space-y-1 break-words">
                         {order.items.map((item) => (
                           <div key={item.item_id}>
                             {item.product_name} x {item.quantity}
@@ -571,39 +553,39 @@ function AdminViewOrderPage() {
                       </div>
                       <div className="text-xs text-gray-500">
                         {new Date(order.order_date).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
+                          hour: '2-digit',
+                          minute: '2-digit',
                         })}
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       ₱ {parseFloat(order.total_amount).toLocaleString()}
                     </td>
-                    <td className="px-6 py-4 ">
-                      <div className="flex flex-col items-center justify-center text-xs text-center">
-                        {order.payment_method === "GCash" && (
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col items-center justify-center text-center text-xs">
+                        {order.payment_method === 'GCash' && (
                           <>
                             <img
                               src="../src/components/images/gcash-logo.png"
                               alt="GCash"
-                              className="h-6 mb-1"
+                              className="mb-1 h-6"
                             />
                             <span>GCash</span>
                           </>
                         )}
 
-                        {order.payment_method === "Maya" && (
+                        {order.payment_method === 'Maya' && (
                           <>
                             <img
                               src="../src/components/images/maya-icon.png"
                               alt="Maya"
-                              className="h-6 mb-1"
+                              className="mb-1 h-6"
                             />
                             <span>Maya</span>
                           </>
                         )}
 
-                        {order.payment_method === "bank_transfer" && (
+                        {order.payment_method === 'bank_transfer' && (
                           <>
                             <span>Bank</span>
                             <span>Transfer</span>
@@ -612,10 +594,10 @@ function AdminViewOrderPage() {
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 ">
-                      <div className="flex justify-center items-center">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center justify-center">
                         <span
-                          className={`px-2 py-1 rounded text-xs font-semibold ${getStatusColor(
+                          className={`rounded px-2 py-1 text-xs font-semibold ${getStatusColor(
                             order.status
                           )}`}
                         >
@@ -625,23 +607,23 @@ function AdminViewOrderPage() {
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 justify-center text-center">
-                      <div className="flex justify-center items-center">
-                        {order.status === "pending" &&
+                    <td className="justify-center px-6 py-4 text-center">
+                      <div className="flex items-center justify-center">
+                        {order.status === 'pending' &&
                         order.cancel_requested === 0 ? (
                           <button
                             onClick={() => {
                               setStatusUpdateModal(true);
                               setUpdatingId(order.id);
-                              setUpdateStatus("processing");
-                              setModalTitle("Process Order");
-                              setConfirmButtonLabel("Process Order");
+                              setUpdateStatus('processing');
+                              setModalTitle('Process Order');
+                              setConfirmButtonLabel('Process Order');
                             }}
                             className="flex items-center gap-2 font-medium text-amber-400 hover:underline"
                           >
                             Process Order
                           </button>
-                        ) : order.status === "pending" &&
+                        ) : order.status === 'pending' &&
                           order.cancel_requested === 1 ? (
                           <Tooltip
                             content="Order can't be processed. Customer has requested to cancel this order"
@@ -651,59 +633,59 @@ function AdminViewOrderPage() {
                               onClick={() => {
                                 setStatusUpdateModal(true);
                                 setUpdatingId(order.id);
-                                setUpdateStatus("");
-                                setModalTitle("Cancel Order");
-                                setConfirmButtonLabel("Cancel Order");
+                                setUpdateStatus('');
+                                setModalTitle('Cancel Order');
+                                setConfirmButtonLabel('Cancel Order');
                               }}
                               className="flex items-center gap-2 font-medium text-red-600 hover:underline"
                             >
                               Cancel Order
                             </button>
                           </Tooltip>
-                        ) : order.status === "cancelled" ? (
-                          <span className="text-sm italic text-gray-500">
+                        ) : order.status === 'cancelled' ? (
+                          <span className="text-sm text-gray-500 italic">
                             Order Cancelled
                           </span>
-                        ) : order.status === "processing" ? (
+                        ) : order.status === 'processing' ? (
                           <button
                             onClick={() => {
                               setStatusUpdateModal(true);
                               setUpdatingId(order.id);
-                              setUpdateStatus("shipping");
-                              setModalTitle("Ship Order");
-                              setConfirmButtonLabel("Ship Order");
+                              setUpdateStatus('shipping');
+                              setModalTitle('Ship Order');
+                              setConfirmButtonLabel('Ship Order');
                             }}
-                            className="flex items-center gap-2 font-medium text-green-600 hover:underline "
+                            className="flex items-center gap-2 font-medium text-green-600 hover:underline"
                           >
                             Ship Order
                           </button>
-                        ) : order.status === "shipping" ? (
+                        ) : order.status === 'shipping' ? (
                           <button
                             onClick={() => {
                               setStatusUpdateModal(true);
                               setUpdatingId(order.id);
-                              setUpdateStatus("delivered");
-                              setModalTitle("Mark Order as Delivered");
-                              setConfirmButtonLabel("Confirm");
+                              setUpdateStatus('delivered');
+                              setModalTitle('Mark Order as Delivered');
+                              setConfirmButtonLabel('Confirm');
                             }}
                             className="flex items-center gap-2 font-medium text-blue-600 hover:underline"
                           >
                             Mark Delivered
                           </button>
-                        ) : order.status === "delivered" ? (
+                        ) : order.status === 'delivered' ? (
                           <div className="flex items-center text-sm text-green-800">
-                            <HiCheckCircle className="w-5 h-5 mr-1" />
+                            <HiCheckCircle className="mr-1 h-5 w-5" />
                           </div>
                         ) : null}
                       </div>
                     </td>
 
-                    <td className="px-6 py-4 justify-start">
+                    <td className="justify-start px-6 py-4">
                       <Dropdown
                         label=""
                         inline
                         renderTrigger={() => (
-                          <button className="text-black font-bold hover:text-blue-600">
+                          <button className="font-bold text-black hover:text-blue-600">
                             <HiDotsVertical />
                           </button>
                         )}
@@ -729,9 +711,9 @@ function AdminViewOrderPage() {
               </tbody>
 
               <tfoot>
-                <tr className="font-semibold text-white bg-admin">
+                <tr className="bg-admin font-semibold text-white">
                   <td colSpan={9} className="px-6 py-6">
-                    <ul className="list-disc list-inside space-y-1">
+                    <ul className="list-inside list-disc space-y-1">
                       <li>Click on a column header to sort orders.</li>
                       <li>Use the search bar to find specific order IDs.</li>
                       <li>
@@ -778,11 +760,11 @@ function AdminViewOrderPage() {
           </ModalHeader>
 
           <ModalBody className="bg-neutral">
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col gap-6 md:flex-row">
               {/* Order Summary - Left */}
-              <div className="md:w-1/2 shadow px-4 py-5 rounded bg-white">
+              <div className="rounded bg-white px-4 py-5 shadow md:w-1/2">
                 <div className="space-y-4 text-sm text-black">
-                  <h3 className="text-lg font-semibold mb-5">Order Summary</h3>
+                  <h3 className="mb-5 text-lg font-semibold">Order Summary</h3>
 
                   <hr className="my-4 border-gray-400" />
 
@@ -790,7 +772,7 @@ function AdminViewOrderPage() {
                     {selectedOrder?.data?.items?.map((item, index) => (
                       <div
                         key={index}
-                        className="flex justify-between items-center text-gray-600"
+                        className="flex items-center justify-between text-gray-600"
                       >
                         <span className="truncate">
                           {item.product_name} x {item.quantity}
@@ -805,7 +787,7 @@ function AdminViewOrderPage() {
 
                 <hr className="my-4 border-gray-400" />
 
-                <div className="flex justify-between text-base font-extrabold text-admin">
+                <div className="text-admin flex justify-between text-base font-extrabold">
                   <span>Total</span>
                   <span>
                     ₱{parseFloat(selectedOrder?.data?.total_amount).toFixed(2)}
@@ -813,22 +795,22 @@ function AdminViewOrderPage() {
                 </div>
               </div>
 
-              <div className="md:w-1/2 shadow px-4 py-5 rounded bg-white">
-                <h3 className="text-lg font-semibold mb-5 text-black">
+              <div className="rounded bg-white px-4 py-5 shadow md:w-1/2">
+                <h3 className="mb-5 text-lg font-semibold text-black">
                   Customer, Payment & Billing Info
                 </h3>
 
                 <hr className="my-4 border-gray-400" />
 
-                <div className="flex flex-col md:flex-row gap-6 text-sm text-gray-700">
+                <div className="flex flex-col gap-6 text-sm text-gray-700 md:flex-row">
                   {/* Left Side */}
-                  <div className="w-full md:w-1/2 space-y-4">
+                  <div className="w-full space-y-4 md:w-1/2">
                     <div className="flex items-start gap-2">
                       <HiUser className="text-secondary mt-1" />
                       <div>
                         <p className="text-black">Customer Name</p>
                         <p className="font-semibold">
-                          {selectedOrder?.data?.username || "N/A"}
+                          {selectedOrder?.data?.username || 'N/A'}
                         </p>
                       </div>
                     </div>
@@ -873,13 +855,13 @@ function AdminViewOrderPage() {
                   </div>
 
                   {/* Right Side */}
-                  <div className="w-full md:w-1/2 space-y-4">
+                  <div className="w-full space-y-4 md:w-1/2">
                     <div className="flex items-start gap-2">
                       <HiCreditCard className="text-secondary mt-1" />
                       <div>
                         <p className="text-black">Payment Method</p>
                         <p className="font-semibold">
-                          {selectedOrder?.data?.payment_method || "N/A"}
+                          {selectedOrder?.data?.payment_method || 'N/A'}
                         </p>
                       </div>
                     </div>
@@ -889,7 +871,7 @@ function AdminViewOrderPage() {
                       <div>
                         <p className="text-black">Account Name</p>
                         <p className="font-semibold">
-                          {selectedOrder?.data?.account_name || "N/A"}
+                          {selectedOrder?.data?.account_name || 'N/A'}
                         </p>
                       </div>
                     </div>
@@ -899,7 +881,7 @@ function AdminViewOrderPage() {
                       <div>
                         <p className="text-black">Reference #</p>
                         <p className="font-semibold">
-                          {selectedOrder?.data?.reference_number || "N/A"}
+                          {selectedOrder?.data?.reference_number || 'N/A'}
                         </p>
                       </div>
                     </div>
@@ -907,9 +889,9 @@ function AdminViewOrderPage() {
                     <div className="flex items-start gap-2">
                       <HiDocumentText className="text-secondary mt-1" />
                       <div className="w-full">
-                        <p className="text-black mb-1">Order Notes</p>
-                        <div className="bg-gray-100 border border-gray-200 rounded p-3 text-sm text-gray-800 min-h-[100px]">
-                          {selectedOrder?.data?.notes || "No notes provided."}
+                        <p className="mb-1 text-black">Order Notes</p>
+                        <div className="min-h-[100px] rounded border border-gray-200 bg-gray-100 p-3 text-sm text-gray-800">
+                          {selectedOrder?.data?.notes || 'No notes provided.'}
                         </div>
                       </div>
                     </div>
