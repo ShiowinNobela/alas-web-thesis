@@ -4,11 +4,19 @@ import NewSideBar from "../../components/newSideBar";
 import AdminProfile from "../../components/Chinges/AdminProfile";
 import dayjs from "dayjs";
 import { FaExchangeAlt } from "react-icons/fa";
+import TestGraph from "../../components/TestGraph";
 
 function adminDashboard() {
   const [values, setValues] = useState([]);
   const [orderRange, setOrderRange] = useState(7); // 7 or 30
   const [salesRange, setSalesRange] = useState(7);
+  const [topProducts, setTopProducts] = useState([]);
+  const [leastProducts, setLeastProducts] = useState([]);
+  const [graphData, setGraphData] = useState({
+    current: [],
+    previous: [],
+    categories: [],
+  });
 
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("user"));
@@ -25,6 +33,60 @@ function adminDashboard() {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
+  }, []);
+
+
+   useEffect(() => {
+   
+    const startDate = dayjs().subtract(30, "day").format("YYYY-MM-DD");
+    const endDate = dayjs().add(1, "day").format("YYYY-MM-DD");
+    axios
+      .get(`/api/reports/top-products?start=${startDate}&end=${endDate}`)
+      .then((res) => {
+        const products = res.data.data.topProducts || [];
+        setTopProducts(products.slice(0, 5));
+        const least = [...products]
+          .sort((a, b) => a.totalSold - b.totalSold)
+          .slice(0, 5);
+        setLeastProducts(least);
+      })
+      .catch((err) => {
+        setTopProducts([]);
+        setLeastProducts([]);
+        console.error("Failed to fetch top products", err);
+      });
+  }, []);
+
+  useEffect(() => { //Graph
+    const months = [1, 0].map((n) => {
+      const start = dayjs()
+        .subtract(n, "month")
+        .startOf("month")
+        .format("YYYY-MM-DD");
+      const end = dayjs()
+        .subtract(n, "month")
+        .endOf("month")
+        .format("YYYY-MM-DD");
+      return { start, end };
+    });
+
+    Promise.all(
+      months.map(({ start, end }) =>
+        axios.get(`/api/reports/sales-summary?start=${start}&end=${end}`)
+      )
+    ).then((results) => {
+      const apiSales = results.map((res, idx) => ({
+        month: dayjs()
+          .subtract(1 - idx, "month")
+          .format("MMMM YYYY"),
+        value: Number(res.data.data.totalSales || 0),
+      }));
+
+      setGraphData({
+        sales: apiSales.map((item) => item.value),
+        categories: apiSales.map((item) => item.month),
+      });
+    });
   }, []);
 
   const ordersWithinRange = values.filter((order) => {
@@ -54,52 +116,6 @@ function adminDashboard() {
     .sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
     .slice(0, 4);
 
-  //table
-  const tableHeadStyle = "px-6 py-3 text-center";
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "pending":
-        return "bg-orange-200 text-orange-800";
-      case "processing":
-        return "bg-yellow-200 text-yellow-800";
-      case "shipping":
-        return "bg-green-200 text-green-800";
-      case "delivered":
-        return "bg-blue-200 text-blue-800";
-      case "returned":
-        return "bg-pink-200 text-pink-800";
-      case "refunded":
-        return "bg-violet-200 text-violet-800";
-      case "cancelled":
-        return "bg-red-200 text-red-800";
-      default:
-        return "bg-gray-200 text-gray-800";
-    }
-  };
-
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-
-  const sortedOrders = [...values].sort((a, b) => {
-    if (sortConfig.key === "date") {
-      const dateA = new Date(a.order_date);
-      const dateB = new Date(b.order_date);
-      return sortConfig.direction === "asc" ? dateA - dateB : dateB - dateA;
-    } else if (sortConfig.key === "total") {
-      return sortConfig.direction === "asc"
-        ? a.total_amount - b.total_amount
-        : b.total_amount - a.total_amount;
-    }
-    return 0;
-  });
-
-  const handleSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
-  };
   return (
     <>
       <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
@@ -221,89 +237,113 @@ function adminDashboard() {
                 )}
               </div>
             </div>
+
+          </div>
+          
+          <div className="flex flex-row gap-x-5 justify-between mr-5">
+            <div className="p-4 rounded-lg shadow-xl w-5xl h-55 cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition ">
+                <h1 className="text-xl font-semibold ">Top Selling Products</h1>
+                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-gray-500">
+                  <thead className="text-xs round text-white uppercase bg-admin ">
+                    <tr>
+                      <th scope="col" className="px-8 py-3 ">
+                        Product Name
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Total Orders
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Total Revenue
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Price
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {topProducts.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="text-center py-4">
+                          No data available.
+                        </td>
+                      </tr>
+                    ) : (
+                      topProducts.map((product) => (
+                        <tr>
+                          <td className="px-8 py-3">{product.name}</td>
+                          <td className="px-6 py-3">{product.totalSold}</td>
+                          <td className="px-6 py-3">₱ {product.totalRevenue}</td>
+                          <td className="px-6 py-3">
+                            ₱{parseFloat(product.unitPrice).toFixed(2)}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+                      
+              <div
+                className="p-4 rounded-lg shadow-xl w-1/2 h-55 cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition"
+                role="button"
+              >
+                <h1 className="text-xl font-semibold">Least Selling Products</h1>
+                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-gray-500">
+                  <thead className="text-xs round text-white uppercase bg-admin">
+                    <tr>
+                      <th scope="col" className="px-8 py-3">
+                        Product Name
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Total Orders
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Total Revenue
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Price
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {leastProducts.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="text-center py-4">
+                          No data available.
+                        </td>
+                      </tr>
+                    ) : (
+                      leastProducts.map((product) => (
+                        <tr key={product.id}>
+                          <td className="px-8 py-3">{product.name}</td>
+                          <td className="px-6 py-3">{product.totalSold}</td>
+                          <td className="px-6 py-3">₱ {product.totalRevenue}</td>
+                          <td className="px-6 py-3">
+                            ₱{parseFloat(product.unitPrice).toFixed(2)}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
           </div>
 
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-100% mr-5">
-            <table className="w-full text-sm text-left text-slate-800">
-              <thead className="sticky top-0 text-xs uppercase bg-admin text-white">
-                <tr>
-                  <th className={tableHeadStyle}>User Info</th>
-                  <th className={tableHeadStyle}>Order ID</th>
-                  <th className={tableHeadStyle}>Items</th>
-                  <th className={tableHeadStyle}>
-                    <div className="flex items-center">Date</div>
-                  </th>
-                  <th className={tableHeadStyle}>
-                    <div className="flex items-center cursor-pointer hover:underline">
-                      Total
-                    </div>
-                  </th>
-                  <th className="px-2 py-3 text-center">
-                    <div className="leading-tight">
-                      Payment
-                      <br />
-                      Method
-                    </div>
-                  </th>
-                  <th className={tableHeadStyle}>Status</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {sortedOrders.slice(0, 5).map((order) => (
-                  <tr key={order.id} className="border-b border-gray-200 ">
-                    <td className="px-6 py-4 text-xs text-gray-700 bg-gray-50">
-                      <div>
-                        <p className="font-primary">{order.username}</p>
-                        <p className="text-gray-500 text-xs">{order.email}</p>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-xs text-gray-600 bg-gray-100">
-                      {order.id}
-                    </td>
-                    <td className="px-6 py-4 min-w-[190px] bg-gray-50">
-                      <ul className="list-disc list-inside break-words">
-                        {order.items.map((item) => (
-                          <li key={item.item_id}>
-                            {item.product_name} x {item.quantity}
-                          </li>
-                        ))}
-                      </ul>
-                    </td>
-                    <td className="px-6 py-4 bg-gray-100">
-                      <div className="text-sm font-medium text-gray-800">
-                        {new Date(order.order_date).toLocaleDateString()}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {new Date(order.order_date).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 bg-gray-50">
-                      ₱ {parseFloat(order.total_amount).toLocaleString()}
-                    </td>
-                    <td className="px-6 py-4 capitalize bg-gray-100">
-                      {order.payment_method}
-                    </td>
-                    <td className="px-6 py-4 bg-gray-50">
-                      <div className="flex justify-center items-center">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                            order.status
-                          )}`}
-                        >
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          
+            <div
+              className="p-4 rounded-lg shadow-xl w-2/3 col-span-2 row-span-2 h-fit cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition"
+              role="button"
+            >
+              <div className="flex justify-between">
+                <div className="w-full h-full">
+                  <h2 className="font-bold text-xl mb-1 uppercase">
+                    Graph last month vs this month
+                  </h2>
+                  <TestGraph graphData={graphData} />
+                </div>
+              </div>
+            </div>
+          
         </div>
       </div>
     </>

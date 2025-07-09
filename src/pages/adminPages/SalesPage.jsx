@@ -2,13 +2,33 @@ import NewSideBar from "../../components/newSideBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-import TestGraph from "../../components/TestGraph";
 import { useQuery } from "@tanstack/react-query";
+
+const getStatusColor = (status) => {
+  switch (status?.toLowerCase()) {
+    case "pending":
+      return "bg-orange-200 text-orange-800";
+    case "processing":
+      return "bg-yellow-200 text-yellow-800";
+    case "shipping":
+      return "bg-green-200 text-green-800";
+    case "delivered":
+      return "bg-blue-200 text-blue-800";
+    case "returned":
+      return "bg-pink-200 text-pink-800";
+    case "refunded":
+      return "bg-violet-200 text-violet-800";
+    case "cancelled":
+      return "bg-red-200 text-red-800";
+    default:
+      return "bg-gray-200 text-gray-800";
+  }
+};
+
+const tableHeadStyle = "px-6 py-3 text-center";
 
 function SalesPage() {
   const [orders, setOrders] = useState([]);
-  const [topProducts, setTopProducts] = useState([]);
-  const [leastProducts, setLeastProducts] = useState([]);
   const [fulfillmentRate, setFulfillmentRate] = useState(0);
 
   const [summary, setSummary] = useState({
@@ -20,36 +40,15 @@ function SalesPage() {
   const startDate = "2025-05-01";
   const endDate = dayjs().add(2, "day").format("YYYY-MM-DD");
 
-  const [graphData, setGraphData] = useState({
-    current: [],
-    previous: [],
-    categories: [],
-  });
-
-  useEffect(() => {
-    axios
-      .get(`/api/reports/top-products?start=${startDate}&end=${endDate}`)
-      .then((res) => {
-        const products = res.data.data.topProducts;
-        setTopProducts(products.slice(0, 5));
-        const least = [...products]
-          .sort((a, b) => a.totalSold - b.totalSold)
-          .slice(0, 5);
-        setLeastProducts(least);
-      })
-      .catch((err) => {
-        setTopProducts([]);
-        setLeastProducts([]);
-        console.error("Failed to fetch top products", err);
-      });
-  }, [startDate, endDate]);
+  const sortedOrders = [...orders].sort(
+  (a, b) => new Date(b.order_date) - new Date(a.order_date)
+  );
 
   useEffect(() => {
     axios
       .get(`/api/reports/sales-summary?start=${startDate}&end=${endDate}`)
       .then((res) => {
         const data = res.data.data || {};
-        console.log(data);
         setSummary({
           totalRevenue: Number(data.totalSales || 0),
           totalOrders: Number(data.totalOrders || 0),
@@ -80,38 +79,6 @@ function SalesPage() {
       .catch(() => setFulfillmentRate(0));
   }, []);
 
-  useEffect(() => {
-    const months = [1, 0].map((n) => {
-      const start = dayjs()
-        .subtract(n, "month")
-        .startOf("month")
-        .format("YYYY-MM-DD");
-      const end = dayjs()
-        .subtract(n, "month")
-        .endOf("month")
-        .format("YYYY-MM-DD");
-      return { start, end };
-    });
-
-    Promise.all(
-      months.map(({ start, end }) =>
-        axios.get(`/api/reports/sales-summary?start=${start}&end=${end}`)
-      )
-    ).then((results) => {
-      const apiSales = results.map((res, idx) => ({
-        month: dayjs()
-          .subtract(1 - idx, "month")
-          .format("MMMM YYYY"),
-        value: Number(res.data.data.totalSales || 0),
-      }));
-
-      setGraphData({
-        sales: apiSales.map((item) => item.value),
-        categories: apiSales.map((item) => item.month),
-      });
-    });
-  }, []);
-
   const {
     data: walkInOrders,
     isLoading: walkInLoading,
@@ -134,26 +101,6 @@ function SalesPage() {
       (sum, order) => sum + parseFloat(order.total_amount || 0),
       0
     ) || 0;
-
-  // Will use this later so that it will automatically get the last 4 months :P
-  //   const months = [3, 2, 1, 0].map((n) => {
-  //   const start = dayjs().subtract(n, "month").startOf("month").format("YYYY-MM-DD");
-  //   const end = dayjs().subtract(n, "month").endOf("month").format("YYYY-MM-DD");
-  //   return { start, end };
-  // });
-
-  // Promise.all(
-  //   months.map(({ start, end }) =>
-  //     axios.get(`/api/reports/sales-summary?start=${start}&end=${end}`)
-  //   )
-  // ).then((results) => {
-  //   setGraphData({
-  //     sales: results.map((res) => Number(res.data.data.totalSales || 0)),
-  //     categories: months.map((_, idx) =>
-  //       dayjs().subtract(3 - idx, "month").format("MMMM YYYY")
-  //     ),
-  //   });
-  // });
 
   return (
     <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-neutral grid grid-cols-[0.20fr_0.80fr]">
@@ -192,21 +139,6 @@ function SalesPage() {
                     ₱ {summary.totalRevenue.toLocaleString()}{" "}
                   </p>
                 </div>
-                {/* <svg
-                  className="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 17l-4 4m0 0l-4-4m4 4V3"
-                  />
-                </svg> */}
               </div>
             </div>
             <div
@@ -226,21 +158,6 @@ function SalesPage() {
                     })}
                   </p>
                 </div>
-                {/* <svg
-                  className="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 17l-4 4m0 0l-4-4m4 4V3"
-                  />
-                </svg> */}
               </div>
             </div>
             <div
@@ -256,21 +173,6 @@ function SalesPage() {
                     {summary.totalOrders}
                   </p>
                 </div>
-                {/* <svg
-                  className="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 17l-4 4m0 0l-4-4m4 4V3"
-                  />
-                </svg> */}
               </div>
             </div>
             <div
@@ -288,21 +190,6 @@ function SalesPage() {
                     {summary.totalItemsSold}{" "}
                   </p>
                 </div>
-                {/* <svg
-                  className="w-6 h-6 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 17l-4 4m0 0l-4-4m4 4V3"
-                  />
-                </svg> */}
               </div>
             </div>
           </div>
@@ -323,89 +210,89 @@ function SalesPage() {
               </div>
             </div>
 
-            <div
-              className="p-4 rounded-lg shadow-xl w-full h-55 cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition "
-              role="button"
-            >
-              <div className="flex justify-between">
-                <div>
-                  <h2 className="font-bold text-xl mb-1 uppercase">
-                    Least Selling Products
-                  </h2>
-                  {leastProducts.length === 0 ? (
-                    <p>No data available.</p>
-                  ) : (
-                    leastProducts.map((product) => (
-                      <div
-                        key={product.id}
-                        className="flex flex-row justify-between items-center"
-                      >
-                        <h2 className="font-light text-sm p-1">
-                          {product.name}
-                        </h2>
-                        <p>{product.totalSold}</p>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div
-              className="p-4 rounded-lg shadow-xl w-full col-span-2 row-span-2 h-fit cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition"
-              role="button"
-            >
-              <div className="flex justify-between">
-                <div className="w-full h-full">
-                  <h2 className="font-bold text-xl mb-1 uppercase">
-                    Graph last month vs this month
-                  </h2>
-                  <TestGraph graphData={graphData} />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-7 col-span-2">
-              <h1 className="text-xl font-semibold ">Top Selling Products</h1>
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 shadow-xl">
-                <thead className="text-xs round text-white uppercase bg-admin ">
+            <div className="relative shadow-md sm:rounded-lg w-full col-span-3 mr-5 ">
+              <h1> Latest Sales</h1>
+              <table className="w-full text-sm text-left text-slate-800">
+                <thead className="sticky top-0 text-xs uppercase bg-admin text-white">
                   <tr>
-                    <th scope="col" className="px-8 py-3 ">
-                      Product Name
+                    <th className={tableHeadStyle}>User Info</th>
+                    <th className={tableHeadStyle}>Order ID</th>
+                    <th className={tableHeadStyle}>Items</th>
+                    <th className={tableHeadStyle}>
+                      <div className="flex items-center">Date</div>
                     </th>
-                    <th scope="col" className="px-6 py-3">
-                      Total Orders
+                    <th className={tableHeadStyle}>
+                      <div className="flex items-center cursor-pointer hover:underline">
+                        Total
+                      </div>
                     </th>
-                    <th scope="col" className="px-6 py-3">
-                      Total Revenue
+                    <th className="px-2 py-3 text-center">
+                      <div className="leading-tight">
+                        Payment
+                        <br />
+                        Method
+                      </div>
                     </th>
-                    <th scope="col" className="px-6 py-3">
-                      Price
-                    </th>
+                    <th className={tableHeadStyle}>Status</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {topProducts.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="text-center py-4">
-                        No data available.
+                  {sortedOrders.slice(0, 5).map((order)=> (
+                    <tr key={order.id} className="border-b border-gray-200 ">
+                      <td className="px-6 py-4 text-xs text-gray-700 bg-gray-50">
+                        <div>
+                          <p className="font-primary">{order.username}</p>
+                          <p className="text-gray-500 text-xs">{order.email}</p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-xs text-gray-600 bg-gray-100">
+                        {order.id}
+                      </td>
+                      <td className="px-6 py-4 min-w-[190px] bg-gray-50">
+                        <ul className="list-disc list-inside break-words">
+                          {order.items.map((item) => (
+                            <li key={item.item_id}>
+                              {item.product_name} x {item.quantity}
+                            </li>
+                          ))}
+                        </ul>
+                      </td>
+                      <td className="px-6 py-4 bg-gray-100">
+                        <div className="text-sm font-medium text-gray-800">
+                          {new Date(order.order_date).toLocaleDateString()}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {new Date(order.order_date).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 bg-gray-50">
+                        ₱ {parseFloat(order.total_amount).toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 capitalize bg-gray-100">
+                        {order.payment_method}
+                      </td>
+                      <td className="px-6 py-4 bg-gray-50">
+                        <div className="flex justify-center items-center">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                              order.status
+                            )}`}
+                          >
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </span>
+                        </div>
                       </td>
                     </tr>
-                  ) : (
-                    topProducts.map((product) => (
-                      <tr>
-                        <td className="px-8 py-3">{product.name}</td>
-                        <td className="px-6 py-3">{product.totalSold}</td>
-                        <td className="px-6 py-3">₱ {product.totalRevenue}</td>
-                        <td className="px-6 py-3">
-                          ₱{parseFloat(product.unitPrice).toFixed(2)}
-                        </td>
-                      </tr>
-                    ))
-                  )}
+                  ))}
                 </tbody>
               </table>
             </div>
+            
           </div>
         </div>
       </div>

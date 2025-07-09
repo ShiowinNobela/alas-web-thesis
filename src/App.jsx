@@ -33,6 +33,7 @@ import SalesPage from "./pages/adminPages/SalesPage.jsx";
 import WalkInOrderTable from "./pages/adminPages/WalkInOrdersTable.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import UserDashboardLayout from "./components/UserDashboardLayout.jsx";
+import NotificationPage from "./pages/adminPages/NotificationPage.jsx";
 
 function App() {
   return (
@@ -86,6 +87,7 @@ function App() {
             element={<InventoryManagement />}
           ></Route>
           <Route path="SalesPage" element={<SalesPage />}></Route>
+          <Route path="NotificationPage" element={<NotificationPage/>}></Route>
         </Route>
       </Routes>
     </>
