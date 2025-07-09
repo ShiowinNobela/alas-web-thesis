@@ -1,11 +1,11 @@
-import Navbar from "../components/navbar";
-import { Outlet } from "react-router";
+import Navbar from '../components/navbar';
+import { Outlet } from 'react-router';
 
 function MainLayout() {
   return (
-    <div className="grid grid-rows-[auto_1fr] min-h-full w-full">
+    <div className="grid min-h-screen w-full grid-rows-[auto_1fr]">
       <Navbar />
-      <main className="overflow-y-auto">
+      <main className="bg overflow-y-auto">
         <Outlet />
       </main>
     </div>

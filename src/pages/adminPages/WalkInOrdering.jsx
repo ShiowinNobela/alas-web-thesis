@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import NewSideBar from "../../components/newSideBar";
-import { Toaster, toast } from "sonner";
-import Description from "../../components/Chinges/Description";
-import { FaPlus, FaMinus } from "react-icons/fa";
-import { TiDeleteOutline } from "react-icons/ti";
-import WalkInPopUp from "../../components/WalkInPopUp.jsx";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import NewSideBar from '../../components/newSideBar';
+import { Toaster, toast } from 'sonner';
+import Description from '../../components/Chinges/Description';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { TiDeleteOutline } from 'react-icons/ti';
+import WalkInPopUp from '../../components/WalkInPopUp.jsx';
 
 function WalkInOrdering() {
   const [open, setOpen] = useState(false);
@@ -20,14 +20,14 @@ function WalkInOrdering() {
   );
   const total = Math.max(0, subtotal - Number(discount_amount) || 0);
   const [userInput, setUserInput] = useState({
-    customer_name: "",
-    customer_email: "",
-    notes: "",
+    customer_name: '',
+    customer_email: '',
+    notes: '',
   });
 
   useEffect(() => {
     axios
-      .get("/api/products")
+      .get('/api/products')
       .then((res) => {
         setData(res.data);
       })
@@ -37,7 +37,7 @@ function WalkInOrdering() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/walkInOrders/", {
+      await axios.post('/api/walkInOrders/', {
         ...userInput,
         discount_amount: Number(discount_amount),
         items: cartItems.map((item) => ({
@@ -45,13 +45,13 @@ function WalkInOrdering() {
           quantity: item.quantity,
         })),
       });
-      toast.success("Order placed!");
+      toast.success('Order placed!');
       setCartItems([]);
-      setUserInput({ customer_name: "", customer_email: "", notes: "" });
+      setUserInput({ customer_name: '', customer_email: '', notes: '' });
       setDiscount(0);
     } catch (err) {
       console.log(err);
-      toast.error("Failed to place order");
+      toast.error('Failed to place order');
     }
   };
 
@@ -89,16 +89,16 @@ function WalkInOrdering() {
 
   return (
     <>
-      <div className="w-full h-screen bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
+      <div className="grid h-screen w-full grid-cols-[0.20fr_0.80fr] bg-[#E2E0E1]">
         <NewSideBar />
-        <div className="min-h-full w-full flex flex-col overflow-auto p-5">
-          <div className="flex flex-row shadow-2xl drop-shadow-2xl rounded-2xl overflow-hidden max-w-[1400px] mx-auto w-full">
+        <div className="flex min-h-full w-full flex-col overflow-auto p-5">
+          <div className="mx-auto flex w-full max-w-[1400px] flex-row overflow-hidden rounded-2xl shadow-2xl drop-shadow-2xl">
             {/* form */}
-            <div className="flex-grow p-10 bg-white border-r">
+            <div className="flex-grow border-r bg-white p-10">
               <form className="w-full" onSubmit={handleSubmit}>
                 {/* customer info */}
-                <div className="grid md:grid-cols-2 md:gap-6 mb-5">
-                  <div className="relative z-0 w-full group">
+                <div className="mb-5 grid md:grid-cols-2 md:gap-6">
+                  <div className="group relative z-0 w-full">
                     <input
                       type="text"
                       name="Customer_Name"
@@ -112,17 +112,17 @@ function WalkInOrdering() {
                       }
                       id="floating_customer_name"
                       placeholder=" "
-                      className="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm focus:border-blue-600 focus:ring-0 focus:outline-none"
                     />
                     <label
                       htmlFor="floating_customer_name"
-                      className="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:text-blue-600 peer-focus:scale-75 peer-focus:-translate-y-6"
+                      className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600"
                     >
                       Customer Name
                     </label>
                   </div>
 
-                  <div className="relative z-0 w-full group">
+                  <div className="group relative z-0 w-full">
                     <input
                       type="text"
                       name="customer_email"
@@ -136,11 +136,11 @@ function WalkInOrdering() {
                       }
                       id="floating_customer_email"
                       placeholder=" "
-                      className="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm focus:border-blue-600 focus:ring-0 focus:outline-none"
                     />
                     <label
                       htmlFor="floating_customer_email"
-                      className="peer-focus:font-medium absolute text-sm duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:text-blue-600 peer-focus:scale-75 peer-focus:-translate-y-6"
+                      className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600"
                     >
                       Email
                     </label>
@@ -159,11 +159,11 @@ function WalkInOrdering() {
 
                 {/* product list */}
                 <div className="flex flex-col items-center justify-center">
-                  <div className="my-5 p-3 grid grid-cols-4 gap-4 max-h-[350px] overflow-y-auto w-full">
+                  <div className="my-5 grid max-h-[350px] w-full grid-cols-4 gap-4 overflow-y-auto p-3">
                     {data.map((d) => (
                       <div
                         key={d.id}
-                        className="flex flex-col items-center justify-center border p-3 rounded shadow-sm cursor-pointer"
+                        className="flex cursor-pointer flex-col items-center justify-center rounded border p-3 shadow-sm"
                         onClick={() => {
                           setOpen(true);
                           setSelectedProduct(d);
@@ -172,9 +172,9 @@ function WalkInOrdering() {
                         <img
                           src={d.image}
                           alt="/"
-                          className="w-[100px] h-[100px] mb-2 object-contain"
+                          className="mb-2 h-[100px] w-[100px] object-contain"
                         />
-                        <h1 className="font-semibold text-center">{d.name}</h1>
+                        <h1 className="text-center font-semibold">{d.name}</h1>
                         <p className="text-gray-700">₱ {d.price}</p>
 
                         <WalkInPopUp
@@ -190,21 +190,21 @@ function WalkInOrdering() {
                               onChange={(e) =>
                                 setQuantity(Number(e.target.value))
                               }
-                              className="w-full border rounded px-2 py-1"
+                              className="w-full rounded border px-2 py-1"
                             />
                           </div>
-                          <div className="flex justify-center gap-4 mt-4">
+                          <div className="mt-4 flex justify-center gap-4">
                             <button
                               type="button"
                               onClick={handleAddToCart}
-                              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                              className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
                             >
                               Add to Cart
                             </button>
                             <button
                               type="button"
                               onClick={() => setOpen(false)}
-                              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                              className="rounded-lg bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
                             >
                               Cancel
                             </button>
@@ -218,7 +218,7 @@ function WalkInOrdering() {
                 {/* checkout button */}
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-5 py-2.5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm mt-5"
+                  className="mt-5 w-full rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none sm:w-auto"
                 >
                   Checkout
                 </button>
@@ -226,11 +226,11 @@ function WalkInOrdering() {
             </div>
 
             {/* cart */}
-            <div className="w-[350px] flex flex-col h-full bg-white p-5">
-              <div className="flex flex-col items-center justify-center mb-4">
-                <h1 className="font-semibold text-2xl mb-4">Cart</h1>
+            <div className="flex h-full w-[350px] flex-col bg-white p-5">
+              <div className="mb-4 flex flex-col items-center justify-center">
+                <h1 className="mb-4 text-2xl font-semibold">Cart</h1>
 
-                <div className="min-h-[400px] max-h-[500px] flex flex-col">
+                <div className="flex max-h-[500px] min-h-[400px] flex-col">
                   <div className="flex-1 overflow-y-auto">
                     {cartItems.length === 0 ? (
                       <p className="text-center text-gray-500">
@@ -240,21 +240,21 @@ function WalkInOrdering() {
                       cartItems.map((item) => (
                         <div
                           key={item.id}
-                          className="flex justify-between items-center mb-2"
+                          className="mb-2 flex items-center justify-between"
                         >
-                          <div className="flex flex-col w-2/3">
-                            <h2 className="text-lg font-semibold text-center mb-2">
+                          <div className="flex w-2/3 flex-col">
+                            <h2 className="mb-2 text-center text-lg font-semibold">
                               {item.name}
                             </h2>
-                            <div className="grid grid-cols-3 gap-2 items-center">
+                            <div className="grid grid-cols-3 items-center gap-2">
                               <FaPlus
-                                className="cursor-pointer hover:text-[#EA1A20] mx-auto"
+                                className="mx-auto cursor-pointer hover:text-[#EA1A20]"
                                 onClick={() =>
                                   handleChangeCartQuantity(item.id, 1)
                                 }
                               />
                               <FaMinus
-                                className="cursor-pointer hover:text-[#EA1A20] mx-auto"
+                                className="mx-auto cursor-pointer hover:text-[#EA1A20]"
                                 onClick={() =>
                                   handleChangeCartQuantity(item.id, -1)
                                 }
@@ -265,7 +265,7 @@ function WalkInOrdering() {
                             </div>
                           </div>
                           <TiDeleteOutline
-                            className="text-[#d80c0c] w-5 h-5 cursor-pointer"
+                            className="h-5 w-5 cursor-pointer text-[#d80c0c]"
                             onClick={() => handleRemoveFromCart(item.id)}
                           />
                         </div>
@@ -275,12 +275,12 @@ function WalkInOrdering() {
 
                   {/* total */}
                   <div className="pt-4">
-                    <div className="border-t pt-4 w-full">
-                      <div className="flex justify-between text-md font-semibold mb-2">
+                    <div className="w-full border-t pt-4">
+                      <div className="text-md mb-2 flex justify-between font-semibold">
                         <p>Subtotal:</p>
                         <p>₱ {subtotal}</p>
                       </div>
-                      <div className="flex justify-between items-center text-md font-semibold mb-2">
+                      <div className="text-md mb-2 flex items-center justify-between font-semibold">
                         <p>Discount:</p>
                         <div className="flex flex-row items-center gap-2">
                           <p>₱</p>
