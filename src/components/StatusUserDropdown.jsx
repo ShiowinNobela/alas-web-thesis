@@ -1,16 +1,16 @@
-import { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
-import ReactDOM from "react-dom";
+import { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 
 const STATUS_OPTIONS = [
-  { label: "All", value: "" },
-  { label: "Pending", value: "pending" },
-  { label: "Processing", value: "processing" },
-  { label: "Shipping", value: "shipping" },
-  { label: "Delivered", value: "delivered" },
-  { label: "Refunded", value: "refunded" },
-  { label: "Returned", value: "returned" },
-  { label: "Cancelled", value: "cancelled" },
+  { label: 'All', value: '' },
+  { label: 'Pending', value: 'pending' },
+  { label: 'Processing', value: 'processing' },
+  { label: 'Shipping', value: 'shipping' },
+  { label: 'Delivered', value: 'delivered' },
+  { label: 'Refunded', value: 'refunded' },
+  { label: 'Returned', value: 'returned' },
+  { label: 'Cancelled', value: 'cancelled' },
 ];
 
 export default function StatusUserDropdown({ selected, onChange }) {
@@ -42,23 +42,23 @@ export default function StatusUserDropdown({ selected, onChange }) {
       }
     };
     if (open) {
-      document.addEventListener("click", handleClickOutside);
+      document.addEventListener('click', handleClickOutside);
     }
-    return () => document.removeEventListener("click", handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [open]);
 
   return (
     <>
-      <div className="relative inline-block z-20">
+      <div className="relative z-20 inline-block">
         <button
           ref={buttonRef}
           onClick={toggleDropdown}
-          className="relative min-w-[11.5rem] pl-4 pr-8 py-2.5 text-white bg-secondary border focus:outline-none hover:bg-seconda focus:ring-1 focus:ring-admin-100 text-sm rounded-lg text-left"
+          className="focus:ring-secondary relative min-w-[11.5rem] rounded-lg border border-gray-300 bg-white py-2.5 pr-8 pl-4 text-left text-sm text-gray-800 transition hover:bg-gray-100 focus:ring-2 focus:outline-none"
           type="button"
         >
-          Filter: {selected || "All"}
+          Filter: {selected || 'All'}
           <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-2.5 h-2.5 pointer-events-none"
+            className="pointer-events-none absolute top-1/2 right-3 h-2.5 w-2.5 -translate-y-1/2 text-gray-500"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 10 6"
@@ -77,11 +77,11 @@ export default function StatusUserDropdown({ selected, onChange }) {
       {open &&
         ReactDOM.createPortal(
           <div
-            className="z-50 bg-gray-300 divide-y divide-gray-100 rounded-lg shadow-lg w-44 absolute mt-2 text-content"
+            className="absolute z-50 mt-2 w-44 divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white text-gray-900 shadow-lg"
             style={{
               top: `${dropdownPosition.top}px`,
               left: `${dropdownPosition.left}px`,
-              position: "absolute",
+              position: 'absolute',
             }}
           >
             <ul className="py-1 text-sm">
@@ -89,7 +89,7 @@ export default function StatusUserDropdown({ selected, onChange }) {
                 <li key={value}>
                   <button
                     onClick={() => handleSelect(value)}
-                    className="w-full text-left block px-4 py-2 hover:bg-[#d47849]"
+                    className="hover:bg-secondary/15 hover:text-content block w-full px-4 py-2 text-left transition"
                   >
                     {label}
                   </button>

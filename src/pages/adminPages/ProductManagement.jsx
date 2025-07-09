@@ -1,35 +1,35 @@
-import { useEffect, useState } from "react";
-import NewSideBar from "../../components/newSideBar";
-import { Link } from "react-router-dom";
-import Placeholder from "../../components/images/placeholder.JPG";
+import { useEffect, useState } from 'react';
+import NewSideBar from '../../components/newSideBar';
+import { Link } from 'react-router-dom';
+import Placeholder from '../../components/images/placeholder.JPG';
 // import { PiMagnifyingGlassLight } from "react-icons/pi";
-import { Card } from "flowbite-react";
-import axios from "axios";
+import { Card } from 'flowbite-react';
+import axios from 'axios';
 // import AdminProfile from "../../components/Chinges/AdminProfile";
-import { useNavigate } from "react-router-dom";
-import CreateLimited from "./CreateLimited";
-import { Toaster, toast } from "sonner";
+import { useNavigate } from 'react-router-dom';
+import CreateLimited from './CreateLimited';
+import { Toaster, toast } from 'sonner';
 
 function ProductManagement() {
   const [openLimitedProduct, setOpenLimitedProduct] = useState(null);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  const getToday = () => new Date().toISOString().split("T")[0];
+  const getToday = () => new Date().toISOString().split('T')[0];
 
   const [createLimited, setCreateLimited] = useState({
-    product_id: "",
+    product_id: '',
     discounted_price: 0,
     start_date: getToday(),
-    end_date: "",
+    end_date: '',
   });
 
-  const [productType, setProductType] = useState("regular");
+  const [productType, setProductType] = useState('regular');
 
   useEffect(() => {
-    let url = "/api/products/";
-    if (productType === "bundled") url = "/api/bundles";
-    else if (productType === "limited") url = "/api/limited-offer";
-    else if (productType === "special") url = "/api/special-offers";
+    let url = '/api/products/';
+    if (productType === 'bundled') url = '/api/bundles';
+    else if (productType === 'limited') url = '/api/limited-offer';
+    else if (productType === 'special') url = '/api/special-offers';
     axios
       .get(url)
       .then((res) => {
@@ -44,39 +44,39 @@ function ProductManagement() {
   const handleCreateLimited = async () => {
     if (!openLimitedProduct) return;
     try {
-      await axios.post("/api/limited-offer", {
+      await axios.post('/api/limited-offer', {
         product_id: createLimited.product_id,
         discounted_price: Number(createLimited.discounted_price),
         start_date: createLimited.start_date,
         end_date: createLimited.end_date,
       });
       setOpenLimitedProduct(null);
-      setCreateLimited({ product_id: "", discounted_price: 0, end_date: "" });
-      setProductType("limited");
-      toast.success("Limited product created!");
+      setCreateLimited({ product_id: '', discounted_price: 0, end_date: '' });
+      setProductType('limited');
+      toast.success('Limited product created!');
     } catch (err) {
-      toast.error("Failed to create limited product");
+      toast.error('Failed to create limited product');
       console.error(err);
     }
   };
 
   return (
     <>
-      <div className="h-screen w-screen overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
+      <div className="grid h-screen w-screen grid-cols-[0.20fr_0.80fr] overflow-y-auto bg-[#E2E0E1]">
         <NewSideBar />
 
-        <div className="min-h-full ml-5 flex flex-col gap-5 pr-7 overflow-auto">
+        <div className="ml-5 flex min-h-full flex-col gap-5 overflow-auto pr-7">
           {/* Top Right Actions */}
-          <div className="w-full pt-3 flex justify-end">
+          <div className="flex w-full justify-end pt-3">
             {/* Reserved for AdminProfile or other top-right actions */}
           </div>
 
           {/* Page Header */}
-          <div className="w-full flex justify-between items-center">
+          <div className="flex w-full items-center justify-between">
             <div />
             <div>
               <Link to="/Admin/AddProduct">
-                <button className="p-2 text-lg font-medium bg-secondary hover:bg-secondary/40 text-white rounded border border-black">
+                <button className="bg-secondary hover:bg-secondary/40 rounded border border-black p-2 text-lg font-medium text-white dark:text-red-500">
                   ADD PRODUCT
                 </button>
               </Link>
@@ -84,10 +84,10 @@ function ProductManagement() {
           </div>
 
           {/* Product Grid */}
-          <div className="w-full grid grid-cols-4 gap-5 pl-3 pt-5">
+          <div className="grid w-full grid-cols-4 gap-5 pt-5 pl-3">
             {data.map((d) => (
               <Card
-                className="max-w-sm shadow-lg rounded-lg overflow-hidden"
+                className="max-w-sm overflow-hidden rounded-lg shadow-lg"
                 key={d.id}
               >
                 <img
@@ -97,32 +97,32 @@ function ProductManagement() {
                     e.target.onerror = null;
                     e.target.src = Placeholder;
                   }}
-                  className="w-full h-48 object-cover"
+                  className="h-48 w-full object-cover"
                 />
 
-                <div className="p-4 bg-white">
-                  <h5 className="text-xl font-bold text-gray-800 mb-2 truncate">
+                <div className="bg-white p-4">
+                  <h5 className="mb-2 truncate text-xl font-bold text-gray-800">
                     {d.name}
                   </h5>
 
-                  <div className="flex items-center justify-between text-sm mb-3">
+                  <div className="mb-3 flex items-center justify-between text-sm">
                     <span className="text-gray-600">Stock:</span>
                     <span
                       className={`font-semibold ${
-                        d.stock_quantity < 11 ? "text-red-600" : "text-gray-800"
+                        d.stock_quantity < 11 ? 'text-red-600' : 'text-gray-800'
                       }`}
                     >
                       {d.stock_quantity}
                     </span>
                   </div>
 
-                  <div className="text-lg font-semibold text-admin mb-4">
+                  <div className="text-admin mb-4 text-lg font-semibold">
                     ₱{parseFloat(d.price).toLocaleString()}
                   </div>
 
                   <button
                     onClick={() => navigate(`/Admin/EditProduct/${d.id}`)}
-                    className="w-full bg-admin text-white py-2 rounded-2xl shadow hover:bg-secondary/70 transition hover:text-black"
+                    className="bg-admin hover:bg-secondary/70 w-full rounded-2xl py-2 text-white shadow transition hover:text-black"
                   >
                     Edit
                   </button>
@@ -136,7 +136,7 @@ function ProductManagement() {
                 open={!!openLimitedProduct}
                 onClose={() => setOpenLimitedProduct(null)}
               >
-                <div className="w-full h-full bg-gray-50 rounded-2xl flex flex-col p-7 gap-3">
+                <div className="flex h-full w-full flex-col gap-3 rounded-2xl bg-gray-50 p-7">
                   <label>Product ID:</label>
                   <input
                     type="text"
@@ -172,7 +172,7 @@ function ProductManagement() {
                     }
                   />
                   <button
-                    className="bg-admin text-white p-2 mt-10 rounded-2xl shadow-lg"
+                    className="bg-admin mt-10 rounded-2xl p-2 text-white shadow-lg"
                     onClick={handleCreateLimited}
                   >
                     Create Limited Product

@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-const PrimaryButton = ({ type = "button", onClick, children }) => (
+const PrimaryButton = ({ type = 'button', onClick, children }) => (
   <button
     type={type}
     onClick={onClick}
-    className="w-full text-white bg-primary hover:bg-[#bf663a] focus:ring-4 focus:outline-none focus:ring-[#d47849]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center uppercase transition-all font-heading"
+    className="bg-primary font-heading w-full rounded-lg px-5 py-2 text-center text-sm font-medium text-white uppercase transition-all hover:bg-[#bf663a] focus:ring-4 focus:ring-[#d47849]/50 focus:outline-none"
   >
     {children}
   </button>

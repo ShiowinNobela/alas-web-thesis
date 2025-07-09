@@ -1,18 +1,18 @@
-import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import TextInput from "../components/TextInput";
-import { Toaster, toast } from "sonner";
-import PasswordInput from "../components/PasswordInput";
-import PromptLink from "../components/PromptLink";
-import PrimaryButton from "../components/PrimaryButton";
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import TextInput from '../components/TextInput';
+import { Toaster, toast } from 'sonner';
+import PasswordInput from '../components/PasswordInput';
+import PromptLink from '../components/PromptLink';
+import PrimaryButton from '../components/PrimaryButton';
 
 function RegistrationPage() {
   const [values, setValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
   const [errors, setErrors] = useState({
     username: false,
@@ -27,12 +27,12 @@ function RegistrationPage() {
     event.preventDefault();
 
     const newErrors = {
-      username: values.username.trim() ? "" : "Username is required",
-      email: values.email.trim() ? "" : "Email is required",
-      password: values.password.trim() ? "" : "Password is required",
+      username: values.username.trim() ? '' : 'Username is required',
+      email: values.email.trim() ? '' : 'Email is required',
+      password: values.password.trim() ? '' : 'Password is required',
       confirmPassword: values.confirmPassword.trim()
-        ? ""
-        : "Confirm Password is required",
+        ? ''
+        : 'Confirm Password is required',
     };
 
     if (
@@ -42,42 +42,42 @@ function RegistrationPage() {
       newErrors.confirmPassword
     ) {
       setErrors(newErrors);
-      toast.error("Please fill in all required fields!");
+      toast.error('Please fill in all required fields!');
       return;
     }
 
-    if (!values.email.includes("@")) {
+    if (!values.email.includes('@')) {
       setErrors((prev) => ({
         ...prev,
-        email: "Please enter a valid email address",
+        email: 'Please enter a valid email address',
       }));
-      toast.error("Please enter a valid email address!");
+      toast.error('Please enter a valid email address!');
       return;
     }
 
     if (values.password !== values.confirmPassword) {
       setErrors((prev) => ({
         ...prev,
-        password: "Passwords do not match",
-        confirmPassword: "Passwords do not match",
+        password: 'Passwords do not match',
+        confirmPassword: 'Passwords do not match',
       }));
-      toast.error("Passwords do not match!");
+      toast.error('Passwords do not match!');
       return;
     }
 
     axios.defaults.withCredentials = true;
 
     axios
-      .post("/api/users/register/", values)
+      .post('/api/users/register/', values)
       .then((res) => {
         console.log(res);
         setErrors({
-          username: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
         });
-        Navigate("/LoginPage");
+        Navigate('/LoginPage');
       })
       .catch((err) => {
         console.error(err);
@@ -85,11 +85,11 @@ function RegistrationPage() {
         const res = err.response;
 
         if (!res) {
-          toast.error("No response from server!");
+          toast.error('No response from server!');
           return;
         }
 
-        const msg = res.data?.message || "An unexpected error occurred";
+        const msg = res.data?.message || 'An unexpected error occurred';
         toast.error(msg);
 
         if (res.data?.error) {
@@ -103,19 +103,19 @@ function RegistrationPage() {
 
   return (
     <>
-      <section className="min-h-full bg-gray-50 flex flex-col justify-start sm:justify-center items-center px-4 py-8">
-        <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6 sm:p-8 text-content">
+      <section className="flex min-h-full flex-col items-center justify-start px-4 py-8 sm:justify-center">
+        <div className="text-content bg-card w-full max-w-md rounded-lg p-6 shadow-md sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
                 src="./src/components/images/logo-alas1.jpg"
                 alt="Alas Delis Logo"
-                className="mx-auto w-20 h-20 object-contain shrink-0"
+                className="mx-auto h-20 w-20 shrink-0 object-contain"
               />
-              <h1 className="text-3xl font-lg font-bold leading-tight tracking-tight text-center font-heading">
+              <h1 className="font-lg font-heading text-center text-3xl leading-tight font-bold tracking-tight">
                 CREATE ACCOUNT
               </h1>
-              <p className="text-sm text-gray-500 text-center">
+              <p className="text-center text-sm text-gray-500">
                 Spice up your life with flavorful, savory spices.
               </p>
             </div>
@@ -159,7 +159,7 @@ function RegistrationPage() {
 
               <PrimaryButton type="submit">Register</PrimaryButton>
 
-              <p className="text-xs text-gray-500 text-center">
+              <p className="text-center text-xs text-gray-500">
                 A verification email will be sent to confirm your account.
               </p>
 
@@ -169,12 +169,12 @@ function RegistrationPage() {
                 to="/LoginPage"
               />
 
-              <p className="text-xs text-gray-400 text-center">
-                By clicking Register, you agree to our{" "}
+              <p className="text-center text-xs text-gray-400">
+                By clicking Register, you agree to our{' '}
                 <a href="#" className="underline hover:text-[#d47849]">
                   Terms of Service
-                </a>{" "}
-                and{" "}
+                </a>{' '}
+                and{' '}
                 <a href="#" className="underline hover:text-[#d47849]">
                   Privacy Policy
                 </a>

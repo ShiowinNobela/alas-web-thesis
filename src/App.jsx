@@ -1,3 +1,4 @@
+
 import "./App.css";
 import { ThemeConfig } from "flowbite-react";
 import ContactUs from "./pages/ContactUs.jsx";
@@ -34,6 +35,42 @@ import WalkInOrderTable from "./pages/adminPages/WalkInOrdersTable.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import UserDashboardLayout from "./components/UserDashboardLayout.jsx";
 import NotificationPage from "./pages/adminPages/NotificationPage.jsx";
+import './App.css';
+import { ThemeConfig } from 'flowbite-react';
+import ContactUs from './pages/ContactUs.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import RegPage from './pages/RegistrationPage.jsx';
+import LandPage from './pages/LandingPage.jsx';
+import ProductPage from './pages/ProductListPage.jsx';
+import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
+import { Route, Routes } from 'react-router-dom';
+import UserSettings from './pages/UserSettings.jsx';
+import GiveReview from './pages/GiveReview.jsx';
+import Faqs from './pages/Faqs.jsx';
+import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
+import AddProd from './pages/adminPages/AddProduct.jsx';
+import Login from './pages/adminPages/LoginAdmin.jsx';
+import EditProd from './pages/adminPages/EditProduct.jsx';
+import ProdManagement from './pages/adminPages/ProductManagement.jsx';
+import AccManagement from './pages/adminPages/AccountManagement.jsx';
+import Orders from './pages/adminPages/Orders.jsx';
+import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx';
+import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx';
+import EditOrder from './pages/adminPages/editOrder.jsx';
+import MainLayout from './pages/MainLayout.jsx';
+import AdminAddUser from './pages/adminPages/AdminAddUser.jsx';
+import CheckOutPage from './pages/CheckOutPage.jsx';
+import ViewOrder from './pages/adminPages/ViewOrder.jsx';
+import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx';
+import UserOrderPage from './pages/UserOrderPage.jsx';
+import UserViewOrderDetails from './pages/UserViewOrderDetails.jsx';
+import InventoryManagement from './pages/adminPages/InventoryManagement.jsx';
+import WalkInOrdering from './pages/adminPages/WalkInOrdering.jsx';
+import SalesPage from './pages/adminPages/SalesPage.jsx';
+import WalkInOrderTable from './pages/adminPages/WalkInOrdersTable.jsx';
+import AboutUs from './pages/AboutUs.jsx';
+import UserDashboardLayout from './components/UserDashboardLayout.jsx';
+import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 
 function App() {
   return (
