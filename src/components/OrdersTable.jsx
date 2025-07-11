@@ -1,11 +1,3 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeadCell,
-  TableRow,
-} from 'flowbite-react';
 import PropTypes from 'prop-types';
 
 export default function OrdersTable({
@@ -15,97 +7,98 @@ export default function OrdersTable({
   onFetchOrderHistory,
 }) {
   return (
-    <div className="max-h-[50vh] overflow-x-auto overflow-y-auto rounded">
-      <Table hoverable className="shadow">
-        <TableHead className="sticky top-0 z-10">
-          <TableRow>
-            <TableHeadCell>Items</TableHeadCell>
-            <TableHeadCell>Date</TableHeadCell>
-            <TableHeadCell>Total</TableHeadCell>
-            <TableHeadCell>
-              Payment
-              <br />
-              Method
-            </TableHeadCell>
-            <TableHeadCell>Order ID</TableHeadCell>
-            <TableHeadCell>Status</TableHeadCell>
-            <TableHeadCell>Action</TableHeadCell>
-          </TableRow>
-        </TableHead>
+    <div className="space-y-3">
+      {orders.map((order) => (
+        <div
+          key={order.id}
+          className="rounded-lg border border-gray-200 bg-white px-6 py-4 shadow-sm transition hover:shadow-md"
+        >
+          {/* --- Header --- */}
+          <div className="mb-3 flex flex-wrap items-center gap-8 text-sm text-gray-700">
+            {/* Order ID - visually distinct */}
 
-        <TableBody className="divide-y">
-          {orders.map((order) => (
-            <TableRow key={order.id} className="bg-white">
-              <TableCell className="font-medium text-gray-900">
-                <ul className="list-inside list-disc break-words">
-                  {order.items.map((item) => (
-                    <li key={item.item_id}>
-                      {item.product_name} x {item.quantity}
-                    </li>
-                  ))}
-                </ul>
-              </TableCell>
+            <h3 className="text-content font-heading font-bold">
+              ORDER ID:{' '}
+              <span className="text-primary font-mono tracking-tight">
+                {order.id}
+              </span>
+            </h3>
 
-              <TableCell className="flex flex-col">
-                <span>{new Date(order.order_date).toLocaleDateString()}</span>
-                <span className="text-sm text-gray-500">
-                  {new Date(order.order_date).toLocaleTimeString()}
-                </span>
-              </TableCell>
+            {/* Status badge */}
+            <span
+              className={`rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold ${getStatusColor(order.status)}`}
+            >
+              {order.status}
+            </span>
 
-              <TableCell>
-                ₱ {parseFloat(order.total_amount).toLocaleString()}
-              </TableCell>
+            <h3 className="text-content font-heading">
+              <span className="font-mono text-gray-500">
+                {new Date(order.order_date).toLocaleDateString()}
+              </span>
+            </h3>
+          </div>
 
-              <TableCell className="flex flex-col capitalize">
-                {order.payment_method.split('_').map((word, idx) => (
-                  <span key={idx}>{word}</span>
+          {/* --- Items + View More --- */}
+          <div className="border-t border-gray-100 px-4 pt-3">
+            <div className="flex items-center justify-between">
+              {/* Items List */}
+              <div className="flex flex-wrap gap-3">
+                {order.items.map((item) => (
+                  <div
+                    key={item.item_id}
+                    className="flex items-center gap-3 rounded-md bg-gray-50 px-4 py-2 text-sm text-gray-800"
+                  >
+                    <div className="h-14 w-14 flex-shrink-0 rounded-md bg-gray-200" />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium">
+                        {item.product_name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Quantity: {item.quantity}
+                      </p>
+                    </div>
+                  </div>
                 ))}
-              </TableCell>
+              </div>
 
-              <TableCell className="text-xs">{order.id}</TableCell>
+              {/* View More Button Right Side */}
+              <button
+                onClick={() => onFetchOrderHistory(order.id)}
+                className="ml-4 text-xs font-medium whitespace-nowrap text-blue-600 hover:underline"
+              >
+                View More
+              </button>
+            </div>
+          </div>
 
-              <TableCell>
-                <span
-                  className={`rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(
-                    order.status
-                  )}`}
-                >
-                  {order.status}
-                </span>
-              </TableCell>
+          {/* --- Footer --- */}
+          <div className="mt-4 flex flex-wrap items-center justify-between border-t border-gray-100 pt-3">
+            <span className="text-sm font-semibold text-gray-900">
+              Total: ₱ {parseFloat(order.total_amount).toLocaleString()}
+            </span>
 
-              <TableCell>
-                {order.status === 'pending' && order.cancel_requested === 0 ? (
-                  <button
-                    onClick={() => onCancelOrder(order.id)}
-                    className="font-medium text-red-600 hover:underline"
-                  >
-                    Cancel Order
-                  </button>
-                ) : order.status === 'pending' &&
-                  order.cancel_requested === 1 ? (
-                  <span className="text-sm text-gray-500 italic">
-                    Cancellation requested
-                  </span>
-                ) : (
-                  <button
-                    onClick={() => onFetchOrderHistory(order.id)}
-                    className="font-medium text-blue-600 hover:underline"
-                  >
-                    View History
-                  </button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      <div className="flex items-center justify-between bg-gray-100 px-6 py-3 text-base font-semibold text-gray-800">
-        <span>Hello</span>
-        <span>Alas Delis and Spices</span>
-      </div>
+            {order.status === 'pending' && order.cancel_requested === 0 ? (
+              <button
+                onClick={() => onCancelOrder(order.id)}
+                className="mt-2 text-sm font-medium text-red-600 hover:underline sm:mt-0"
+              >
+                Cancel Order
+              </button>
+            ) : order.status === 'pending' && order.cancel_requested === 1 ? (
+              <span className="mt-2 text-sm text-gray-500 italic sm:mt-0">
+                Cancellation requested
+              </span>
+            ) : (
+              <button
+                onClick={() => onFetchOrderHistory(order.id)}
+                className="mt-2 text-sm font-medium text-blue-600 hover:underline sm:mt-0"
+              >
+                View History
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

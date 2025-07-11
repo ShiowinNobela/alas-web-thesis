@@ -74,6 +74,19 @@ export default function UserDropdown({ user }) {
               <li>
                 <button
                   onClick={() => {
+                    navigate('/UserOrderPage2', {
+                      state: { tab: 'orderList' },
+                    });
+                    setOpen(false);
+                  }}
+                  className="flex w-full items-center px-4 py-2 hover:bg-gray-100"
+                >
+                  <LuShoppingBag className="mr-2" /> Order List V2
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
                     navigate('/UserOrderPage', { state: { tab: 'notif' } });
                     setOpen(false);
                   }}

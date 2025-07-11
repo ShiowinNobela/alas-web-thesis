@@ -5,7 +5,7 @@ import { TextInput } from 'flowbite-react';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import OrderHistoryModal from '../components/modals/orderHistoryModal';
 import StatusUserDropdown from '../components/StatusUserDropdown';
-import OrdersTable from '../components/OrdersTable';
+import OrdersTable from '../components/OrdersTable2';
 import { motion } from 'framer-motion';
 
 function UserViewOrderPage() {
@@ -41,6 +41,11 @@ function UserViewOrderPage() {
     queryKey: ['orders', filterStatus],
     queryFn: fetchOrders,
   });
+
+  const totalAmount = orders.reduce(
+    (sum, order) => sum + parseFloat(order.total_amount),
+    0
+  );
 
   const cancelOrderMutation = useMutation({
     mutationFn: ({ orderId, note }) =>
@@ -142,63 +147,46 @@ function UserViewOrderPage() {
   return (
     <>
       {/* <div className="bg-neutral text-content border-b border-gray-400 px-6 py-2"></div> */}
-      <main className="bg-neutral mx-auto flex min-h-full w-full flex-1 flex-col overflow-hidden px-4 py-4 sm:px-8 lg:px-55">
+      <main className="bg-neutral mx-auto flex min-h-full w-full flex-1 flex-col overflow-hidden px-4 py-4 sm:px-8 lg:px-40">
         {/* Top-left Heading */}
-        <h2 className="font-heading text-content px-2 py-4 text-4xl font-bold uppercase">
+        <h2 className="font-heading text-content px-2 py-6 text-4xl font-bold uppercase">
           Orders List
         </h2>
 
-        <div className="mb-2 flex flex-col rounded-2xl bg-white px-4 py-4 shadow-md sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-1 items-center">
-            <TextInput placeholder="Search Here" className="w-full max-w-md" />
+        <div className="mb-4 flex flex-wrap gap-2">
+          <div className="min-w-[140px] flex-1 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <h3 className="font-heading text-content text-xl font-bold">
+              {orders.length}
+            </h3>
+            <p className="text-sm text-gray-500">Orders</p>
           </div>
 
-          {/* RIGHT: Dropdown + Sort Buttons */}
-          <div className="flex flex-wrap items-center justify-end gap-4">
-            <button
-              onClick={() => handleSort('date')}
-              className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                sortConfig.key === 'date'
-                  ? 'bg-white text-black'
-                  : 'border-gray-300 bg-white text-black hover:bg-gray-100'
-              }`}
-            >
-              Date
-              {sortConfig.key === 'date' &&
-                (sortConfig.direction === 'asc' ? (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                ) : (
-                  <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                ))}
-              {sortConfig.key !== 'date' && (
-                <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-              )}
-            </button>
+          <div className="min-w-[140px] flex-1 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <h3 className="font-heading text-content text-xl font-bold">
+              ₱{totalAmount.toLocaleString()}
+            </h3>
+            <p className="text-sm text-gray-500">Total</p>
+          </div>
 
-            <button
-              onClick={() => handleSort('total')}
-              className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                sortConfig.key === 'total'
-                  ? 'bg-white text-black'
-                  : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Total
-              {sortConfig.key === 'total' &&
-                (sortConfig.direction === 'asc' ? (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                ) : (
-                  <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                ))}
-              {sortConfig.key !== 'total' && (
-                <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-              )}
-            </button>
+          <div className="min-w-[140px] flex-1 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <h3 className="font-heading text-content text-xl font-bold">
+              {orders.length}
+            </h3>
+            <p className="text-sm text-gray-500">Orders</p>
+          </div>
 
-            <StatusUserDropdown
-              selected={filterStatus}
-              onChange={setFilterStatus}
-            />
+          <div className="min-w-[140px] flex-1 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <h3 className="font-heading text-content text-xl font-bold">
+              ₱{totalAmount.toLocaleString()}
+            </h3>
+            <p className="text-sm text-gray-500">Total</p>
+          </div>
+
+          <div className="min-w-[140px] flex-1 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <h3 className="font-heading text-content text-xl font-bold">
+              ₱{totalAmount.toLocaleString()}
+            </h3>
+            <p className="text-sm text-gray-500">Total</p>
           </div>
         </div>
 
@@ -210,8 +198,65 @@ function UserViewOrderPage() {
             stiffness: 120,
             damping: 8,
           }}
-          className="relative overflow-x-hidden sm:rounded-lg"
+          className="relative overflow-x-hidden bg-white shadow sm:rounded-lg"
         >
+          <div className="flex flex-col px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-1 items-center">
+              <TextInput
+                placeholder="Search Here"
+                className="w-full max-w-md"
+              />
+            </div>
+
+            {/* RIGHT: Dropdown + Sort Buttons */}
+            <div className="flex flex-wrap items-center justify-end gap-4">
+              <button
+                onClick={() => handleSort('date')}
+                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
+                  sortConfig.key === 'date'
+                    ? 'bg-white text-black'
+                    : 'border-gray-300 bg-white text-black hover:bg-gray-100'
+                }`}
+              >
+                Date
+                {sortConfig.key === 'date' &&
+                  (sortConfig.direction === 'asc' ? (
+                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
+                  ) : (
+                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
+                  ))}
+                {sortConfig.key !== 'date' && (
+                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
+                )}
+              </button>
+
+              <button
+                onClick={() => handleSort('total')}
+                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
+                  sortConfig.key === 'total'
+                    ? 'bg-white text-black'
+                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Total
+                {sortConfig.key === 'total' &&
+                  (sortConfig.direction === 'asc' ? (
+                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
+                  ) : (
+                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
+                  ))}
+                {sortConfig.key !== 'total' && (
+                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
+                )}
+              </button>
+
+              <StatusUserDropdown
+                selected={filterStatus}
+                onChange={setFilterStatus}
+              />
+            </div>
+          </div>
+
           <OrdersTable
             orders={sortedOrders}
             getStatusColor={getStatusColor}

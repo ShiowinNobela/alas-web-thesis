@@ -1,18 +1,18 @@
-import NewSideBar from "../../components/newSideBar";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { HiOutlinePencil } from "react-icons/hi";
-import { MdToggleOn, MdToggleOff, MdErrorOutline } from "react-icons/md";
-import { useState } from "react";
+import NewSideBar from '../../components/newSideBar';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { HiOutlinePencil } from 'react-icons/hi';
+import { MdToggleOn, MdToggleOff, MdErrorOutline } from 'react-icons/md';
+import { useState } from 'react';
 import {
   Button,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
-} from "flowbite-react";
+} from 'flowbite-react';
 
-const tableHeadStyle = "px-6 py-3 text-center";
+const tableHeadStyle = 'px-6 py-3 text-center';
 
 function InventoryManagement() {
   const {
@@ -20,8 +20,8 @@ function InventoryManagement() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => axios.get("/api/products/admin").then((res) => res.data),
+    queryKey: ['products'],
+    queryFn: () => axios.get('/api/products/admin').then((res) => res.data),
   });
 
   const totalProducts = data.length;
@@ -35,10 +35,10 @@ function InventoryManagement() {
         is_active: newStatus,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries(["products"]);
+      queryClient.invalidateQueries(['products']);
     },
     onError: (error) => {
-      console.error("Toggle error:", error.response?.data || error.message);
+      console.error('Toggle error:', error.response?.data || error.message);
     },
   });
 
@@ -76,7 +76,7 @@ function InventoryManagement() {
         price: Number(price),
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries(["products"]);
+      queryClient.invalidateQueries(['products']);
       closeModal();
     },
   });
@@ -95,23 +95,23 @@ function InventoryManagement() {
 
   return (
     <>
-      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
+      <div className="grid h-screen max-h-full w-screen grid-cols-[0.20fr_0.80fr] overflow-x-clip overflow-y-auto bg-[#E2E0E1]">
         <NewSideBar />
 
-        <section className="bg-gray-50 py-7 px-4">
-          <div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
+        <section className="bg-gray-50 px-4 py-7">
+          <div className="mx-auto max-w-screen-2xl px-4 lg:px-12">
             <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
               {/* Summary Section */}
-              <div className="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
-                <div className="flex items-center flex-1 space-x-4">
+              <div className="flex flex-col space-y-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
+                <div className="flex flex-1 items-center space-x-4">
                   <h5>
-                    <span className="text-gray-500">Total Products:</span>{" "}
+                    <span className="text-gray-500">Total Products:</span>{' '}
                     <span className="font-semibold text-gray-700">
                       {totalProducts}
                     </span>
                   </h5>
                   <h5>
-                    <span className="text-gray-500">Total Stock:</span>{" "}
+                    <span className="text-gray-500">Total Stock:</span>{' '}
                     <span className="font-semibold text-gray-700">
                       {totalStock}
                     </span>
@@ -121,8 +121,8 @@ function InventoryManagement() {
 
               {/* Table */}
               <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left text-slate-800">
-                  <thead className="sticky top-0 text-xs uppercase bg-admin text-white z-10">
+                <table className="w-full text-left text-sm text-slate-800">
+                  <thead className="bg-admin sticky top-0 z-10 text-xs text-white uppercase">
                     <tr>
                       <th className={tableHeadStyle}>ID</th>
                       <th className={tableHeadStyle}>Name</th>
@@ -138,7 +138,7 @@ function InventoryManagement() {
                     {data.map((d) => (
                       <tr
                         key={d.id}
-                        className="border-b hover:bg-gray-100 text-center"
+                        className="border-b text-center hover:bg-gray-100"
                       >
                         <td className="px-6 py-2">{d.id}</td>
                         <td className="px-6 py-2">{d.name}</td>
@@ -146,7 +146,7 @@ function InventoryManagement() {
 
                         <td className="px-6 py-2">
                           {d.stock_quantity <= 10 ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-red-100 text-red-700 text-sm font-medium">
+                            <span className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2 py-1 text-sm font-medium text-red-700">
                               {d.stock_quantity}
                               <MdErrorOutline
                                 className="text-red-500"
@@ -161,21 +161,21 @@ function InventoryManagement() {
                         <td className="px-6 py-2">
                           ₱{parseFloat(d.price).toFixed(2)}
                         </td>
-                        <td className="px-6 py-2 min-w-[110px]">
+                        <td className="min-w-[110px] px-6 py-2">
                           <span
-                            className={`px-2 py-0.5 text-xs font-medium rounded ${
+                            className={`rounded px-2 py-0.5 text-xs font-medium ${
                               d.is_active
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-red-100 text-red-800'
                             }`}
                           >
-                            {d.is_active ? "Active" : "Inactive"}
+                            {d.is_active ? 'Active' : 'Inactive'}
                           </span>
                         </td>
                         <td className="px-6 py-2">
                           {new Date(d.updated_at).toLocaleString()}
                         </td>
-                        <td className="px-6 py-2 flex justify-center items-center gap-2">
+                        <td className="flex items-center justify-center gap-2 px-6 py-2">
                           <button
                             className="text-blue-500 hover:text-blue-700"
                             onClick={() => openEditModal(d)}
@@ -220,7 +220,7 @@ function InventoryManagement() {
             <div>
               <label
                 htmlFor="retock_quantity"
-                className="block mb-2 text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-gray-700"
               >
                 Restock Amount
               </label>
@@ -231,13 +231,13 @@ function InventoryManagement() {
                 value={formData.restock_quantity}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
             <div>
               <label
                 htmlFor="price"
-                className="block mb-2 text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-gray-700"
               >
                 Price
               </label>
@@ -249,7 +249,7 @@ function InventoryManagement() {
                 value={formData.price}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-md border px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
             </div>
           </form>
@@ -260,7 +260,7 @@ function InventoryManagement() {
             form="editForm"
             disabled={updateStockPrice.isLoading}
           >
-            {updateStockPrice.isLoading ? "Saving..." : "Save"}
+            {updateStockPrice.isLoading ? 'Saving...' : 'Save'}
           </Button>
           <Button color="gray" onClick={closeModal}>
             Cancel

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 import TextInput from '../components/TextInput';
@@ -13,6 +13,21 @@ function LoginPage() {
     username: '',
     password: '',
   });
+
+  useEffect(() => {
+    axios.defaults.withCredentials = true;
+
+    axios.interceptors.response.use(
+      (res) => res,
+      (error) => {
+        if (error.response?.status === 401) {
+          localStorage.removeItem('user');
+          window.location.href = '/LoginPage';
+        }
+        return Promise.reject(error);
+      }
+    );
+  }, []);
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -82,9 +97,21 @@ function LoginPage() {
       });
   };
 
-  if (window.localStorage.getItem('user')) {
-    window.location.href = '/';
-  }
+  useEffect(() => {
+    const userRaw = window.localStorage.getItem('user');
+    if (userRaw) {
+      try {
+        const user = JSON.parse(userRaw);
+        if (user?.role_name === 'admin') {
+          window.location.href = '/Admin/DashBoard';
+        } else if (user?.token) {
+          window.location.href = '/';
+        }
+      } catch {
+        window.localStorage.removeItem('user'); // Corrupted
+      }
+    }
+  }, []);
 
   return (
     <>
