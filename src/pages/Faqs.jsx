@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
-import { FaPlus, FaMinus } from "react-icons/fa";
-import { questions } from "../questions.js";
+import { useRef, useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { questions } from '../questions.js';
 
 function Faqs() {
   const tabsRef = useRef(null);
@@ -22,23 +22,23 @@ function Faqs() {
   };
 
   return (
-    <section className="bg-yellow-100 min-h-full py-10">
-      <div className="max-w-6xl mx-auto px-4">
-        <h1 className="text-center uppercase tracking-wide font-semibold mb-8 text-2xl">
+    <section className="min-h-full bg-yellow-100 py-10">
+      <div className="mx-auto max-w-6xl px-4">
+        <h1 className="mb-8 text-center text-2xl font-semibold tracking-wide uppercase">
           Frequently Asked Questions
         </h1>
 
-        <div className="flex flex-col md:flex-row gap-6">
+        <div className="flex flex-col gap-6 md:flex-row">
           <div className="md:w-1/4">
             <div className="flex flex-col space-y-2">
               {questions.map((category, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveTab(index)}
-                  className={`text-left p-3 rounded-lg font-medium ${
+                  className={`rounded-lg p-3 text-left font-medium ${
                     activeTab === index
-                      ? "bg-primary text-white "
-                      : "bg-yellow-100 text-gray-700 hover:bg-secondary"
+                      ? 'bg-primary text-white'
+                      : 'hover:bg-secondary bg-yellow-100 text-gray-700'
                   }`}
                 >
                   {category.category}
@@ -51,7 +51,7 @@ function Faqs() {
             <div className="grid grid-cols-1 gap-4">
               {questions[activeTab].questions.map((question, qIndex) => (
                 <div key={qIndex} className="rounded-lg bg-white/70 shadow">
-                  <article className="flex justify-between items-center p-4">
+                  <article className="flex items-center justify-between p-4">
                     <h3 className="font-medium">{question.question}</h3>
                     <button onClick={() => updateShow(activeTab, qIndex)}>
                       {show[activeTab][qIndex] ? <FaMinus /> : <FaPlus />}
