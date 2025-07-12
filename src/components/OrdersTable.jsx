@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 export default function OrdersTable({
   orders,
@@ -6,6 +7,8 @@ export default function OrdersTable({
   onCancelOrder,
   onFetchOrderHistory,
 }) {
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-3">
       {orders.map((order) => (
@@ -63,7 +66,7 @@ export default function OrdersTable({
 
               {/* View More Button Right Side */}
               <button
-                onClick={() => onFetchOrderHistory(order.id)}
+                onClick={() => navigate(`/UserViewOrderDetails/${order.id}`)}
                 className="ml-4 text-xs font-medium whitespace-nowrap text-blue-600 hover:underline"
               >
                 View More
