@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TextInput from '../components/TextInput';
+import TextInput from '@/components/TextInput';
 import { Toaster, toast } from 'sonner';
-import PasswordInput from '../components/PasswordInput';
 import PromptLink from '../components/PromptLink';
 import PrimaryButton from '../components/PrimaryButton';
+import PasswordInput from '@/components/PasswordInput';
+import { Card } from '@/components/ui/card';
 
 function RegistrationPage() {
   const [values, setValues] = useState({
@@ -104,7 +105,7 @@ function RegistrationPage() {
   return (
     <>
       <section className="flex min-h-full flex-col items-center justify-start px-4 py-8 sm:justify-center">
-        <div className="text-content bg-card w-full max-w-md rounded-lg p-6 shadow-md sm:p-8">
+        <Card className="text-content bg-card w-full max-w-md rounded-lg p-6 shadow-sm sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
@@ -125,7 +126,10 @@ function RegistrationPage() {
                 label="Email"
                 type="email"
                 value={values.email}
-                onChange={(val) => setValues({ ...values, email: val })}
+                onChange={(val) => {
+                  setValues((prev) => ({ ...prev, email: val }));
+                  setErrors((prev) => ({ ...prev, email: '' }));
+                }}
                 placeholder="name@example.com"
                 error={errors.email}
               />
@@ -134,15 +138,28 @@ function RegistrationPage() {
                 label="Username"
                 type="text"
                 value={values.username}
-                onChange={(val) => setValues({ ...values, username: val })}
+                onChange={(val) => {
+                  setValues((prev) => ({ ...prev, username: val }));
+                  setErrors((prev) => ({ ...prev, username: '' }));
+                }}
                 placeholder="username"
                 error={errors.username}
               />
 
               <PasswordInput
-                label="Password"
+                label="Input Password"
                 value={values.password}
-                onChange={(val) => setValues({ ...values, password: val })}
+                onChange={(val) => {
+                  setValues({ ...values, password: val });
+                  setErrors((prev) => ({
+                    ...prev,
+                    password: val.trim() ? '' : 'Password is required',
+                    confirmPassword:
+                      values.confirmPassword && val !== values.confirmPassword
+                        ? 'Passwords do not match'
+                        : '',
+                  }));
+                }}
                 placeholder="********"
                 error={errors.password}
               />
@@ -150,11 +167,20 @@ function RegistrationPage() {
               <PasswordInput
                 label="Confirm Password"
                 value={values.confirmPassword}
-                onChange={(val) =>
-                  setValues({ ...values, confirmPassword: val })
-                }
+                onChange={(val) => {
+                  setValues({ ...values, confirmPassword: val });
+                  setErrors((prev) => ({
+                    ...prev,
+                    confirmPassword: val.trim()
+                      ? val !== values.password
+                        ? 'Passwords do not match'
+                        : ''
+                      : 'Confirm Password is required',
+                  }));
+                }}
                 placeholder="********"
                 error={errors.confirmPassword}
+                showRequirements={false}
               />
 
               <PrimaryButton type="submit">Register</PrimaryButton>
@@ -182,7 +208,7 @@ function RegistrationPage() {
               </p>
             </form>
           </div>
-        </div>
+        </Card>
       </section>
       <Toaster richColors />
     </>
