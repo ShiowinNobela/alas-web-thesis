@@ -36,7 +36,7 @@ function Navbar() {
     `${navItemStyle} ${isActive(path) ? 'text-brand' : ''}`;
 
   return (
-    <div className="sticky top-0 z-50 w-full bg-white drop-shadow-md">
+    <div className="sticky top-0 z-50 w-full bg-white shadow-md">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-4 md:px-15">
         <Link to="/">
           <img

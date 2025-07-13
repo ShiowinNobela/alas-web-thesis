@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 import TextInput from '../components/TextInput';
-import PasswordInput from '../components/PasswordInput';
 import PromptLink from '../components/PromptLink';
-import PrimaryButton from '../components/PrimaryButton';
+import PasswordInput from '@/components/PasswordInput';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -17,16 +18,16 @@ function LoginPage() {
   useEffect(() => {
     axios.defaults.withCredentials = true;
 
-    axios.interceptors.response.use(
-      (res) => res,
-      (error) => {
-        if (error.response?.status === 401) {
-          localStorage.removeItem('user');
-          window.location.href = '/LoginPage';
-        }
-        return Promise.reject(error);
-      }
-    );
+    // axios.interceptors.response.use(
+    //   (res) => res,
+    //   (error) => {
+    //     if (error.response?.status === 401) {
+    //       localStorage.removeItem('user');
+    //       window.location.href = '/LoginPage';
+    //     }
+    //     return Promise.reject(error);
+    //   }
+    // );
   }, []);
 
   const handleLogin = (event) => {
@@ -115,8 +116,8 @@ function LoginPage() {
 
   return (
     <>
-      <section className="flex min-h-full flex-col items-center justify-start px-4 py-8 sm:justify-center">
-        <div className="text-content bg-card w-full max-w-md rounded-lg p-6 shadow-md sm:p-8">
+      <section className="flex min-h-full flex-row items-center justify-start gap-4 px-4 py-8 sm:justify-center">
+        <Card className="text-content w-full max-w-md rounded-md p-6 shadow-sm sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
@@ -148,6 +149,7 @@ function LoginPage() {
                 onChange={setPassword}
                 placeholder="********"
                 error={errors.password}
+                showRequirements={false}
               />
 
               <div className="flex items-center justify-between">
@@ -166,11 +168,13 @@ function LoginPage() {
                 </a>
               </div>
 
-              <PrimaryButton type="submit">Sign In</PrimaryButton>
+              <Button type="submit" className="font-heading w-full! uppercase">
+                Sign In
+              </Button>
 
               <PromptLink
                 promptText="Don’t have an account yet?"
-                linkText="CREATE ACCOUNT"
+                linkText="Create an account"
                 to="/RegPage"
               />
 
@@ -187,7 +191,7 @@ function LoginPage() {
               </p>
             </form>
           </div>
-        </div>
+        </Card>
       </section>
       <Toaster richColors visibleToasts={1} />
     </>

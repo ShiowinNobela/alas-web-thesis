@@ -1,33 +1,43 @@
 import PropTypes from 'prop-types';
+import { useId } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-const TextInput = ({
+export default function TextInput({
   label,
   type = 'text',
   value,
   onChange,
   placeholder = '',
   error,
-}) => {
+}) {
+  const id = useId();
+
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className={`border-2 bg-gray-50 ${
-          error
-            ? 'border-red focus:ring-red focus:border-red'
-            : 'focus:ring-secondary focus:border-secondary border-gray-300'
-        } text-content block w-full rounded-lg p-1.5 outline-none`}
-      />
+      {/* Label */}
+      <Label htmlFor={id}>{label}</Label>
+
+      {/* Input field with error styling */}
+      <div className="mt-2">
+        <Input
+          id={id}
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          aria-invalid={error ? 'true' : undefined}
+          className={`${error ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+        />
+      </div>
+
+      {/* Optional error message */}
       {typeof error === 'string' && error && (
-        <p className="text-red mt-1 text-sm">{error}</p>
+        <p className="mt-1 text-sm text-red-500">{error}</p>
       )}
     </div>
   );
-};
+}
 
 TextInput.propTypes = {
   label: PropTypes.string.isRequired,
@@ -37,5 +47,3 @@ TextInput.propTypes = {
   placeholder: PropTypes.string,
   error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 };
-
-export default TextInput;
