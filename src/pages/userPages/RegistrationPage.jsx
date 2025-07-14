@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextInput from '@/components/TextInput';
 import { Toaster, toast } from 'sonner';
-import PromptLink from '../components/PromptLink';
-import PrimaryButton from '../components/PrimaryButton';
+
 import PasswordInput from '@/components/PasswordInput';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import PromptLink from '@/components/PromptLink';
 
 function RegistrationPage() {
   const [values, setValues] = useState({
@@ -104,7 +105,7 @@ function RegistrationPage() {
 
   return (
     <>
-      <section className="flex min-h-full flex-col items-center justify-start px-4 py-8 sm:justify-center">
+      <section className="flex min-h-screen items-center justify-center px-4 py-8 pb-30">
         <Card className="text-content bg-card w-full max-w-md rounded-lg p-6 shadow-sm sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
@@ -183,7 +184,9 @@ function RegistrationPage() {
                 showRequirements={false}
               />
 
-              <PrimaryButton type="submit">Register</PrimaryButton>
+              <Button type="submit" className="font-heading w-full! uppercase">
+                Register
+              </Button>
 
               <p className="text-center text-xs text-gray-500">
                 A verification email will be sent to confirm your account.

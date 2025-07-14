@@ -4,8 +4,8 @@
 }
 
 @font-face {
-  font-family: Inter;
-  src: url('../src/assets/fonts/Inter_24pt-Regular.ttf');
+  font-family: Jost;
+  src: url('../src/assets/fonts/RedditSans-Regular.ttf');
 }
 
 @font-face {
@@ -25,6 +25,7 @@
   --font-*: initial;
   --font-sans: Rubik, 'serif';
   --font-heading: Bebas, 'serif';
+  --font-logo: Jost, 'serif';
   --color-brand: #e47157;
   --color-support: #8d837c;
   --color-content: #4b322a;

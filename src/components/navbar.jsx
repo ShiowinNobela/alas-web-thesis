@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import CTAButton from '../components/CTAButton';
-import Logo from '../components/images/logowhite.png';
+import { useLocation, Link } from 'react-router-dom';
+import CTAButton from './CTAButton';
+import Logo from '../components/images/logo.png';
 import UserDropdown from './UserDropdown';
+
 const navItemStyle =
   'px-2 py-2 border-b-2 border-transparent hover:border-brand hover:text-brand transition-all cursor-pointer';
 
@@ -21,93 +21,139 @@ function parseJwt(token) {
 }
 
 function Navbar() {
-  const [nav, setNav] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const storedUser = JSON.parse(window.localStorage.getItem('user'));
   const userInfo = storedUser ? parseJwt(storedUser.token) : null;
 
-  const navhandler = () => {
-    setNav(!nav);
-  };
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const isActive = (path) => location.pathname === path;
-
   const getNavItemClass = (path) =>
     `${navItemStyle} ${isActive(path) ? 'text-brand' : ''}`;
 
+  const navLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/ProductListPage', label: 'Menu' },
+    { to: '/AboutUs', label: 'About' },
+    { to: '/ContactUs', label: 'Contact' },
+    { to: '/Faqs', label: 'FAQ' },
+  ];
+
   return (
-    <div className="sticky top-0 z-50 w-full bg-white shadow-md">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-4 md:px-15">
-        <Link to="/">
-          <img
-            className="h-10 w-auto cursor-pointer transition-all duration-200 md:h-15"
-            src={Logo}
-            alt="/"
-          />
-        </Link>
-        <ul className="text-content font-heading hidden gap-6 text-lg uppercase md:flex">
-          <Link to="/">
-            <li className={getNavItemClass('/')}>Home</li>
+    <header className="sticky top-0 z-50 w-full bg-white drop-shadow-md">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-4">
+        <div className="flex flex-row items-center justify-center">
+          <Link to="/" onClick={closeMobileMenu}>
+            <img
+              className="h-15 w-auto cursor-pointer transition-all duration-200"
+              src={Logo}
+              alt="Logo"
+            />
           </Link>
-          <Link to="/ProductListPage">
-            <li className={getNavItemClass('/ProductListPage')}>Menu</li>
-          </Link>
-          <Link to="/AboutUs">
-            <li className={getNavItemClass('/AboutUs')}>About</li>
-          </Link>
-          <Link to="/ContactUs">
-            <li className={getNavItemClass('/ContactUs')}>Contact</li>
-          </Link>
-          <Link to="/Faqs">
-            <li className={getNavItemClass('/Faqs')}>FAQ</li>
-          </Link>
+          <h1 className="font-logo text-content hidden text-xl lg:block">
+            Alas Delis and Spices
+          </h1>
+        </div>
+
+        {/* Desktop Navigation */}
+        <nav className="font-heading text-content hidden items-center gap-6 text-lg uppercase md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={getNavItemClass(link.to)}
+            >
+              {link.label}
+            </Link>
+          ))}
 
           {storedUser ? (
-            <li>
-              <UserDropdown user={userInfo} />
-            </li>
+            <UserDropdown user={userInfo} />
           ) : (
-            <Link to="/LoginPage">
-              <li className={getNavItemClass('/LoginPage')}>Sign In</li>
+            <Link to="/LoginPage" className={getNavItemClass('/LoginPage')}>
+              Sign In
             </Link>
           )}
 
-          {storedUser ? (
-            <CTAButton to="/ProductListPage">Order</CTAButton>
-          ) : (
-            <CTAButton to="/LoginPage">Order</CTAButton>
-          )}
+          <CTAButton to={storedUser ? '/ProductListPage' : '/LoginPage'}>
+            Order
+          </CTAButton>
+        </nav>
 
-          {/* <Link to="//ProductListPage"></Link> */}
-        </ul>
-
-        <div onClick={navhandler} className="block md:hidden">
-          {!nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
-        </div>
-        <div
-          className={
-            !nav
-              ? 'fixed top-0 left-0 h-full w-[70%] border-r bg-[#EA1A20] duration-500 ease-in-out'
-              : 'fixed left-[-100%]'
-          }
+        {/* Hamburger Icon */}
+        <button
+          onClick={toggleMobileMenu}
+          className="block focus:outline-none lg:hidden"
+          aria-label="Toggle Menu"
         >
-          <img
-            className="h-16 w-25 pt-3 pl-5"
-            src="./src/components/images/logo.png"
-            alt="/"
-          />
-          <ul className="p uppercase">
-            <li className="border-black-300 border-b p-5">Home</li>
-            <li className="border-black-300 border-b p-5">products</li>
-            <li className="border-black-300 border-b p-5">FAQs</li>
-            <li className="border-black-300 border-b p-5">About Us</li>
-            <li className="border-black-300 border-b p-5">Contact Us</li>
-            <li className="border-black-300 border-b p-5">Sign In</li>
-            <li className="border-black-300 border-b p-5">Order</li>
-          </ul>
+          {mobileMenuOpen ? (
+            <AiOutlineClose size={24} />
+          ) : (
+            <AiOutlineMenu size={24} />
+          )}
+        </button>
+
+        {/* Mobile Menu */}
+        <div
+          className={`fixed top-0 left-0 z-40 h-full w-[70%] max-w-xs transform bg-[#EA1A20] text-white ${
+            mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          } transition-transform duration-300 ease-in-out`}
+        >
+          <div className="flex items-center justify-between border-b border-white/20 px-5 py-4">
+            <Link to="/" onClick={closeMobileMenu}>
+              <img className="h-12 w-auto" src={Logo} alt="Logo" />
+            </Link>
+            <button
+              onClick={closeMobileMenu}
+              aria-label="Close Menu"
+              className="text-white"
+            >
+              <AiOutlineClose size={24} />
+            </button>
+          </div>
+
+          <nav className="font-heading flex flex-col gap-1 px-5 py-4 text-lg uppercase">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={closeMobileMenu}
+                className="border-b border-white/20 py-3 transition hover:bg-white/10"
+              >
+                {link.label}
+              </Link>
+            ))}
+            {storedUser ? (
+              <Link
+                to="/"
+                onClick={closeMobileMenu}
+                className="border-b border-white/20 py-3 transition hover:bg-white/10"
+              >
+                Account
+              </Link>
+            ) : (
+              <Link
+                to="/LoginPage"
+                onClick={closeMobileMenu}
+                className="border-b border-white/20 py-3 transition hover:bg-white/10"
+              >
+                Sign In
+              </Link>
+            )}
+            <CTAButton
+              to={storedUser ? '/ProductListPage' : '/LoginPage'}
+              onClick={closeMobileMenu}
+              className="mt-4"
+            >
+              Order
+            </CTAButton>
+            !twf
+          </nav>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 
