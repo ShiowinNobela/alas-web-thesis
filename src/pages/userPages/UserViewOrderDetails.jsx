@@ -65,17 +65,17 @@ export default function UserViewOrderDetails() {
   const finalDateString = ` ${formattedDate} at ${formattedTime}`;
 
   return (
-    <section className="h-full max-h-full max-w-full bg-slate-50 px-30 py-4">
-      <div className="px-4 py-4 md:px-6 2xl:container 2xl:mx-auto 2xl:px-20">
+    <section className="h-full bg-gray-50 py-8 pb-30">
+      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-black"
+          className="hover:text-content flex items-center gap-2 text-sm text-gray-500 transition-colors"
         >
           <ArrowLeftIcon size={16} />
           Back
         </button>
 
-        <div className="item-start flex flex-col justify-start space-y-2">
+        <div className="flex flex-col items-start space-y-2">
           <h1 className="text-content font-heading text-3xl font-bold">
             Your Order Details
           </h1>
@@ -118,19 +118,21 @@ export default function UserViewOrderDetails() {
                       <h3 className="text-content font-heading text-left text-lg">
                         {item.product_name}
                       </h3>
-                      <p className="text-sm text-gray-400">{item.category}</p>
+                      <p className="text-sm text-gray-500">{item.category}</p>
                       <div className="mt-auto flex flex-row divide-x divide-gray-300 text-sm">
-                        <p className="pr-4 text-gray-400">
+                        <p className="pr-4 text-gray-500">
                           Quantity{' '}
-                          <span className="text-black">{item.quantity}</span>
+                          <span className="text-content">{item.quantity}</span>
                         </p>
-                        <p className="px-4 text-gray-400">
+                        <p className="px-4 text-gray-500">
                           Price{' '}
-                          <span className="text-black">{item.unit_price}</span>
+                          <span className="text-content">
+                            {item.unit_price}
+                          </span>
                         </p>
-                        <p className="px-4 text-gray-400">
+                        <p className="px-4 text-gray-500">
                           Subtotal{' '}
-                          <span className="text-black">{item.subtotal}</span>
+                          <span className="text-content">{item.subtotal}</span>
                         </p>
                       </div>
                     </div>
@@ -207,7 +209,7 @@ export default function UserViewOrderDetails() {
                   </p>
                 </div>
                 <div className="flex w-full items-center justify-center">
-                  <button className="bg-primary focus:ring-content w-full rounded-md py-5 text-base leading-4 font-medium text-white hover:bg-black focus:ring-2 focus:ring-offset-2 focus:outline-none">
+                  <button className="bg-primary focus:ring-content hover:bg-content w-full rounded-md py-5 text-base leading-4 font-medium text-white focus:ring-2 focus:ring-offset-2 focus:outline-none">
                     View Carrier Details
                   </button>
                 </div>

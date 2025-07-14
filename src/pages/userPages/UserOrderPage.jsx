@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { TextInput } from 'flowbite-react';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
-import OrderHistoryModal from '../components/modals/orderHistoryModal';
-import StatusUserDropdown from '../components/StatusUserDropdown';
-import OrdersTable from '../components/OrdersTable';
+import OrderHistoryModal from '../../components/modals/orderHistoryModal';
+import StatusUserDropdown from '../../components/StatusUserDropdown';
+import OrdersTable from '../../components/OrdersTable';
 import { motion } from 'framer-motion';
 
 function UserViewOrderPage() {
@@ -141,177 +141,180 @@ function UserViewOrderPage() {
 
   return (
     <>
-      {/* <div className="bg-neutral text-content border-b border-gray-400 px-6 py-2"></div> */}
-      <main className="bg-neutral mx-auto flex min-h-full w-full flex-1 flex-col overflow-hidden px-4 py-4 sm:px-8 lg:px-55">
-        {/* Top-left Heading */}
-        <h2 className="font-heading text-content px-2 py-4 text-4xl font-bold uppercase">
-          Orders List
-        </h2>
+      <main className="h-full bg-gray-50 py-4">
+        <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+          <h2 className="font-heading text-content px-2 py-4 text-3xl font-bold">
+            Orders List
+          </h2>
 
-        <div className="mb-2 flex flex-col rounded-2xl bg-white px-4 py-4 shadow-md sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-1 items-center">
-            <TextInput placeholder="Search Here" className="w-full max-w-md" />
+          <div className="mb-2 flex flex-col rounded-2xl bg-white px-4 py-4 shadow-md sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-1 items-center">
+              <TextInput
+                placeholder="Search Here"
+                className="w-full max-w-md"
+              />
+            </div>
+
+            {/* RIGHT: Dropdown + Sort Buttons */}
+            <div className="flex flex-wrap items-center justify-end gap-4">
+              <button
+                onClick={() => handleSort('date')}
+                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
+                  sortConfig.key === 'date'
+                    ? 'bg-white text-black'
+                    : 'border-gray-300 bg-white text-black hover:bg-gray-100'
+                }`}
+              >
+                Date
+                {sortConfig.key === 'date' &&
+                  (sortConfig.direction === 'asc' ? (
+                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
+                  ) : (
+                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
+                  ))}
+                {sortConfig.key !== 'date' && (
+                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
+                )}
+              </button>
+
+              <button
+                onClick={() => handleSort('total')}
+                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
+                  sortConfig.key === 'total'
+                    ? 'bg-white text-black'
+                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                Total
+                {sortConfig.key === 'total' &&
+                  (sortConfig.direction === 'asc' ? (
+                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
+                  ) : (
+                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
+                  ))}
+                {sortConfig.key !== 'total' && (
+                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
+                )}
+              </button>
+
+              <StatusUserDropdown
+                selected={filterStatus}
+                onChange={setFilterStatus}
+              />
+            </div>
           </div>
 
-          {/* RIGHT: Dropdown + Sort Buttons */}
-          <div className="flex flex-wrap items-center justify-end gap-4">
-            <button
-              onClick={() => handleSort('date')}
-              className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                sortConfig.key === 'date'
-                  ? 'bg-white text-black'
-                  : 'border-gray-300 bg-white text-black hover:bg-gray-100'
-              }`}
-            >
-              Date
-              {sortConfig.key === 'date' &&
-                (sortConfig.direction === 'asc' ? (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                ) : (
-                  <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                ))}
-              {sortConfig.key !== 'date' && (
-                <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-              )}
-            </button>
-
-            <button
-              onClick={() => handleSort('total')}
-              className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                sortConfig.key === 'total'
-                  ? 'bg-white text-black'
-                  : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-              }`}
-            >
-              Total
-              {sortConfig.key === 'total' &&
-                (sortConfig.direction === 'asc' ? (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                ) : (
-                  <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                ))}
-              {sortConfig.key !== 'total' && (
-                <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-              )}
-            </button>
-
-            <StatusUserDropdown
-              selected={filterStatus}
-              onChange={setFilterStatus}
-            />
-          </div>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            type: 'spring',
-            stiffness: 120,
-            damping: 8,
-          }}
-          className="relative overflow-x-hidden sm:rounded-lg"
-        >
-          <OrdersTable
-            orders={sortedOrders}
-            getStatusColor={getStatusColor}
-            onCancelOrder={(id) => {
-              setCancelingOrderId(id);
-              setShowCancelModal(true);
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              type: 'spring',
+              stiffness: 120,
+              damping: 8,
             }}
-            onFetchOrderHistory={fetchOrderHistory}
-          />
-        </motion.div>
-
-        {showHistoryModal && (
-          <OrderHistoryModal
-            data={historyData?.data}
-            error={error}
-            onClose={() => {
-              setShowHistoryModal(false);
-              setHistoryData(null);
-            }}
-          />
-        )}
-        {showCancelModal && (
-          <div
-            className="fixed top-0 right-0 left-0 z-50 flex h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-x-hidden overflow-y-auto bg-black/50 p-4"
-            aria-hidden="true"
-            tabIndex={-1}
+            className="relative overflow-x-hidden sm:rounded-lg"
           >
-            <div className="relative max-h-full w-full max-w-2xl">
-              <div className="relative rounded-lg bg-white shadow">
-                {/* Header */}
-                <div className="flex items-start justify-between rounded-t border-b p-4">
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    Cancel Order
-                  </h2>
-                  <button
-                    onClick={() => {
-                      setShowCancelModal(false);
-                      setCancelNote('');
-                      setCancelingOrderId(null);
-                    }}
-                    type="button"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
-                  >
-                    <svg
-                      className="h-3 w-3"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 14 14"
+            <OrdersTable
+              orders={sortedOrders}
+              getStatusColor={getStatusColor}
+              onCancelOrder={(id) => {
+                setCancelingOrderId(id);
+                setShowCancelModal(true);
+              }}
+              onFetchOrderHistory={fetchOrderHistory}
+            />
+          </motion.div>
+
+          {showHistoryModal && (
+            <OrderHistoryModal
+              data={historyData?.data}
+              error={error}
+              onClose={() => {
+                setShowHistoryModal(false);
+                setHistoryData(null);
+              }}
+            />
+          )}
+          {showCancelModal && (
+            <div
+              className="fixed top-0 right-0 left-0 z-50 flex h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-x-hidden overflow-y-auto bg-black/50 p-4"
+              aria-hidden="true"
+              tabIndex={-1}
+            >
+              <div className="relative max-h-full w-full max-w-2xl">
+                <div className="relative rounded-lg bg-white shadow">
+                  {/* Header */}
+                  <div className="flex items-start justify-between rounded-t border-b p-4">
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      Cancel Order
+                    </h2>
+                    <button
+                      onClick={() => {
+                        setShowCancelModal(false);
+                        setCancelNote('');
+                        setCancelingOrderId(null);
+                      }}
+                      type="button"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
                     >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13"
-                      />
-                    </svg>
-                    <span className="sr-only">Close modal</span>
-                  </button>
-                </div>
+                      <svg
+                        className="h-3 w-3"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 14"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13"
+                        />
+                      </svg>
+                      <span className="sr-only">Close modal</span>
+                    </button>
+                  </div>
 
-                {/* Body */}
-                <div className="space-y-4 p-6">
-                  <textarea
-                    value={cancelNote}
-                    onChange={(e) => setCancelNote(e.target.value)}
-                    placeholder="Enter cancellation reason..."
-                    className="h-40 w-full resize-none rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-red-600 focus:ring-red-600"
-                  />
-                </div>
+                  {/* Body */}
+                  <div className="space-y-4 p-6">
+                    <textarea
+                      value={cancelNote}
+                      onChange={(e) => setCancelNote(e.target.value)}
+                      placeholder="Enter cancellation reason..."
+                      className="h-40 w-full resize-none rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-red-600 focus:ring-red-600"
+                    />
+                  </div>
 
-                {/* Footer */}
-                <div className="flex justify-end space-x-3 rounded-b border-t border-gray-200 p-4">
-                  <button
-                    onClick={() => {
-                      setShowCancelModal(false);
-                      setCancelNote('');
-                      setCancelingOrderId(null);
-                    }}
-                    className="rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => {
-                      cancelOrder(cancelingOrderId, cancelNote);
-                      setShowCancelModal(false);
-                      setCancelNote('');
-                      setCancelingOrderId(null);
-                    }}
-                    className="rounded-lg bg-red-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:ring-4 focus:ring-red-300 focus:outline-none"
-                  >
-                    Confirm Cancel
-                  </button>
+                  {/* Footer */}
+                  <div className="flex justify-end space-x-3 rounded-b border-t border-gray-200 p-4">
+                    <button
+                      onClick={() => {
+                        setShowCancelModal(false);
+                        setCancelNote('');
+                        setCancelingOrderId(null);
+                      }}
+                      className="rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 focus:outline-none"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        cancelOrder(cancelingOrderId, cancelNote);
+                        setShowCancelModal(false);
+                        setCancelNote('');
+                        setCancelingOrderId(null);
+                      }}
+                      className="rounded-lg bg-red-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-red-700 focus:ring-4 focus:ring-red-300 focus:outline-none"
+                    >
+                      Confirm Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </main>
     </>
   );

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
-import TextInput from '../components/TextInput';
-import PromptLink from '../components/PromptLink';
 import PasswordInput from '@/components/PasswordInput';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import TextInput from '@/components/TextInput';
+import PromptLink from '@/components/PromptLink';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -116,7 +116,7 @@ function LoginPage() {
 
   return (
     <>
-      <section className="flex min-h-full flex-row items-center justify-start gap-4 px-4 py-8 sm:justify-center">
+      <section className="flex min-h-screen items-center justify-center px-4 py-8 pb-30">
         <Card className="text-content w-full max-w-md rounded-md p-6 shadow-sm sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">

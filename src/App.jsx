@@ -1,8 +1,8 @@
 import './App.css';
 import { ThemeConfig } from 'flowbite-react';
 import ContactUs from './pages/ContactUs.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import RegPage from './pages/RegistrationPage.jsx';
+import LoginPage from './pages/userPages/LoginPage.jsx';
+import RegPage from './pages/userPages/RegistrationPage.jsx';
 import LandPage from './pages/LandingPage.jsx';
 import ProductPage from './pages/ProductListPage.jsx';
 import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
@@ -25,15 +25,14 @@ import AdminAddUser from './pages/adminPages/AdminAddUser.jsx';
 import CheckOutPage from './pages/CheckOutPage.jsx';
 import ViewOrder from './pages/adminPages/ViewOrder.jsx';
 import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx';
-import UserOrderPage from './pages/UserOrderPage.jsx';
+import UserOrderPage from './pages/userPages/UserOrderPage.jsx';
 import UserOrderPage2 from './pages/UserOrderPage2.jsx';
-import UserViewOrderDetails from './pages/UserViewOrderDetails.jsx';
+import UserViewOrderDetails from './pages/userPages/UserViewOrderDetails.jsx';
 import InventoryManagement from './pages/adminPages/InventoryManagement.jsx';
 import WalkInOrdering from './pages/adminPages/WalkInOrdering.jsx';
 import SalesPage from './pages/adminPages/SalesPage.jsx';
 import WalkInOrderTable from './pages/adminPages/WalkInOrdersTable.jsx';
 import AboutUs from './pages/AboutUs.jsx';
-import UserDashboardLayout from './components/UserDashboardLayout.jsx';
 import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 
 function App() {
@@ -64,8 +63,6 @@ function App() {
             element={<UserViewOrderDetails />}
           ></Route>
         </Route>
-
-        <Route element={<UserDashboardLayout />}></Route>
 
         <Route path="/Admin">
           <Route index element={<Login />}></Route>
