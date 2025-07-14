@@ -354,19 +354,15 @@ function UserViewOrderPage() {
                       <span className="font-medium">Subtotal:</span>
                       <span>
                         ₱
-                        {parseFloat(
-                          selectedOrder.total_amount
-                        ).toLocaleString()}
+                        {parseFloat(selectedOrder.total_amount).toLocaleString()}
                       </span>
                     </div>
-                    {parseFloat(selectedOrder.discount_amount) > 0 && (
+                    {parseFloat(selectedOrder.total_discount || selectedOrder.discount_amount) > 0 && (
                       <div className="flex justify-between">
                         <span className="font-medium">Discount:</span>
                         <span className="text-green-600">
                           -₱
-                          {parseFloat(
-                            selectedOrder.discount_amount
-                          ).toLocaleString()}
+                          {parseFloat(selectedOrder.total_discount || selectedOrder.discount_amount).toLocaleString()}
                         </span>
                       </div>
                     )}
@@ -374,10 +370,7 @@ function UserViewOrderPage() {
                       <span>Total:</span>
                       <span>
                         ₱
-                        {(
-                          parseFloat(selectedOrder.total_amount) -
-                          parseFloat(selectedOrder.discount_amount)
-                        ).toLocaleString()}
+                        {parseFloat(selectedOrder.total_after_discount || (selectedOrder.total_amount - (selectedOrder.total_discount || selectedOrder.discount_amount || 0))).toLocaleString()}
                       </span>
                     </div>
                   </div>

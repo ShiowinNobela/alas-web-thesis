@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { toast } from "sonner";
 import {
   UserIcon,
   MailIcon,
@@ -16,8 +18,10 @@ import {
 
 function fetchOrder(id) {
   const user = JSON.parse(window.localStorage.getItem('user'));
+  const couponCode = window.localStorage.getItem('couponCode');
+  const url = couponCode ? `/api/orders/${id}?couponCode=${encodeURIComponent(couponCode)}` : `/api/orders/${id}`;
   return axios
-    .get(`/api/orders/${id}`, {
+    .get(url, {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
@@ -26,10 +30,12 @@ function fetchOrder(id) {
 }
 
 export default function UserViewOrderDetails() {
+
   const { id } = useParams();
 
   const navigate = useNavigate();
-
+  const [alreadyReviewedIds, setAlreadyReviewedIds] = useState([]);
+  
   const {
     data: order,
     isLoading,
@@ -39,6 +45,26 @@ export default function UserViewOrderDetails() {
     queryKey: ['order', id],
     queryFn: () => fetchOrder(id),
   });
+
+  const allReviewed = order?.items?.every(item => alreadyReviewedIds.includes(item.product_id));
+  
+  useEffect(() => {
+  const user = JSON.parse(window.localStorage.getItem("user"));
+  if (!user?.token || !order?.items) return;
+
+  axios
+    .get(`/api/reviews/order/${order.id}/user/${user.id}`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    })
+    .then((res) => {
+      // Always map to product_id array
+      const reviewedIds = Array.isArray(res.data)
+        ? res.data.map(r => r.product_id)
+        : [];
+      setAlreadyReviewedIds(reviewedIds);
+    })
+    .catch(() => setAlreadyReviewedIds([]));
+  }, [order]);
 
   if (isLoading) {
     return <div className="p-4">Loading order details...</div>;
@@ -63,6 +89,8 @@ export default function UserViewOrderDetails() {
   });
 
   const finalDateString = ` ${formattedDate} at ${formattedTime}`;
+  
+  console.log("alreadyReviewedIds:", alreadyReviewedIds);
 
   return (
     <section className="h-full bg-gray-50 py-8 pb-30">
@@ -88,6 +116,18 @@ export default function UserViewOrderDetails() {
               <p> - </p>
               <p> {finalDateString}</p>
             </div>
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (allReviewed) {
+                  toast.info("You have already reviewed all items in this order.");
+                } else {
+                  navigate(`/GiveReview/${order.id}?mode=group`);
+                }
+              }}
+            >
+              Leave Group Review
+            </Button>
             <div>
               <p>{order.status}</p>
             </div>
@@ -98,8 +138,7 @@ export default function UserViewOrderDetails() {
           <div className="flex w-full flex-col items-start justify-start space-y-4">
             <Card className="flex w-full flex-col items-start justify-start divide-y divide-gray-200 rounded-md p-6 shadow-xs">
               {order.items?.map((item) => (
-                <div
-                  key={item.item_id}
+              <div key={item.item_id}
                   className="flex w-full flex-col items-start justify-start pb-4 md:flex-row md:items-start md:space-x-4"
                 >
                   {/* IMAGE COLUMN */}
@@ -141,7 +180,17 @@ export default function UserViewOrderDetails() {
                     <div className="flex h-full w-full flex-row items-start justify-between space-x-8 self-start md:w-auto">
                       <div className="font-heading flex h-full flex-col gap-2">
                         <Button>Buy Again</Button>
-                        <Button variant="outline">Leave a Review</Button>
+                        <Button
+                          variant="outline"
+                          disabled={alreadyReviewedIds.includes(item.product_id)}
+                          onClick={() => {
+                            if (!alreadyReviewedIds.includes(item.product_id)) {
+                              navigate(`/GiveReview/${order.id}?mode=single&productId=${item.product_id}`);
+                            }
+                          }}
+                        >
+                          {alreadyReviewedIds.includes(item.product_id) ? "Reviewed" : "Leave a Review"}
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -158,13 +207,13 @@ export default function UserViewOrderDetails() {
                   <div className="flex w-full justify-between py-2">
                     <p className="text-sm leading-4">Subtotal</p>
                     <p className="text-content text-base leading-4">
-                      {order.total_amount}
+                      {parseFloat(order.total_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
                     </p>
                   </div>
                   <div className="flex w-full items-center justify-between py-2">
                     <p className="text-content text-sm leading-4">Discount</p>
                     <p className="text-content text-base leading-4">
-                      {order.discount_amount}
+                      -{parseFloat(order.total_discount ?? order.discount_amount ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2})}
                     </p>
                   </div>
                   <div className="flex w-full items-center justify-between py-2">
@@ -177,7 +226,7 @@ export default function UserViewOrderDetails() {
                     Total
                   </p>
                   <p className="text-primary text-base leading-4 font-semibold">
-                    {order.total_amount}
+                    {parseFloat(order.total_after_discount ?? (order.total_amount - (order.total_discount ?? order.discount_amount ?? 0))).toLocaleString(undefined, {minimumFractionDigits: 2})}
                   </p>
                 </div>
               </Card>
@@ -286,43 +335,3 @@ export default function UserViewOrderDetails() {
   );
 }
 
-{
-  /* <div className="flex w-full flex-col items-start justify-start rounded-xl bg-white px-4 py-2 drop-shadow-md">
-              <div className="w-full border-b border-gray-200 p-4">
-                <p className="font-heading text-lg font-bold text-content">
-                  Order Summary
-                </p>
-              </div>
-
-              <div className="mt-2 flex w-full flex-col items-start justify-start rounded-2xl border-b border-gray-200 p-4 md:flex-row md:items-start md:space-x-4">
-                <div className="flex h-full w-full flex-col items-start justify-start space-y-4 md:flex-row md:space-y-0 md:space-x-8">
-                  <div className="grid w-full grid-cols-[4fr_1fr_1fr] gap-y-4 text-sm">
-                    <p className="text-content font-medium">Subtotal</p>
-                    <p className="text-content text-right">
-                      {order?.items?.length ?? 0} items
-                    </p>
-                    <p className="text-content text-right">
-                      ₱{parseFloat(order?.total_amount ?? 0).toLocaleString()}
-                    </p>
-                    <p className="text-content font-medium">Discount</p>
-                    <p className="text-content text-right">New Customer</p>
-                    <p className="text-content text-right">
-                      - {order.discount_amount}
-                    </p>
-
-    
-                    <p className="text-content font-medium">Shipping</p>
-                    <p className="text-content text-right">Free Shipping</p>
-                    <p className="text-content text-right">00.00</p>
-
-             
-                    <p className="text-md font-bold text-content">Total</p>
-                    <p className="text-content"></p>
-                    <p className="text-md text-right font-bold text-content">
-                      ₱{parseFloat(order?.total_amount ?? 0).toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div> */
-}

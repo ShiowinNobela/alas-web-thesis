@@ -10,12 +10,59 @@ import { BsCart } from "react-icons/bs";
 
 function Cart({ cartUpdated }) {
   const [getCartItems, setGetCartItems] = useState([]);
+  const [getDiscountedPrice, setDiscountedPrice] = useState(0);
   const [getSubTotal, setGetSubTotal] = useState(0); // Cart
-  //const [Open, setOpen] = useState(false); //Coupon Modal
   const cartCount = getCartItems.length;
-  //const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [cartItemsQuantity, setCartItemsQuantity] = useState([]);
   const [couponValue, setCouponValue] = useState(0);
+  const [couponInput, setCouponInput] = useState("");
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  // Apply coupon handler
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) {
+      toast.error("Please enter a coupon code.");
+      return;
+    }
+    setIsApplyingCoupon(true);
+    try {
+      const user = JSON.parse(window.localStorage.getItem("user"));
+      // Get user id
+      const userRes = await axios.get("/api/users", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const userId = userRes.data.id;
+      // Apply coupon
+      const res = await axios.post(`/api/cart/user/${userId}/apply-coupon`, {
+        couponCode: couponInput.trim(),
+      });
+      if (res.data && res.data.statusCode === 200 && res.data.status === "success") {
+        toast.success("Coupon applied!");
+        // Save coupon code to localStorage for checkout
+        window.localStorage.setItem("couponCode", couponInput.trim());
+        // Use the response to update the UI immediately
+        const data = res.data.data;
+        setCouponValue(parseFloat(data.discount) || 0);
+        setDiscountedPrice(parseFloat(data.totalAfterDiscount) || 0);
+        setGetSubTotal(parseFloat(data.cartTotal) || 0);
+        // Only refresh cart items, not totals
+        try {
+          const cartRes = await axios.get(`/api/cart/${userId}`);
+          setGetCartItems(cartRes.data.data.items);
+          setCartItemsQuantity(cartRes.data.data.items.map((item) => item.quantity));
+        } catch (e) {
+          // ignore errors here
+        }
+      } else {
+        toast.error(res.data?.message || "Failed to apply coupon.");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Invalid coupon or error applying coupon.");
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
 
   useEffect(() => {
     const user = JSON.parse(window.localStorage.getItem("user"));
@@ -32,6 +79,9 @@ function Cart({ cartUpdated }) {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
+      if (!couponInput.trim()) {
+    window.localStorage.removeItem("couponCode");
+  }
   }, [cartUpdated]);
 
   const handleRemove = async (id) => {
@@ -62,6 +112,12 @@ function Cart({ cartUpdated }) {
     try {
       const response = await axios.get(`/api/cart/${user_id}`);
       setGetSubTotal(parseFloat(response.data.data.cart_total));
+      setDiscountedPrice(
+        parseFloat(response.data.data.total_after_discount) || 0
+      );
+      setCouponValue(
+        parseFloat(response.data.data.total_discount) || 0
+      );
       setGetCartItems(response.data.data.items);
       setCartItemsQuantity(
         response.data.data.items.map((item) => item.quantity)
@@ -174,11 +230,46 @@ function Cart({ cartUpdated }) {
         ))}
       </div>
 
+      {/* Coupon Input */}
+      <div className="flex justify-center my-3">
+        <div className="w-[90%] max-w-md bg-[#f5f5f3] border border-[#db2026] rounded-xl flex items-center justify-between px-6 py-3 shadow-sm">
+          <input
+            type="text"
+            className="flex-1 mr-3 px-3 py-2 rounded border border-[#db2026] focus:outline-none focus:ring-2 focus:ring-[#db2026]"
+            placeholder="Enter coupon code"
+            value={couponInput}
+            onChange={e => {
+              const value = e.target.value;
+              setCouponInput(value);
+              if (value.trim() === "") {
+                window.localStorage.removeItem("couponCode");
+              }
+            }}
+            disabled={isApplyingCoupon}
+          />
+          <button
+            onClick={handleApplyCoupon}
+            className="bg-[#db2026] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase disabled:opacity-60"
+            disabled={isApplyingCoupon}
+          >
+            {isApplyingCoupon ? "Applying..." : "Apply Coupon"}
+          </button>
+        </div>
+      </div>
+
       {/* Total */}
       <div className="border-t border-[#bdbdb8] p-2 px-6">
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
-          <p>Total:</p>
-          <p>₱ {(getSubTotal - couponValue).toFixed(2)}</p>
+          <p> Sub Total:</p>
+          <p>₱ {(getSubTotal).toFixed(2)}</p>
+        </div>
+        <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
+          <p> Coupon Value:</p>
+          <p>₱ {(couponValue).toFixed(2)} </p>
+        </div>
+        <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
+          <p> Total:</p>
+          <p>₱ {(getDiscountedPrice).toFixed(2)}</p>
         </div>
       </div>
 

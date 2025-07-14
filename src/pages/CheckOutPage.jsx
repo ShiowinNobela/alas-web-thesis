@@ -40,27 +40,40 @@ function CheckOutPage() {
   }, []);
 
   const handleConfirmOrder = () => {
-    axios
-      .post("/api/orders", getInfo, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then((response) => {
-        console.log("Order confirmed successfully:", response.data);
-        toast.success("Order status updated successfully!");
-        setTimeout(() => {
-          navigate("/ProductListPage");
-        }, 1000);
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 400) {
-          toast.error("Failed to update status: Bad Request");
-        } else {
-          toast.error("An unexpected error occurred");
-        }
-      });
-  };
+  let couponCode = window.localStorage.getItem("couponCode");
+  // Remove couponCode if it's null, undefined, empty, or the string "null"/"undefined"
+  if (
+    !couponCode ||
+    couponCode.trim() === "" ||
+    couponCode === "null" ||
+    couponCode === "undefined"
+  ) {
+    couponCode = null;
+  }
+  const payload = couponCode
+    ? { ...getInfo, couponCode }
+    : getInfo;
+  axios
+    .post("/api/orders", payload, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+    .then((response) => {
+      console.log("Order confirmed successfully:", response.data);
+      toast.success("Order status updated successfully!");
+      setTimeout(() => {
+        navigate("/ProductListPage");
+      }, 1000);
+    })
+    .catch((err) => {
+      if (err.response && err.response.status === 400) {
+        toast.error("Failed to update status: Bad Request");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    });
+};
 
   // Object.entries(getInfo).forEach(([key, value]) => {
   //     console.log(`${key}: ${typeof value}`);
