@@ -65,7 +65,7 @@ export default function UserViewOrderDetails() {
   const finalDateString = ` ${formattedDate} at ${formattedTime}`;
 
   return (
-    <section className="h-full bg-gray-50 py-8 pb-30">
+    <section className="h-full bg-gray-50 py-8 pb-40">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
         <button
           onClick={() => navigate(-1)}
@@ -76,10 +76,10 @@ export default function UserViewOrderDetails() {
         </button>
 
         <div className="flex flex-col items-start space-y-2">
-          <h1 className="text-content font-heading text-3xl font-bold">
+          <h1 className="text-content font-heading text-4xl font-bold">
             Your Order Details
           </h1>
-          <div className="flex flex-row justify-between">
+          <div className="flex w-full flex-row justify-between">
             <div className="flex items-center space-x-2">
               <p className="text-content text-base leading-6">
                 <span className="text-gray-500">Order Number </span>

@@ -7,6 +7,7 @@ import OrderHistoryModal from '../../components/modals/orderHistoryModal';
 import StatusUserDropdown from '../../components/StatusUserDropdown';
 import OrdersTable from '../../components/OrdersTable';
 import { motion } from 'framer-motion';
+import { Card } from '@/components/ui/card';
 
 function UserViewOrderPage() {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -141,89 +142,93 @@ function UserViewOrderPage() {
 
   return (
     <>
-      <main className="h-full bg-gray-50 py-4">
+      <main className="h-full bg-gray-50 py-4 pb-40">
         <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-          <h2 className="font-heading text-content px-2 py-4 text-3xl font-bold">
-            Orders List
+          <h2 className="font-heading text-content px-2 py-4 text-4xl font-bold">
+            Your Orders List
           </h2>
 
-          <div className="mb-2 flex flex-col rounded-2xl bg-white px-4 py-4 shadow-md sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-1 items-center">
-              <TextInput
-                placeholder="Search Here"
-                className="w-full max-w-md"
-              />
-            </div>
+          <div className="mt-4 flex gap-2 md:h-[calc(100vh-10rem)] md:flex-row">
+            {/* LEFT: Filter/Search Section */}
+            <Card className="sticky top-4 h-fit w-full shrink-0 rounded-2xl bg-white px-4 py-4 shadow-md md:w-2xs">
+              <h3>Filter your results</h3>
+              <div className="mb-4">
+                <TextInput placeholder="Search Here" className="w-full" />
+              </div>
 
-            {/* RIGHT: Dropdown + Sort Buttons */}
-            <div className="flex flex-wrap items-center justify-end gap-4">
-              <button
-                onClick={() => handleSort('date')}
-                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                  sortConfig.key === 'date'
-                    ? 'bg-white text-black'
-                    : 'border-gray-300 bg-white text-black hover:bg-gray-100'
-                }`}
-              >
-                Date
-                {sortConfig.key === 'date' &&
-                  (sortConfig.direction === 'asc' ? (
-                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                  ) : (
-                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                  ))}
-                {sortConfig.key !== 'date' && (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-                )}
-              </button>
+              {/* Sort Buttons */}
+              <div className="flex flex-col space-y-2">
+                <button
+                  onClick={() => handleSort('date')}
+                  className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
+                    sortConfig.key === 'date'
+                      ? 'bg-white text-black'
+                      : 'border-gray-300 bg-white text-black hover:bg-gray-100'
+                  }`}
+                >
+                  Date
+                  {sortConfig.key === 'date' &&
+                    (sortConfig.direction === 'asc' ? (
+                      <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
+                    ) : (
+                      <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
+                    ))}
+                  {sortConfig.key !== 'date' && (
+                    <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
+                  )}
+                </button>
 
-              <button
-                onClick={() => handleSort('total')}
-                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                  sortConfig.key === 'total'
-                    ? 'bg-white text-black'
-                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                Total
-                {sortConfig.key === 'total' &&
-                  (sortConfig.direction === 'asc' ? (
-                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                  ) : (
-                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                  ))}
-                {sortConfig.key !== 'total' && (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-                )}
-              </button>
+                <button
+                  onClick={() => handleSort('total')}
+                  className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
+                    sortConfig.key === 'total'
+                      ? 'bg-white text-black'
+                      : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  Total
+                  {sortConfig.key === 'total' &&
+                    (sortConfig.direction === 'asc' ? (
+                      <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
+                    ) : (
+                      <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
+                    ))}
+                  {sortConfig.key !== 'total' && (
+                    <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
+                  )}
+                </button>
+              </div>
 
-              <StatusUserDropdown
-                selected={filterStatus}
-                onChange={setFilterStatus}
-              />
-            </div>
-          </div>
+              <div className="mt-4">
+                <StatusUserDropdown
+                  selected={filterStatus}
+                  onChange={setFilterStatus}
+                />
+              </div>
+            </Card>
 
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              type: 'spring',
-              stiffness: 120,
-              damping: 8,
-            }}
-            className="relative overflow-x-hidden sm:rounded-lg"
-          >
-            <OrdersTable
-              orders={sortedOrders}
-              getStatusColor={getStatusColor}
-              onCancelOrder={(id) => {
-                setCancelingOrderId(id);
-                setShowCancelModal(true);
+            {/* RIGHT: Orders Table */}
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                type: 'spring',
+                stiffness: 120,
+                damping: 8,
               }}
-              onFetchOrderHistory={fetchOrderHistory}
-            />
-          </motion.div>
+              className="flex-1 overflow-y-auto rounded-lg px-2"
+            >
+              <OrdersTable
+                orders={sortedOrders}
+                getStatusColor={getStatusColor}
+                onCancelOrder={(id) => {
+                  setCancelingOrderId(id);
+                  setShowCancelModal(true);
+                }}
+                onFetchOrderHistory={fetchOrderHistory}
+              />
+            </motion.div>
+          </div>
 
           {showHistoryModal && (
             <OrderHistoryModal
