@@ -26,7 +26,7 @@ import CheckOutPage from './pages/CheckOutPage.jsx';
 import ViewOrder from './pages/adminPages/ViewOrder.jsx';
 import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx';
 import UserOrderPage from './pages/userPages/UserOrderPage.jsx';
-import UserOrderPage2 from './pages/UserOrderPage2.jsx';
+import UserOrderPage2 from './pages/userPages/UserOrderPage2';
 import UserViewOrderDetails from './pages/userPages/UserViewOrderDetails.jsx';
 import InventoryManagement from './pages/adminPages/InventoryManagement.jsx';
 import WalkInOrdering from './pages/adminPages/WalkInOrdering.jsx';

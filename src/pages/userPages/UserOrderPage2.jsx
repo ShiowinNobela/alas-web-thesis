@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { TextInput } from 'flowbite-react';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
-import OrderHistoryModal from '../components/modals/orderHistoryModal';
-import StatusUserDropdown from '../components/StatusUserDropdown';
-import OrdersTable from '../components/OrdersTable2';
+import OrderHistoryModal from '@/components/modals/orderHistoryModal';
+import StatusUserDropdown from '@/components/StatusUserDropdown';
+import OrdersTable from '@/components/OrdersTable2';
 import { motion } from 'framer-motion';
 
 function UserViewOrderPage() {

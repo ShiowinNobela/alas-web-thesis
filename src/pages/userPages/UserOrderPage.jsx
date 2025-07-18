@@ -1,22 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { TextInput } from 'flowbite-react';
-import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
-import OrderHistoryModal from '../../components/modals/orderHistoryModal';
-import StatusUserDropdown from '../../components/StatusUserDropdown';
 import OrdersTable from '../../components/OrdersTable';
 import { motion } from 'framer-motion';
+import OrderFiltersPanel from '@/components/bigComponents/orderFilterSidebar';
 
 function UserViewOrderPage() {
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [filterStatus, setFilterStatus] = useState('');
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelNote, setCancelNote] = useState('');
   const [cancelingOrderId, setCancelingOrderId] = useState(null);
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
-  const [historyData, setHistoryData] = useState(null);
-  const [error, setError] = useState(null);
 
   const user = JSON.parse(window.localStorage.getItem('user'));
   const queryClient = useQueryClient();
@@ -62,34 +55,6 @@ function UserViewOrderPage() {
     },
   });
 
-  const fetchOrderHistory = async (orderId) => {
-    try {
-      const res = await axios.get(`/api/orders/status-history/${orderId}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      setHistoryData(res.data);
-      setShowHistoryModal(true);
-      setError(null);
-    } catch (err) {
-      console.error('Failed to fetch order history:', err);
-      alert('Failed to fetch order status history.');
-    }
-  };
-
-  const handleSort = (key) => {
-    setSortConfig((prev) => {
-      if (prev.key === key) {
-        return {
-          key,
-          direction: prev.direction === 'asc' ? 'desc' : 'asc',
-        };
-      }
-      return { key, direction: 'asc' };
-    });
-  };
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
@@ -111,19 +76,6 @@ function UserViewOrderPage() {
     }
   };
 
-  const sortedOrders = [...orders].sort((a, b) => {
-    if (sortConfig.key === 'date') {
-      const dateA = new Date(a.order_date);
-      const dateB = new Date(b.order_date);
-      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
-    } else if (sortConfig.key === 'total') {
-      return sortConfig.direction === 'asc'
-        ? a.total_amount - b.total_amount
-        : b.total_amount - a.total_amount;
-    }
-    return 0;
-  });
-
   const cancelOrder = () => {
     if (!cancelingOrderId || !cancelNote) return;
     cancelOrderMutation.mutate({ orderId: cancelingOrderId, note: cancelNote });
@@ -141,100 +93,37 @@ function UserViewOrderPage() {
 
   return (
     <>
-      <main className="h-full bg-gray-50 py-4">
+      <main className="h-full bg-gray-50 py-4 pb-40">
         <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-          <h2 className="font-heading text-content px-2 py-4 text-3xl font-bold">
-            Orders List
+          <h2 className="font-heading text-content px-2 py-4 text-4xl font-bold">
+            Your Orders List
           </h2>
 
-          <div className="mb-2 flex flex-col rounded-2xl bg-white px-4 py-4 shadow-md sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-1 items-center">
-              <TextInput
-                placeholder="Search Here"
-                className="w-full max-w-md"
+          <div className="mt-4 flex gap-2 md:h-[calc(100vh-10rem)] md:flex-row">
+            <OrderFiltersPanel />
+
+            {/* RIGHT: Orders Table */}
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                type: 'spring',
+                stiffness: 120,
+                damping: 8,
+              }}
+              className="flex-1 overflow-y-auto rounded-lg px-2"
+            >
+              <OrdersTable
+                orders={orders}
+                getStatusColor={getStatusColor}
+                onCancelOrder={(id) => {
+                  setCancelingOrderId(id);
+                  setShowCancelModal(true);
+                }}
               />
-            </div>
-
-            {/* RIGHT: Dropdown + Sort Buttons */}
-            <div className="flex flex-wrap items-center justify-end gap-4">
-              <button
-                onClick={() => handleSort('date')}
-                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                  sortConfig.key === 'date'
-                    ? 'bg-white text-black'
-                    : 'border-gray-300 bg-white text-black hover:bg-gray-100'
-                }`}
-              >
-                Date
-                {sortConfig.key === 'date' &&
-                  (sortConfig.direction === 'asc' ? (
-                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                  ) : (
-                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                  ))}
-                {sortConfig.key !== 'date' && (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-                )}
-              </button>
-
-              <button
-                onClick={() => handleSort('total')}
-                className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                  sortConfig.key === 'total'
-                    ? 'bg-white text-black'
-                    : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                Total
-                {sortConfig.key === 'total' &&
-                  (sortConfig.direction === 'asc' ? (
-                    <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                  ) : (
-                    <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                  ))}
-                {sortConfig.key !== 'total' && (
-                  <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-                )}
-              </button>
-
-              <StatusUserDropdown
-                selected={filterStatus}
-                onChange={setFilterStatus}
-              />
-            </div>
+            </motion.div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              type: 'spring',
-              stiffness: 120,
-              damping: 8,
-            }}
-            className="relative overflow-x-hidden sm:rounded-lg"
-          >
-            <OrdersTable
-              orders={sortedOrders}
-              getStatusColor={getStatusColor}
-              onCancelOrder={(id) => {
-                setCancelingOrderId(id);
-                setShowCancelModal(true);
-              }}
-              onFetchOrderHistory={fetchOrderHistory}
-            />
-          </motion.div>
-
-          {showHistoryModal && (
-            <OrderHistoryModal
-              data={historyData?.data}
-              error={error}
-              onClose={() => {
-                setShowHistoryModal(false);
-                setHistoryData(null);
-              }}
-            />
-          )}
           {showCancelModal && (
             <div
               className="fixed top-0 right-0 left-0 z-50 flex h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-x-hidden overflow-y-auto bg-black/50 p-4"
