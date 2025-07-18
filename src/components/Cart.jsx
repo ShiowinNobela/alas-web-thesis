@@ -1,64 +1,108 @@
-//import { MdDeleteForever } from "react-icons/md";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import axios from "axios";
 import { useState, useEffect } from "react";
-//import CouponPopUp from "../pages/CouponPopUp";
+import CouponPopUp from "../pages/CouponPopUp";
 import { Link } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import { TiDeleteOutline } from "react-icons/ti";
 import { BsCart } from "react-icons/bs";
 
 function Cart({ cartUpdated }) {
-  const [getCartItems, setGetCartItems] = useState([]);
-  const [getDiscountedPrice, setDiscountedPrice] = useState(0);
-  const [getSubTotal, setGetSubTotal] = useState(0); // Cart
-  const cartCount = getCartItems.length;
-  const [cartItemsQuantity, setCartItemsQuantity] = useState([]);
-  const [couponValue, setCouponValue] = useState(0);
-  const [couponInput, setCouponInput] = useState("");
+  const [cartState, setCartState] = useState({
+    items: [],
+    originalTotal: 0,
+    discount: 0,
+    finalTotal: 0,
+    appliedCoupon: null
+  });
+  const cartCount = cartState.items.length;
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [Open, setOpen] = useState(false);
+
   // Apply coupon handler
-  const handleApplyCoupon = async () => {
-    if (!couponInput.trim()) {
-      toast.error("Please enter a coupon code.");
-      return;
-    }
+  const applyCoupon = async (couponCode) => {
     setIsApplyingCoupon(true);
     try {
       const user = JSON.parse(window.localStorage.getItem("user"));
-      // Get user id
       const userRes = await axios.get("/api/users", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       });
       const userId = userRes.data.id;
-      // Apply coupon
-      const res = await axios.post(`/api/cart/user/${userId}/apply-coupon`, {
-        couponCode: couponInput.trim(),
+
+      const response = await axios.post('/api/coupons/validate', {
+        couponCode,
+        userId
       });
-      if (res.data && res.data.statusCode === 200 && res.data.status === "success") {
-        toast.success("Coupon applied!");
-        // Save coupon code to localStorage for checkout
-        window.localStorage.setItem("couponCode", couponInput.trim());
-        // Use the response to update the UI immediately
-        const data = res.data.data;
-        setCouponValue(parseFloat(data.discount) || 0);
-        setDiscountedPrice(parseFloat(data.totalAfterDiscount) || 0);
-        setGetSubTotal(parseFloat(data.cartTotal) || 0);
-        // Only refresh cart items, not totals
-        try {
-          const cartRes = await axios.get(`/api/cart/${userId}`);
-          setGetCartItems(cartRes.data.data.items);
-          setCartItemsQuantity(cartRes.data.data.items.map((item) => item.quantity));
-        } catch (e) {
-          // ignore errors here
-        }
+
+      console.log("Coupon response:", response.data); // Debug log
+
+      if (response.data && response.data.status === "success") {
+        toast.success("Coupon applied successfully!");
+        window.localStorage.setItem("couponCode", couponCode);
+        
+        // Parse the response data correctly
+        const responseData = response.data.data;
+        
+        setCartState({
+          items: responseData.items || cartState.items,
+          originalTotal: parseFloat(responseData.originalTotal) || 0,
+          discount: parseFloat(responseData.discount) || 0,
+          finalTotal: parseFloat(responseData.finalTotal) || 0,
+          appliedCoupon: responseData.appliedCoupon || { code: couponCode }
+        });
+        
+        setOpen(false);
       } else {
-        toast.error(res.data?.message || "Failed to apply coupon.");
+        toast.error(response.data?.message || "Failed to apply coupon.");
       }
     } catch (err) {
+      console.error("Coupon error:", err);
       toast.error(err.response?.data?.message || "Invalid coupon or error applying coupon.");
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  // Remove coupon handler
+  const removeCoupon = async () => {
+    setIsApplyingCoupon(true);
+    try {
+      const user = JSON.parse(window.localStorage.getItem("user"));
+      const userRes = await axios.get("/api/users", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      const userId = userRes.data.id;
+
+      const response = await axios.post('/api/coupons/remove', {
+        userId
+      });
+
+      console.log("Remove coupon response:", response.data); // Debug log
+
+      if (response.data && response.data.status === "success") {
+        toast.success("Coupon removed successfully!");
+        window.localStorage.removeItem("couponCode");
+        
+        // Parse the response data correctly
+        const responseData = response.data.data;
+        
+        setCartState({
+          items: responseData.items || cartState.items,
+          originalTotal: parseFloat(responseData.originalTotal) || 0,
+          discount: parseFloat(responseData.discount) || 0,
+          finalTotal: parseFloat(responseData.finalTotal) || 0,
+          appliedCoupon: responseData.appliedCoupon || null
+        });
+      } else {
+        toast.error("Failed to remove coupon.");
+      }
+    } catch (err) {
+      console.error("Remove coupon error:", err);
+      toast.error("Error removing coupon.");
     } finally {
       setIsApplyingCoupon(false);
     }
@@ -79,9 +123,6 @@ function Cart({ cartUpdated }) {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-      if (!couponInput.trim()) {
-    window.localStorage.removeItem("couponCode");
-  }
   }, [cartUpdated]);
 
   const handleRemove = async (id) => {
@@ -111,17 +152,16 @@ function Cart({ cartUpdated }) {
   const getCart = async (user_id) => {
     try {
       const response = await axios.get(`/api/cart/${user_id}`);
-      setGetSubTotal(parseFloat(response.data.data.cart_total));
-      setDiscountedPrice(
-        parseFloat(response.data.data.total_after_discount) || 0
-      );
-      setCouponValue(
-        parseFloat(response.data.data.total_discount) || 0
-      );
-      setGetCartItems(response.data.data.items);
-      setCartItemsQuantity(
-        response.data.data.items.map((item) => item.quantity)
-      );
+      
+      // Map the cart data to the new cartState structure
+      setCartState({
+        items: response.data.data.items || [],
+        originalTotal: parseFloat(response.data.data.cart_total) || 0,
+        discount: parseFloat(response.data.data.total_discount) || 0,
+        finalTotal: parseFloat(response.data.data.total_after_discount) || parseFloat(response.data.data.cart_total) || 0,
+        appliedCoupon: response.data.data.applied_coupon || null
+      });
+      
       console.log(response.data.data.items);
     } catch (error) {
       console.error("Error fetching cart items:", error);
@@ -159,6 +199,10 @@ function Cart({ cartUpdated }) {
     }
   };
 
+  const handleCouponUse = async (coupon) => {
+    await applyCoupon(coupon.code);
+  };
+
   return (
     <div className="min-h-full full bg-[#f5f5f3] border-1 border-[#bdbdb8]">
       {/* Header */}
@@ -171,7 +215,7 @@ function Cart({ cartUpdated }) {
 
       {/* Cart Items */}
       <div className="overflow-y-auto h-85 screen p-4">
-        {getCartItems.map((d) => (
+        {cartState.items.map((d) => (
           <div
             key={d.product_id}
             className="bg-[#ffffff] w-full rounded-xl shadow-sm border border-[#e0ded8] mb-4 p-4"
@@ -231,45 +275,56 @@ function Cart({ cartUpdated }) {
       </div>
 
       {/* Coupon Input */}
-      <div className="flex justify-center my-3">
+      <div className="flex justify-center my-1">
         <div className="w-[90%] max-w-md bg-[#f5f5f3] border border-[#db2026] rounded-xl flex items-center justify-between px-6 py-3 shadow-sm">
-          <input
-            type="text"
-            className="flex-1 mr-3 px-3 py-2 rounded border border-[#db2026] focus:outline-none focus:ring-2 focus:ring-[#db2026]"
-            placeholder="Enter coupon code"
-            value={couponInput}
-            onChange={e => {
-              const value = e.target.value;
-              setCouponInput(value);
-              if (value.trim() === "") {
-                window.localStorage.removeItem("couponCode");
-              }
-            }}
-            disabled={isApplyingCoupon}
-          />
-          <button
-            onClick={handleApplyCoupon}
-            className="bg-[#db2026] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase disabled:opacity-60"
-            disabled={isApplyingCoupon}
-          >
-            {isApplyingCoupon ? "Applying..." : "Apply Coupon"}
-          </button>
+          {cartState.appliedCoupon ? (
+            <>
+              <div>
+                <p className="text-md font-semibold text-[#403e3e] uppercase">Applied Coupon:</p>
+                <p className="text-sm text-[#6b6b6b]">{cartState.appliedCoupon.code}</p>
+              </div>
+              <button
+                onClick={removeCoupon}
+                disabled={isApplyingCoupon}
+                className="bg-[#d80c0c] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase"
+              >
+                {isApplyingCoupon ? "Removing..." : "Remove"}
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="text-md font-semibold text-[#403e3e] uppercase">Pick Coupon:</p>
+              <button
+                onClick={() => setOpen(true)}
+                disabled={isApplyingCoupon}
+                className="bg-[#db2026] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase"
+              >
+                {isApplyingCoupon ? "Applying..." : "Coupon"}
+              </button>
+            </>
+          )}
         </div>
       </div>
+
+      <CouponPopUp 
+        open={Open} 
+        onClose={() => setOpen(false)} 
+        onApply={handleCouponUse} 
+      />
 
       {/* Total */}
       <div className="border-t border-[#bdbdb8] p-2 px-6">
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
-          <p> Sub Total:</p>
-          <p>₱ {(getSubTotal).toFixed(2)}</p>
+          <p>Subtotal:</p>
+          <p>₱ {cartState.originalTotal.toFixed(2)}</p>
         </div>
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
-          <p> Coupon Value:</p>
-          <p>₱ {(couponValue).toFixed(2)} </p>
+          <p>Discount:</p>
+          <p>- ₱ {cartState.discount.toFixed(2)}</p>
         </div>
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
-          <p> Total:</p>
-          <p>₱ {(getDiscountedPrice).toFixed(2)}</p>
+          <p>Total:</p>
+          <p>₱ {cartState.finalTotal.toFixed(2)}</p>
         </div>
       </div>
 
@@ -327,19 +382,5 @@ export default Cart;
         </div> */
   }
 
-  // const handleCouponUse = async (coupon) => {
-  //   setSelectedCoupon(coupon);
-  //   try {
-  //     const user = JSON.parse(window.localStorage.getItem("user"));
-  //     const response = await axios.get(`/api/coupons/apply/${coupon.code}`, {
-  //       params: { userId: user.id },
-  //     });
-  //     console.log("Coupon API response:", response.data);
-  //     const amount = parseFloat(response.data.data.amount) || 0;
-  //     setCouponValue(amount);
-  //   } catch (err) {
-  //     console.log(err);
-  //     setCouponValue(0);
-  //   }
-  // };
+  
 }

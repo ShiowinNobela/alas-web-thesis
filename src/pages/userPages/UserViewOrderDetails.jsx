@@ -103,7 +103,7 @@ export default function UserViewOrderDetails() {
           Back
         </button>
 
-        <div className="flex flex-col items-start space-y-2">
+        <div className="flex flex-col justify-between space-y-2">
           <h1 className="text-content font-heading text-3xl font-bold">
             Your Order Details
           </h1>
@@ -118,7 +118,12 @@ export default function UserViewOrderDetails() {
             </div>
             <Button
               variant="outline"
+              disabled={order.status !== 'delivered' || allReviewed}
               onClick={() => {
+                if (order.status !== 'delivered') {
+                  toast.error("You can only review delivered orders.");
+                  return;
+                }
                 if (allReviewed) {
                   toast.info("You have already reviewed all items in this order.");
                 } else {
@@ -126,7 +131,8 @@ export default function UserViewOrderDetails() {
                 }
               }}
             >
-              Leave Group Review
+              {order.status !== 'delivered' ? 'Order Not Delivered' : 
+               allReviewed ? 'All Items Reviewed' : 'Leave Group Review'}
             </Button>
             <div>
               <p>{order.status}</p>
@@ -182,14 +188,19 @@ export default function UserViewOrderDetails() {
                         <Button>Buy Again</Button>
                         <Button
                           variant="outline"
-                          disabled={alreadyReviewedIds.includes(item.product_id)}
+                          disabled={order.status !== 'delivered' || alreadyReviewedIds.includes(item.product_id)}
                           onClick={() => {
+                            if (order.status !== 'delivered') {
+                              toast.error("You can only review delivered orders.");
+                              return;
+                            }
                             if (!alreadyReviewedIds.includes(item.product_id)) {
                               navigate(`/GiveReview/${order.id}?mode=single&productId=${item.product_id}`);
                             }
                           }}
                         >
-                          {alreadyReviewedIds.includes(item.product_id) ? "Reviewed" : "Leave a Review"}
+                          {order.status !== 'delivered' ? 'Order Not Delivered' :
+                           alreadyReviewedIds.includes(item.product_id) ? "Reviewed" : "Leave a Review"}
                         </Button>
                       </div>
                     </div>
@@ -207,7 +218,7 @@ export default function UserViewOrderDetails() {
                   <div className="flex w-full justify-between py-2">
                     <p className="text-sm leading-4">Subtotal</p>
                     <p className="text-content text-base leading-4">
-                      {parseFloat(order.total_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                      {order.items?.reduce((sum, item) => sum + parseFloat(item.subtotal || 0), 0).toLocaleString(undefined, {minimumFractionDigits: 2})}
                     </p>
                   </div>
                   <div className="flex w-full items-center justify-between py-2">
@@ -226,7 +237,7 @@ export default function UserViewOrderDetails() {
                     Total
                   </p>
                   <p className="text-primary text-base leading-4 font-semibold">
-                    {parseFloat(order.total_after_discount ?? (order.total_amount - (order.total_discount ?? order.discount_amount ?? 0))).toLocaleString(undefined, {minimumFractionDigits: 2})}
+                    {parseFloat(order.total_after_discount ?? order.total_amount).toLocaleString(undefined, {minimumFractionDigits: 2})}
                   </p>
                 </div>
               </Card>
