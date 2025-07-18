@@ -39,7 +39,8 @@
     "sonner": "^2.0.4",
     "tailwind-datepicker-react": "^1.4.3",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.8"
+    "tailwindcss": "^4.1.8",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

@@ -1,23 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { TextInput } from 'flowbite-react';
-import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
-import OrderHistoryModal from '../../components/modals/orderHistoryModal';
-import StatusUserDropdown from '../../components/StatusUserDropdown';
 import OrdersTable from '../../components/OrdersTable';
 import { motion } from 'framer-motion';
-import { Card } from '@/components/ui/card';
+import OrderFiltersPanel from '@/components/bigComponents/orderFilterSidebar';
 
 function UserViewOrderPage() {
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [filterStatus, setFilterStatus] = useState('');
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelNote, setCancelNote] = useState('');
   const [cancelingOrderId, setCancelingOrderId] = useState(null);
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
-  const [historyData, setHistoryData] = useState(null);
-  const [error, setError] = useState(null);
 
   const user = JSON.parse(window.localStorage.getItem('user'));
   const queryClient = useQueryClient();
@@ -63,34 +55,6 @@ function UserViewOrderPage() {
     },
   });
 
-  const fetchOrderHistory = async (orderId) => {
-    try {
-      const res = await axios.get(`/api/orders/status-history/${orderId}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      setHistoryData(res.data);
-      setShowHistoryModal(true);
-      setError(null);
-    } catch (err) {
-      console.error('Failed to fetch order history:', err);
-      alert('Failed to fetch order status history.');
-    }
-  };
-
-  const handleSort = (key) => {
-    setSortConfig((prev) => {
-      if (prev.key === key) {
-        return {
-          key,
-          direction: prev.direction === 'asc' ? 'desc' : 'asc',
-        };
-      }
-      return { key, direction: 'asc' };
-    });
-  };
-
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
@@ -111,19 +75,6 @@ function UserViewOrderPage() {
         return 'bg-gray-200 text-gray-800';
     }
   };
-
-  const sortedOrders = [...orders].sort((a, b) => {
-    if (sortConfig.key === 'date') {
-      const dateA = new Date(a.order_date);
-      const dateB = new Date(b.order_date);
-      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
-    } else if (sortConfig.key === 'total') {
-      return sortConfig.direction === 'asc'
-        ? a.total_amount - b.total_amount
-        : b.total_amount - a.total_amount;
-    }
-    return 0;
-  });
 
   const cancelOrder = () => {
     if (!cancelingOrderId || !cancelNote) return;
@@ -149,63 +100,7 @@ function UserViewOrderPage() {
           </h2>
 
           <div className="mt-4 flex gap-2 md:h-[calc(100vh-10rem)] md:flex-row">
-            {/* LEFT: Filter/Search Section */}
-            <Card className="sticky top-4 h-fit w-full shrink-0 rounded-2xl bg-white px-4 py-4 shadow-md md:w-2xs">
-              <h3>Filter your results</h3>
-              <div className="mb-4">
-                <TextInput placeholder="Search Here" className="w-full" />
-              </div>
-
-              {/* Sort Buttons */}
-              <div className="flex flex-col space-y-2">
-                <button
-                  onClick={() => handleSort('date')}
-                  className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                    sortConfig.key === 'date'
-                      ? 'bg-white text-black'
-                      : 'border-gray-300 bg-white text-black hover:bg-gray-100'
-                  }`}
-                >
-                  Date
-                  {sortConfig.key === 'date' &&
-                    (sortConfig.direction === 'asc' ? (
-                      <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                    ) : (
-                      <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                    ))}
-                  {sortConfig.key !== 'date' && (
-                    <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-                  )}
-                </button>
-
-                <button
-                  onClick={() => handleSort('total')}
-                  className={`flex items-center rounded-lg border px-4 py-2 text-sm font-medium ${
-                    sortConfig.key === 'total'
-                      ? 'bg-white text-black'
-                      : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  Total
-                  {sortConfig.key === 'total' &&
-                    (sortConfig.direction === 'asc' ? (
-                      <HiSortAscending className="ms-2 h-4 w-4 opacity-100" />
-                    ) : (
-                      <HiSortDescending className="ms-2 h-4 w-4 opacity-100" />
-                    ))}
-                  {sortConfig.key !== 'total' && (
-                    <HiSortAscending className="ms-2 h-4 w-4 opacity-30" />
-                  )}
-                </button>
-              </div>
-
-              <div className="mt-4">
-                <StatusUserDropdown
-                  selected={filterStatus}
-                  onChange={setFilterStatus}
-                />
-              </div>
-            </Card>
+            <OrderFiltersPanel />
 
             {/* RIGHT: Orders Table */}
             <motion.div
@@ -219,27 +114,16 @@ function UserViewOrderPage() {
               className="flex-1 overflow-y-auto rounded-lg px-2"
             >
               <OrdersTable
-                orders={sortedOrders}
+                orders={orders}
                 getStatusColor={getStatusColor}
                 onCancelOrder={(id) => {
                   setCancelingOrderId(id);
                   setShowCancelModal(true);
                 }}
-                onFetchOrderHistory={fetchOrderHistory}
               />
             </motion.div>
           </div>
 
-          {showHistoryModal && (
-            <OrderHistoryModal
-              data={historyData?.data}
-              error={error}
-              onClose={() => {
-                setShowHistoryModal(false);
-                setHistoryData(null);
-              }}
-            />
-          )}
           {showCancelModal && (
             <div
               className="fixed top-0 right-0 left-0 z-50 flex h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-x-hidden overflow-y-auto bg-black/50 p-4"

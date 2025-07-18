@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import useUserStore from '@/stores/userStore';
+
 import {
   UserIcon,
   MailIcon,
@@ -27,7 +29,7 @@ function fetchOrder(id) {
 
 export default function UserViewOrderDetails() {
   const { id } = useParams();
-
+  const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
 
   const {
@@ -62,7 +64,7 @@ export default function UserViewOrderDetails() {
     minute: '2-digit',
   });
 
-  const finalDateString = ` ${formattedDate} at ${formattedTime}`;
+  const finalDateString = `${formattedDate} at ${formattedTime}`;
 
   return (
     <section className="h-full bg-gray-50 py-8 pb-40">
@@ -222,17 +224,17 @@ export default function UserViewOrderDetails() {
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
                   <UserIcon size={16} className="text-gray-500" />
-                  <p className="text-content text-sm">Clark Trogo</p>
+                  <p className="text-content text-sm">{user.username}</p>
                 </div>
 
                 <div className="flex items-center gap-4">
                   <MailIcon size={16} className="text-gray-500" />
-                  <p className="text-sm text-gray-500">clark@gmail.com</p>
+                  <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
 
                 <div className="flex items-center gap-4">
                   <PhoneIcon size={16} className="text-gray-500" />
-                  <p className="text-sm text-gray-500">+639123456789</p>
+                  <p className="text-sm text-gray-500">{user.contact_number}</p>
                 </div>
               </div>
             </Card>
