@@ -26,12 +26,12 @@
   --font-sans: Rubik, 'serif';
   --font-heading: Bebas, 'serif';
   --font-logo: Jost, 'serif';
-  --color-brand: #e47157;
+  --color-brand: #cc3f0c;
   --color-support: #8d837c;
-  --color-content: #4b322a;
+  --color-content: #403233;
   --color-red: #ef4444;
   --color-admin: #121b2c;
-  --color-neutral: #f6f3e7;
+  --color-neutral: #f6f7f8;
   --color-background: #fafcff;
 }
 
@@ -52,11 +52,11 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #d95d4f;
+  --primary: #69140e;
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.6167 0.016 57.435);
+  --secondary: #026c7c;
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.97 0 0);
+  --muted: #5e4b56;
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);

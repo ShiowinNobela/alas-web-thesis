@@ -67,7 +67,7 @@ export default function UserViewOrderDetails() {
   const finalDateString = `${formattedDate} at ${formattedTime}`;
 
   return (
-    <section className="h-full bg-gray-50 py-8 pb-40">
+    <section className="bg-neutral h-full py-8 pb-40">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
         <button
           onClick={() => navigate(-1)}
@@ -78,7 +78,7 @@ export default function UserViewOrderDetails() {
         </button>
 
         <div className="flex flex-col items-start space-y-2">
-          <h1 className="text-content font-heading text-4xl font-bold">
+          <h1 className="text-content font-heading text-2xl font-semibold">
             Your Order Details
           </h1>
           <div className="flex w-full flex-row justify-between">
@@ -96,9 +96,9 @@ export default function UserViewOrderDetails() {
           </div>
         </div>
 
-        <div className="jusitfy-center mt-5 flex w-full flex-col items-stretch space-y-4 md:space-y-6 xl:flex-row xl:space-y-0 xl:space-x-4">
+        <div className="mt-5 flex w-full flex-col items-stretch justify-center space-y-4 md:space-y-6 xl:flex-row xl:space-y-0 xl:space-x-4">
           <div className="flex w-full flex-col items-start justify-start space-y-4">
-            <Card className="flex w-full flex-col items-start justify-start divide-y divide-gray-200 rounded-md p-6 shadow-xs">
+            <Card className="flex w-full flex-col items-start justify-start divide-y divide-gray-200 rounded-2xl p-8 shadow-xs">
               {order.items?.map((item) => (
                 <div
                   key={item.item_id}
@@ -152,7 +152,7 @@ export default function UserViewOrderDetails() {
             </Card>
 
             <div className="flex w-full flex-col items-stretch justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-              <Card className="bg-card flex w-full flex-col rounded-lg p-6 shadow">
+              <Card className="bg-card flex w-full flex-col rounded-2xl p-8 shadow">
                 <h3 className="text-content font-heading text-lg">
                   Order Summary
                 </h3>
@@ -183,7 +183,7 @@ export default function UserViewOrderDetails() {
                   </p>
                 </div>
               </Card>
-              <Card className="bg-card flex w-full flex-col space-y-6 rounded-lg px-4 py-6 shadow md:p-6 xl:p-8">
+              <Card className="bg-card flex w-full flex-col space-y-6 rounded-2xl px-4 py-6 shadow md:p-6 xl:p-8">
                 <h3 className="text-content font-heading text-lg leading-5">
                   Courier
                 </h3>
@@ -219,7 +219,7 @@ export default function UserViewOrderDetails() {
             </div>
           </div>
           <div className="flex w-full flex-col items-center gap-4 md:items-start xl:w-5/12">
-            <Card className="flex w-full flex-col rounded-lg bg-white p-6 shadow">
+            <Card className="flex w-full flex-col rounded-2xl bg-white p-8 shadow">
               <h3 className="text-content font-heading text-lg">Customer</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
@@ -238,7 +238,7 @@ export default function UserViewOrderDetails() {
                 </div>
               </div>
             </Card>
-            <Card className="flex w-full flex-col rounded-lg bg-white p-6 shadow">
+            <Card className="flex w-full flex-col rounded-2xl bg-white p-8 shadow">
               <h3 className="text-content font-heading text-lg">
                 Payment Information
               </h3>
@@ -261,7 +261,7 @@ export default function UserViewOrderDetails() {
                 </div>
               </div>
             </Card>
-            <Card className="flex w-full flex-col rounded-lg bg-white p-6 shadow">
+            <Card className="flex w-full flex-col rounded-2xl bg-white p-8 shadow">
               <h3 className="text-content font-heading text-lg">Notes</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
@@ -271,7 +271,7 @@ export default function UserViewOrderDetails() {
                 </div>
               </div>
             </Card>
-            <Card className="font-heading flex w-full flex-col rounded-lg bg-white p-6 shadow">
+            <Card className="font-heading flex w-full flex-col rounded-2xl bg-white p-8 shadow">
               <h3 className="text-content text-lg">Other</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
