@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Wheat } from 'lucide-react';
+import { PhilippinePeso, EggFried } from 'lucide-react';
 import { Card } from './ui/card';
 
 import dayjs from 'dayjs';
+import PaymentMethodIcon from '@/components/paymentMethodIcon';
 
 export default function OrdersTable({
   orders,
@@ -17,32 +18,37 @@ export default function OrdersTable({
   return (
     <div className="space-y-4">
       {orders.map((order) => (
-        <Card
-          key={order.id}
-          className="gap-4 rounded-3xl bg-white p-6 shadow-sm"
-        >
+        <Card key={order.id} className="gap-4 rounded-2xl bg-white p-4 shadow">
           {/* --- Header --- */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-200 pb-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2">
             {/* Order ID - visually distinct */}
 
             <div className="flex items-center gap-4">
-              <Wheat className="text-primary size-10 fill-amber-400" />
+              <EggFried className="text-brand size-10" />
 
               <div>
-                <div className="flex items-center gap-4">
-                  <h3 className="text-primary font-heading font-semibold">
-                    Order ID: #{order.id}
-                  </h3>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-content">
+                    Order ID:{' '}
+                    <span className="text-secondary text-sm font-semibold tracking-tighter">
+                      #{order.id}
+                    </span>
+                  </h2>
+                  <span
+                    className={`rounded-sm bg-gray-100 px-4 py-1 text-xs font-semibold shadow-sm ${getStatusColor(order.status)}`}
+                  >
+                    {order.status}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <h3 className="text-bold text-sm text-gray-500">
+                  <h3 className="text-bold text-muted text-sm">
                     {dayjs(order.order_date).format('D MMMM YYYY')}
                   </h3>
                 </div>
               </div>
             </div>
-            <div className="font-heading flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <Button variant="outline">Cancel Order</Button>
               <Button
                 onClick={() => navigate(`/UserViewOrderDetails/${order.id}`)}
@@ -81,10 +87,10 @@ export default function OrdersTable({
               {order.items.map((item) => (
                 <Card
                   key={item.item_id}
-                  className="text-content flex flex-row gap-4 rounded-lg border bg-white p-4 shadow-sm"
+                  className="text-content flex flex-row gap-4 rounded-lg border p-2 shadow"
                 >
                   {/* Thumbnail */}
-                  <div className="size-14 flex-shrink-0 overflow-hidden rounded-md bg-orange-200">
+                  <div className="h-14 w-12 flex-shrink-0 overflow-hidden rounded-md bg-orange-200">
                     <img
                       src={
                         item.image_url ||
@@ -95,25 +101,12 @@ export default function OrdersTable({
                   </div>
 
                   {/* Product Info */}
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold">{item.product_name}</p>
-                    <p className="text-xs">
+                  <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
+                    <p className="text-sm font-semibold">{item.product_name}</p>
+                    <p className="text-muted text-xs">
                       Quantity:{' '}
                       <span className="text-content">{item.quantity}</span>
                     </p>
-                    <p className="text-xs">
-                      Price:{' '}
-                      <span className="text-content">
-                        ₱ {parseFloat(item.unit_price || 0).toLocaleString()}
-                      </span>
-                    </p>
-
-                    {/* Optional subtotal */}
-                    {/* 
-                    <p className="text-xs font-semibold text-gray-700">
-                      Subtotal: ₱ {(item.quantity * item.unit_price).toLocaleString()}
-                    </p> 
-                    */}
                   </div>
                 </Card>
               ))}
@@ -124,22 +117,21 @@ export default function OrdersTable({
           <div className="flex flex-wrap items-center">
             <div className="text-content flex w-full items-center justify-between gap-2 rounded-sm py-2">
               <div className="flex gap-4">
-                <span
-                  className={`rounded-lg bg-gray-100 px-4 py-1 text-xs ${getStatusColor(order.status)}`}
-                >
-                  {order.status}
-                </span>
-                <p className="text-content space-x-4">
-                  Total: ₱ {parseFloat(order.total_amount).toLocaleString()}
+                <p className="text-muted font-semibold">
+                  Total:{' '}
+                  <span className="text-primary">
+                    <PhilippinePeso className="inline" />
+                    {parseFloat(order.total_amount).toLocaleString()}
+                  </span>
                 </p>
               </div>
 
-              <p className="space-x-4 text-sm">
+              <p className="text-muted space-x-4 text-sm">
                 <span>{order.items.length} items</span>
                 <span className="text-lg font-bold">·</span>
                 <span>Expected: June 20, 1996</span>
                 <span className="text-lg font-bold">·</span>
-                <span>{order.payment_method}</span>
+                <PaymentMethodIcon method={order.payment_method} />
               </p>
             </div>
           </div>

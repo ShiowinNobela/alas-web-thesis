@@ -9,11 +9,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-white rounded-sm px-4 py-2 shadow hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#d47849]/50',
+          'bg-primary text-white rounded-sm p-2 shadow hover:bg-primary/80 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#d47849]/50',
+        CTA: 'bg-brand font-heading text-white rounded-sm p-4 tracking-widest uppercase shadow hover:bg-brand/90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#d47849]/50',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'border-2 shadow-xl rounded-sm bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
+          'border border-primary font-semibold p-2 text-content shadow-sm rounded-sm bg-background shadow-xs hover:bg-accent hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:

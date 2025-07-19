@@ -27,7 +27,7 @@ export default function UserDropdown({ user }) {
       {/* Circle button */}
       <button
         onClick={() => setOpen(!open)}
-        className="hover:bg-primary/20 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-gray-200 transition-colors"
+        className="hover:bg-primary/20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-gray-200 transition-colors"
       >
         <PersonOutlineIcon className="text-black" fontSize="medium" />
       </button>

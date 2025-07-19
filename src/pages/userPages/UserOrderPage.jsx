@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import OrdersTable from '../../components/OrdersTable';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import OrderFiltersPanel from '@/components/bigComponents/orderFilterSidebar';
 
 function UserViewOrderPage() {
@@ -93,26 +93,19 @@ function UserViewOrderPage() {
 
   return (
     <>
-      <main className="h-full bg-gray-50 py-4 pb-40">
+      <main className="bg-neutral h-full py-4 pb-40">
         <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-          <h2 className="font-heading text-content px-2 py-4 text-4xl font-bold">
+          <h1 className="font-heading text-content py-4 text-2xl font-semibold">
             Your Orders List
-          </h2>
+          </h1>
 
-          <div className="mt-4 flex gap-2 md:h-[calc(100vh-10rem)] md:flex-row">
-            <OrderFiltersPanel />
+          <div className="flex h-[calc(100vh-4rem)] gap-2">
+            <div className="sticky top-4 h-fit self-start">
+              <OrderFiltersPanel order={orders} />
+            </div>
 
             {/* RIGHT: Orders Table */}
-            <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                type: 'spring',
-                stiffness: 120,
-                damping: 8,
-              }}
-              className="flex-1 overflow-y-auto rounded-lg px-2"
-            >
+            <div className="flex-1 overflow-y-auto px-2 py-1">
               <OrdersTable
                 orders={orders}
                 getStatusColor={getStatusColor}
@@ -121,7 +114,7 @@ function UserViewOrderPage() {
                   setShowCancelModal(true);
                 }}
               />
-            </motion.div>
+            </div>
           </div>
 
           {showCancelModal && (
