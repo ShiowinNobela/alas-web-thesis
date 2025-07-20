@@ -5,11 +5,13 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
+import useUserStore from '@/stores/userStore';
 
-export default function UserDropdown({ user }) {
+export default function UserDropdown() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef();
+  const user = useUserStore((state) => state.user);
 
   // Close when clicking outside
   useEffect(() => {

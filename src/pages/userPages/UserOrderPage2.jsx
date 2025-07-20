@@ -5,7 +5,7 @@ import { TextInput } from 'flowbite-react';
 import { HiSortAscending, HiSortDescending } from 'react-icons/hi';
 import OrderHistoryModal from '@/components/modals/orderHistoryModal';
 import StatusUserDropdown from '@/components/StatusUserDropdown';
-import OrdersTable from '@/components/OrdersTable2';
+import OrdersTable from '@/components/bigComponents/OrdersTable2';
 import { motion } from 'framer-motion';
 
 function UserViewOrderPage() {

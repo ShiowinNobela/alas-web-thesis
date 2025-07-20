@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '@/stores/userStore';
+// import { getStatusColor } from '@/utils/statusBadgeStyle';
 
 import {
   UserIcon,
@@ -83,9 +84,12 @@ export default function UserViewOrderDetails() {
           </h1>
           <div className="flex w-full flex-row justify-between">
             <div className="flex items-center space-x-2">
-              <p className="text-content text-base leading-6">
-                <span className="text-gray-500">Order Number </span>
-                {order.id}
+              <p className="text-muted">
+                Order Number
+                <span className="text-secondary text-sm tracking-tight">
+                  {' '}
+                  #{order.id}{' '}
+                </span>
               </p>
               <p> - </p>
               <p> {finalDateString}</p>
@@ -98,14 +102,14 @@ export default function UserViewOrderDetails() {
 
         <div className="mt-5 flex w-full flex-col items-stretch justify-center space-y-4 md:space-y-6 xl:flex-row xl:space-y-0 xl:space-x-4">
           <div className="flex w-full flex-col items-start justify-start space-y-4">
-            <Card className="flex w-full flex-col items-start justify-start divide-y divide-gray-200 rounded-2xl p-8 shadow-xs">
+            <Card className="flex w-full flex-col items-start justify-start divide-y divide-gray-200 rounded-2xl p-4 shadow-xs">
               {order.items?.map((item) => (
                 <div
                   key={item.item_id}
                   className="flex w-full flex-col items-start justify-start pb-4 md:flex-row md:items-start md:space-x-4"
                 >
                   {/* IMAGE COLUMN */}
-                  <div className="mr-5 w-full border shadow-md md:w-45">
+                  <div className="md:w- mr-5 w-full border shadow-md md:w-35">
                     <img
                       className="hidden w-full md:block"
                       src={item.image}
@@ -117,7 +121,7 @@ export default function UserViewOrderDetails() {
                   <div className="text-content flex h-full w-full flex-col items-start justify-start md:flex-row md:space-y-0 md:space-x-8">
                     {/* LEFT SIDE: Product details */}
                     <div className="flex h-full w-full flex-col self-start">
-                      <h3 className="text-content font-heading text-left text-lg">
+                      <h3 className="text-content font-heading text-left">
                         {item.product_name}
                       </h3>
                       <p className="text-sm text-gray-500">{item.category}</p>
@@ -139,11 +143,10 @@ export default function UserViewOrderDetails() {
                       </div>
                     </div>
 
-                    {/* RIGHT SIDE: Pricing, Quantity, Subtotal */}
                     <div className="flex h-full w-full flex-row items-start justify-between space-x-8 self-start md:w-auto">
-                      <div className="font-heading flex h-full flex-col gap-2">
-                        <Button>Buy Again</Button>
-                        <Button variant="outline">Leave a Review</Button>
+                      <div className="flex h-full flex-col gap-2">
+                        <Button>Order Again</Button>
+                        <Button variant="outline">Review Product</Button>
                       </div>
                     </div>
                   </div>
@@ -152,10 +155,8 @@ export default function UserViewOrderDetails() {
             </Card>
 
             <div className="flex w-full flex-col items-stretch justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-              <Card className="bg-card flex w-full flex-col rounded-2xl p-8 shadow">
-                <h3 className="text-content font-heading text-lg">
-                  Order Summary
-                </h3>
+              <Card className="bg-card flex w-full flex-col rounded-2xl p-4 shadow">
+                <h3 className="text-content font-heading">Order Summary</h3>
                 <div className="flex w-full flex-col items-center justify-center space-y-4 divide-y divide-gray-200 border-b border-gray-200">
                   <div className="flex w-full justify-between py-2">
                     <p className="text-sm leading-4">Subtotal</p>
@@ -183,10 +184,8 @@ export default function UserViewOrderDetails() {
                   </p>
                 </div>
               </Card>
-              <Card className="bg-card flex w-full flex-col space-y-6 rounded-2xl px-4 py-6 shadow md:p-6 xl:p-8">
-                <h3 className="text-content font-heading text-lg leading-5">
-                  Courier
-                </h3>
+              <Card className="bg-card flex w-full flex-col space-y-6 rounded-2xl px-4 py-6 shadow md:p-6 xl:p-4">
+                <h3 className="text-content font-heading leading-5">Courier</h3>
                 <div className="flex w-full items-start justify-between">
                   <div className="flex items-center justify-center space-x-4">
                     <div className="h-8 w-8">
@@ -197,7 +196,7 @@ export default function UserViewOrderDetails() {
                       />
                     </div>
                     <div className="flex flex-col items-center justify-start">
-                      <p className="text-content text-lg leading-6">
+                      <p className="text-content leading-6">
                         Free Delivery
                         <br />
                         <p className="text-sm font-normal">
@@ -206,9 +205,7 @@ export default function UserViewOrderDetails() {
                       </p>
                     </div>
                   </div>
-                  <p className="text-content text-lg leading-6 font-semibold">
-                    0.00
-                  </p>
+                  <p className="text-content leading-6 font-semibold">0.00</p>
                 </div>
                 <div className="flex w-full items-center justify-center">
                   <button className="bg-primary focus:ring-content hover:bg-content w-full rounded-md py-5 text-base leading-4 font-medium text-white focus:ring-2 focus:ring-offset-2 focus:outline-none">
@@ -219,8 +216,8 @@ export default function UserViewOrderDetails() {
             </div>
           </div>
           <div className="flex w-full flex-col items-center gap-4 md:items-start xl:w-5/12">
-            <Card className="flex w-full flex-col rounded-2xl bg-white p-8 shadow">
-              <h3 className="text-content font-heading text-lg">Customer</h3>
+            <Card className="flex w-full flex-col rounded-2xl bg-white p-4 shadow">
+              <h3 className="text-content font-heading">Customer</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
                   <UserIcon size={16} className="text-gray-500" />
@@ -238,10 +235,8 @@ export default function UserViewOrderDetails() {
                 </div>
               </div>
             </Card>
-            <Card className="flex w-full flex-col rounded-2xl bg-white p-8 shadow">
-              <h3 className="text-content font-heading text-lg">
-                Payment Information
-              </h3>
+            <Card className="flex w-full flex-col rounded-2xl bg-white p-4 shadow">
+              <h3 className="text-content font-heading">Payment Information</h3>
               <div className="text-content flex flex-col gap-2 text-sm">
                 <div className="flex items-center gap-4">
                   <PiggyBankIcon size={16} className="text-gray-500" />
@@ -261,8 +256,8 @@ export default function UserViewOrderDetails() {
                 </div>
               </div>
             </Card>
-            <Card className="flex w-full flex-col rounded-2xl bg-white p-8 shadow">
-              <h3 className="text-content font-heading text-lg">Notes</h3>
+            <Card className="flex w-full flex-col rounded-2xl bg-white p-4 shadow">
+              <h3 className="text-content font-heading">Notes</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
                   <p className="text-sm text-gray-500">
@@ -271,8 +266,8 @@ export default function UserViewOrderDetails() {
                 </div>
               </div>
             </Card>
-            <Card className="font-heading flex w-full flex-col rounded-2xl bg-white p-8 shadow">
-              <h3 className="text-content text-lg">Other</h3>
+            <Card className="font-heading flex w-full flex-col rounded-2xl bg-white p-4 shadow">
+              <h3 className="text-content">Other</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
                   <p className="text-sm text-gray-500">
@@ -291,7 +286,7 @@ export default function UserViewOrderDetails() {
 {
   /* <div className="flex w-full flex-col items-start justify-start rounded-xl bg-white px-4 py-2 drop-shadow-md">
               <div className="w-full border-b border-gray-200 p-4">
-                <p className="font-heading text-lg font-bold text-content">
+                <p className="font-heading  font-bold text-content">
                   Order Summary
                 </p>
               </div>
