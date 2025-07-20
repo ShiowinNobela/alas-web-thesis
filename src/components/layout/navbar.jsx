@@ -1,31 +1,17 @@
 import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useLocation, Link } from 'react-router-dom';
-import CTAButton from './CTAButton';
-import Logo from '../components/images/logo.png';
-import UserDropdown from './UserDropdown';
-import { Button } from './ui/button';
+import Logo from '@/components/images/logo.png';
+import UserDropdown from '@/components/UserDropdown';
+import { Button } from '@/components/ui/button';
 
 const navItemStyle =
   'px-2 py-2 border-b-2 border-transparent hover:border-brand hover:text-brand transition-all cursor-pointer';
-
-function parseJwt(token) {
-  if (!token) return null;
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  try {
-    return JSON.parse(atob(base64));
-  } catch (err) {
-    console.log('Invalid token format', err);
-    return null;
-  }
-}
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const storedUser = JSON.parse(window.localStorage.getItem('user'));
-  const userInfo = storedUser ? parseJwt(storedUser.token) : null;
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -71,7 +57,7 @@ function Navbar() {
           ))}
 
           {storedUser ? (
-            <UserDropdown user={userInfo} />
+            <UserDropdown />
           ) : (
             <Link to="/LoginPage" className={getNavItemClass('/LoginPage')}>
               Sign In
@@ -146,13 +132,14 @@ function Navbar() {
                 Sign In
               </Link>
             )}
-            <CTAButton
+            <Button
+              variant="CTA"
               to={storedUser ? '/ProductListPage' : '/LoginPage'}
               onClick={closeMobileMenu}
               className="mt-4"
             >
               Order
-            </CTAButton>
+            </Button>
             !twf
           </nav>
         </div>

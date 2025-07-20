@@ -2,9 +2,9 @@
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Brush, Eraser, SwatchBook } from 'lucide-react';
 import InputSearch from '@/components/bigComponents/inputSearch';
+import { useSearchParams } from 'react-router-dom';
 
 const statuses = [
   'pending',
@@ -17,15 +17,41 @@ const statuses = [
 ];
 
 const items = [
-  { value: '1', label: 'GCash', Icon: SwatchBook, defaultChecked: true },
-  { value: '2', label: 'Maya', Icon: Brush },
-  { value: '3', label: 'Bank', Icon: Eraser },
+  { value: 'gcash', label: 'GCash', Icon: SwatchBook, defaultChecked: true },
+  { value: 'maya', label: 'Maya', Icon: Brush },
+  { value: 'bank_transfer', label: 'Bank', Icon: Eraser },
 ];
 
 export default function OrderFiltersPanel() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const selectedStatuses = searchParams.getAll('status');
+  const selectedPayments = searchParams.getAll('payment_method');
+
+  const toggleFilter = (key, value) => {
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev);
+        const current = new Set(newParams.getAll(key));
+
+        if (current.has(value)) {
+          current.delete(value);
+        } else {
+          current.add(value);
+        }
+
+        newParams.delete(key);
+        current.forEach((v) => newParams.append(key, v));
+
+        return newParams;
+      },
+      { replace: true }
+    );
+  };
+
   return (
     <Card className="text-content flex h-full w-64 shrink-0 flex-col gap-4 rounded-2xl p-4 shadow">
-      <h3 className="border-muted-foreground font-heading border-b pb-2 font-semibold">
+      <h3 className="border-muted-foreground font-heading border-b pb-2">
         Filters
       </h3>
 
@@ -46,7 +72,11 @@ export default function OrderFiltersPanel() {
               className="flex items-center gap-2 text-sm text-gray-700"
               htmlFor={status}
             >
-              <Checkbox id={status} />
+              <Checkbox
+                id={status}
+                checked={selectedStatuses.includes(status)}
+                onCheckedChange={() => toggleFilter('status', status)}
+              />
               <span className="capitalize">{status}</span>
             </label>
           ))}
@@ -66,9 +96,11 @@ export default function OrderFiltersPanel() {
             >
               <div className="flex justify-between gap-2">
                 <Checkbox
-                  value={item.value}
+                  checked={selectedPayments.includes(item.value)}
+                  onCheckedChange={() =>
+                    toggleFilter('payment_method', item.value)
+                  }
                   className="order-1 after:absolute after:inset-0"
-                  defaultChecked={item.defaultChecked}
                 />
                 <div className="text-muted-foreground flex items-center gap-2 text-sm">
                   {item.Icon && <item.Icon size={16} aria-hidden="true" />}
