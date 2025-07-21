@@ -1,160 +1,261 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import dayjs from 'dayjs';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ChevronDown,
+  ChevronUp,
+  PhilippinePeso,
+  EggFried,
+  PackageSearch,
+} from 'lucide-react';
 import { Button } from '../ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { PhilippinePeso, EggFried } from 'lucide-react';
 import { Card } from '../ui/card';
-import { PackageSearch } from 'lucide-react';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
-
-import dayjs from 'dayjs';
 import PaymentMethodIcon from '@/components/paymentMethodIcon';
 
 export default function OrdersTable({ orders, onCancelOrder }) {
   const navigate = useNavigate();
+  const [expandedOrderIds, setExpandedOrderIds] = useState([]);
+
+  const toggleExpand = (orderId) => {
+    setExpandedOrderIds(
+      (prev) =>
+        prev.includes(orderId)
+          ? prev.filter((id) => id !== orderId) // Remove if already present
+          : [...prev, orderId] // Add if not present
+    );
+  };
+
+  // Animation variants (same as before)
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.3, ease: 'easeOut' },
+    },
+  };
+
+  const expandVariants = {
+    hidden: { opacity: 0, height: 0 },
+    visible: {
+      opacity: 1,
+      height: 'auto',
+      transition: { duration: 0.3, ease: 'easeInOut' },
+    },
+    exit: {
+      opacity: 0,
+      height: 0,
+      transition: { duration: 0.2, ease: 'easeIn' },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: (i) => ({
+      opacity: 1,
+      x: 0,
+      transition: { delay: i * 0.05, duration: 0.2 },
+    }),
+  };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {orders.length === 0 ? (
-        <Card className="text-muted h-full rounded-2xl p-8 text-center shadow">
-          <p className="font-heading text-lg font-semibold">No orders found</p>
-          <PackageSearch className="text-muted mx-auto mb-2 size-40" />
-          <p className="text-sm">
-            Try adjusting your filters or search keyword.
-          </p>
-        </Card>
-      ) : (
-        orders.map((order) => (
-          <Card
-            key={order.id}
-            className="gap-4 rounded-2xl bg-white p-4 shadow"
-          >
-            {/* --- Header --- */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2">
-              {/* Order ID - visually distinct */}
-
-              <div className="flex items-center gap-4">
-                <EggFried className="text-brand size-10" />
-
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-content">
-                      Order ID:{' '}
-                      <span className="text-secondary text-sm font-semibold tracking-tighter">
-                        #{order.id}
-                      </span>
-                    </h2>
-                    <span
-                      className={`rounded-sm bg-gray-100 px-4 py-1 text-xs font-semibold shadow-sm ${getStatusStyle(order.status)}`}
-                    >
-                      {order.status}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <h3 className="text-bold text-muted text-sm">
-                      {dayjs(order.order_date).format('D MMMM YYYY')}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                {order.status === 'pending' ? (
-                  order.cancel_requested === 1 ? (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span>
-                          <Button variant="outline" disabled>
-                            Cancel Requested
-                          </Button>
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        This order has already requested cancellation. No
-                        further action is needed.
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    // Can be cancelled - show active cancel button
-                    <Button
-                      variant="outline"
-                      onClick={() => onCancelOrder(order.id)}
-                    >
-                      Cancel Order
-                    </Button>
-                  )
-                ) : null}
-
-                <Button
-                  onClick={() => navigate(`/UserViewOrderDetails/${order.id}`)}
-                >
-                  Order Details
-                </Button>
-              </div>
-            </div>
-
-            <div className="">
-              {/* Product List Grid */}
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                {order.items.map((item) => (
-                  <Card
-                    key={item.item_id}
-                    className="text-content flex flex-row gap-4 rounded-lg border p-2 shadow"
-                  >
-                    {/* Thumbnail */}
-                    <div className="h-14 w-12 flex-shrink-0 overflow-hidden rounded-md bg-orange-200">
-                      <img
-                        src={
-                          item.image_url ||
-                          'https://via.placeholder.com/80x80?text=IMG'
-                        }
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
-                      <p className="text-sm font-semibold">
-                        {item.product_name}
-                      </p>
-                      <p className="text-muted text-xs">
-                        Quantity:{' '}
-                        <span className="text-content">{item.quantity}</span>
-                      </p>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* --- Footer --- */}
-            <div className="flex flex-wrap items-center">
-              <div className="text-content flex w-full items-center justify-between gap-2 rounded-sm py-2">
-                <div className="flex gap-4">
-                  <p className="text-muted font-semibold">
-                    Total:{' '}
-                    <span className="text-primary">
-                      <PhilippinePeso className="inline" />
-                      {parseFloat(order.total_amount).toLocaleString()}
-                    </span>
-                  </p>
-                </div>
-
-                <p className="text-muted space-x-4 text-sm">
-                  <span>{order.items.length} items</span>
-                  <span className="text-lg font-bold">·</span>
-                  <span>Expected: June 20, 1996</span>
-                  <span className="text-lg font-bold">·</span>
-                  <PaymentMethodIcon method={order.payment_method} />
-                </p>
-              </div>
-            </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="text-muted h-full rounded-2xl p-8 text-center shadow">
+            <p className="font-heading text-lg font-semibold">
+              No orders found
+            </p>
+            <PackageSearch className="text-muted mx-auto mb-2 size-40" />
+            <p className="text-sm">
+              Try adjusting your filters or search keyword.
+            </p>
           </Card>
-        ))
+        </motion.div>
+      ) : (
+        orders.map((order, index) => {
+          const isExpanded = expandedOrderIds.includes(order.id);
+
+          return (
+            <motion.div
+              key={order.id}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ delay: index * 0.05 }}
+              layout
+            >
+              <Card className="gap-4 rounded-2xl bg-white p-5 shadow">
+                {/* --- Header --- */}
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2">
+                  <div className="flex items-center gap-4">
+                    <motion.div whileHover={{ rotate: 10 }}>
+                      <EggFried className="text-brand size-10" />
+                    </motion.div>
+                    <div>
+                      <div className="flex items-center gap-6">
+                        <h2 className="text-content">
+                          Order ID:{' '}
+                          <span className="text-secondary text-sm font-semibold tracking-tighter">
+                            #{order.id}
+                          </span>
+                        </h2>
+                        <motion.span
+                          whileHover={{ scale: 1.05 }}
+                          className={`items-center rounded-sm bg-gray-100 px-4 py-1 text-xs font-semibold shadow-sm ${getStatusStyle(order.status)}`}
+                        >
+                          {order.status}
+                        </motion.span>
+                      </div>
+                      <h3 className="text-bold text-muted text-sm">
+                        {dayjs(order.order_date).format('D MMMM YYYY')}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {order.status === 'pending' ? (
+                      order.cancel_requested === 1 ? (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span>
+                              <Button variant="outline" disabled>
+                                Cancel Requested
+                              </Button>
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            This order has already requested cancellation. No
+                            further action is needed.
+                          </TooltipContent>
+                        </Tooltip>
+                      ) : (
+                        <motion.div whileHover={{ scale: 1.03 }}>
+                          <Button
+                            variant="outline"
+                            onClick={() => onCancelOrder(order.id)}
+                          >
+                            Cancel Order
+                          </Button>
+                        </motion.div>
+                      )
+                    ) : null}
+
+                    <motion.div whileHover={{ scale: 1.03 }}>
+                      <Button
+                        onClick={() =>
+                          navigate(`/UserViewOrderDetails/${order.id}`)
+                        }
+                      >
+                        Order Details
+                      </Button>
+                    </motion.div>
+
+                    <motion.div
+                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => toggleExpand(order.id)}
+                        aria-label="Toggle item list"
+                      >
+                        {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                      </Button>
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* --- Product List Grid (collapsible) --- */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      variants={expandVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      layout
+                      className="overflow-hidden"
+                    >
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                        {order.items.map((item, i) => (
+                          <motion.div
+                            key={item.item_id}
+                            variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
+                            custom={i}
+                            whileHover={{ y: -2 }}
+                          >
+                            <Card className="text-content flex flex-row gap-4 rounded-lg border p-2 shadow">
+                              <motion.div
+                                className="size-12 flex-shrink-0 overflow-hidden bg-orange-200"
+                                whileHover={{ scale: 1.05 }}
+                              >
+                                <img
+                                  src={
+                                    item.image ||
+                                    'https://via.placeholder.com/80x80?text=IMG'
+                                  }
+                                  className="h-full w-full object-fill"
+                                />
+                              </motion.div>
+                              <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
+                                <p className="text-sm font-semibold">
+                                  {item.product_name}
+                                </p>
+                                <p className="text-muted text-xs">
+                                  Quantity:{' '}
+                                  <span className="text-content">
+                                    {item.quantity}
+                                  </span>
+                                </p>
+                              </div>
+                            </Card>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* --- Footer --- */}
+                <motion.div layout className="flex flex-wrap items-center">
+                  <div className="text-content flex w-full items-center justify-between gap-2 rounded-sm py-2">
+                    <p className="text-muted font-semibold">
+                      Total:{' '}
+                      <span className="text-primary">
+                        <PhilippinePeso className="inline size-4" />
+                        {parseFloat(order.total_amount).toLocaleString()}
+                      </span>
+                    </p>
+
+                    <p className="text-muted space-x-4 text-sm">
+                      <span>{order.items.length} items</span>
+                      <span className="text-lg font-bold">·</span>
+                      <span>Expected: June 20, 1996</span>
+                      <span className="text-lg font-bold">·</span>
+                      <PaymentMethodIcon method={order.payment_method} />
+                    </p>
+                  </div>
+                </motion.div>
+              </Card>
+            </motion.div>
+          );
+        })
       )}
     </div>
   );
@@ -170,6 +271,7 @@ OrdersTable.propTypes = {
             .isRequired,
           product_name: PropTypes.string.isRequired,
           quantity: PropTypes.number.isRequired,
+          image: PropTypes.string,
         })
       ).isRequired,
       order_date: PropTypes.string.isRequired,
@@ -180,8 +282,5 @@ OrdersTable.propTypes = {
       cancel_requested: PropTypes.number,
     })
   ).isRequired,
-  getStatusColor: PropTypes.func.isRequired,
   onCancelOrder: PropTypes.func.isRequired,
-  onFetchOrderHistory: PropTypes.func.isRequired,
-  onViewMore: PropTypes.func.isRequired,
 };
