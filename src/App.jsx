@@ -32,6 +32,7 @@ import InventoryManagement from './pages/adminPages/InventoryManagement.jsx';
 import WalkInOrdering from './pages/adminPages/WalkInOrdering.jsx';
 import SalesPage from './pages/adminPages/SalesPage.jsx';
 import WalkInOrderTable from './pages/adminPages/WalkInOrdersTable.jsx';
+import AdminOrderDetails from './pages/adminPages/AdminOrderDetails.jsx';
 import AboutUs from './pages/AboutUs.jsx';
 import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 
@@ -72,6 +73,7 @@ function App() {
           <Route path="ProductManagement" element={<ProdManagement />}></Route>
           <Route path="AccountManagement" element={<AccManagement />}></Route>
           <Route path="Orders" element={<Orders />}></Route>
+          <Route path="AdminOrderDetails/:id" element={<AdminOrderDetails />} />
           <Route path="PopUpInfoPage" element={<PopUpInfoPage />}></Route>
           <Route path="BazaarOrdering" element={<BazaarOrdering />}></Route>
           <Route path="EditOrder" element={<EditOrder />}></Route>

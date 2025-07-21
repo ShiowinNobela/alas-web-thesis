@@ -10,10 +10,6 @@ import {
   Datepicker,
   TextInput,
   Dropdown,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   DropdownHeader,
   DropdownItem,
   DropdownDivider,
@@ -25,14 +21,6 @@ import {
   HiOutlineRefresh,
   HiDotsVertical,
   HiSwitchHorizontal,
-  HiUser,
-  HiPhone,
-  HiMail,
-  HiLocationMarker,
-  HiCreditCard,
-  HiUserCircle,
-  HiHashtag,
-  HiDocumentText,
   HiCheckCircle,
 } from 'react-icons/hi';
 import StatusFilterDropdown from '../../components/StatusFilterDropdown';
@@ -42,6 +30,7 @@ import { toast, Toaster } from 'sonner';
 const tableHeadStyle = 'px-6 py-3 text-center';
 
 function AdminViewOrderPage() {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [filterStatus, setFilterStatus] = useState('');
@@ -58,8 +47,7 @@ function AdminViewOrderPage() {
   const [startDateKey, setStartDateKey] = useState(0);
   const [endDate, setEndDate] = useState(null);
   const [endDateKey, setEndDateKey] = useState(0);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+
   const [searchId, setSearchId] = useState('');
   const [summaryData, setSummaryData] = useState([]);
   const [last30SummaryData, setLast30SummaryData] = useState([]);
@@ -201,8 +189,6 @@ function AdminViewOrderPage() {
     }
   };
 
-  const navigate = useNavigate();
-
   const handleEndDateChange = (date) => {
     setEndDate(date);
     if (date === null) {
@@ -238,23 +224,6 @@ function AdminViewOrderPage() {
       .catch((err) => {
         console.error('Failed to fetch order history:', err);
         alert('Failed to fetch order status history.');
-      });
-  };
-
-  const fetchOrderDetails = (orderId) => {
-    axios
-      .get(`http://localhost:3000/api/adminOrder/${orderId}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then((res) => {
-        setSelectedOrder(res.data);
-        setShowDetailsModal(true);
-      })
-      .catch((err) => {
-        console.error('Failed to fetch order details:', err);
-        alert('Failed to fetch order details.');
       });
   };
 
@@ -694,7 +663,9 @@ function AdminViewOrderPage() {
                         <DropdownDivider />
 
                         <DropdownItem
-                          onClick={() => fetchOrderDetails(order.id)}
+                          onClick={() =>
+                            navigate(`/Admin/AdminOrderDetails/${order.id}`)
+                          }
                         >
                           View Order Details
                         </DropdownItem>
@@ -739,172 +710,6 @@ function AdminViewOrderPage() {
             }}
           />
         )}
-
-        <Modal
-          show={showDetailsModal}
-          onClose={() => setShowDetailsModal(false)}
-          size="5xl"
-        >
-          <ModalHeader>
-            Order Details – #{selectedOrder?.data?.id}
-            {selectedOrder?.data?.status && (
-              <span
-                className={`ml-2 inline-block rounded px-2 py-0.5 text-xs font-semibold ${getStatusColor(
-                  selectedOrder.data.status
-                )}`}
-              >
-                {selectedOrder.data.status.charAt(0).toUpperCase() +
-                  selectedOrder.data.status.slice(1)}
-              </span>
-            )}
-          </ModalHeader>
-
-          <ModalBody className="bg-neutral">
-            <div className="flex flex-col gap-6 md:flex-row">
-              {/* Order Summary - Left */}
-              <div className="rounded bg-white px-4 py-5 shadow md:w-1/2">
-                <div className="space-y-4 text-sm text-black">
-                  <h3 className="mb-5 text-lg font-semibold">Order Summary</h3>
-
-                  <hr className="my-4 border-gray-400" />
-
-                  <div className="space-y-2">
-                    {selectedOrder?.data?.items?.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between text-gray-600"
-                      >
-                        <span className="truncate">
-                          {item.product_name} x {item.quantity}
-                        </span>
-                        <span className="font-semibold">
-                          ₱{parseFloat(item.subtotal).toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <hr className="my-4 border-gray-400" />
-
-                <div className="text-admin flex justify-between text-base font-extrabold">
-                  <span>Total</span>
-                  <span>
-                    ₱{parseFloat(selectedOrder?.data?.total_amount).toFixed(2)}
-                  </span>
-                </div>
-              </div>
-
-              <div className="rounded bg-white px-4 py-5 shadow md:w-1/2">
-                <h3 className="mb-5 text-lg font-semibold text-black">
-                  Customer, Payment & Billing Info
-                </h3>
-
-                <hr className="my-4 border-gray-400" />
-
-                <div className="flex flex-col gap-6 text-sm text-gray-700 md:flex-row">
-                  {/* Left Side */}
-                  <div className="w-full space-y-4 md:w-1/2">
-                    <div className="flex items-start gap-2">
-                      <HiUser className="text-secondary mt-1" />
-                      <div>
-                        <p className="text-black">Customer Name</p>
-                        <p className="font-semibold">
-                          {selectedOrder?.data?.username || 'N/A'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <HiPhone className="text-secondary mt-1" />
-                      <div>
-                        <p className="text-black">Contact Number</p>
-                        <p className="font-semibold">
-                          {selectedOrder?.data?.contact_number || (
-                            <span className="text-gray-400">
-                              No contact info
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <HiMail className="text-secondary mt-1" />
-                      <div>
-                        <p className="text-black">Email</p>
-                        <p className="font-semibold">
-                          {selectedOrder?.data?.email || (
-                            <span className="text-gray-400">No email</span>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <HiLocationMarker className="text-secondary mt-1" />
-                      <div>
-                        <p className="text-black">Shipping Address</p>
-                        <p className="font-semibold">
-                          {selectedOrder?.data?.address || (
-                            <span className="text-gray-400">No address</span>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Side */}
-                  <div className="w-full space-y-4 md:w-1/2">
-                    <div className="flex items-start gap-2">
-                      <HiCreditCard className="text-secondary mt-1" />
-                      <div>
-                        <p className="text-black">Payment Method</p>
-                        <p className="font-semibold">
-                          {selectedOrder?.data?.payment_method || 'N/A'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <HiUserCircle className="text-secondary mt-1" />
-                      <div>
-                        <p className="text-black">Account Name</p>
-                        <p className="font-semibold">
-                          {selectedOrder?.data?.account_name || 'N/A'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <HiHashtag className="text-secondary mt-1" />
-                      <div>
-                        <p className="text-black">Reference #</p>
-                        <p className="font-semibold">
-                          {selectedOrder?.data?.reference_number || 'N/A'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <HiDocumentText className="text-secondary mt-1" />
-                      <div className="w-full">
-                        <p className="mb-1 text-black">Order Notes</p>
-                        <div className="min-h-[100px] rounded border border-gray-200 bg-gray-100 p-3 text-sm text-gray-800">
-                          {selectedOrder?.data?.notes || 'No notes provided.'}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button onClick={() => setShowDetailsModal(false)}>Close</Button>
-          </ModalFooter>
-        </Modal>
 
         <StatusUpdateModal
           show={statusUpdateModal}
