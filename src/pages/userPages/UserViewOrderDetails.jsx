@@ -45,8 +45,6 @@ export default function UserViewOrderDetails() {
     queryKey: ['order', id],
     queryFn: () => fetchOrder(id),
   });
-
-  const allReviewed = order?.items?.every(item => alreadyReviewedIds.includes(item.product_id));
   
   useEffect(() => {
   const user = JSON.parse(window.localStorage.getItem("user"));
@@ -103,7 +101,7 @@ export default function UserViewOrderDetails() {
           Back
         </button>
 
-        <div className="flex flex-col justify-between space-y-2">
+        <div className="flex flex-col justify-between                                            space-y-2">
           <h1 className="text-content font-heading text-3xl font-bold">
             Your Order Details
           </h1>
@@ -116,24 +114,6 @@ export default function UserViewOrderDetails() {
               <p> - </p>
               <p> {finalDateString}</p>
             </div>
-            <Button
-              variant="outline"
-              disabled={order.status !== 'delivered' || allReviewed}
-              onClick={() => {
-                if (order.status !== 'delivered') {
-                  toast.error("You can only review delivered orders.");
-                  return;
-                }
-                if (allReviewed) {
-                  toast.info("You have already reviewed all items in this order.");
-                } else {
-                  navigate(`/GiveReview/${order.id}?mode=group`);
-                }
-              }}
-            >
-              {order.status !== 'delivered' ? 'Order Not Delivered' : 
-               allReviewed ? 'All Items Reviewed' : 'Leave Group Review'}
-            </Button>
             <div>
               <p>{order.status}</p>
             </div>

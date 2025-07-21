@@ -8,7 +8,6 @@ function GiveReview() {
   console.log("Submitting review with order_id:", id);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const mode = query.get("mode") || "single";
   const productIdParam = query.get("productId");
 
   const [showItems, setShowItems] = useState([]);
@@ -44,24 +43,27 @@ function GiveReview() {
             const items = response.data.data.items || [];
             setShowItems(items);
 
-            if (mode === "single") {
-              // Find the product to review
-              const productToReview =
-                items.find((item) => String(item.product_id) === productIdParam) ||
-                items[0];
-              setReview((prev) => ({
-                ...prev,
-                user_id: userId,
-                product_id: productToReview?.product_id || "",
-              }));
-            } else {
-              // Group review: no specific product_id
-              setReview((prev) => ({
-                ...prev,
-                user_id: userId,
-                product_id: "", // Not used in group mode
-              }));
-            }
+            // Find the product to review
+            const productToReview = items.find((item) => {
+              const itemProductId = String(item.product_id);
+              const paramProductId = String(productIdParam);
+              console.log("Comparing:", { itemProductId, paramProductId, match: itemProductId === paramProductId });
+              return itemProductId === paramProductId;
+            }) || items[0];
+            
+            console.log("Product data loaded:", {
+              items,
+              productIdParam,
+              productToReview,
+              userId,
+              itemsWithIds: items.map(item => ({ id: item.product_id, name: item.product_name }))
+            });
+            
+            setReview((prev) => ({
+              ...prev,
+              user_id: userId,
+              product_id: productToReview?.product_id || "",
+            }));
           })
           .catch((err) => {
             toast.error("Error");
@@ -72,63 +74,61 @@ function GiveReview() {
         toast.error("Failed to get user info");
         console.log(err);
       });
-  }, [id, mode, productIdParam]);
+  }, [id, productIdParam]);
 
   const handleReview = async (event) => {
-  event.preventDefault();
-  if (!id) {
-    toast.error("Order ID is missing. Cannot submit review.");
-    return;
-  }
-  if (mode === "group") {
-    // Build the reviews array
-    const reviews = showItems.map((item) => ({
-      product_id: item.product_id,
-      rating: review.rating,
-      review_text: review.review_text,
-    }));
-    try {
-      await axios.post("/api/reviews", {
-        user_id: review.user_id,
-        order_id: id,
-        reviews,
-      });
-      toast.success("Group review submitted successfully!");
-      setTimeout(() => {
-        navigate("/ProductListPage");
-      }, 1000);
-    } catch (err) {
-      toast.error("Failed to submit group review.");
-      console.log(err);
+    event.preventDefault();
+    if (!id) {
+      toast.error("Order ID is missing. Cannot submit review.");
+      return;
     }
-  } else {
-    // Single product review
-    axios
-    .post("/api/reviews", {
+    
+    // Validation checks
+    if (!review.user_id) {
+      toast.error("User ID is missing. Please try refreshing the page.");
+      return;
+    }
+    
+    if (!review.product_id) {
+      toast.error("Product ID is missing. Please try again.");
+      return;
+    }
+    
+    if (!review.rating || review.rating === 0) {
+      toast.error("Please select a rating before submitting.");
+      return;
+    }
+
+    console.log("Submitting review:", {
       user_id: review.user_id,
       order_id: id,
-      reviews: [
-        {
-          product_id: review.product_id,
-          rating: review.rating,
-          review_text: review.review_text,
-        }
-      ]
-    }, {
-      headers: { Authorization: `Bearer ${user.token}` }
-    })
-    .then(() => {
-      toast.success("Review submitted successfully!");
-      setTimeout(() => {
-        navigate("/ProductListPage");
-      }, 1000);
-    })
-    .catch((err) => {
-      toast.error("Failed to submit review.");
-      console.log(err);
+      product_id: review.product_id,
+      rating: review.rating,
+      review_text: review.review_text,
     });
-}
-};
+    
+    // Single product review with correct structure
+    axios
+      .post("/api/reviews", {
+        user_id: review.user_id,
+        order_id: id,
+        product_id: review.product_id,
+        rating: review.rating,
+        review_text: review.review_text,
+      }, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+      .then(() => {
+        toast.success("Review submitted successfully!");
+        setTimeout(() => {
+          navigate("/ProductListPage");
+        }, 1000);
+      })
+      .catch((err) => {
+        console.error("Review submission error:", err.response?.data || err);
+        toast.error(err.response?.data?.message || "Failed to submit review.");
+      });
+  };
 
   return (
     <>
@@ -137,23 +137,13 @@ function GiveReview() {
         <div className="flex flex-col justify-center items-center bg-white md:h-[500px] h-[700px] md:w-[800px] w-[360px] rounded-md shadow-lg shadow-black/50 border-black border-2">
           <div className="md:w-[600px] w-[300px] flex flex-col items-center justify-center">
             <h1 className="text-2xl font-semibold mb-5">
-              {mode === "group"
-                ? "Leave a review for all purchased items!"
-                : "Leave a review for us!"}
+              Leave a review for us!
             </h1>
             <div className="flex md:flex-row flex-col mb-5 gap-21">
               <div className="flex flex-col items-center justify-center mr-10">
                 <h1>Purchase Items:</h1>
                 {showItems.length === 0 ? (
                   <span className="text-gray-400 col-span-2">No items found.</span>
-                ) : mode === "group" ? (
-                  <div className="text-xs p-1">
-                    {showItems.map((item) => (
-                      <div key={item.product_id}>
-                        {item.product_name} x {item.quantity}
-                      </div>
-                    ))}
-                  </div>
                 ) : (
                   <div className="text-xs p-1">
                     {showItems.find((item) => String(item.product_id) === productIdParam)?.product_name ||

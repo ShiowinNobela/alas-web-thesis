@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import { TiDeleteOutline } from "react-icons/ti";
 import { BsCart } from "react-icons/bs";
+import { calculateCouponDiscount, formatCurrency, previewCouponDiscount } from "../utils/couponUtils";
 
 function Cart({ cartUpdated }) {
   const [cartState, setCartState] = useState({
@@ -36,21 +37,32 @@ function Cart({ cartUpdated }) {
         userId
       });
 
-      console.log("Coupon response:", response.data); // Debug log
+      console.log("Coupon response:", response.data);
 
       if (response.data && response.data.status === "success") {
         toast.success("Coupon applied successfully!");
         window.localStorage.setItem("couponCode", couponCode);
         
-        // Parse the response data correctly
         const responseData = response.data.data;
+        const cartTotalPrice = parseFloat(responseData.cartTotal) || cartState.originalTotal;
+        const appliedCoupon = responseData.appliedCoupon || responseData.validCoupon || responseData.coupon;
+        
+        // Use the utility function to calculate discount
+        const discountCalculation = calculateCouponDiscount(appliedCoupon, cartTotalPrice);
+        
+        // Fallback: if utility calculation fails, use API response
+        const finalDiscount = discountCalculation.discountAmount > 0 
+          ? discountCalculation.discountAmount 
+          : parseFloat(responseData.discount) || 0;
+        
+        const finalTotal = cartTotalPrice - finalDiscount;
         
         setCartState({
           items: responseData.items || cartState.items,
-          originalTotal: parseFloat(responseData.originalTotal) || 0,
-          discount: parseFloat(responseData.discount) || 0,
-          finalTotal: parseFloat(responseData.finalTotal) || 0,
-          appliedCoupon: responseData.appliedCoupon || { code: couponCode }
+          originalTotal: cartTotalPrice,
+          discount: finalDiscount,
+          finalTotal: finalTotal,
+          appliedCoupon: appliedCoupon || { code: couponCode }
         });
         
         setOpen(false);
@@ -81,20 +93,22 @@ function Cart({ cartUpdated }) {
         userId
       });
 
-      console.log("Remove coupon response:", response.data); // Debug log
+      console.log("Remove coupon response:", response.data);
 
       if (response.data && response.data.status === "success") {
         toast.success("Coupon removed successfully!");
         window.localStorage.removeItem("couponCode");
         
-        // Parse the response data correctly
         const responseData = response.data.data;
+        const cartTotalPrice = parseFloat(responseData.cartTotal) || cartState.originalTotal;
+        const couponDiscount = parseFloat(responseData.discount) || 0;
+        const estimatedAmount = cartTotalPrice - couponDiscount;
         
         setCartState({
           items: responseData.items || cartState.items,
-          originalTotal: parseFloat(responseData.originalTotal) || 0,
-          discount: parseFloat(responseData.discount) || 0,
-          finalTotal: parseFloat(responseData.finalTotal) || 0,
+          originalTotal: cartTotalPrice,
+          discount: couponDiscount,
+          finalTotal: estimatedAmount,
           appliedCoupon: responseData.appliedCoupon || null
         });
       } else {
@@ -153,16 +167,26 @@ function Cart({ cartUpdated }) {
     try {
       const response = await axios.get(`/api/cart/${user_id}`);
       
+      // Calculate the correct totals based on your formula: cart.total_price - coupon_discount = estimatedAmount
+      const cartTotalPrice = parseFloat(response.data.data.cart_total) || 0;
+      const couponDiscount = parseFloat(response.data.data.total_discount) || 0;
+      const estimatedAmount = cartTotalPrice - couponDiscount;
+      
       // Map the cart data to the new cartState structure
       setCartState({
         items: response.data.data.items || [],
-        originalTotal: parseFloat(response.data.data.cart_total) || 0,
-        discount: parseFloat(response.data.data.total_discount) || 0,
-        finalTotal: parseFloat(response.data.data.total_after_discount) || parseFloat(response.data.data.cart_total) || 0,
+        originalTotal: cartTotalPrice, // This is the cart total price before discount
+        discount: couponDiscount, // This is the coupon discount amount
+        finalTotal: estimatedAmount, // This is the estimated amount after discount
         appliedCoupon: response.data.data.applied_coupon || null
       });
       
-      console.log(response.data.data.items);
+      console.log("Cart data:", {
+        cartTotalPrice,
+        couponDiscount,
+        estimatedAmount,
+        items: response.data.data.items
+      });
     } catch (error) {
       console.error("Error fetching cart items:", error);
     }
@@ -309,22 +333,23 @@ function Cart({ cartUpdated }) {
       <CouponPopUp 
         open={Open} 
         onClose={() => setOpen(false)} 
-        onApply={handleCouponUse} 
+        onApply={handleCouponUse}
+        cartTotal={cartState.originalTotal}
       />
 
       {/* Total */}
       <div className="border-t border-[#bdbdb8] p-2 px-6">
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
           <p>Subtotal:</p>
-          <p>₱ {cartState.originalTotal.toFixed(2)}</p>
+          <p>{formatCurrency(cartState.originalTotal)}</p>
         </div>
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
           <p>Discount:</p>
-          <p>- ₱ {cartState.discount.toFixed(2)}</p>
+          <p>- {formatCurrency(cartState.discount)}</p>
         </div>
         <div className="flex justify-between text-xl font-extrabold text-[#403e3e] mt-3 uppercase">
           <p>Total:</p>
-          <p>₱ {cartState.finalTotal.toFixed(2)}</p>
+          <p>{formatCurrency(cartState.finalTotal)}</p>
         </div>
       </div>
 

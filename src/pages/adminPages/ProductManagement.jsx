@@ -44,12 +44,20 @@ function ProductManagement() {
   const handleCreateLimited = async () => {
     if (!openLimitedProduct) return;
     try {
-      await axios.post('/api/limited-offer', {
-        product_id: createLimited.product_id,
-        discounted_price: Number(createLimited.discounted_price),
-        start_date: createLimited.start_date,
-        end_date: createLimited.end_date,
-      });
+      const user = JSON.parse(window.localStorage.getItem('user'));
+      await axios.post('/api/limited-offer', 
+        {
+          product_id: createLimited.product_id,
+          discounted_price: Number(createLimited.discounted_price),
+          start_date: createLimited.start_date,
+          end_date: createLimited.end_date,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
       setOpenLimitedProduct(null);
       setCreateLimited({ product_id: '', discounted_price: 0, end_date: '' });
       setProductType('limited');
