@@ -3,13 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  ChevronDown,
-  ChevronUp,
-  PhilippinePeso,
-  EggFried,
-  PackageSearch,
-} from 'lucide-react';
+import { ChevronDown, ChevronUp, PackageSearch } from 'lucide-react';
 import { Button } from '../ui/button';
 import {
   Tooltip,
@@ -74,11 +68,11 @@ export default function OrdersTable({ orders, onCancelOrder }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="text-muted h-full rounded-2xl p-8 text-center shadow">
+          <Card className="text-lighter h-full rounded-2xl p-8 text-center shadow">
             <p className="font-heading text-lg font-semibold">
               No orders found
             </p>
-            <PackageSearch className="text-muted mx-auto mb-2 size-40" />
+            <PackageSearch className="text-lighter mx-auto mb-2 size-40" />
             <p className="text-sm">
               Try adjusting your filters or search keyword.
             </p>
@@ -101,14 +95,11 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                 {/* --- Header --- */}
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2">
                   <div className="flex items-center gap-4">
-                    <motion.div whileHover={{ rotate: 10 }}>
-                      <EggFried className="text-brand size-10" />
-                    </motion.div>
                     <div>
                       <div className="flex items-center gap-6">
-                        <h2 className="text-content">
+                        <h2 className="text-lighter">
                           Order ID:{' '}
-                          <span className="text-secondary text-sm font-semibold tracking-tighter">
+                          <span className="text-content font-heading font-semibold tracking-tighter">
                             #{order.id}
                           </span>
                         </h2>
@@ -119,7 +110,8 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                           {order.status}
                         </motion.span>
                       </div>
-                      <h3 className="text-bold text-muted text-sm">
+                      <h3 className="text-sm">
+                        Ordered at{' '}
                         {dayjs(order.order_date).format('D MMMM YYYY')}
                       </h3>
                     </div>
@@ -131,7 +123,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <span>
-                              <Button variant="outline" disabled>
+                              <Button variant="secondary" disabled>
                                 Cancel Requested
                               </Button>
                             </span>
@@ -144,7 +136,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                       ) : (
                         <motion.div whileHover={{ scale: 1.03 }}>
                           <Button
-                            variant="outline"
+                            variant="destructive"
                             onClick={() => onCancelOrder(order.id)}
                           >
                             Cancel Order
@@ -153,15 +145,15 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                       )
                     ) : null}
 
-                    <motion.div whileHover={{ scale: 1.03 }}>
-                      <Button
-                        onClick={() =>
-                          navigate(`/UserViewOrderDetails/${order.id}`)
-                        }
-                      >
-                        Order Details
-                      </Button>
-                    </motion.div>
+                    <Button
+                      onClick={() =>
+                        navigate(`/UserViewOrderDetails/${order.id}`)
+                      }
+                      // variant="outline"
+                      className="px-6"
+                    >
+                      View Details
+                    </Button>
 
                     <motion.div
                       whileTap={{ scale: 0.95 }}
@@ -210,6 +202,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                                     item.image ||
                                     'https://via.placeholder.com/80x80?text=IMG'
                                   }
+                                  alt={item.product_name}
                                   className="h-full w-full object-fill"
                                 />
                               </motion.div>
@@ -217,7 +210,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                                 <p className="text-sm font-semibold">
                                   {item.product_name}
                                 </p>
-                                <p className="text-muted text-xs">
+                                <p className="text-lighter text-xs">
                                   Quantity:{' '}
                                   <span className="text-content">
                                     {item.quantity}
@@ -234,16 +227,19 @@ export default function OrdersTable({ orders, onCancelOrder }) {
 
                 {/* --- Footer --- */}
                 <motion.div layout className="flex flex-wrap items-center">
-                  <div className="text-content flex w-full items-center justify-between gap-2 rounded-sm py-2">
-                    <p className="text-muted font-semibold">
+                  <div className="text-content flex w-full items-center justify-between rounded-sm">
+                    <p className="text-lighter text-sm">
                       Total:{' '}
-                      <span className="text-primary">
-                        <PhilippinePeso className="inline size-4" />
-                        {parseFloat(order.total_amount).toLocaleString()}
+                      <span className="text-content font-semibold">
+                        {new Intl.NumberFormat('en-PH', {
+                          style: 'currency',
+                          currency: 'PHP',
+                          minimumFractionDigits: 2,
+                        }).format(order.total_amount || 0)}
                       </span>
                     </p>
 
-                    <p className="text-muted space-x-4 text-sm">
+                    <p className="text-lighter space-x-4 text-sm">
                       <span>{order.items.length} items</span>
                       <span className="text-lg font-bold">·</span>
                       <span>Expected: June 20, 1996</span>
