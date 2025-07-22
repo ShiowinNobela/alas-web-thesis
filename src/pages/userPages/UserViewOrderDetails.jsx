@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '@/stores/userStore';
-// import { getStatusColor } from '@/utils/statusBadgeStyle';
+import { getStatusStyle } from '@/utils/statusBadgeStyle';
 
 import {
   UserIcon,
@@ -72,7 +72,7 @@ export default function UserViewOrderDetails() {
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
         <button
           onClick={() => navigate(-1)}
-          className="hover:text-content flex items-center gap-2 text-sm text-gray-500 transition-colors"
+          className="hover:text-content text-lighter flex items-center gap-2 text-sm transition-colors"
         >
           <ArrowLeftIcon size={16} />
           Back
@@ -84,9 +84,9 @@ export default function UserViewOrderDetails() {
           </h1>
           <div className="flex w-full flex-row justify-between">
             <div className="flex items-center space-x-2">
-              <p className="text-muted">
+              <p className="text-lighter">
                 Order Number
-                <span className="text-secondary text-sm tracking-tight">
+                <span className="text-content tracking-tighter">
                   {' '}
                   #{order.id}{' '}
                 </span>
@@ -95,7 +95,9 @@ export default function UserViewOrderDetails() {
               <p> {finalDateString}</p>
             </div>
             <div>
-              <p>{order.status}</p>
+              <p className={`px-4 ${getStatusStyle(order.status)}`}>
+                {order.status}
+              </p>
             </div>
           </div>
         </div>
@@ -124,19 +126,19 @@ export default function UserViewOrderDetails() {
                       <h3 className="text-content font-heading text-left">
                         {item.product_name}
                       </h3>
-                      <p className="text-sm text-gray-500">{item.category}</p>
+                      <p className="text-lighter text-sm">{item.category}</p>
                       <div className="mt-auto flex flex-row divide-x divide-gray-300 text-sm">
-                        <p className="pr-4 text-gray-500">
+                        <p className="text-lighter pr-4">
                           Quantity{' '}
                           <span className="text-content">{item.quantity}</span>
                         </p>
-                        <p className="px-4 text-gray-500">
+                        <p className="text-lighter px-4">
                           Price{' '}
                           <span className="text-content">
                             {item.unit_price}
                           </span>
                         </p>
-                        <p className="px-4 text-gray-500">
+                        <p className="text-lighter px-4">
                           Subtotal{' '}
                           <span className="text-content">{item.subtotal}</span>
                         </p>
@@ -220,18 +222,18 @@ export default function UserViewOrderDetails() {
               <h3 className="text-content font-heading">Customer</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
-                  <UserIcon size={16} className="text-gray-500" />
+                  <UserIcon size={16} className="text-lighter" />
                   <p className="text-content text-sm">{user.username}</p>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <MailIcon size={16} className="text-gray-500" />
-                  <p className="text-sm text-gray-500">{user.email}</p>
+                  <MailIcon size={16} className="text-lighter" />
+                  <p className="text-lighter text-sm">{user.email}</p>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <PhoneIcon size={16} className="text-gray-500" />
-                  <p className="text-sm text-gray-500">{user.contact_number}</p>
+                  <PhoneIcon size={16} className="text-lighter" />
+                  <p className="text-lighter text-sm">{user.contact_number}</p>
                 </div>
               </div>
             </Card>
@@ -239,19 +241,19 @@ export default function UserViewOrderDetails() {
               <h3 className="text-content font-heading">Payment Information</h3>
               <div className="text-content flex flex-col gap-2 text-sm">
                 <div className="flex items-center gap-4">
-                  <PiggyBankIcon size={16} className="text-gray-500" />
+                  <PiggyBankIcon size={16} className="text-lighter" />
                   <p className="text-content">{order.payment_method}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <UserIcon size={16} className="text-gray-500" />
+                  <UserIcon size={16} className="text-lighter" />
                   <p className="text-content">{order.account_name}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <HashIcon size={16} className="text-gray-500" />
+                  <HashIcon size={16} className="text-lighter" />
                   <p className="text-content">{order.reference_number}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <LocationEditIcon size={16} className="text-gray-500" />
+                  <LocationEditIcon size={16} className="text-lighter" />
                   <p className="text-content">{order.address}</p>
                 </div>
               </div>
@@ -260,7 +262,7 @@ export default function UserViewOrderDetails() {
               <h3 className="text-content font-heading">Notes</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-lighter text-sm">
                     {order.notes?.trim() ? order.notes : 'No notes'}
                   </p>
                 </div>
@@ -270,7 +272,7 @@ export default function UserViewOrderDetails() {
               <h3 className="text-content">Other</h3>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-4">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-lighter text-sm">
                     {order.notes?.trim() ? order.notes : 'No notes'}
                   </p>
                 </div>
