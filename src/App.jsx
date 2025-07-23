@@ -7,7 +7,7 @@ import LandPage from './pages/LandingPage.jsx';
 import ProductPage from './pages/ProductListPage.jsx';
 import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
 import { Route, Routes } from 'react-router-dom';
-import UserSettings from './pages/UserSettings.jsx';
+import UserSettings from './pages/userPages/UserSettings';
 import GiveReview from './pages/GiveReview.jsx';
 import Faqs from './pages/Faqs.jsx';
 import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
