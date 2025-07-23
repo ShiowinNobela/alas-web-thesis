@@ -17,20 +17,9 @@ function LoginPage() {
 
   useEffect(() => {
     axios.defaults.withCredentials = true;
-
-    // axios.interceptors.response.use(
-    //   (res) => res,
-    //   (error) => {
-    //     if (error.response?.status === 401) {
-    //       localStorage.removeItem('user');
-    //       window.location.href = '/LoginPage';
-    //     }
-    //     return Promise.reject(error);
-    //   }
-    // );
   }, []);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     const newErrors = {
@@ -42,74 +31,65 @@ function LoginPage() {
 
     if (newErrors.username || newErrors.password) {
       toast.error('Please fill in all required fields!');
-
       return;
     }
 
-    axios.defaults.withCredentials = true;
+    try {
+      // Step 1: Log in and set cookie
+      await axios.post(
+        '/api/users/login/',
+        { username, password },
+        { withCredentials: true }
+      );
 
-    axios
-      .post('/api/users/login/', {
-        username,
-        password,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          window.localStorage.setItem('user', JSON.stringify(response.data));
+      // Step 2: Fetch current user using the cookie
+      const res = await axios.get('/api/users', { withCredentials: true });
+      const userData = res.data;
 
-          return axios
-            .get('/api/users', {
-              headers: {
-                Authorization: `Bearer ${response.data.token}`,
-              },
-            })
-            .then((res) => {
-              const userData = res.data;
+      // Optional: store user info (no tokens)
+      window.localStorage.setItem('user', JSON.stringify(userData));
 
-              window.location.href =
-                userData.role_name === 'admin' ? '/Admin/DashBoard' : '/';
-            });
-        }
-      })
-      .catch((err) => {
-        const res = err.response;
+      // Step 3: Redirect
+      window.location.href =
+        userData.role_name === 'admin' ? '/Admin/DashBoard' : '/';
+    } catch (err) {
+      const res = err.response;
 
-        if (!res) {
-          toast.error('No response from server!');
-          return;
-        }
+      if (!res) {
+        toast.error('No response from server!');
+        return;
+      }
 
-        if (res.status === 401) {
-          toast.error('Please input a valid account!');
-          return;
-        }
+      if (res.status === 401) {
+        toast.error('Invalid credentials!');
+        return;
+      }
 
-        // Show general message
-        const msg = res.data?.message || 'An unexpected error occurred';
-        toast.error(msg);
+      const msg = res.data?.message || 'Unexpected error';
+      toast.error(msg);
 
-        // If we have per-field errors, update state
-        if (res.data?.error) {
-          setErrors((prev) => ({
-            ...prev,
-            ...res.data.error,
-          }));
-        }
-      });
+      if (res.data?.error) {
+        setErrors((prev) => ({
+          ...prev,
+          ...res.data.error,
+        }));
+      }
+    }
   };
 
   useEffect(() => {
+    // Optional auto-redirect if user already in localStorage
     const userRaw = window.localStorage.getItem('user');
     if (userRaw) {
       try {
         const user = JSON.parse(userRaw);
         if (user?.role_name === 'admin') {
           window.location.href = '/Admin/DashBoard';
-        } else if (user?.token) {
+        } else {
           window.location.href = '/';
         }
       } catch {
-        window.localStorage.removeItem('user'); // Corrupted
+        window.localStorage.removeItem('user'); // Clean up corrupted data
       }
     }
   }, []);

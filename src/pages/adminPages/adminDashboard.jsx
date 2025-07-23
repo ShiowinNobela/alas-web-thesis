@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import NewSideBar from "../../components/newSideBar";
-import AdminProfile from "../../components/Chinges/AdminProfile";
-import dayjs from "dayjs";
-import { FaExchangeAlt } from "react-icons/fa";
-import TestGraph from "../../components/TestGraph";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import NewSideBar from '../../components/newSideBar';
+import AdminProfile from '../../components/Chinges/AdminProfile';
+import dayjs from 'dayjs';
+import { FaExchangeAlt } from 'react-icons/fa';
+import TestGraph from '../../components/TestGraph';
 
 function adminDashboard() {
   const [values, setValues] = useState([]);
@@ -19,9 +19,9 @@ function adminDashboard() {
   });
 
   useEffect(() => {
-    const user = JSON.parse(window.localStorage.getItem("user"));
+    const user = JSON.parse(window.localStorage.getItem('user'));
     axios
-      .get("/api/adminOrder", {
+      .get('/api/adminOrder', {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -31,15 +31,13 @@ function adminDashboard() {
         console.log(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       });
   }, []);
 
-
-   useEffect(() => {
-   
-    const startDate = dayjs().subtract(30, "day").format("YYYY-MM-DD");
-    const endDate = dayjs().add(1, "day").format("YYYY-MM-DD");
+  useEffect(() => {
+    const startDate = dayjs().subtract(30, 'day').format('YYYY-MM-DD');
+    const endDate = dayjs().add(1, 'day').format('YYYY-MM-DD');
     axios
       .get(`/api/reports/top-products?start=${startDate}&end=${endDate}`)
       .then((res) => {
@@ -53,20 +51,21 @@ function adminDashboard() {
       .catch((err) => {
         setTopProducts([]);
         setLeastProducts([]);
-        console.error("Failed to fetch top products", err);
+        console.error('Failed to fetch top products', err);
       });
   }, []);
 
-  useEffect(() => { //Graph
+  useEffect(() => {
+    //Graph
     const months = [1, 0].map((n) => {
       const start = dayjs()
-        .subtract(n, "month")
-        .startOf("month")
-        .format("YYYY-MM-DD");
+        .subtract(n, 'month')
+        .startOf('month')
+        .format('YYYY-MM-DD');
       const end = dayjs()
-        .subtract(n, "month")
-        .endOf("month")
-        .format("YYYY-MM-DD");
+        .subtract(n, 'month')
+        .endOf('month')
+        .format('YYYY-MM-DD');
       return { start, end };
     });
 
@@ -77,8 +76,8 @@ function adminDashboard() {
     ).then((results) => {
       const apiSales = results.map((res, idx) => ({
         month: dayjs()
-          .subtract(1 - idx, "month")
-          .format("MMMM YYYY"),
+          .subtract(1 - idx, 'month')
+          .format('MMMM YYYY'),
         value: Number(res.data.data.totalSales || 0),
       }));
 
@@ -91,14 +90,14 @@ function adminDashboard() {
 
   const ordersWithinRange = values.filter((order) => {
     const orderDate = dayjs(order.order_date);
-    const rangeAgo = dayjs().subtract(orderRange, "day");
+    const rangeAgo = dayjs().subtract(orderRange, 'day');
     return orderDate.isAfter(rangeAgo);
   });
 
   const salesWithinRange = values.filter((order) => {
     const orderDate = dayjs(order.order_date);
-    const rangeAgo = dayjs().subtract(salesRange, "day");
-    return orderDate.isAfter(rangeAgo) && order.status === "delivered";
+    const rangeAgo = dayjs().subtract(salesRange, 'day');
+    return orderDate.isAfter(rangeAgo) && order.status === 'delivered';
   });
 
   const totalSalesAmount = salesWithinRange.reduce(
@@ -107,46 +106,45 @@ function adminDashboard() {
   );
 
   const orderRangeText =
-    orderRange === 7 ? " (Last 7 Days)" : " (Last 30 Days)";
+    orderRange === 7 ? ' (Last 7 Days)' : ' (Last 30 Days)';
   const salesRangeText =
-    salesRange === 7 ? " (Last 7 Days)" : " (Last 30 Days)";
+    salesRange === 7 ? ' (Last 7 Days)' : ' (Last 30 Days)';
 
   const deliveredNotifications = values
-    .filter((order) => order.status === "pending")
+    .filter((order) => order.status === 'pending')
     .sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
     .slice(0, 4);
 
   return (
     <>
-      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
-        <NewSideBar />
-        <div className="min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto py-4">
-          <div className="flex flex-row gap-x-5 ">
-            <div class="w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
-              <div className="flex justify-end mb-5">
+      <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-white">
+        <div className="ml-5 flex min-h-full flex-col gap-5 overflow-auto py-4">
+          <div className="flex flex-row gap-x-5">
+            <div class="w-xs rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+              <div className="mb-5 flex justify-end">
                 <FaExchangeAlt
-                  className="w-7 h-7"
+                  className="h-7 w-7"
                   onClick={() => setOrderRange(orderRange === 7 ? 30 : 7)}
                 />
               </div>
 
               <a href="#">
                 <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {" "}
+                  {' '}
                   {ordersWithinRange.length} orders
                 </h5>
               </a>
-              <p class="mb-10 font-semibold text-md text-gray-700 dark:text-gray-400 ">
-                {" "}
-                Total Orders {orderRangeText}{" "}
+              <p class="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
+                {' '}
+                Total Orders {orderRangeText}{' '}
               </p>
               <a
                 href="/Admin/Orders"
-                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Orders
                 <svg
-                  class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                  class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -163,31 +161,31 @@ function adminDashboard() {
               </a>
             </div>
 
-            <div class="w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
-              <div className="flex justify-end mb-5">
+            <div class="w-xs rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+              <div className="mb-5 flex justify-end">
                 <FaExchangeAlt
-                  className="w-7 h-7"
+                  className="h-7 w-7"
                   onClick={() => setSalesRange(salesRange === 7 ? 30 : 7)}
                 />
               </div>
 
               <a href="#">
                 <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {" "}
-                  ₱ {totalSalesAmount.toLocaleString()}{" "}
+                  {' '}
+                  ₱ {totalSalesAmount.toLocaleString()}{' '}
                 </h5>
               </a>
-              <p class="mb-10 font-semibold text-md text-gray-700 dark:text-gray-400 ">
-                {" "}
-                Total Sales{salesRangeText}{" "}
+              <p class="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
+                {' '}
+                Total Sales{salesRangeText}{' '}
               </p>
               <a
                 href="/Admin/SalesPage"
-                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Sales
                 <svg
-                  class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                  class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -204,146 +202,143 @@ function adminDashboard() {
               </a>
             </div>
 
-            <div className="w-4xl p-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 mr-5">
+            <div className="mr-5 w-4xl rounded-lg border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
               <a href="#">
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {" "}
+                  {' '}
                   Notifications
                 </h5>
               </a>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {deliveredNotifications.length === 0 ? (
-                  <div className="text-gray-500 text-sm col-span-2">
+                  <div className="col-span-2 text-sm text-gray-500">
                     No pending orders yet.
                   </div>
                 ) : (
                   deliveredNotifications.map((order) => (
                     <div
                       key={order.id}
-                      className="bg-blue-50 border border-blue-200 rounded-lg shadow p-2 flex flex-col"
+                      className="flex flex-col rounded-lg border border-blue-200 bg-blue-50 p-2 shadow"
                     >
-                      <div className="font-semibold text-blue-800 mb-1 text-sm">
-                        {order.username}’s order{" "}
+                      <div className="mb-1 text-sm font-semibold text-blue-800">
+                        {order.username}’s order{' '}
                         <span className="font-bold">#{order.id}</span>
                       </div>
-                      <div className="text-red-600 font-semibold mb-1">
+                      <div className="mb-1 font-semibold text-red-600">
                         Pending
                       </div>
                       <div className="text-xs text-gray-500">
-                        {dayjs(order.order_date).format("MMM D, YYYY h:mm A")}
+                        {dayjs(order.order_date).format('MMM D, YYYY h:mm A')}
                       </div>
                     </div>
                   ))
                 )}
               </div>
             </div>
-
-          </div>
-          
-          <div className="flex flex-row gap-x-5 justify-between mr-5">
-            <div className="p-4 rounded-lg shadow-xl w-5xl h-55 cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition ">
-                <h1 className="text-xl font-semibold ">Top Selling Products</h1>
-                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-gray-500">
-                  <thead className="text-xs round text-white uppercase bg-admin ">
-                    <tr>
-                      <th scope="col" className="px-8 py-3 ">
-                        Product Name
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Orders
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Revenue
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Price
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {topProducts.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="text-center py-4">
-                          No data available.
-                        </td>
-                      </tr>
-                    ) : (
-                      topProducts.map((product) => (
-                        <tr>
-                          <td className="px-8 py-3">{product.name}</td>
-                          <td className="px-6 py-3">{product.totalSold}</td>
-                          <td className="px-6 py-3">₱ {product.totalRevenue}</td>
-                          <td className="px-6 py-3">
-                            ₱{parseFloat(product.unitPrice).toFixed(2)}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-                      
-              <div
-                className="p-4 rounded-lg shadow-xl w-1/2 h-55 cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition"
-                role="button"
-              >
-                <h1 className="text-xl font-semibold">Least Selling Products</h1>
-                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-gray-500">
-                  <thead className="text-xs round text-white uppercase bg-admin">
-                    <tr>
-                      <th scope="col" className="px-8 py-3">
-                        Product Name
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Orders
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Revenue
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Price
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {leastProducts.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="text-center py-4">
-                          No data available.
-                        </td>
-                      </tr>
-                    ) : (
-                      leastProducts.map((product) => (
-                        <tr key={product.id}>
-                          <td className="px-8 py-3">{product.name}</td>
-                          <td className="px-6 py-3">{product.totalSold}</td>
-                          <td className="px-6 py-3">₱ {product.totalRevenue}</td>
-                          <td className="px-6 py-3">
-                            ₱{parseFloat(product.unitPrice).toFixed(2)}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
           </div>
 
-          
+          <div className="mr-5 flex flex-row justify-between gap-x-5">
+            <div className="hover:bg-secondary h-55 w-5xl cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition">
+              <h1 className="text-xl font-semibold">Top Selling Products</h1>
+              <table className="w-full bg-gray-500 text-left text-sm text-white shadow-xl dark:text-gray-400">
+                <thead className="round bg-admin text-xs text-white uppercase">
+                  <tr>
+                    <th scope="col" className="px-8 py-3">
+                      Product Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Orders
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Revenue
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topProducts.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-4 text-center">
+                        No data available.
+                      </td>
+                    </tr>
+                  ) : (
+                    topProducts.map((product) => (
+                      <tr>
+                        <td className="px-8 py-3">{product.name}</td>
+                        <td className="px-6 py-3">{product.totalSold}</td>
+                        <td className="px-6 py-3">₱ {product.totalRevenue}</td>
+                        <td className="px-6 py-3">
+                          ₱{parseFloat(product.unitPrice).toFixed(2)}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
             <div
-              className="p-4 rounded-lg shadow-xl w-2/3 col-span-2 row-span-2 h-fit cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition"
+              className="hover:bg-secondary h-55 w-1/2 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
               role="button"
             >
-              <div className="flex justify-between">
-                <div className="w-full h-full">
-                  <h2 className="font-bold text-xl mb-1 uppercase">
-                    Graph last month vs this month
-                  </h2>
-                  <TestGraph graphData={graphData} />
-                </div>
+              <h1 className="text-xl font-semibold">Least Selling Products</h1>
+              <table className="w-full bg-gray-500 text-left text-sm text-white shadow-xl dark:text-gray-400">
+                <thead className="round bg-admin text-xs text-white uppercase">
+                  <tr>
+                    <th scope="col" className="px-8 py-3">
+                      Product Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Orders
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Revenue
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leastProducts.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-4 text-center">
+                        No data available.
+                      </td>
+                    </tr>
+                  ) : (
+                    leastProducts.map((product) => (
+                      <tr key={product.id}>
+                        <td className="px-8 py-3">{product.name}</td>
+                        <td className="px-6 py-3">{product.totalSold}</td>
+                        <td className="px-6 py-3">₱ {product.totalRevenue}</td>
+                        <td className="px-6 py-3">
+                          ₱{parseFloat(product.unitPrice).toFixed(2)}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div
+            className="hover:bg-secondary col-span-2 row-span-2 h-fit w-2/3 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+            role="button"
+          >
+            <div className="flex justify-between">
+              <div className="h-full w-full">
+                <h2 className="mb-1 text-xl font-bold uppercase">
+                  Graph last month vs this month
+                </h2>
+                <TestGraph graphData={graphData} />
               </div>
             </div>
-          
+          </div>
         </div>
       </div>
     </>
