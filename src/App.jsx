@@ -7,7 +7,7 @@ import LandPage from './pages/LandingPage.jsx';
 import ProductPage from './pages/ProductListPage.jsx';
 import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
 import { Route, Routes } from 'react-router-dom';
-import UserSettings from './pages/UserSettings.jsx';
+import UserSettings from './pages/userPages/UserSettings';
 import GiveReview from './pages/GiveReview.jsx';
 import Faqs from './pages/Faqs.jsx';
 import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
@@ -35,6 +35,7 @@ import WalkInOrderTable from './pages/adminPages/WalkInOrdersTable.jsx';
 import AdminOrderDetails from './pages/adminPages/AdminOrderDetails.jsx';
 import AboutUs from './pages/AboutUs.jsx';
 import NotificationPage from './pages/adminPages/NotificationPage.jsx';
+import AdminLayout from './pages/layouts/AdminLayout';
 
 function App() {
   return (
@@ -65,30 +66,29 @@ function App() {
           ></Route>
         </Route>
 
-        <Route path="/Admin">
-          <Route index element={<Login />}></Route>
-          <Route path="DashBoard" element={<AdminDashboard />}></Route>
-          <Route path="AddProduct" element={<AddProd />}></Route>
-          <Route path="EditProduct/:id" element={<EditProd />}></Route>
-          <Route path="ProductManagement" element={<ProdManagement />}></Route>
-          <Route path="AccountManagement" element={<AccManagement />}></Route>
-          <Route path="Orders" element={<Orders />}></Route>
+        <Route path="/Admin" element={<AdminLayout />}>
+          <Route index element={<Login />} />
+          <Route path="DashBoard" element={<AdminDashboard />} />
+          <Route path="AddProduct" element={<AddProd />} />
+          <Route path="EditProduct/:id" element={<EditProd />} />
+          <Route path="ProductManagement" element={<ProdManagement />} />
+          <Route path="AccountManagement" element={<AccManagement />} />
+          <Route path="Orders" element={<Orders />} />
           <Route path="AdminOrderDetails/:id" element={<AdminOrderDetails />} />
-          <Route path="PopUpInfoPage" element={<PopUpInfoPage />}></Route>
-          <Route path="BazaarOrdering" element={<BazaarOrdering />}></Route>
-          <Route path="EditOrder" element={<EditOrder />}></Route>
-          <Route path="AdminAddUser" element={<AdminAddUser />}></Route>
-          <Route path="ViewOrder/:id" element={<ViewOrder />}></Route>
-          <Route path="AdminUserEdit/:id" element={<AdminUserEdit />}></Route>
-          <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
-          <Route path="WalkInOrdering" element={<WalkInOrdering />}></Route>
-          <Route path="SalesPage" element={<SalesPage />}></Route>
+          <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
+          <Route path="BazaarOrdering" element={<BazaarOrdering />} />
+          <Route path="EditOrder" element={<EditOrder />} />
+          <Route path="AdminAddUser" element={<AdminAddUser />} />
+          <Route path="ViewOrder/:id" element={<ViewOrder />} />
+          <Route path="AdminUserEdit/:id" element={<AdminUserEdit />} />
           <Route
             path="InventoryManagement"
             element={<InventoryManagement />}
           ></Route>
-          <Route path="SalesPage" element={<SalesPage />}></Route>
-          <Route path="NotificationPage" element={<NotificationPage />}></Route>
+          <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
+          <Route path="WalkInOrdering" element={<WalkInOrdering />} />
+          <Route path="SalesPage" element={<SalesPage />} />
+          <Route path="NotificationPage" element={<NotificationPage />} />
         </Route>
       </Routes>
     </>

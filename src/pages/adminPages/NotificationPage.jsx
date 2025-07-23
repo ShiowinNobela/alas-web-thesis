@@ -1,30 +1,30 @@
-import NewSideBar from '../../components/newSideBar'
-import { IoIosNotifications } from "react-icons/io";
+import { IoIosNotifications } from 'react-icons/io';
 
 function NotificationPage() {
   return (
-    <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-white grid grid-cols-[0.20fr_0.80fr]">
-      <NewSideBar />
-      <div className="flex flex-col h-full overflow-x-auto bg-white p-6 justify-center items-center">
-        
-        <div className='flex flex-row justify-between ml-5 mr-5 p-5 bg-gray-300 rounded-t-2xl w-7/8'>
-          <div className='flex flex-row items-center justify-center h-full'>
-            <IoIosNotifications className="text-4xl text-secondary " />
-            <h1 className="text-2xl font-bold text-secondary">Notifications</h1>
-          </div>
-
-          <div>
-            <input type="text" className='ml-2 px-4 py-2 bg-white text-black rounded shadow-admin shadow-md' />
-            <button className="ml-2 px-4 py-2 bg-primary text-white rounded">Search</button>
-          </div>
+    <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-white p-6">
+      <div className="mr-5 ml-5 flex w-7/8 flex-row justify-between rounded-t-2xl bg-gray-300 p-5">
+        <div className="flex h-full flex-row items-center justify-center">
+          <IoIosNotifications className="text-secondary text-4xl" />
+          <h1 className="text-secondary text-2xl font-bold">Notifications</h1>
         </div>
-        
-        <div className='flex flex-col items-center justify-center h-7/8 w-7/8 bg-gray-50 rounded-b-2xl p-5 shadow-admin shadow-xs'>
-          // Placeholder for notifications
+
+        <div>
+          <input
+            type="text"
+            className="shadow-admin ml-2 rounded bg-white px-4 py-2 text-black shadow-md"
+          />
+          <button className="bg-primary ml-2 rounded px-4 py-2 text-white">
+            Search
+          </button>
         </div>
       </div>
+
+      <div className="shadow-admin flex h-7/8 w-7/8 flex-col items-center justify-center rounded-b-2xl bg-gray-50 p-5 shadow-xs">
+        {/* Placeholder for notifications */}
+      </div>
     </div>
-  )
+  );
 }
 
-export default NotificationPage
+export default NotificationPage;

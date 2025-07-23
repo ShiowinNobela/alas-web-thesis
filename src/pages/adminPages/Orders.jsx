@@ -312,9 +312,8 @@ function AdminViewOrderPage() {
   return (
     <>
       <Toaster richColors />
-      <div className="bg-muted grid h-screen w-screen grid-cols-[0.20fr_0.80fr] overflow-x-clip overflow-y-auto">
-        <NewSideBar />
-        <main className="flex min-h-full flex-col gap-3 overflow-auto px-4 py-7">
+      <div className="bg-neutral flex h-full flex-col items-center justify-center overflow-x-auto">
+        <main className="flex min-h-full flex-col gap-3 overflow-auto px-4 py-8">
           <div className="bg-admin flex h-[25%] w-full flex-row space-x-6 rounded-xl p-6 shadow">
             <Card
               title="Sales"

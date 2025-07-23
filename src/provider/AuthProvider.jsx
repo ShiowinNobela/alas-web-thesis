@@ -1,38 +1,38 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import useUserStore from '@/stores/userStore';
+import PropTypes from 'prop-types';
 
 const AuthProvider = ({ children }) => {
   const setUser = useUserStore((state) => state.setUser);
+  const [loading, setLoading] = useState(true);
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    const stored = localStorage.getItem('user');
-    if (!stored) return;
-
-    let token;
-    try {
-      token = JSON.parse(stored)?.token;
-    } catch {
-      return;
-    }
-
-    if (!token) return;
-
     axios
-      .get('/api/users', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get('/api/users', { withCredentials: true }) // fetch user using cookie
       .then((res) => {
-        setUser(res.data); // store only valid user info in memory
+        setUser(res.data);
+
+        // optional: update user in localStorage (without token)
+        localStorage.setItem('user', JSON.stringify(res.data));
       })
       .catch((err) => {
-        console.error('Token invalid or expired');
+        console.error('User not authenticated');
+        localStorage.removeItem('user'); // cleanup
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
+  if (loading) return <div>Loading...</div>;
+
   return children;
+};
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default AuthProvider;

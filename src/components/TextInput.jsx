@@ -19,7 +19,7 @@ export default function TextInput({
       <Label htmlFor={id}>{label}</Label>
 
       {/* Input field with error styling */}
-      <div className="mt-2">
+      <div className="">
         <Input
           id={id}
           type={type}

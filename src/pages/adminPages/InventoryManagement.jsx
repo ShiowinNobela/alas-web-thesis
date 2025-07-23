@@ -95,11 +95,9 @@ function InventoryManagement() {
 
   return (
     <>
-      <div className="grid h-screen max-h-full w-screen grid-cols-[0.20fr_0.80fr] overflow-x-clip overflow-y-auto bg-[#E2E0E1]">
-        <NewSideBar />
-
-        <section className="bg-gray-50 px-4 py-7">
-          <div className="mx-auto max-w-screen-2xl px-4 lg:px-12">
+      <div className="flex h-full flex-col overflow-x-auto bg-white">
+        <section className="bg-gray-50">
+          <div className="mx-auto max-w-screen-2xl px-4 py-8">
             <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
               {/* Summary Section */}
               <div className="flex flex-col space-y-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">

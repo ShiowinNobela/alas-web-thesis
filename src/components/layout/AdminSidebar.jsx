@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { handleLogout } from '@/utils/logout';
-import DBlogo from '../components/images/logo-alas1.jpg';
+import DBlogo from '@/components/images/logo-alas1.jpg';
 import { IoIosLogOut, IoIosNotifications } from 'react-icons/io';
 import { FaBox } from 'react-icons/fa';
 import {
@@ -57,7 +57,7 @@ const menuItems = [
   },
 ];
 
-function NewSideBar() {
+function Sidebar() {
   const location = useLocation();
 
   const getNavItemClass = (path) => {
@@ -71,13 +71,19 @@ function NewSideBar() {
     `${location.pathname === path ? 'text-black' : 'text-white'} mx-3 h-[30px] w-[30px]`;
 
   return (
-    <div className="w-10% h-screen border-r-2 border-[#122661] bg-[#121b2c]">
-      <div className="m-3 ml-3 grid grid-cols-[0.3fr_0.7fr] gap-3">
-        <img src={DBlogo} alt="Alas Delis and Spices Logo" />
+    <div className="h-screen w-[300px] flex-shrink-0 border-r-2 border-[#122661] bg-[#121b2c]">
+      {/* Logo Section */}
+      <div className="flex items-center p-4">
+        <img
+          src={DBlogo}
+          alt="Alas Delis and Spices Logo"
+          className="h-12 object-contain"
+        />
       </div>
 
-      <nav>
-        <ul>
+      {/* Menu Items */}
+      <nav className="px-2">
+        <ul className="space-y-1">
           {menuItems.map((item) => (
             <Link to={item.path} key={item.path}>
               <li className={getNavItemClass(item.path)}>
@@ -95,6 +101,7 @@ function NewSideBar() {
             </Link>
           ))}
 
+          {/* Logout Button */}
           <li
             className="hover:bg-primary group flex cursor-pointer items-center rounded-lg p-2 pt-4 pb-4 text-base font-normal text-white"
             onClick={handleLogout}
@@ -110,4 +117,4 @@ function NewSideBar() {
   );
 }
 
-export default NewSideBar;
+export default Sidebar;
