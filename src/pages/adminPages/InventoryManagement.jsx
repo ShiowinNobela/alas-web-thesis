@@ -1,4 +1,3 @@
-import NewSideBar from '../../components/newSideBar';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { HiOutlinePencil } from 'react-icons/hi';
@@ -96,119 +95,114 @@ function InventoryManagement() {
   return (
     <>
       <div className="flex h-full flex-col overflow-x-auto bg-white">
-        <section className="bg-gray-50">
-          <div className="mx-auto max-w-screen-2xl px-4 py-8">
-            <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
-              {/* Summary Section */}
-              <div className="flex flex-col space-y-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
-                <div className="flex flex-1 items-center space-x-4">
-                  <h5>
-                    <span className="text-gray-500">Total Products:</span>{' '}
-                    <span className="font-semibold text-gray-700">
-                      {totalProducts}
-                    </span>
-                  </h5>
-                  <h5>
-                    <span className="text-gray-500">Total Stock:</span>{' '}
-                    <span className="font-semibold text-gray-700">
-                      {totalStock}
-                    </span>
-                  </h5>
-                </div>
-              </div>
-
-              {/* Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-slate-800">
-                  <thead className="bg-admin sticky top-0 z-10 text-xs text-white uppercase">
-                    <tr>
-                      <th className={tableHeadStyle}>ID</th>
-                      <th className={tableHeadStyle}>Name</th>
-                      <th className={tableHeadStyle}>Category</th>
-                      <th className={tableHeadStyle}>Stock</th>
-                      <th className={tableHeadStyle}>Price</th>
-                      <th className={tableHeadStyle}>Active</th>
-                      <th className={tableHeadStyle}>Last Update</th>
-                      <th className={tableHeadStyle}>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((d) => (
-                      <tr
-                        key={d.id}
-                        className="border-b text-center hover:bg-gray-100"
-                      >
-                        <td className="px-6 py-2">{d.id}</td>
-                        <td className="px-6 py-2">{d.name}</td>
-                        <td className="px-6 py-2">{d.category}</td>
-
-                        <td className="px-6 py-2">
-                          {d.stock_quantity <= 10 ? (
-                            <span className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2 py-1 text-sm font-medium text-red-700">
-                              {d.stock_quantity}
-                              <MdErrorOutline
-                                className="text-red-500"
-                                title="Low stock"
-                              />
-                            </span>
-                          ) : (
-                            d.stock_quantity
-                          )}
-                        </td>
-
-                        <td className="px-6 py-2">
-                          ₱{parseFloat(d.price).toFixed(2)}
-                        </td>
-                        <td className="min-w-[110px] px-6 py-2">
-                          <span
-                            className={`rounded px-2 py-0.5 text-xs font-medium ${
-                              d.is_active
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-red-100 text-red-800'
-                            }`}
-                          >
-                            {d.is_active ? 'Active' : 'Inactive'}
-                          </span>
-                        </td>
-                        <td className="px-6 py-2">
-                          {new Date(d.updated_at).toLocaleString()}
-                        </td>
-                        <td className="flex items-center justify-center gap-2 px-6 py-2">
-                          <button
-                            className="text-blue-500 hover:text-blue-700"
-                            onClick={() => openEditModal(d)}
-                          >
-                            <HiOutlinePencil size={18} />
-                          </button>
-                          <button
-                            onClick={() =>
-                              toggleProductStatus.mutate({
-                                id: d.id,
-                                newStatus: !d.is_active,
-                              })
-                            }
-                            className="text-gray-600 hover:text-gray-800"
-                            title="Toggle Active"
-                            disabled={toggleProductStatus.isLoading}
-                          >
-                            {d.is_active ? (
-                              <MdToggleOn
-                                size={24}
-                                className="text-green-500"
-                              />
-                            ) : (
-                              <MdToggleOff size={24} className="text-red-500" />
-                            )}
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+        <div className="mx-auto max-w-screen-2xl px-4 py-8">
+          <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
+            {/* Summary Section */}
+            <div className="flex flex-col space-y-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
+              <div className="flex flex-1 items-center space-x-4">
+                <h5>
+                  <span className="text-gray-500">Total Products:</span>{' '}
+                  <span className="font-semibold text-gray-700">
+                    {totalProducts}
+                  </span>
+                </h5>
+                <h5>
+                  <span className="text-gray-500">Total Stock:</span>{' '}
+                  <span className="font-semibold text-gray-700">
+                    {totalStock}
+                  </span>
+                </h5>
               </div>
             </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm text-slate-800">
+                <thead className="bg-admin sticky top-0 z-10 text-xs text-white uppercase">
+                  <tr>
+                    <th className={tableHeadStyle}>ID</th>
+                    <th className={tableHeadStyle}>Name</th>
+                    <th className={tableHeadStyle}>Category</th>
+                    <th className={tableHeadStyle}>Stock</th>
+                    <th className={tableHeadStyle}>Price</th>
+                    <th className={tableHeadStyle}>Active</th>
+                    <th className={tableHeadStyle}>Last Update</th>
+                    <th className={tableHeadStyle}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((d) => (
+                    <tr
+                      key={d.id}
+                      className="border-b text-center hover:bg-gray-100"
+                    >
+                      <td className="px-6 py-2">{d.id}</td>
+                      <td className="px-6 py-2">{d.name}</td>
+                      <td className="px-6 py-2">{d.category}</td>
+
+                      <td className="px-6 py-2">
+                        {d.stock_quantity <= 10 ? (
+                          <span className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2 py-1 text-sm font-medium text-red-700">
+                            {d.stock_quantity}
+                            <MdErrorOutline
+                              className="text-red-500"
+                              title="Low stock"
+                            />
+                          </span>
+                        ) : (
+                          d.stock_quantity
+                        )}
+                      </td>
+
+                      <td className="px-6 py-2">
+                        ₱{parseFloat(d.price).toFixed(2)}
+                      </td>
+                      <td className="min-w-[110px] px-6 py-2">
+                        <span
+                          className={`rounded px-2 py-0.5 text-xs font-medium ${
+                            d.is_active
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}
+                        >
+                          {d.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-2">
+                        {new Date(d.updated_at).toLocaleString()}
+                      </td>
+                      <td className="flex items-center justify-center gap-2 px-6 py-2">
+                        <button
+                          className="text-blue-500 hover:text-blue-700"
+                          onClick={() => openEditModal(d)}
+                        >
+                          <HiOutlinePencil size={18} />
+                        </button>
+                        <button
+                          onClick={() =>
+                            toggleProductStatus.mutate({
+                              id: d.id,
+                              newStatus: !d.is_active,
+                            })
+                          }
+                          className="text-gray-600 hover:text-gray-800"
+                          title="Toggle Active"
+                          disabled={toggleProductStatus.isLoading}
+                        >
+                          {d.is_active ? (
+                            <MdToggleOn size={24} className="text-green-500" />
+                          ) : (
+                            <MdToggleOff size={24} className="text-red-500" />
+                          )}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </section>
+        </div>
       </div>
 
       <Modal show={isModalOpen} size="md" onClose={closeModal}>
