@@ -30,16 +30,13 @@
   --font-logo: Jost, serif;
   --color-brand: #e9190f;
   --color-lighter: #888888;
+  --color-primary-700: #2364aa;
   --color-content: #251605;
   --color-neutral: #f6f7f8;
   --color-red: #ef4444;
   --color-info: #2364aa;
   --color-admin: #121b2c;
   --color-background: #fafcff;
-}
-
-@utility flowbite {
-  color: var(--color-admin);
 }
 
 body {
