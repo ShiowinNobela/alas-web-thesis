@@ -13,16 +13,24 @@ function UserSettings() {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   return (
-    <section className="bg-neutral text-content h-full py-4 pb-40">
+    <section className="text-content h-full bg-white py-4">
       {/* User Information */}
-      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-        <h1 className="font-heading py-4 text-2xl font-semibold">
-          User Profile
-        </h1>
+      <div className="mx-auto max-w-5xl justify-center px-4 py-8 md:px-6 lg:px-8">
+        <div className="mb-10 text-center">
+          <div className="mb-2 flex items-center justify-center">
+            <h1 className="text-content font-heading text-3xl font-semibold">
+              Customer Profile
+            </h1>
+          </div>
+          <p className="text-lighter mx-auto max-w-3xl text-lg">
+            Check your profile info and see how you're doing with your latest
+            stats.
+          </p>
+        </div>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <UserStats icon="heart" label="hello" stats="10" />
-          <UserStats icon="heart" label="hello" stats="20" />
-          <UserStats icon="heart" label="hello" stats="33" />
+          <UserStats icon="heart" label="Order Count" stats="10" />
+          <UserStats icon="heart" label="Reviews" stats="20" />
+          <UserStats icon="heart" label="Loyalty Points" stats="33" />
           <UserStats icon="heart" label="hello" stats="101" />
         </div>
 
