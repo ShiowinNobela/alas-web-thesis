@@ -96,7 +96,12 @@ function LoginPage() {
 
   return (
     <>
-      <section className="flex min-h-screen items-center justify-center px-4 py-8 pb-30">
+      <section className="flex min-h-screen items-center justify-center bg-white px-4 py-8 pb-30">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 h-20 w-20 animate-pulse rounded-full bg-gradient-to-br from-yellow-200 to-orange-300 opacity-20"></div>
+          <div className="absolute top-40 right-20 h-16 w-16 animate-pulse rounded-full bg-gradient-to-br from-red-200 to-pink-300 opacity-20 delay-1000"></div>
+          <div className="absolute bottom-40 left-20 h-12 w-12 animate-pulse rounded-full bg-gradient-to-br from-orange-200 to-red-300 opacity-20 delay-500"></div>
+        </div>
         <Card className="text-content w-full max-w-md rounded-md p-6 shadow-sm sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">

@@ -1,5 +1,5 @@
 import { EyeIcon, HeartIcon, ShoppingBasket, StarIcon } from 'lucide-react';
-import { Card } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import PropTypes from 'prop-types';
 
 const iconMap = {
@@ -12,10 +12,16 @@ const iconMap = {
 export default function UserStats({ icon, label, stats }) {
   const IconComponent = iconMap[icon];
   return (
-    <Card className="text-content w-full gap-2 px-4 py-4">
-      {IconComponent && <IconComponent />}
-      <p className="text-lighter text-sm">{label}</p>
-      <h4 className="font-heading text-primary text-5xl leading-15">{stats}</h4>
+    <Card className="text-content w-full gap-2">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          {IconComponent && <IconComponent className="size-5" />}
+          <h3 className="text-content">{label}</h3>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <h4 className="text-primary text-4xl font-semibold">{stats}</h4>
+      </CardContent>
     </Card>
   );
 }
