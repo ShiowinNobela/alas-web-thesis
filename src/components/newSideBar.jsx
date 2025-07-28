@@ -28,7 +28,7 @@ function NewSideBar() {
 
   return (
     <>
-      <div className="h-screen w-10% bg-[#121b2c] border-r-2 border-[#122661]">
+      <div className="h-screen w-10% bg-gradient-to-b from-[#712921] via-[#61231d] to-[#34130f] p-1">
         {/* <p className='text-white text-3xl font-sans'>Alas Delis and Spices</p> */}
         <div className="grid grid-cols-[0.3fr_0.7fr] gap-3 ml-3 m-3">
           <img src={DBlogo} alt="" />

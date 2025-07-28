@@ -118,11 +118,11 @@ function adminDashboard() {
 
   return (
     <>
-      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
+      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#F3EDE8] grid grid-cols-[0.20fr_0.80fr]">
         <NewSideBar />
         <div className="min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto py-4">
           <div className="flex flex-row gap-x-5 ">
-            <div class="w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+            <div class="w-xs p-6 bg-white border-2 border-[#d6d6d6] rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
               <div className="flex justify-end mb-5">
                 <FaExchangeAlt
                   className="w-7 h-7"
@@ -131,7 +131,7 @@ function adminDashboard() {
               </div>
 
               <a href="#">
-                <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <h5 class="mb-2 text-4xl font-bold tracking-tight text-[#000000] dark:text-white">
                   {" "}
                   {ordersWithinRange.length} orders
                 </h5>
@@ -142,7 +142,7 @@ function adminDashboard() {
               </p>
               <a
                 href="/Admin/Orders"
-                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#F2A65A] hover:bg-[#e6923e] rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Orders
                 <svg
@@ -163,7 +163,7 @@ function adminDashboard() {
               </a>
             </div>
 
-            <div class="w-xs p-6 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
+            <div class="w-xs p-6 bg-white border-2 border-[#d6d6d6] rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
               <div className="flex justify-end mb-5">
                 <FaExchangeAlt
                   className="w-7 h-7"
@@ -183,7 +183,7 @@ function adminDashboard() {
               </p>
               <a
                 href="/Admin/SalesPage"
-                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#F2A65A] hover:bg-[#e6923e] rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Sales
                 <svg
@@ -204,7 +204,7 @@ function adminDashboard() {
               </a>
             </div>
 
-            <div className="w-4xl p-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 mr-5">
+            <div className="w-4xl p-2 bg-white border-2 border-[#d6d6d6] rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 mr-5">
               <a href="#">
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {" "}
@@ -241,12 +241,12 @@ function adminDashboard() {
           </div>
           
           <div className="flex flex-row gap-x-5 justify-between mr-5">
-            <div className="p-4 rounded-lg shadow-xl w-5xl h-55 cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition ">
+            <div className="p-4 rounded-lg shadow-xl w-5xl h-55 cursor-pointer bg-[#e5e3e3] border-2 border-[#d6d6d6] drop-shadow-md">
                 <h1 className="text-xl font-semibold ">Top Selling Products</h1>
-                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-gray-500">
-                  <thead className="text-xs round text-white uppercase bg-admin ">
+                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-[#FAFAFA] rounded-tl-md rounded-tr-md">
+                  <thead className="text-xs text-white uppercase bg-[#8C3B32]">
                     <tr>
-                      <th scope="col" className="px-8 py-3 ">
+                      <th scope="col" className="px-8 py-3 rounded-tl-md">
                         Product Name
                       </th>
                       <th scope="col" className="px-6 py-3">
@@ -255,7 +255,7 @@ function adminDashboard() {
                       <th scope="col" className="px-6 py-3">
                         Total Revenue
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 rounded-tr-md">
                         Price
                       </th>
                     </tr>
@@ -284,14 +284,14 @@ function adminDashboard() {
               </div>
                       
               <div
-                className="p-4 rounded-lg shadow-xl w-1/2 h-55 cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition"
+                className="p-4 rounded-lg shadow-xl w-1/2 h-55 cursor-pointer bg-[#e5e3e3] border-2 border-[#d6d6d6] drop-shadow-md"
                 role="button"
               >
                 <h1 className="text-xl font-semibold">Least Selling Products</h1>
-                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-gray-500">
-                  <thead className="text-xs round text-white uppercase bg-admin">
+                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-[#FAFAFA] rounded-tl-md rounded-tr-md">
+                  <thead className="text-xs round text-white uppercase bg-[#8C3B32]">
                     <tr>
-                      <th scope="col" className="px-8 py-3">
+                      <th scope="col" className="px-8 py-3 rounded-tl-md">
                         Product Name
                       </th>
                       <th scope="col" className="px-6 py-3">
@@ -300,7 +300,7 @@ function adminDashboard() {
                       <th scope="col" className="px-6 py-3">
                         Total Revenue
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 rounded-tr-md">
                         Price
                       </th>
                     </tr>
@@ -331,7 +331,7 @@ function adminDashboard() {
 
           
             <div
-              className="p-4 rounded-lg shadow-xl w-2/3 col-span-2 row-span-2 h-fit cursor-pointer bg-gray-100 drop-shadow-xl hover:bg-secondary transition"
+              className="p-4 rounded-lg shadow-xl w-2/3 col-span-2 row-span-2 h-fit cursor-pointer bg-white border-2 border-[#d6d6d6] drop-shadow-md hover:bg-secondary transition"
               role="button"
             >
               <div className="flex justify-between">
