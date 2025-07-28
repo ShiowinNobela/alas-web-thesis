@@ -1,54 +1,45 @@
-import Cart from "../components/Cart.jsx";
-import React, { useState, useEffect } from "react";
-import { PiMagnifyingGlassLight } from "react-icons/pi";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { TiShoppingCart } from "react-icons/ti";
+import { useState, useEffect } from 'react';
+import { TiShoppingCart } from 'react-icons/ti';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import Cart from '../components/Cart.jsx';
 
 function ProductPage() {
   const [data, setData] = useState([]);
-  const [limData, setLimData] = useState([]);
-  const [statusFilter, setStatusFilter] = useState("All");
   const [newData, setNewData] = useState([]);
-  const navigate = useNavigate();
   const [cartUpdated, setCartUpdated] = useState(false);
+  const navigate = useNavigate();
 
-  const user = window.localStorage.getItem("user");
+  const user = window.localStorage.getItem('user');
   const isLoggedIn = !!user;
 
   useEffect(() => {
-    window.localStorage.getItem("user");
     axios
-      .get("/api/products")
+      .get('/api/products')
       .then((res) => {
         setData(res.data);
-        setNewData([...res.data]);
+        setNewData(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   }, []);
 
   const handleAddToCart = async (product) => {
-    const user = window.localStorage.getItem("user");
+    const user = window.localStorage.getItem('user');
     if (!user) {
-      navigate("/LoginPage");
+      navigate('/LoginPage');
       return;
     }
+
     try {
-      const parsedUser = JSON.parse(user);
-      const userdata = await axios.get("/api/users", {
-        headers: {
-          Authorization: `Bearer ${parsedUser.token}`,
-        },
-      });
-      const response = userdata.data;
-      await axios.post(`/api/cart/${response.id}`, {
-        productId: product.id.toString(),
+      await axios.post(`/api/cart/me`, {
+        productId: product.id,
         quantity: 1,
       });
+
       setCartUpdated((prev) => !prev);
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error('Error adding to cart:', error);
     }
   };
 
@@ -56,41 +47,39 @@ function ProductPage() {
     <div
       className={
         isLoggedIn
-          ? "grid grid-cols-[3fr_1fr] w-full bg-yellow-100 min-h-full"
-          : "w-full bg-[#f2efef] h-full"
+          ? 'grid min-h-full w-full grid-cols-[3fr_1fr] bg-yellow-100'
+          : 'h-full w-full bg-[#f2efef]'
       }
     >
       {/* Left Side */}
-      <div className={isLoggedIn ? "" : "w-full"}>
-        <div className="pt-5 pl-5 flex flex-col gap-5 min-h-fit ">
-          {/* <div className="h-10 w-2/5 bg-[#FAF9F6] pt-1 pl-3 rounded-2xl border-2 border-[#595959] flex justify-between cursor-pointer">
-                <p>search</p>
-                <PiMagnifyingGlassLight className=" mx-3 h-7 w-7" />{" "}
-              </div> */}
+      <div className={isLoggedIn ? '' : 'w-full'}>
+        <div className="flex min-h-fit flex-col gap-5 pt-5 pl-5">
           {/* Product List */}
-          <div className="grid grid-cols-4 gap-4 h-[89%] overflow-y-auto overflow-x-hidden">
+          <div className="grid h-[89%] grid-cols-4 gap-4 overflow-x-hidden overflow-y-auto">
             {newData.map((d) => (
-              // products
-              <div className="flex flex-col items-center justify-center bg-white/70 p-6 mr-4 rounded-md shadow-md">
+              <div
+                key={d.id}
+                className="mr-4 flex flex-col items-center justify-center rounded-md bg-white/70 p-6 shadow-md"
+              >
                 <img
                   src={d.image}
-                  alt={d.name}
-                  className="mb-4 w-50 h-55  object-cover rounded-sm"
+                  alt={d.name || 'Product image'}
+                  className="mb-4 h-55 w-50 rounded-sm object-cover"
                 />
-                <div className="text-center mb-2">
-                  <p className="text-lg font-semibold mb-1">{d.name} </p>
+                <div className="mb-2 text-center">
+                  <p className="mb-1 text-lg font-semibold">{d.name}</p>
                   <p className="text-xl font-bold text-[#000000]">{d.price}</p>
                 </div>
-                <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="grid w-full grid-cols-2 gap-4">
                   <button
-                    className="bg-[#db2026] text-[#ffffff] font-semibold text-sm py-2 px-4 rounded hover:bg-red-800 transition flex justify-center"
+                    className="flex items-center justify-center gap-1 rounded bg-[#db2026] px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-800"
                     onClick={() => handleAddToCart(d)}
                   >
-                    <TiShoppingCart className="h-10 w-10" />
-                    {d.stock_quantity}
+                    <TiShoppingCart className="h-5 w-5" />
+                    <span>{d.stock_quantity}</span>
                   </button>
                   <button
-                    className="bg-gray-200 text-[#363535] font-semibold text-s py-2 px-4 rounded hover:bg-gray-400 transition"
+                    className="rounded bg-gray-200 px-4 py-2 text-sm font-semibold text-[#363535] transition hover:bg-gray-400"
                     onClick={() => navigate(`/ProductDetailsPage/${d.id}`)}
                   >
                     View Details
@@ -101,6 +90,7 @@ function ProductPage() {
           </div>
         </div>
       </div>
+
       {/* Right Side */}
       {isLoggedIn && <Cart cartUpdated={cartUpdated} />}
     </div>

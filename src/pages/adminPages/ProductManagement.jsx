@@ -70,12 +70,9 @@ function ProductManagement() {
 
   return (
     <>
-      <div className="grid h-screen w-screen grid-cols-[0.20fr_0.80fr] overflow-y-auto bg-[#E2E0E1]">
-        <NewSideBar />
-
-        <div className="ml-5 flex min-h-full flex-col gap-5 overflow-auto pr-7">
-          {/* Top Right Actions */}
-          <div className="flex w-full justify-end pt-3">
+      <div className="flex h-full flex-col overflow-x-auto bg-white">
+        <section className="bg-gray-50">
+          <div className="mx-auto max-w-screen-2xl px-4 py-8">
             {/* Reserved for AdminProfile or other top-right actions */}
           </div>
 
@@ -189,7 +186,7 @@ function ProductManagement() {
               </CreateLimited>
             )}
           </div>
-        </div>
+        </section>
 
         <Toaster richColors />
       </div>

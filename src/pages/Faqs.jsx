@@ -1,9 +1,8 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { questions } from '../questions.js';
 
 function Faqs() {
-  const tabsRef = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
   const [show, setShow] = useState(
     questions.map((category) =>
@@ -22,9 +21,9 @@ function Faqs() {
   };
 
   return (
-    <section className="min-h-full bg-yellow-100 py-10">
-      <div className="mx-auto max-w-6xl px-4">
-        <h1 className="mb-8 text-center text-2xl font-semibold tracking-wide uppercase">
+    <section className="bg-neutral h-full py-8 pb-50">
+      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+        <h1 className="font-heading text-content mb-8 text-2xl font-semibold">
           Frequently Asked Questions
         </h1>
 
@@ -38,7 +37,7 @@ function Faqs() {
                   className={`rounded-lg p-3 text-left font-medium ${
                     activeTab === index
                       ? 'bg-primary text-white'
-                      : 'hover:bg-secondary bg-yellow-100 text-gray-700'
+                      : 'hover:bg-secondary text-content'
                   }`}
                 >
                   {category.category}

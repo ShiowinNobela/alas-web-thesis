@@ -105,8 +105,8 @@ function RegistrationPage() {
 
   return (
     <>
-      <section className="flex min-h-screen items-center justify-center px-4 py-8 pb-30">
-        <Card className="text-content bg-card w-full max-w-md rounded-lg p-6 shadow-sm sm:p-8">
+      <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
+        <Card className="text-content bg-card w-full max-w-md p-6 shadow-sm sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img

@@ -7,9 +7,9 @@ import {
   TableRow,
 } from 'flowbite-react';
 import PropTypes from 'prop-types';
-import gcashImg from '../components/images/gcash-logo.png';
-import mayaImg from '../components/images/maya-icon.png';
-import bankImg from '../components/images/maya-icon.png';
+import gcashImg from '@/components/images/gcash-logo.png';
+import mayaImg from '@/components/images/maya-icon.png';
+import bankImg from '@/components/images/maya-icon.png';
 
 const paymentImages = {
   GCash: gcashImg,
