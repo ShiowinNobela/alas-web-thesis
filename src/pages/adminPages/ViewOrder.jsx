@@ -46,17 +46,9 @@ function ViewOrder() {
     }, [id]);
 
     const updateStatus = () => {
-        const user = JSON.parse(window.localStorage.getItem('user'));
-        axios.patch(`/api/adminOrder/status-update/${id}`,
-            {
-                status: selectedStatus
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${user?.token}`,
-                },
-            }
-        )
+        axios.patch(`/api/adminOrder/status-update/${id}`,{
+            status: selectedStatus
+        } )
         .then((response) => {
             setOrderDetails(response.data.data)
             toast.success('Order status updated successfully!');

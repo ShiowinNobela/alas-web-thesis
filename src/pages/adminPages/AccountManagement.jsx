@@ -74,17 +74,9 @@ function AccountManagement() {
 
   const toggleUserStatus = useMutation({
     mutationFn: async ({ id, newStatus }) => {
-      const user = JSON.parse(window.localStorage.getItem('user'));
-      const response = await axios.patch(`/api/adminUser/manage/${id}`, 
-        {
-          is_active: newStatus,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
+      const response = await axios.patch(`/api/adminUser/manage/${id}`, {
+        is_active: newStatus,
+      });
       return response.data;
     },
     onSuccess: () => {

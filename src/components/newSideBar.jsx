@@ -71,8 +71,8 @@ function NewSideBar() {
     `${location.pathname === path ? 'text-black' : 'text-white'} mx-3 h-[30px] w-[30px]`;
 
   return (
-    <div className="h-screen w-10% bg-gradient-to-b from-[#712921] via-[#61231d] to-[#34130f] p-1">
-      <div className="grid grid-cols-[0.3fr_0.7fr] gap-3 ml-3 m-3">
+    <div className="w-10% h-screen border-r-2 border-[#122661] bg-[#121b2c]">
+      <div className="m-3 ml-3 grid grid-cols-[0.3fr_0.7fr] gap-3">
         <img src={DBlogo} alt="Alas Delis and Spices Logo" />
       </div>
 

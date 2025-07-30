@@ -117,12 +117,11 @@ function adminDashboard() {
 
   return (
     <>
-      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#F3EDE8] grid grid-cols-[0.20fr_0.80fr]">
-        <NewSideBar />
-        <div className="min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto py-4">
-          <div className="flex flex-row gap-x-5 ">
-            <div className="w-xs p-6 bg-white border-2 border-[#d6d6d6] rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-              <div className="flex justify-end mb-5">
+      <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-white">
+        <div className="ml-5 flex min-h-full flex-col gap-5 overflow-auto py-4">
+          <div className="flex flex-row gap-x-5">
+            <div class="w-xs rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+              <div className="mb-5 flex justify-end">
                 <FaExchangeAlt
                   className="h-7 w-7"
                   onClick={() => setOrderRange(orderRange === 7 ? 30 : 7)}
@@ -130,22 +129,22 @@ function adminDashboard() {
               </div>
 
               <a href="#">
-                <h5 className="mb-2 text-4xl font-bold tracking-tight text-[#000000] dark:text-white">
-                  {" "}
+                <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {' '}
                   {ordersWithinRange.length} orders
                 </h5>
               </a>
-              <p className="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
+              <p class="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
                 {' '}
                 Total Orders {orderRangeText}{' '}
               </p>
               <a
                 href="/Admin/Orders"
-                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#F2A65A] hover:bg-[#e6923e] rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Orders
                 <svg
-                  className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
+                  class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -153,17 +152,17 @@ function adminDashboard() {
                 >
                   <path
                     stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
                     d="M1 5h12m0 0L9 1m4 4L9 9"
                   />
                 </svg>
               </a>
             </div>
 
-            <div className="w-xs p-6 bg-white border-2 border-[#d6d6d6] rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
-              <div className="flex justify-end mb-5">
+            <div class="w-xs rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+              <div className="mb-5 flex justify-end">
                 <FaExchangeAlt
                   className="h-7 w-7"
                   onClick={() => setSalesRange(salesRange === 7 ? 30 : 7)}
@@ -171,22 +170,22 @@ function adminDashboard() {
               </div>
 
               <a href="#">
-                <h5 className="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {' '}
                   ₱ {totalSalesAmount.toLocaleString()}{' '}
                 </h5>
               </a>
-              <p className="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
+              <p class="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
                 {' '}
                 Total Sales{salesRangeText}{' '}
               </p>
               <a
                 href="/Admin/SalesPage"
-                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#F2A65A] hover:bg-[#e6923e] rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Sales
                 <svg
-                  className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
+                  class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -194,16 +193,16 @@ function adminDashboard() {
                 >
                   <path
                     stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
                     d="M1 5h12m0 0L9 1m4 4L9 9"
                   />
                 </svg>
               </a>
             </div>
 
-            <div className="w-4xl p-2 bg-white border-2 border-[#d6d6d6] rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 mr-5">
+            <div className="mr-5 w-4xl rounded-lg border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
               <a href="#">
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {' '}
@@ -222,7 +221,7 @@ function adminDashboard() {
                       className="flex flex-col rounded-lg border border-blue-200 bg-blue-50 p-2 shadow"
                     >
                       <div className="mb-1 text-sm font-semibold text-blue-800">
-                        {order.username}'s order{' '}
+                        {order.username}’s order{' '}
                         <span className="font-bold">#{order.id}</span>
                       </div>
                       <div className="mb-1 font-semibold text-red-600">
@@ -236,96 +235,109 @@ function adminDashboard() {
                 )}
               </div>
             </div>
-
           </div>
-          
-          <div className="flex flex-row gap-x-5 justify-between mr-5">
-            <div className="p-4 rounded-lg shadow-xl w-5xl h-55 cursor-pointer bg-[#e5e3e3] border-2 border-[#d6d6d6] drop-shadow-md">
-                <h1 className="text-xl font-semibold ">Top Selling Products</h1>
-                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-[#FAFAFA] rounded-tl-md rounded-tr-md">
-                  <thead className="text-xs text-white uppercase bg-[#8C3B32]">
+
+          <div className="mr-5 flex flex-row justify-between gap-x-5">
+            <div className="hover:bg-secondary h-55 w-5xl cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition">
+              <h1 className="text-xl font-semibold">Top Selling Products</h1>
+              <table className="w-full bg-gray-500 text-left text-sm text-white shadow-xl dark:text-gray-400">
+                <thead className="round bg-admin text-xs text-white uppercase">
+                  <tr>
+                    <th scope="col" className="px-8 py-3">
+                      Product Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Orders
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Revenue
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topProducts.length === 0 ? (
                     <tr>
-                      <th scope="col" className="px-8 py-3 rounded-tl-md">
-                        Product Name
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Orders
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Revenue
-                      </th>
-                      <th scope="col" className="px-6 py-3 rounded-tr-md">
-                        Price
-                      </th>
+                      <td colSpan={5} className="py-4 text-center">
+                        No data available.
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {topProducts.length === 0 ? (
+                  ) : (
+                    topProducts.map((product) => (
                       <tr>
-                        <td colSpan={5} className="text-center py-4">
-                          No data available.
+                        <td className="px-8 py-3">{product.name}</td>
+                        <td className="px-6 py-3">{product.totalSold}</td>
+                        <td className="px-6 py-3">₱ {product.totalRevenue}</td>
+                        <td className="px-6 py-3">
+                          ₱{parseFloat(product.unitPrice).toFixed(2)}
                         </td>
                       </tr>
-                    ) : (
-                      topProducts.map((product) => (
-                        <tr key={product.id}>
-                          <td className="px-8 py-3">{product.name}</td>
-                          <td className="px-6 py-3">{product.totalSold}</td>
-                          <td className="px-6 py-3">₱ {product.totalRevenue}</td>
-                          <td className="px-6 py-3">
-                            ₱{parseFloat(product.unitPrice).toFixed(2)}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-                      
-              <div
-                className="p-4 rounded-lg shadow-xl w-1/2 h-55 cursor-pointer bg-[#e5e3e3] border-2 border-[#d6d6d6] drop-shadow-md"
-                role="button"
-              >
-                <h1 className="text-xl font-semibold">Least Selling Products</h1>
-                <table className="w-full text-sm text-left text-white dark:text-gray-400 shadow-xl bg-[#FAFAFA] rounded-tl-md rounded-tr-md">
-                  <thead className="text-xs round text-white uppercase bg-[#8C3B32]">
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <div
+              className="hover:bg-secondary h-55 w-1/2 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              role="button"
+            >
+              <h1 className="text-xl font-semibold">Least Selling Products</h1>
+              <table className="w-full bg-gray-500 text-left text-sm text-white shadow-xl dark:text-gray-400">
+                <thead className="round bg-admin text-xs text-white uppercase">
+                  <tr>
+                    <th scope="col" className="px-8 py-3">
+                      Product Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Orders
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Total Revenue
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Price
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leastProducts.length === 0 ? (
                     <tr>
-                      <th scope="col" className="px-8 py-3 rounded-tl-md">
-                        Product Name
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Orders
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Total Revenue
-                      </th>
-                      <th scope="col" className="px-6 py-3 rounded-tr-md">
-                        Price
-                      </th>
+                      <td colSpan={5} className="py-4 text-center">
+                        No data available.
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {leastProducts.length === 0 ? (
-                      <tr>
-                        <td colSpan={5} className="text-center py-4">
-                          No data available.
+                  ) : (
+                    leastProducts.map((product) => (
+                      <tr key={product.id}>
+                        <td className="px-8 py-3">{product.name}</td>
+                        <td className="px-6 py-3">{product.totalSold}</td>
+                        <td className="px-6 py-3">₱ {product.totalRevenue}</td>
+                        <td className="px-6 py-3">
+                          ₱{parseFloat(product.unitPrice).toFixed(2)}
                         </td>
                       </tr>
-                    ) : (
-                      leastProducts.map((product) => (
-                        <tr key={product.id}>
-                          <td className="px-8 py-3">{product.name}</td>
-                          <td className="px-6 py-3">{product.totalSold}</td>
-                          <td className="px-6 py-3">₱ {product.totalRevenue}</td>
-                          <td className="px-6 py-3">
-                            ₱{parseFloat(product.unitPrice).toFixed(2)}
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div
+            className="hover:bg-secondary col-span-2 row-span-2 h-fit w-2/3 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+            role="button"
+          >
+            <div className="flex justify-between">
+              <div className="h-full w-full">
+                <h2 className="mb-1 text-xl font-bold uppercase">
+                  Graph last month vs this month
+                </h2>
+                <TestGraph graphData={graphData} />
               </div>
+            </div>
           </div>
         </div>
       </div>

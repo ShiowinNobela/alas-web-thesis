@@ -14,19 +14,13 @@ import {
 const tableHeadStyle = 'px-6 py-3 text-center';
 
 function InventoryManagement() {
-  const user = JSON.parse(window.localStorage.getItem('user'));
-  
   const {
     data = [],
     isLoading,
     error,
   } = useQuery({
     queryKey: ['products'],
-    queryFn: () => axios.get('/api/products/admin', {
-      headers: {
-        Authorization: `Bearer ${user?.token}`,
-      },
-    }).then((res) => res.data),
+    queryFn: () => axios.get('/api/products/admin').then((res) => res.data),
   });
 
   const totalProducts = data.length;
@@ -35,28 +29,15 @@ function InventoryManagement() {
   const queryClient = useQueryClient();
 
   const toggleProductStatus = useMutation({
-    mutationFn: ({ id, newStatus }) => {
-      console.log('Toggling product status:', { id, newStatus });
-      console.log('Using token:', user?.token ? 'Token present' : 'No token found');
-      
-      return axios.patch(`/api/products/toggle-status/${id}`, 
-        {
-          is_active: newStatus,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
-    },
-    onSuccess: (response) => {
-      console.log('Product status toggle successful:', response.data);
+    mutationFn: ({ id, newStatus }) =>
+      axios.patch(`/api/products/toggle-status/${id}`, {
+        is_active: newStatus,
+      }),
+    onSuccess: () => {
       queryClient.invalidateQueries(['products']);
     },
     onError: (error) => {
       console.error('Toggle error:', error.response?.data || error.message);
-      console.error('Full error details:', error);
     },
   });
 
@@ -88,31 +69,14 @@ function InventoryManagement() {
 
   // Mutation for updating stock and price
   const updateStockPrice = useMutation({
-    mutationFn: ({ id, restock_quantity, price }) => {
-      console.log('Updating stock/price for product:', id);
-      console.log('New values:', { restock_quantity, price });
-      console.log('Using token:', user?.token ? 'Token present' : 'No token found');
-      
-      return axios.patch(`/api/products/stock-price/${id}`, 
-        {
-          restock_quantity: Number(restock_quantity),
-          price: Number(price),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
-    },
-    onSuccess: (response) => {
-      console.log('Stock/price update successful:', response.data);
+    mutationFn: ({ id, restock_quantity, price }) =>
+      axios.patch(`/api/products/stock-price/${id}`, {
+        restock_quantity: Number(restock_quantity),
+        price: Number(price),
+      }),
+    onSuccess: () => {
       queryClient.invalidateQueries(['products']);
       closeModal();
-    },
-    onError: (error) => {
-      console.error('Stock/price update failed:', error);
-      console.error('Error response:', error.response?.data);
     },
   });
 
