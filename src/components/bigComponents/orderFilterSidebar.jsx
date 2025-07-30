@@ -61,7 +61,7 @@ export default function OrderFiltersPanel() {
   };
 
   return (
-    <Card className="text-content flex h-full w-64 shrink-0 flex-col gap-4 rounded-2xl p-4 shadow">
+    <Card className="text-content flex h-full w-56 shrink-0 flex-col gap-4 rounded-2xl p-4 shadow">
       <h3 className="font-heading border-b border-gray-200 text-lg">Filters</h3>
 
       {/* Search Order ID */}
