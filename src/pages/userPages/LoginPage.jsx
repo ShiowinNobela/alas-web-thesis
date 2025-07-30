@@ -96,7 +96,7 @@ function LoginPage() {
 
   return (
     <>
-      <section className="flex min-h-screen items-center justify-center bg-white px-4 py-8 pb-30">
+      <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute top-20 left-10 h-20 w-20 animate-pulse rounded-full bg-gradient-to-br from-yellow-200 to-orange-300 opacity-20"></div>
           <div className="absolute top-40 right-20 h-16 w-16 animate-pulse rounded-full bg-gradient-to-br from-red-200 to-pink-300 opacity-20 delay-1000"></div>

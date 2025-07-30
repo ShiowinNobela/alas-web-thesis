@@ -90,9 +90,9 @@ function UserUpdateModal({ open, onClose }) {
                 <Button
                   disabled={
                     isPending ||
-                    !username.trim() ||
-                    !address.trim() ||
-                    !contactNumber.trim()
+                    !(username || '').trim() ||
+                    !(address || '').trim() ||
+                    !(contactNumber || '').trim()
                   }
                   onClick={() =>
                     updateUser({
