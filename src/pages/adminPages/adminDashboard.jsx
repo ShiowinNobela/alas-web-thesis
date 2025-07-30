@@ -117,10 +117,10 @@ function adminDashboard() {
 
   return (
     <>
-      <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-white">
-        <div className="ml-5 flex min-h-full flex-col gap-5 overflow-auto py-4">
-          <div className="flex flex-row gap-x-5">
-            <div class="w-xs rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+      <div className="h-screen w-full overflow-auto bg-[#F3EDE8] p-5">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-row gap-5">
+            <div className="w-xs rounded-lg border-2 border-[#d6d6d6] bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
               <div className="mb-5 flex justify-end">
                 <FaExchangeAlt
                   className="h-7 w-7"
@@ -129,22 +129,22 @@ function adminDashboard() {
               </div>
 
               <a href="#">
-                <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <h5 className="mb-2 text-4xl font-bold tracking-tight text-[#000000] dark:text-white">
                   {' '}
                   {ordersWithinRange.length} orders
                 </h5>
               </a>
-              <p class="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
+              <p className="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
                 {' '}
                 Total Orders {orderRangeText}{' '}
               </p>
               <a
                 href="/Admin/Orders"
-                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="inline-flex items-center rounded-lg bg-[#F2A65A] px-3 py-2 text-center text-sm font-medium text-white hover:bg-[#e6923e] focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Orders
                 <svg
-                  class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
+                  className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -152,16 +152,16 @@ function adminDashboard() {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M1 5h12m0 0L9 1m4 4L9 9"
                   />
                 </svg>
               </a>
             </div>
 
-            <div class="w-xs rounded-lg border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            <div className="w-xs rounded-lg border-2 border-[#d6d6d6] bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
               <div className="mb-5 flex justify-end">
                 <FaExchangeAlt
                   className="h-7 w-7"
@@ -170,22 +170,22 @@ function adminDashboard() {
               </div>
 
               <a href="#">
-                <h5 class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                <h5 className="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {' '}
                   ₱ {totalSalesAmount.toLocaleString()}{' '}
                 </h5>
               </a>
-              <p class="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
+              <p className="text-md mb-10 font-semibold text-gray-700 dark:text-gray-400">
                 {' '}
                 Total Sales{salesRangeText}{' '}
               </p>
               <a
                 href="/Admin/SalesPage"
-                class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="inline-flex items-center rounded-lg bg-[#F2A65A] px-3 py-2 text-center text-sm font-medium text-white hover:bg-[#e6923e] focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Go to Sales
                 <svg
-                  class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
+                  className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -193,16 +193,16 @@ function adminDashboard() {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M1 5h12m0 0L9 1m4 4L9 9"
                   />
                 </svg>
               </a>
             </div>
 
-            <div className="mr-5 w-4xl rounded-lg border border-gray-200 bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+            <div className="w-4xl rounded-lg border-2 border-[#d6d6d6] bg-white p-2 shadow-lg dark:border-gray-700 dark:bg-gray-800">
               <a href="#">
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {' '}
@@ -221,7 +221,7 @@ function adminDashboard() {
                       className="flex flex-col rounded-lg border border-blue-200 bg-blue-50 p-2 shadow"
                     >
                       <div className="mb-1 text-sm font-semibold text-blue-800">
-                        {order.username}’s order{' '}
+                        {order.username}'s order{' '}
                         <span className="font-bold">#{order.id}</span>
                       </div>
                       <div className="mb-1 font-semibold text-red-600">
@@ -237,13 +237,13 @@ function adminDashboard() {
             </div>
           </div>
 
-          <div className="mr-5 flex flex-row justify-between gap-x-5">
-            <div className="hover:bg-secondary h-55 w-5xl cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition">
+          <div className="flex flex-row gap-5">
+            <div className="h-55 w-full cursor-pointer rounded-lg border-2 border-[#d6d6d6] bg-[#e5e3e3] p-4 shadow-xl drop-shadow-md">
               <h1 className="text-xl font-semibold">Top Selling Products</h1>
-              <table className="w-full bg-gray-500 text-left text-sm text-white shadow-xl dark:text-gray-400">
-                <thead className="round bg-admin text-xs text-white uppercase">
+              <table className="w-full rounded-tl-md rounded-tr-md bg-[#FAFAFA] text-left text-sm text-white shadow-xl dark:text-gray-400">
+                <thead className="bg-[#8C3B32] text-xs text-white uppercase">
                   <tr>
-                    <th scope="col" className="px-8 py-3">
+                    <th scope="col" className="rounded-tl-md px-8 py-3">
                       Product Name
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -252,7 +252,7 @@ function adminDashboard() {
                     <th scope="col" className="px-6 py-3">
                       Total Revenue
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="rounded-tr-md px-6 py-3">
                       Price
                     </th>
                   </tr>
@@ -266,7 +266,7 @@ function adminDashboard() {
                     </tr>
                   ) : (
                     topProducts.map((product) => (
-                      <tr>
+                      <tr key={product.id}>
                         <td className="px-8 py-3">{product.name}</td>
                         <td className="px-6 py-3">{product.totalSold}</td>
                         <td className="px-6 py-3">₱ {product.totalRevenue}</td>
@@ -281,14 +281,14 @@ function adminDashboard() {
             </div>
 
             <div
-              className="hover:bg-secondary h-55 w-1/2 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              className="h-55 w-full cursor-pointer rounded-lg border-2 border-[#d6d6d6] bg-[#e5e3e3] p-4 shadow-xl drop-shadow-md"
               role="button"
             >
               <h1 className="text-xl font-semibold">Least Selling Products</h1>
-              <table className="w-full bg-gray-500 text-left text-sm text-white shadow-xl dark:text-gray-400">
-                <thead className="round bg-admin text-xs text-white uppercase">
+              <table className="w-full rounded-tl-md rounded-tr-md bg-[#FAFAFA] text-left text-sm text-white shadow-xl dark:text-gray-400">
+                <thead className="round bg-[#8C3B32] text-xs text-white uppercase">
                   <tr>
-                    <th scope="col" className="px-8 py-3">
+                    <th scope="col" className="rounded-tl-md px-8 py-3">
                       Product Name
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -297,7 +297,7 @@ function adminDashboard() {
                     <th scope="col" className="px-6 py-3">
                       Total Revenue
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="rounded-tr-md px-6 py-3">
                       Price
                     </th>
                   </tr>
@@ -323,20 +323,6 @@ function adminDashboard() {
                   )}
                 </tbody>
               </table>
-            </div>
-          </div>
-
-          <div
-            className="hover:bg-secondary col-span-2 row-span-2 h-fit w-2/3 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
-            role="button"
-          >
-            <div className="flex justify-between">
-              <div className="h-full w-full">
-                <h2 className="mb-1 text-xl font-bold uppercase">
-                  Graph last month vs this month
-                </h2>
-                <TestGraph graphData={graphData} />
-              </div>
             </div>
           </div>
         </div>
