@@ -108,10 +108,18 @@ function UserViewOrderPage() {
   return (
     <>
       <main className="bg-neutral h-full py-4 pb-40">
-        <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-          <h1 className="font-heading text-content py-4 text-2xl font-semibold">
-            Your Orders List
-          </h1>
+        <div className="mx-auto max-w-6xl px-4 py-8 md:px-6 lg:px-8">
+          <div className="mb-8 text-center">
+            <div className="mb-2 flex items-center justify-center">
+              <h1 className="text-content font-heading text-3xl font-semibold">
+                Your Orders
+              </h1>
+            </div>
+            <p className="text-lighter flex justify-center text-lg">
+              Track your recent orders and stay updated on their status in one
+              place.
+            </p>
+          </div>
 
           <div className="flex h-[calc(100vh-4rem)] gap-2">
             <div className="sticky top-4 h-fit self-start">

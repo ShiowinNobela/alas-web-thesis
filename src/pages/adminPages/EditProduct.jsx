@@ -1,35 +1,35 @@
 // import Sidebar from "../../components/sidebar.jsx";
-import { useEffect, useState } from "react";
-import { Toaster, toast } from "sonner";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
+import axios from 'axios';
 // import { Category } from "../constants.js";
-import { useNavigate, useParams } from "react-router-dom";
-import AdminProfile from "../../components/Chinges/AdminProfile.jsx";
-import NewSideBar from "../../components/newSideBar";
-import BackButton from "../../components/Chinges/BackButton.jsx";
-import BaseInput from "../../components/Chinges/baseInput.jsx";
-import Description from "../../components/Chinges/Description.jsx";
-import DropDown from "../../components/Chinges/DropDown.jsx";
-import Upload from "../../components/Chinges/Upload.jsx";
-import UploadButton from "../../components/Chinges/UploadButton.jsx";
+import { useNavigate, useParams } from 'react-router-dom';
+import AdminProfile from '../../components/Chinges/AdminProfile.jsx';
+import NewSideBar from '../../components/newSideBar';
+import BackButton from '../../components/Chinges/BackButton.jsx';
+import BaseInput from '../../components/Chinges/baseInput.jsx';
+import Description from '../../components/Chinges/Description.jsx';
+import DropDown from '../../components/Chinges/DropDown.jsx';
+import Upload from '../../components/Chinges/Upload.jsx';
+import UploadButton from '../../components/Chinges/UploadButton.jsx';
 
 function AddProduct() {
   const { id } = useParams();
   const [values, setValues] = useState({
-    id: "",
-    name: "",
-    category: "",
-    stock_quantity: "",
-    price: "",
-    image: "",
-    description: "",
+    id: '',
+    name: '',
+    category: '',
+    stock_quantity: '',
+    price: '',
+    image: '',
+    description: '',
     is_active: false,
   });
 
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("/api/products/" + id)
+      .get('/api/products/' + id)
       .then((res) => {
         setValues(res.data);
       })
@@ -56,42 +56,39 @@ function AddProduct() {
       is_active: Boolean(values.is_active), // force boolean
     };
     axios
-      .put("/api/products/" + id, submitValues)
+      .put('/api/products/' + id, submitValues)
       .then((res) => {
         setValues({
           ...values,
           is_active: Boolean(res.data.is_active),
         });
         console.log(res);
-        toast.success("Product Details updated successfully!");
+        toast.success('Product Details updated successfully!');
         setTimeout(() => {
-          navigate("/Admin/ProductManagement");
+          navigate('/Admin/ProductManagement');
         }, 1000);
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
           toast.error(err.response.data.message);
         } else {
-          toast.error("An unexpected error occurred");
+          toast.error('An unexpected error occurred');
         }
       });
   };
 
   return (
-    <div className="h-full w-full grid md:grid-cols-[260px_1fr] bg-neutral overflow-y-auto">
-      {/* Sidebar */}
-      <NewSideBar />
-
+    <div className="flex h-full flex-col overflow-x-auto bg-white">
       {/* Main Content */}
       <main className="flex flex-col gap-2 p-6">
         {/* Top bar with Back Button */}
         <div className="flex items-center justify-start">
           <button
-            onClick={() => navigate("/Admin/ProductManagement")}
-            className="flex items-center gap-2 text-black bg-white hover:bg-gray-200 px-4 py-2 rounded-lg shadow transition-colors duration-200"
+            onClick={() => navigate('/Admin/ProductManagement')}
+            className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-black shadow transition-colors duration-200 hover:bg-gray-200"
           >
             <svg
-              className="w-5 h-5"
+              className="h-5 w-5"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -103,12 +100,12 @@ function AddProduct() {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            <span className="font-medium text-sm">Back</span>
+            <span className="text-sm font-medium">Back</span>
           </button>
         </div>
 
         {/* Form Card */}
-        <section className="bg-white rounded-xl shadow-lg p-8">
+        <section className="rounded-xl bg-white p-8 shadow-lg">
           <div className="grid gap-3 md:grid-cols-[1.2fr_0.8fr]">
             <div className="flex flex-col gap-1">
               <h2 className="text-lg font-semibold text-black">Basic Info</h2>
@@ -143,10 +140,10 @@ function AddProduct() {
                 <DropDown
                   label="Category"
                   options={[
-                    { value: "hot_sauce", label: "Hot Sauce" },
-                    { value: "chili_oils", label: "Chili Oils" },
-                    { value: "pickled_jalopeno", label: "Pickled Jalopeno" },
-                    { value: "limited_item", label: "Limited Item" },
+                    { value: 'hot_sauce', label: 'Hot Sauce' },
+                    { value: 'chili_oils', label: 'Chili Oils' },
+                    { value: 'pickled_jalopeno', label: 'Pickled Jalopeno' },
+                    { value: 'limited_item', label: 'Limited Item' },
                   ]}
                   value={values.category}
                   onChange={(e) =>
@@ -165,7 +162,7 @@ function AddProduct() {
                 }
               />
 
-              <div className="flex items-center gap-3 mt-2">
+              <div className="mt-2 flex items-center gap-3">
                 <label
                   htmlFor="active"
                   className="text-sm font-medium text-black"
@@ -179,7 +176,7 @@ function AddProduct() {
                   onChange={(e) =>
                     setValues({ ...values, is_active: e.target.checked })
                   }
-                  className="h-5 w-5 accent-[#d3723a] rounded-md"
+                  className="h-5 w-5 rounded-md accent-[#d3723a]"
                 />
               </div>
             </div>
@@ -196,7 +193,7 @@ function AddProduct() {
           </div>
 
           {/* Save Button Centered */}
-          <div className="flex justify-center mt-10">
+          <div className="mt-10 flex justify-center">
             <UploadButton onClick={handleUpdate}>Save</UploadButton>
           </div>
         </section>

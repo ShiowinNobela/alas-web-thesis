@@ -1,26 +1,26 @@
-import Sidebar from "../../components/sidebar.jsx";
-import React, { useState } from "react";
-import axios from "axios";
-import { Toaster, toast } from "sonner";
-import { useNavigate } from "react-router-dom";
-import AdminProfile from "../../components/Chinges/AdminProfile.jsx";
-import NewSideBar from "../../components/newSideBar";
-import BackButton from "../../components/Chinges/BackButton.jsx";
-import BaseInput from "../../components/Chinges/BaseInput.jsx";
-import Description from "../../components/Chinges/Description.jsx";
-import DropDown from "../../components/Chinges/DropDown.jsx";
-import Upload from "../../components/Chinges/Upload.jsx";
-import UploadButton from "../../components/Chinges/UploadButton.jsx";
+import Sidebar from '../../components/sidebar.jsx';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Toaster, toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import AdminProfile from '../../components/Chinges/AdminProfile.jsx';
+import NewSideBar from '../../components/newSideBar';
+import BackButton from '../../components/Chinges/BackButton.jsx';
+import BaseInput from '../../components/Chinges/BaseInput.jsx';
+import Description from '../../components/Chinges/Description.jsx';
+import DropDown from '../../components/Chinges/DropDown.jsx';
+import Upload from '../../components/Chinges/Upload.jsx';
+import UploadButton from '../../components/Chinges/UploadButton.jsx';
 
 function AddProduct() {
   const [values, setValues] = useState({
-    id: "",
-    name: "",
-    category: "",
-    stock_quantity: "",
-    price: "",
-    image: "placeholderImg.png",
-    description: "",
+    id: '',
+    name: '',
+    category: '',
+    stock_quantity: '',
+    price: '',
+    image: 'placeholderImg.png',
+    description: '',
   });
 
   const navigate = useNavigate();
@@ -28,35 +28,34 @@ function AddProduct() {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("/api/products/", values)
+      .post('/api/products/', values)
       .then((res) => {
-        toast.success("Product Details updated successfully!");
+        toast.success('Product Details updated successfully!');
         setTimeout(() => {
-          navigate("/Admin/ProductManagement");
+          navigate('/Admin/ProductManagement');
         }, 1000);
       })
       .catch((err) => {
         if (err.response && err.response.status === 500) {
           toast.error(err.response.data.message);
         } else {
-          toast.error("An unexpected error occurred");
+          toast.error('An unexpected error occurred');
         }
       });
   };
 
   return (
     <>
-      <div className="h-screen max-h-full w-screen overflow-x-clip overflow-y-auto bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
-        <NewSideBar />
-        <div className="min-h-full w-100% ml-5 flex flex-col gap-5 overflow-auto">
-          <div className="w-full pt-3 pr-7 flex justify-end">
+      <div className="flex h-full flex-col overflow-x-auto bg-white">
+        <div className="bg-gray-50">
+          <div className="mx-auto max-w-screen-2xl px-4 py-8">
             <AdminProfile />
           </div>
-          <div className="w-full flex justify-between items-center">
-            <BackButton onClick={() => navigate("/Admin/ProductManagement")} />
+          <div className="flex w-full items-center justify-between">
+            <BackButton onClick={() => navigate('/Admin/ProductManagement')} />
           </div>
-          <div className="w-full h-135 grid grid-cols-2 gap-7 pl-4 pr-8">
-            <div className="h-full bg-gray-800 rounded-2xl flex flex-col p-7 gap-3">
+          <div className="grid h-135 w-full grid-cols-2 gap-7 pr-8 pl-4">
+            <div className="flex h-full flex-col gap-3 rounded-2xl bg-gray-800 p-7">
               <BaseInput
                 label="Product Id"
                 className="pb-5"
@@ -82,11 +81,11 @@ function AddProduct() {
                 <DropDown
                   label="Category"
                   options={[
-                    { value: "", label: "-- select an option --" },
-                    { value: "hot_sauce", label: "Hot Sauce" },
-                    { value: "chili_oils", label: "Chili Oils" },
-                    { value: "pickled_jalopeno", label: "Pickled Jalopeno" },
-                    { value: "limited_item", label: "Limited Item" },
+                    { value: '', label: '-- select an option --' },
+                    { value: 'hot_sauce', label: 'Hot Sauce' },
+                    { value: 'chili_oils', label: 'Chili Oils' },
+                    { value: 'pickled_jalopeno', label: 'Pickled Jalopeno' },
+                    { value: 'limited_item', label: 'Limited Item' },
                   ]}
                   value={values.category}
                   onChange={(e) =>
@@ -95,7 +94,7 @@ function AddProduct() {
                 />
               </div>
             </div>
-            <div className="h-full bg-gray-800 rounded-2xl">
+            <div className="h-full rounded-2xl bg-gray-800">
               <div className="px-7 pt-8">
                 <Upload
                   onUploadSuccess={(url) =>
@@ -103,17 +102,17 @@ function AddProduct() {
                   }
                 />
               </div>
-              <div className="bg-gray-800 flex flex-col p-7 gap-3">
+              <div className="flex flex-col gap-3 bg-gray-800 p-7">
                 <DropDown
                   label="Spice Level (Future Addition)"
                   options={[
-                    { value: "Mild", label: "Mild" },
-                    { value: "Spicy", label: "Spicy" },
-                    { value: "Very Spicy", label: "Very Spicy" },
-                    { value: "Extreme", label: "Extreme" },
+                    { value: 'Mild', label: 'Mild' },
+                    { value: 'Spicy', label: 'Spicy' },
+                    { value: 'Very Spicy', label: 'Very Spicy' },
+                    { value: 'Extreme', label: 'Extreme' },
                   ]}
                 />
-                <div className="w-full flex justify-between">
+                <div className="flex w-full justify-between">
                   <BaseInput
                     label="Price"
                     onlyNumber

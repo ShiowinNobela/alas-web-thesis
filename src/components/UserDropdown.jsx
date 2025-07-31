@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import useUserStore from '@/stores/userStore';
+import { handleLogout } from '@/utils/logout';
 
 export default function UserDropdown() {
   const [open, setOpen] = useState(false);
@@ -101,10 +102,7 @@ export default function UserDropdown() {
 
             <div className="border-t">
               <button
-                onClick={() => {
-                  window.localStorage.removeItem('user');
-                  window.location.href = '/LoginPage';
-                }}
+                onClick={() => handleLogout()}
                 className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
               >
                 <MdOutlineLogout className="mr-2" /> Logout

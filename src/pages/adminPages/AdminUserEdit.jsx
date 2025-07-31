@@ -1,20 +1,20 @@
-import Sidebar from "../../components/sidebar";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
-import { Toaster, toast } from "sonner";
-import NewSideBar from "../../components/newSideBar";
+import Sidebar from '../../components/sidebar';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'sonner';
+import NewSideBar from '../../components/newSideBar';
 
 function AdminUserEdit() {
   const { id } = useParams();
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
   const navigate = useNavigate();
 
   const getRoleId = (roleName) => {
-    if (roleName === "admin") return "1";
-    if (roleName === "customer") return "2";
-    if (roleName === "staff") return "3";
-    return "";
+    if (roleName === 'admin') return '1';
+    if (roleName === 'customer') return '2';
+    if (roleName === 'staff') return '3';
+    return '';
   };
 
   useEffect(() => {
@@ -22,10 +22,10 @@ function AdminUserEdit() {
       .get(`/api/adminUser/` + id)
       .then((response) => {
         setData(response.data.data);
-        console.log("User Data:", response.data.data);
+        console.log('User Data:', response.data.data);
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
+        console.error('Error fetching user data:', error);
       });
   }, []);
 
@@ -39,39 +39,38 @@ function AdminUserEdit() {
     axios
       .put(`/api/adminUser/` + id, updatedData)
       .then((response) => {
-        console.log("User updated successfully:", response.data);
-        toast.success("Edit Successful");
+        console.log('User updated successfully:', response.data);
+        toast.success('Edit Successful');
         setTimeout(() => {
-          navigate("/Admin/AccountManagement");
+          navigate('/Admin/AccountManagement');
         }, 1000);
       })
       .catch((err) => {
         if (err.response && err.response.status === 500) {
           toast.error(err.response.data.message);
         } else {
-          toast.error("Unexpected Error Occur");
+          toast.error('Unexpected Error Occur');
         }
       });
   };
 
   return (
-    <div className="h-screen max-h-full w-screen bg-[#E2E0E1] grid grid-cols-[0.20fr_0.80fr]">
-      <NewSideBar />
-      <div className="bg-[#E2E0E1] flex flex-col overflow-auto items-center py-10">
-        <div className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg border">
-          <p className="text-2xl font-semibold text-center mb-6 uppercase">
+    <div className="flex h-full flex-col overflow-x-auto bg-white">
+      <div className="flex flex-col items-center overflow-auto bg-[#E2E0E1] py-10">
+        <div className="w-full max-w-4xl rounded-lg border bg-white p-8 shadow-lg">
+          <p className="mb-6 text-center text-2xl font-semibold uppercase">
             user Information
           </p>
           <form className="space-y-6" onSubmit={handleUpdate}>
             {/* Basic Info */}
             {[
-              { label: "Username", value: data.username, key: "username" },
-              { label: "Email", value: data.email, key: "email" },
-              { label: "Address", value: data.address, key: "address" },
+              { label: 'Username', value: data.username, key: 'username' },
+              { label: 'Email', value: data.email, key: 'email' },
+              { label: 'Address', value: data.address, key: 'address' },
               {
-                label: "Contact Number",
+                label: 'Contact Number',
                 value: data.contact_number,
-                key: "contact_number",
+                key: 'contact_number',
               },
             ].map(({ label, value, key }) => (
               <div className="flex items-center" key={key}>
@@ -79,8 +78,8 @@ function AdminUserEdit() {
                 <input
                   type="text"
                   placeholder={label}
-                  className="w-full p-3 border border-gray-400 rounded-lg"
-                  value={value || ""}
+                  className="w-full rounded-lg border border-gray-400 p-3"
+                  value={value || ''}
                   onChange={(e) => setData({ ...data, [key]: e.target.value })}
                   required
                 />
@@ -91,8 +90,8 @@ function AdminUserEdit() {
             <div className="flex items-center">
               <label className="w-1/4 font-medium">User Role:</label>
               <select
-                className="w-full p-3 border border-gray-400 rounded-lg"
-                value={data.role_name || ""}
+                className="w-full rounded-lg border border-gray-400 p-3"
+                value={data.role_name || ''}
                 onChange={(e) =>
                   setData({ ...data, role_name: e.target.value })
                 }
@@ -133,7 +132,7 @@ function AdminUserEdit() {
             <div className="flex items-center justify-center">
               <button
                 type="submit"
-                className="px-6 py-3 w-full bg-secondary hover:bg-orange-500 text-black font-medium rounded-lg transition"
+                className="bg-secondary w-full rounded-lg px-6 py-3 font-medium text-black transition hover:bg-orange-500"
               >
                 Update User
               </button>

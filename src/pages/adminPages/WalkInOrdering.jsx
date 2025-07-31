@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import NewSideBar from '../../components/newSideBar';
 import { Toaster, toast } from 'sonner';
 import Description from '../../components/Chinges/Description';
 import { FaPlus, FaMinus } from 'react-icons/fa';
@@ -89,8 +88,7 @@ function WalkInOrdering() {
 
   return (
     <>
-      <div className="grid h-screen w-full grid-cols-[0.20fr_0.80fr] bg-[#E2E0E1]">
-        <NewSideBar />
+      <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-white p-6">
         <div className="flex min-h-full w-full flex-col overflow-auto p-5">
           <div className="mx-auto flex w-full max-w-[1400px] flex-row overflow-hidden rounded-2xl shadow-2xl drop-shadow-2xl">
             {/* form */}
