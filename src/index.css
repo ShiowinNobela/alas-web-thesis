@@ -28,7 +28,7 @@
   --font-sans: Rubik, serif;
   --font-heading: Bebas, serif;
   --font-logo: Jost, serif;
-  --color-brand: #d84727;
+  --color-brand: oklch(0.666 0.179 58.318);
   --color-lighter: #888888;
   --color-primary-700: #2364aa;
   --color-content: #251605;

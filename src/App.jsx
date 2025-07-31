@@ -9,7 +9,7 @@ import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
 import { Route, Routes } from 'react-router-dom';
 import UserSettings from './pages/userPages/UserSettings';
 import GiveReview from './pages/GiveReview.jsx';
-import Faqs from './pages/Faqs.jsx';
+import Faqs from './pages/userPages/Faqs.jsx';
 import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
 import AddProd from './pages/adminPages/AddProduct.jsx';
 import Login from './pages/adminPages/LoginAdmin.jsx';
@@ -33,7 +33,7 @@ import WalkInOrdering from './pages/adminPages/WalkInOrdering.jsx';
 import SalesPage from './pages/adminPages/SalesPage.jsx';
 import WalkInOrderTable from './pages/adminPages/WalkInOrdersTable.jsx';
 import AdminOrderDetails from './pages/adminPages/AdminOrderDetails.jsx';
-import AboutUs from './pages/AboutUs.jsx';
+import AboutUs from './pages/userPages/AboutUs.jsx';
 import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 import AdminLayout from './pages/layouts/AdminLayout';
 

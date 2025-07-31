@@ -163,7 +163,7 @@ export default function UserViewOrderDetails() {
                   <div className="flex w-full justify-between py-2">
                     <p className="text-sm leading-4">Subtotal</p>
                     <p className="text-content text-base leading-4">
-                      {order.total_amount}
+                      {order.subtotal}
                     </p>
                   </div>
                   <div className="flex w-full items-center justify-between py-2">
