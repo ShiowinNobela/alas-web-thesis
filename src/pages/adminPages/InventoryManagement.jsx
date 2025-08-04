@@ -94,7 +94,7 @@ function InventoryManagement() {
 
   return (
     <>
-      <div className="flex h-full flex-col overflow-x-auto bg-white">
+      <div className="bg-admin-bg flex h-full flex-col overflow-x-auto">
         <div className="mx-auto max-w-screen-2xl px-4 py-8">
           <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
             {/* Summary Section */}
@@ -118,7 +118,7 @@ function InventoryManagement() {
             {/* Table */}
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm text-slate-800">
-                <thead className="bg-admin sticky top-0 z-10 text-xs text-white uppercase">
+                <thead className="bg-admin sticky top-0 z-5 text-xs text-white uppercase">
                   <tr>
                     <th className={tableHeadStyle}>ID</th>
                     <th className={tableHeadStyle}>Name</th>

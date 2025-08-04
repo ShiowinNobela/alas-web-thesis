@@ -20,7 +20,7 @@ import Orders from './pages/adminPages/Orders.jsx';
 import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx';
 import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx';
 import EditOrder from './pages/adminPages/editOrder.jsx';
-import MainLayout from './pages/MainLayout.jsx';
+import MainLayout from './pages/layouts/MainLayout.jsx';
 import AdminAddUser from './pages/adminPages/AdminAddUser.jsx';
 import CheckOutPage from './pages/CheckOutPage.jsx';
 import ViewOrder from './pages/adminPages/ViewOrder.jsx';
