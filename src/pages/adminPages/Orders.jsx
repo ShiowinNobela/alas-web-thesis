@@ -313,8 +313,8 @@ function AdminViewOrderPage() {
     <>
       <Toaster richColors />
       <div className="bg-neutral flex h-full flex-col items-center justify-center overflow-x-auto">
-        <main className="flex min-h-full flex-col gap-3 overflow-auto px-4 py-8">
-          <div className="bg-admin flex h-[25%] w-full flex-row space-x-6 rounded-xl p-6 shadow">
+        <main className="flex flex-col gap-3 px-4 py-8">
+          <div className="bg-admin flex w-full flex-row space-x-6 rounded-xl p-6 shadow">
             <Card
               title="Sales"
               className="hover:bg-secondary w-1/4 flex-none cursor-pointer rounded-lg p-4 shadow transition"
