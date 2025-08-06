@@ -39,17 +39,31 @@ export default function PasswordInput({
   );
 
   const getStrengthColor = (score) => {
-    if (score === 0) return 'bg-border';
-    if (score <= 1) return 'bg-red-500';
-    if (score <= 2) return 'bg-orange-500';
-    if (score === 3) return 'bg-amber-500';
+    if (score === 0) {
+      return 'bg-border';
+    }
+    if (score <= 1) {
+      return 'bg-red-500';
+    }
+    if (score <= 2) {
+      return 'bg-orange-500';
+    }
+    if (score === 3) {
+      return 'bg-amber-500';
+    }
     return 'bg-emerald-500';
   };
 
   const getStrengthText = (score) => {
-    if (score === 0) return 'Enter a password';
-    if (score <= 2) return 'Weak password';
-    if (score === 3) return 'Medium password';
+    if (score === 3) {
+      return 'Medium password';
+    }
+    if (score <= 2) {
+      return 'Weak password';
+    }
+    if (score === 3) {
+      return 'Medium password';
+    }
     return 'Strong password';
   };
 

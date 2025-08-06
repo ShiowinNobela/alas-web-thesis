@@ -5,7 +5,6 @@ import axios from 'axios';
 // import { Category } from "../constants.js";
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminProfile from '../../components/Chinges/AdminProfile.jsx';
-import NewSideBar from '../../components/newSideBar';
 import BackButton from '../../components/Chinges/BackButton.jsx';
 import BaseInput from '../../components/Chinges/baseInput.jsx';
 import Description from '../../components/Chinges/Description.jsx';

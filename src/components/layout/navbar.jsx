@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useLocation, Link } from 'react-router-dom';
 import Logo from '@/components/images/logo.png';
-import UserDropdown from '@/components/UserDropdown';
+import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
 
 const navItemStyle =

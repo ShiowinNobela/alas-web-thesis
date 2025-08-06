@@ -1,4 +1,3 @@
-import NewSideBar from '../../components/newSideBar';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';

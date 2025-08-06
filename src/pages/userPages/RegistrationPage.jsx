@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TextInput from '@/components/TextInput';
+import TextInput from '@/components/bigComponents/TextInput';
 import { Toaster, toast } from 'sonner';
-
-import PasswordInput from '@/components/PasswordInput';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import PromptLink from '@/components/PromptLink';
+import PromptLink from '@/components/bigComponents/PromptLink';
+import PasswordInput from '@/components/bigComponents/PasswordInput';
 
 function RegistrationPage() {
   const [values, setValues] = useState({

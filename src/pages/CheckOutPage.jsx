@@ -74,18 +74,6 @@ function CheckOutPage() {
       });
   };
 
-  // Object.entries(getInfo).forEach(([key, value]) => {
-  //     console.log(`${key}: ${typeof value}`);
-
-  // });
-
-  //  {
-  //     payment_method: getInfo.payment_method,
-  //     address: getInfo.address,
-  //     notes: getInfo.notes,
-  //     reference_number: getInfo.reference_number,
-  //     account_name:   getInfo.account_name,
-  // },
   return (
     <>
       <Toaster richColors />

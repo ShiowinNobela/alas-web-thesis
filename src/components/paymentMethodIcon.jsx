@@ -1,10 +1,8 @@
-// components/PaymentMethodIcon.jsx
 import PropTypes from 'prop-types';
 import GCashLogo from '@/assets/GCash_logo.svg';
 import MayaLogo from '@/assets/Maya_logo.svg';
 import { Landmark } from 'lucide-react';
 
-// Define assets: distinguish between 'svg' and 'icon'
 const logos = {
   gcash: {
     type: 'svg',
@@ -24,7 +22,9 @@ export default function PaymentMethodIcon({ method }) {
   const normalized = method?.toLowerCase();
   const asset = logos[normalized];
 
-  if (!asset) return <span>{method}</span>;
+  if (!asset) {
+    return <span>{method}</span>;
+  }
 
   return asset.type === 'svg' ? (
     <img

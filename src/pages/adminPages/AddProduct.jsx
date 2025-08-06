@@ -1,10 +1,8 @@
-import Sidebar from '../../components/sidebar.jsx';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import AdminProfile from '../../components/Chinges/AdminProfile.jsx';
-import NewSideBar from '../../components/newSideBar';
 import BackButton from '../../components/Chinges/BackButton.jsx';
 import BaseInput from '../../components/Chinges/BaseInput.jsx';
 import Description from '../../components/Chinges/Description.jsx';

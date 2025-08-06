@@ -15,9 +15,10 @@ import {
   DialogDescription,
 } from '../ui/dialog';
 import PropTypes from 'prop-types';
-import TextInput from '../TextInput';
-import PasswordInput from '../PasswordInput';
+
 import { useMutation } from '@tanstack/react-query';
+import TextInput from '../bigComponents/TextInput';
+import PasswordInput from '../bigComponents/PasswordInput';
 
 function UserUpdateModal({ open, onClose }) {
   const user = useUserStore((state) => state.user);
