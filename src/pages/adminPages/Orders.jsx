@@ -1,4 +1,3 @@
-import NewSideBar from '../../components/newSideBar';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import OrderHistoryModal from '../../components/modals/orderHistoryModal';
@@ -20,7 +19,6 @@ import {
   HiOutlineSearch,
   HiOutlineRefresh,
   HiDotsVertical,
-  HiSwitchHorizontal,
   HiCheckCircle,
 } from 'react-icons/hi';
 import StatusFilterDropdown from '../../components/StatusFilterDropdown';
@@ -318,7 +316,6 @@ function AdminViewOrderPage() {
             <Card
               title="Sales"
               className="hover:bg-secondary w-1/4 flex-none cursor-pointer rounded-lg p-4 shadow transition"
-              onClick={() => navigate('/Admin/WalkInOrdersTable')}
               role="button"
             >
               <div className="flex items-center justify-between">
@@ -326,7 +323,6 @@ function AdminViewOrderPage() {
                   <h2 className="mb-1 text-lg font-bold">Order Management</h2>
                   <p className="text-sm text-gray-600">Hello Admin!</p>
                 </div>
-                <HiSwitchHorizontal className="h-6 w-6 text-blue-600" />
               </div>
             </Card>
 

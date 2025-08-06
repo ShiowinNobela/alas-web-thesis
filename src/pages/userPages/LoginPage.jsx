@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
-import PasswordInput from '@/components/PasswordInput';
+import PasswordInput from '@/components/bigComponents/PasswordInput';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import TextInput from '@/components/TextInput';
-import PromptLink from '@/components/PromptLink';
+import TextInput from '@/components/bigComponents/TextInput';
+import PromptLink from '@/components/bigComponents/PromptLink';
 
 function LoginPage() {
   const [username, setUsername] = useState('');

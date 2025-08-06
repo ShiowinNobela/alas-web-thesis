@@ -18,8 +18,6 @@ import ProdManagement from './pages/adminPages/ProductManagement.jsx';
 import AccManagement from './pages/adminPages/AccountManagement.jsx';
 import Orders from './pages/adminPages/Orders.jsx';
 import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx';
-import BazaarOrdering from './pages/adminPages/BazaarOrdering.jsx';
-import EditOrder from './pages/adminPages/editOrder.jsx';
 import MainLayout from './pages/layouts/MainLayout.jsx';
 import AdminAddUser from './pages/adminPages/AdminAddUser.jsx';
 import CheckOutPage from './pages/CheckOutPage.jsx';
@@ -76,8 +74,6 @@ function App() {
           <Route path="Orders" element={<Orders />} />
           <Route path="AdminOrderDetails/:id" element={<AdminOrderDetails />} />
           <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
-          <Route path="BazaarOrdering" element={<BazaarOrdering />} />
-          <Route path="EditOrder" element={<EditOrder />} />
           <Route path="AdminAddUser" element={<AdminAddUser />} />
           <Route path="ViewOrder/:id" element={<ViewOrder />} />
           <Route path="AdminUserEdit/:id" element={<AdminUserEdit />} />

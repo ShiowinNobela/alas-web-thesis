@@ -1,4 +1,3 @@
-import Sidebar from '../../components/sidebar';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -112,7 +111,6 @@ function ViewOrder() {
   return (
     <div className="h-full w-screen">
       <Toaster richColors />
-      <Sidebar />
       <div className="flex h-screen w-screen flex-col items-center bg-[#E2E0E1] pl-[256px]">
         <h1 className="py-5 text-4xl font-semibold">Order Details</h1>
         <div className="w-4xl rounded-lg border-1 bg-white p-5 shadow-md">

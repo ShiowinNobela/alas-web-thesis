@@ -36,6 +36,13 @@ const menuItems = [
     iconClass: 'ml-4',
   },
   {
+    path: '/Admin/WalkInOrdersTable', // Gave up on that bad idea
+    name: 'Walk In Orders',
+    icon: FaBox,
+    iconSize: { width: 25, height: 25 },
+    iconClass: 'ml-4',
+  },
+  {
     path: '/Admin/ProductManagement',
     name: 'Product Management',
     icon: AiOutlineUnorderedList,

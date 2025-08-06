@@ -1,9 +1,7 @@
-import Sidebar from '../../components/sidebar';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
-import NewSideBar from '../../components/newSideBar';
 
 function AdminUserEdit() {
   const { id } = useParams();
