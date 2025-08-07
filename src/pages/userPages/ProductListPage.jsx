@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import ProductCard from '@/components/bigComponents/ProductCard.jsx';
-import Cart from '@/components/Cart.jsx';
+import Cart from '@/components/bigComponents/Cart.jsx';
 import { Skeleton } from '@/components/ui/skeleton.jsx';
 import useCartStore from '@/stores/cartStore';
 import { Toaster } from 'sonner';
