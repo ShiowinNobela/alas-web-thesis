@@ -311,7 +311,7 @@ function AdminViewOrderPage() {
     <>
       <Toaster richColors />
       <div className="bg-neutral flex h-full flex-col items-center justify-center overflow-x-auto">
-        <main className="flex flex-col gap-3 px-4 py-8">
+        <main className="flex w-full flex-col gap-3 px-4 py-8">
           <div className="bg-admin flex w-full flex-row space-x-6 rounded-xl p-6 shadow">
             <Card
               title="Sales"

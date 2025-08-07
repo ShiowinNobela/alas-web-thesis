@@ -30,7 +30,7 @@ function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white drop-shadow-md">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-2">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-2">
         <div className="flex flex-row items-center justify-center">
           <Link to="/" onClick={closeMobileMenu}>
             <img

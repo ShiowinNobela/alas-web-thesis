@@ -1,10 +1,9 @@
-import Modal from "../components/ThankYouPopUp.jsx";
-import { FaShoppingCart } from "react-icons/fa";
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import BackButton from "../components/Chinges/BackButton.jsx";
-import StarImg from "../components/images/star.png";
+import Modal from '../components/ThankYouPopUp.jsx';
+import { FaShoppingCart } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import StarImg from '../components/images/star.png';
 
 function ProductDetailsPage() {
   const [Open, setOpen] = useState(false);
@@ -16,22 +15,22 @@ function ProductDetailsPage() {
 
   useEffect(() => {
     axios
-      .get("/api/products/" + id)
+      .get('/api/products/' + id)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
     axios
-      .get("/api/reviews/" + id)
+      .get('/api/reviews/' + id)
       .then((response) => setReviewDetails(response.data.data))
       .catch((err) => console.log(err));
   }, []);
 
   const handleAddToCart = async () => {
     try {
-      const user = JSON.parse(window.localStorage.getItem("user"));
-      const userdata = await axios.get("/api/users", {
+      const user = JSON.parse(window.localStorage.getItem('user'));
+      const userdata = await axios.get('/api/users', {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -41,45 +40,39 @@ function ProductDetailsPage() {
         productId: id.toString(),
         quantity: prodQuantity,
       });
-      navigate("/ProductListPage");
+      navigate('/ProductListPage');
     } catch (error) {
-      console.error("Error parsing user data:", error);
+      console.error('Error parsing user data:', error);
     }
   };
 
   return (
     <>
-      <section className="w-screen h-screen bg-[#e9e5e5] bg-cover flex flex-col items-center justify-start px-10 py-10 overflow-auto">
-        <div className="self-start mb-2">
-          <BackButton
-            onClick={() => {
-              window.location.href = "/ProductListPage";
-            }}
-          />
-        </div>
+      <section className="flex h-screen w-screen flex-col items-center justify-start overflow-auto bg-[#e9e5e5] bg-cover px-10 py-10">
+        <div className="mb-2 self-start"></div>
 
-        <div className="grid grid-cols-[60fr_40fr] gap-10 w-8xl max-h-4/5 bg-[#f8f7f7] p-6 rounded-lg shadow-lg border-1 border-[#b4afaf]">
+        <div className="w-8xl grid max-h-4/5 grid-cols-[60fr_40fr] gap-10 rounded-lg border-1 border-[#b4afaf] bg-[#f8f7f7] p-6 shadow-lg">
           <div className="grid grid-cols-[50fr_50fr]">
             <div className="flex items-center justify-center">
               <img
                 src={data.image}
                 alt="/"
-                className="h-100 w-100 mx-auto rounded-sm  border-1 border-[#dfdddd] shadow-sm"
+                className="mx-auto h-100 w-100 rounded-sm border-1 border-[#dfdddd] shadow-sm"
               />
             </div>
             {/* product name */}
-            <div className="flex flex-col justify-around mb-6 ml-10">
+            <div className="mb-6 ml-10 flex flex-col justify-around">
               <div>
-                <h1 className="font-black text-4xl mb-4 lg:mb-0">
+                <h1 className="mb-4 text-4xl font-black lg:mb-0">
                   {data.name}
                 </h1>
-                <h2 className="text-2xl font-bold text-green-700 mt-2 ">
-                  {" "}
+                <h2 className="mt-2 text-2xl font-bold text-green-700">
+                  {' '}
                   ₱ {data.price}
                 </h2>
               </div>
               <div>
-                <h1 className="text-xl pb-1">What to expect?</h1>
+                <h1 className="pb-1 text-xl">What to expect?</h1>
                 <p className="font-extralight text-gray-700">
                   {data.description}
                 </p>
@@ -87,7 +80,7 @@ function ProductDetailsPage() {
               <div className="flex flex-col gap-1">
                 {/* quantity + price */}
                 <div className="mb-6">
-                  <label className="text-lg font-semibold mr-1">
+                  <label className="mr-1 text-lg font-semibold">
                     Quantity:
                   </label>
                   <input
@@ -96,14 +89,14 @@ function ProductDetailsPage() {
                     value={prodQuantity}
                     onChange={(e) => setProdQuantity(e.target.value)}
                     max={data.stock_quantity}
-                    className="border border-black px-2 py-1 w-24 rounded"
+                    className="w-24 rounded border border-black px-2 py-1"
                   />
                 </div>
 
                 {/* add to cart + buy now */}
-                <div className="flex flex-col gap-4 ">
+                <div className="flex flex-col gap-4">
                   <div
-                    className="flex items-center justify-center border border-[#EA1A20] px-6 py-3 text-l font-semibold shadow-md rounded-md cursor-pointer hover:bg-[#fdd] transition uppercase"
+                    className="text-l flex cursor-pointer items-center justify-center rounded-md border border-[#EA1A20] px-6 py-3 font-semibold uppercase shadow-md transition hover:bg-[#fdd]"
                     onClick={handleAddToCart}
                   >
                     <FaShoppingCart className="mr-2 h-6 w-6" />
@@ -123,15 +116,15 @@ function ProductDetailsPage() {
 
           {/* reviews */}
           <div className="flex flex-col border-l">
-            <h2 className="text-2xl font-bold text-center mb-4">Reviews</h2>
-            <h3 className="text-lg ml-3 mb-4">
+            <h2 className="mb-4 text-center text-2xl font-bold">Reviews</h2>
+            <h3 className="mb-4 ml-3 text-lg">
               Total reviews: {reviewDetails.length}
             </h3>
-            <div className="space-y-4 overflow-y-auto max-h-[500px] pr-2">
+            <div className="max-h-[500px] space-y-4 overflow-y-auto pr-2">
               {reviewDetails.map((d, index) => (
                 <div
                   key={index}
-                  className="border border-gray-300 p-4 rounded shadow-lg bg-white ml-3"
+                  className="ml-3 rounded border border-gray-300 bg-white p-4 shadow-lg"
                 >
                   <h3 className="font-semibold">Name: {d.username}</h3>
                   <div className="flex flex-row items-center gap-x-3">
@@ -148,20 +141,20 @@ function ProductDetailsPage() {
 
         {/* Modal */}
         <Modal open={Open} onClose={() => setOpen(false)}>
-          <div className="text-center w-[400px] h-[200px] p-6 flex flex-col justify-between">
+          <div className="flex h-[200px] w-[400px] flex-col justify-between p-6 text-center">
             <h1 className="text-3xl font-bold">
               Do you want to complete the transaction?
             </h1>
-            <p className="text-lg mt-2">
+            <p className="mt-2 text-lg">
               Click Confirm to complete the transaction!
             </p>
-            <div className="flex items-center justify-center gap-4 mt-6">
-              <button className="bg-[#EA1A20] w-[150px] rounded-full p-3 text-white font-bold cursor-pointer">
+            <div className="mt-6 flex items-center justify-center gap-4">
+              <button className="w-[150px] cursor-pointer rounded-full bg-[#EA1A20] p-3 font-bold text-white">
                 Confirm
               </button>
               <button
                 onClick={() => setOpen(false)}
-                className="bg-gray-500 w-[150px] rounded-full p-3 text-white font-bold cursor-pointer"
+                className="w-[150px] cursor-pointer rounded-full bg-gray-500 p-3 font-bold text-white"
               >
                 Cancel
               </button>

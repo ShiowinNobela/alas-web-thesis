@@ -1,224 +1,160 @@
-//import { MdDeleteForever } from "react-icons/md";
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-//import CouponPopUp from "../pages/CouponPopUp";
 import { Link } from 'react-router-dom';
-import { Toaster, toast } from 'sonner';
-import { TiDeleteOutline } from 'react-icons/ti';
-import { BsCart } from 'react-icons/bs';
+import { Toaster } from 'sonner';
+import useCartStore from '@/stores/cartStore';
+import { useEffect } from 'react';
+import { Button } from './ui/button';
+import { Delete, Minus, Plus, ShoppingCart } from 'lucide-react';
 
-function Cart({ cartUpdated }) {
-  const [getCartItems, setGetCartItems] = useState([]);
-  const [getSubTotal, setGetSubTotal] = useState(0); // Cart
-  //const [Open, setOpen] = useState(false); //Coupon Modal
-  const cartCount = getCartItems.length;
-  //const [selectedCoupon, setSelectedCoupon] = useState(null);
-  const [cartItemsQuantity, setCartItemsQuantity] = useState([]);
-  const [couponValue, setCouponValue] = useState(0);
+function Cart() {
+  const {
+    items,
+    cart_total,
+    isLoading,
+    fetchCart,
+    adjustQuantity,
+    removeItem,
+  } = useCartStore();
 
   useEffect(() => {
-    getCart();
-  }, [cartUpdated]);
+    fetchCart();
+  }, [fetchCart]);
 
-  const getCart = async () => {
-    try {
-      const response = await axios.get(`/api/cart/me`);
-      const { cart_total, items } = response.data.data;
-      setGetSubTotal(parseFloat(cart_total));
-      setGetCartItems(items);
-      setCartItemsQuantity(items.map((item) => item.quantity));
-      console.log(items);
-    } catch (error) {
-      console.error('Error fetching cart items:', error);
+  const handleAdjust = (productId, currentQty, isIncrement, stock) => {
+    const newQty = isIncrement ? currentQty + 1 : currentQty - 1;
+    if (newQty >= 1 && newQty <= stock) {
+      adjustQuantity(productId, newQty);
     }
   };
 
-  const handleRemove = async (productId) => {
-    try {
-      const res = await axios.delete(`/api/cart/me`, {
-        data: { productId },
-      });
-
-      console.log('Product removed:', res.data);
-      if (res.status === 200 || res.status === 201) {
-        await getCart();
-        if (getCartItems.length === 1) {
-          window.location.reload();
-        }
-      }
-    } catch (error) {
-      console.error('Error removing product:', error);
-    }
-  };
-
-  const handleAdjust = async (productId, quantity, isIncrement, stock) => {
-    try {
-      if (isIncrement) {
-        if (quantity < stock) quantity++;
-      } else {
-        if (quantity > 1) quantity--;
-      }
-
-      const res = await axios.put(`/api/cart/me`, {
-        productId,
-        quantity,
-      });
-
-      if (res.status === 200) {
-        await getCart();
-      }
-    } catch (error) {
-      console.error('Error adjusting quantity:', error);
-    }
-  };
+  const subtotal = cart_total.toFixed(2);
+  const cartEmpty = items.length === 0;
 
   return (
-    <div className="full min-h-full border-1 border-[#bdbdb8] bg-[#f5f5f3]">
+    <div className="flex h-[calc(100dvh-80px)] flex-col bg-gray-100">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#cccabf] py-2 pl-3">
-        <div className="flex h-10 w-70 items-center bg-[#FAF9F6] p-2 pt-4 pb-4 text-3xl font-extrabold uppercase">
-          <p>My Cart</p>
-          <BsCart className="ml-2 h-7 w-7" />
+      <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-white p-2 shadow-sm">
+        <div className="flex items-center gap-2">
+          <ShoppingCart className="text-lg" />
+          <h1 className="font-heading text-lg font-bold uppercase">Cart</h1>
+          {!cartEmpty && (
+            <span className="rounded-full bg-gray-200 p-2 text-xs">
+              {items.length}
+            </span>
+          )}
         </div>
       </div>
 
       {/* Cart Items */}
-      <div className="screen h-85 overflow-y-auto p-4">
-        {getCartItems.map((d) => (
-          <div
-            key={d.product_id}
-            className="mb-4 w-full rounded-xl border border-[#e0ded8] bg-[#ffffff] p-4 shadow-sm"
-          >
-            <div className="flex items-start justify-between">
-              {/* Left: Name and Quantity */}
-              <div>
-                <h2 className="mb-2 text-center text-lg font-semibold text-[#1c1a1a]">
-                  {d.name}
-                </h2>
-                <div className="grid grid-cols-3 items-center gap-2">
-                  <FaPlus
-                    className="mx-auto cursor-pointer text-[#1c1a1a] hover:text-[#EA1A20]"
-                    onClick={() =>
-                      handleAdjust(
-                        d.product_id,
-                        d.quantity,
-                        true,
-                        d.stock_quantity
-                      )
-                    }
-                  />
-                  <FaMinus
-                    className="mx-auto cursor-pointer text-[#1c1a1a] hover:text-[#EA1A20]"
-                    onClick={() =>
-                      handleAdjust(
-                        d.product_id,
-                        d.quantity,
-                        false,
-                        d.stock_quantity
-                      )
-                    }
-                  />
-                  <p className="text-center font-bold text-[#1c1a1a]">
-                    {d.quantity}
-                  </p>
-                </div>
-              </div>
-
-              {/* Right: Price & Subtotal */}
-              <div className="text-right">
-                <p className="text-sm text-[#6b6b6b]">
-                  ₱ {parseFloat(d.price).toFixed(2)} each
-                </p>
-                <p className="text-lg font-semibold text-[#1c1a1a]">
-                  ₱ {(parseFloat(d.price) * d.quantity).toFixed(2)}
-                </p>
-              </div>
-
-              <TiDeleteOutline
-                className="ml-4 h-5 w-5 cursor-pointer text-[#d80c0c]"
-                onClick={() => handleRemove(d.product_id)}
-              />
-            </div>
+      <main className="flex-1 overflow-y-auto p-2">
+        {isLoading ? (
+          <div className="flex h-full items-center justify-center">
+            <p className="text-xs text-gray-500">Loading...</p>
           </div>
-        ))}
-      </div>
-
-      {/* Total */}
-      <div className="border-t border-[#bdbdb8] p-2 px-6">
-        <div className="mt-3 flex justify-between text-xl font-extrabold text-[#403e3e] uppercase">
-          <p>Total:</p>
-          <p>₱ {(getSubTotal - couponValue).toFixed(2)}</p>
-        </div>
-      </div>
-
-      {/* Checkout Button */}
-      <div className="flex justify-center pt-4">
-        {cartCount !== 0 ? (
-          <Link to="/CheckoutPage">
-            <div className="text-md w-60 max-w-md rounded-lg bg-[#db2026] px-10 py-2 text-center font-semibold text-white shadow-lg transition hover:bg-red-800">
-              Checkout
-            </div>
-          </Link>
+        ) : cartEmpty ? (
+          <div className="flex h-full flex-col items-center justify-center p-2">
+            <p className="mb-2 text-xs text-gray-500">Your cart is empty</p>
+          </div>
         ) : (
-          <div
-            className="text-md w-60 max-w-md cursor-pointer rounded-lg bg-[#EA1A20] px-10 py-3 text-center font-semibold text-white uppercase shadow-lg"
-            onClick={() =>
-              toast.error("You can't checkout without an item in your cart!")
-            }
-          >
-            Checkout
+          <div className="space-y-2">
+            {items.map((item) => (
+              <article
+                key={item.product_id}
+                className="flex items-center gap-2 rounded-md border bg-white p-2 text-sm shadow-sm"
+              >
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="h-15 w-12 flex-shrink-0 rounded object-cover"
+                />
+
+                <div className="flex flex-1 flex-col">
+                  <div className="flex items-start justify-between">
+                    <div className="font-heading line-clamp-2 pr-1 leading-tight">
+                      {item.name}
+                    </div>
+                    <button
+                      onClick={() => removeItem(item.product_id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <Delete className="text-base" />
+                    </button>
+                  </div>
+
+                  <div className="mt-0.5 flex justify-between text-xs">
+                    <span className="text-lighter">
+                      ₱{parseFloat(item.price).toFixed(2)}
+                    </span>
+                    <span className="font-medium">
+                      ₱{(item.price * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+
+                  <div className="mt-1 flex items-center justify-between">
+                    <div className="flex items-center gap-1 rounded-full border px-2 py-0.5">
+                      <button
+                        onClick={() =>
+                          handleAdjust(
+                            item.product_id,
+                            item.quantity,
+                            false,
+                            item.stock_quantity
+                          )
+                        }
+                        className="flex h-5 w-5 items-center justify-center rounded-full hover:bg-gray-100"
+                      >
+                        <Minus className="text-[10px]" />
+                      </button>
+                      <span className="w-4 text-center text-xs">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() =>
+                          handleAdjust(
+                            item.product_id,
+                            item.quantity,
+                            true,
+                            item.stock_quantity
+                          )
+                        }
+                        className="flex h-5 w-5 items-center justify-center rounded-full hover:bg-gray-100"
+                      >
+                        <Plus className="text-[10px]" />
+                      </button>
+                    </div>
+                    {item.stock_quantity > 0 && (
+                      <span className="text-lighter text-xs">
+                        {item.stock_quantity} left
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         )}
-        <Toaster richColors />
-      </div>
+      </main>
+
+      {!cartEmpty && (
+        <div className="sticky bottom-0 border-t bg-white p-2 text-sm shadow-md">
+          <div className="mb-2 flex justify-between font-bold">
+            <span>Subtotal:</span>
+            <span>₱{subtotal}</span>
+          </div>
+          <Link to="/CheckoutPage" className="block">
+            <Button
+              variant="CTA"
+              size="sm"
+              className="w-full py-1 text-xs text-white"
+            >
+              Checkout
+            </Button>
+          </Link>
+        </div>
+      )}
+
+      <Toaster richColors position="top-center" />
     </div>
   );
 }
 
 export default Cart;
-
-{
-  /* Coupon
-            <div className="flex justify-center my-1">
-              <div className="w-[90%] max-w-md bg-[#f5f5f3] border border-[#db2026] rounded-xl flex items-center justify-between px-6 py-3 shadow-sm">
-                <p className="text-md font-semibold text-[#403e3e] uppercase">Pick Coupon:</p>
-                <button
-                  onClick={() => setOpen(true)}
-                  className="bg-[#db2026] text-white px-6 py-2 rounded-lg font-bold hover:bg-red-800 uppercase"
-                >
-                  Coupon
-                </button>
-                <CouponPopUp open={Open} onClose={() => setOpen(false)} onApply={handleCouponUse} />
-              </div>
-            </div> */
-
-  {
-    /* <div className="flex justify-between text-md font-semibold text-[#403e3e]">
-          <p>Subtotal:</p>
-          <p>₱ {getSubTotal}</p>
-        </div> */
-  }
-  {
-    /* <div className="flex justify-between text-md font-semibold text-[#403e3e]">
-          <p>Coupon Value:</p>
-          <p>₱ {couponValue}</p>
-        </div> */
-  }
-
-  // const handleCouponUse = async (coupon) => {
-  //   setSelectedCoupon(coupon);
-  //   try {
-  //     const user = JSON.parse(window.localStorage.getItem("user"));
-  //     const response = await axios.get(`/api/coupons/apply/${coupon.code}`, {
-  //       params: { userId: user.id },
-  //     });
-  //     console.log("Coupon API response:", response.data);
-  //     const amount = parseFloat(response.data.data.amount) || 0;
-  //     setCouponValue(amount);
-  //   } catch (err) {
-  //     console.log(err);
-  //     setCouponValue(0);
-  //   }
-  // };
-}
