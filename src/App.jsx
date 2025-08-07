@@ -4,7 +4,7 @@ import ContactUs from './pages/userPages/ContactUs.jsx';
 import LoginPage from './pages/userPages/LoginPage.jsx';
 import RegPage from './pages/userPages/RegistrationPage.jsx';
 import LandPage from './pages/LandingPage.jsx';
-import ProductPage from './pages/ProductListPage.jsx';
+import ProductPage from './pages/userPages/ProductListPage.jsx';
 import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
 import { Route, Routes } from 'react-router-dom';
 import UserSettings from './pages/userPages/UserSettings';

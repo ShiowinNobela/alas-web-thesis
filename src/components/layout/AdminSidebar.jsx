@@ -69,7 +69,7 @@ function Sidebar() {
 
   const getNavItemClass = (path) => {
     const isActive = location.pathname === path;
-    return `flex items-center p-2 pb-4 pt-4 text-base font-normal rounded-lg ${
+    return `flex items-center p-2 py-2 text-base font-normal rounded-lg ${
       isActive ? 'bg-secondary text-black' : 'text-white hover:bg-secondary/50'
     } group cursor-pointer`;
   };
@@ -90,7 +90,7 @@ function Sidebar() {
 
       {/* Menu Items */}
       <nav className="px-2">
-        <ul className="space-y-1">
+        <ul className="flex flex-col gap-2">
           {menuItems.map((item) => (
             <Link to={item.path} key={item.path}>
               <li className={getNavItemClass(item.path)}>
@@ -110,7 +110,7 @@ function Sidebar() {
 
           {/* Logout Button */}
           <li
-            className="hover:bg-primary group flex cursor-pointer items-center rounded-lg p-2 pt-4 pb-4 text-base font-normal text-white"
+            className="hover:bg-primary group flex cursor-pointer items-center rounded-lg p-2 text-base font-normal text-white"
             onClick={handleLogout}
           >
             <IoIosLogOut className="mx-3 h-[30px] w-[30px]" />
