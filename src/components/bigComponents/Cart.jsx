@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import useCartStore from '@/stores/cartStore';
 import { useEffect } from 'react';
-import { Button } from './ui/button';
-import { Delete, Minus, Plus, ShoppingCart } from 'lucide-react';
+import { Button } from '../ui/button';
+import { Delete, MilkOff, Minus, Plus, ShoppingCart } from 'lucide-react';
 
 function Cart() {
   const {
@@ -52,7 +52,8 @@ function Cart() {
           </div>
         ) : cartEmpty ? (
           <div className="flex h-full flex-col items-center justify-center p-2">
-            <p className="mb-2 text-xs text-gray-500">Your cart is empty</p>
+            <p className="mb-2 text-sm text-gray-500">Your cart is empty</p>
+            <MilkOff />
           </div>
         ) : (
           <div className="space-y-2">
@@ -135,7 +136,7 @@ function Cart() {
       </main>
 
       {!cartEmpty && (
-        <div className="sticky bottom-0 border-t bg-white p-2 text-sm shadow-md">
+        <div className="sticky bottom-0 border-t bg-white p-2 py-4 text-sm">
           <div className="mb-2 flex justify-between font-bold">
             <span>Subtotal:</span>
             <span>₱{subtotal}</span>

@@ -28,13 +28,13 @@ function ProductCard({ product, onAddToCart }) {
 
   return (
     <>
-      <Card className="flex flex-col gap-2 p-4 shadow-md transition-transform hover:scale-[1.05] hover:ring-2 hover:ring-amber-200">
+      <Card className="z-10 flex flex-col gap-2 p-4 shadow-md transition-transform hover:scale-[1.05] hover:ring-2 hover:ring-amber-400">
         <div className="relative mb-3">
           <span className="text-content absolute top-0 left-0 z-10 rounded-full bg-gray-200 px-2 py-1 text-xs font-bold">
             {product.category || 'Category'}
           </span>
 
-          <span className="absolute top-0 right-0 z-10 rounded-full bg-gray-100 px-2 py-1 text-xs font-bold text-gray-900">
+          <span className="text-content absolute top-0 right-0 z-10 rounded-full bg-gray-100 px-2 py-1 text-xs font-bold">
             {product.rating || '4.5'} <span className="text-yellow-500">★</span>
           </span>
 
@@ -53,7 +53,7 @@ function ProductCard({ product, onAddToCart }) {
           <h3 className="font-heading mb-1 line-clamp-1 text-lg">
             {product.name}
           </h3>
-          <p className="mb-2 line-clamp-2 min-h-[2rem] text-sm text-gray-600">
+          <p className="text-lighter mb-2 line-clamp-2 min-h-[2rem] text-sm">
             {product.description}
           </p>
           {/* Hotness Rating (static for now) */}
@@ -84,7 +84,7 @@ function ProductCard({ product, onAddToCart }) {
             ₱ {parseFloat(product.price).toFixed(2)}
           </p>
           <Button
-            className="flex items-center justify-center gap-1"
+            className="flex items-center justify-center gap-2"
             onClick={handleAdd}
           >
             <ShoppingCart className="h-5 w-5" />
