@@ -1,110 +1,95 @@
-import { FaShoppingCart } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { Flame, ShoppingCart, Star } from 'lucide-react';
+import BackButton from '@/components/bigComponents/BackButton';
+import AddToCartModal from '@/components/modals/AddToCartModal';
+import { useAddToCart } from '@/hooks/useAddToCart';
+import { Toaster } from 'sonner';
 
 function ProductDetailsPage() {
   const { id } = useParams();
-
-  const [data, setData] = useState([]);
-  const [prodQuantity, setProdQuantity] = useState(1);
+  const [product, setProduct] = useState({});
+  const { open, setOpen, quantity, setQuantity, handleAdd, handleAddToCart } =
+    useAddToCart();
 
   useEffect(() => {
     axios
       .get('/api/products/' + id)
-      .then((res) => setData(res.data))
+      .then((res) => setProduct(res.data))
       .catch((err) => console.log(err));
   }, []);
 
   return (
-    <div className="bg-neutral min-h-screen py-8">
-      <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-lg bg-white p-6 shadow-md">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-[1.5fr_1fr]">
-            {/* Product Image and Details */}
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              {/* Product Image */}
-              <div className="flex items-center justify-center p-4">
-                <img
-                  src={data.image}
-                  alt={data.name || 'Product image'}
-                  className="h-auto max-h-96 w-full max-w-md rounded-md border border-gray-200 object-contain"
-                />
-              </div>
+    <div className="bg-neutral min-h-screen">
+      <section className="text-lighter overflow-hidden">
+        <div className="mx-auto max-w-5xl px-5 py-8">
+          <div className="mb-4 w-full lg:w-1/2">
+            <BackButton />
+          </div>
 
-              {/* Product Info */}
-              <div className="flex flex-col space-y-6">
-                <div>
-                  <h1 className="text-3xl font-bold text-gray-900">
-                    {data.name}
-                  </h1>
-                  <p className="mt-2 text-2xl font-semibold text-green-700">
-                    ₱{data.price}
-                  </p>
-                </div>
-
-                <div>
-                  <h2 className="text-xl font-medium text-gray-900">
-                    Description
-                  </h2>
-                  <p className="mt-2 text-gray-600">{data.description}</p>
-                </div>
-
-                <div className="flex flex-col space-y-4">
-                  {/* Quantity Selector */}
-                  <div>
-                    <label className="mb-1 block text-lg font-medium text-gray-700">
-                      Quantity:
-                    </label>
-                    <input
-                      type="number"
-                      min={1}
-                      max={data.stock_quantity}
-                      value={prodQuantity}
-                      onChange={(e) => setProdQuantity(e.target.value)}
-                      className="w-24 rounded-md border border-gray-300 px-3 py-2 text-center"
-                    />
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-col space-y-3">
-                    <button className="flex items-center justify-center rounded-md border border-red-500 bg-white px-6 py-3 font-medium text-red-500 uppercase transition-colors hover:bg-red-50">
-                      <FaShoppingCart className="mr-2 h-5 w-5" />
-                      Add to Cart
-                    </button>
-
-                    {/* Uncomment if you want a Buy Now button */}
-                    {/* <button 
-                      className="rounded-md bg-red-600 px-6 py-3 font-medium uppercase text-white transition-colors hover:bg-red-700"
-                      onClick={() => setOpen(true)}
-                    >
-                      Buy Now
-                    </button> */}
-                  </div>
-                </div>
-              </div>
+          <div className="flex flex-wrap">
+            <div className="w-full lg:w-1/2">
+              <img
+                src={product.image}
+                alt={product.name || 'Product image'}
+                className="h-64 w-full rounded object-cover object-center lg:h-auto"
+              />
             </div>
 
-            {/* Reviews Section */}
-            <div className="border-l border-gray-200 pl-8">
-              <h2 className="text-2xl font-bold text-gray-900">Reviews</h2>
-              <p className="mt-4 text-gray-600">
-                Total reviews: {data.review_count || '0'}
-              </p>
-
-              {/* You can add actual reviews here later */}
-              <div className="mt-6 space-y-4">
-                {/* Sample review (replace with dynamic data) */}
-                <div className="border-b border-gray-200 pb-4">
-                  <p className="font-medium">Great product!</p>
-                  <p className="text-gray-600">⭐⭐⭐⭐⭐</p>
-                  <p className="text-sm text-gray-500">From: John Doe</p>
+            {/* Product details */}
+            <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:py-6 lg:pl-10">
+              <h2 className="text-lighter text-sm tracking-widest">
+                {product.category}
+              </h2>
+              <h1 className="font-heading text-content mb-1 text-3xl">
+                {product.name}
+              </h1>
+              <div className="mb-4 flex">
+                <span className="flex items-center">
+                  <Star className="size-5 fill-yellow-400 text-black" />
+                  <Star className="size-5 fill-yellow-400 text-black" />
+                  <Star className="size-5 fill-yellow-400 text-black" />
+                  <Star className="size-5 fill-yellow-400 text-black" />
+                  <Star className="size-5" />
+                  <span className="text-lighter ml-3">(4 Reviews)</span>
+                </span>
+              </div>
+              <p className="leading-relaxed">{product.description}</p>
+              <div className="mt-6 mb-5 flex items-center border-b-2 border-gray-100 pb-5">
+                <div className="flex">
+                  <span className="mr-3">Spice Level</span>
+                  <Flame className="size-5 fill-amber-500 text-red-400" />
+                  <Flame className="size-5 fill-amber-500 text-red-400" />
+                  <Flame className="size-5 fill-amber-500 text-red-400" />
                 </div>
+              </div>
+              <div className="flex">
+                <span className="title-font text-content text-2xl font-medium">
+                  ₱ {parseFloat(product.price).toFixed(2)}
+                </span>
+                <Button
+                  onClick={handleAdd}
+                  className="ml-auto flex gap-2 px-10"
+                >
+                  <ShoppingCart className="size-4" />
+                  Add to cart
+                </Button>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </section>
+      <AddToCartModal
+        open={open}
+        setOpen={setOpen}
+        product={product}
+        quantity={quantity}
+        setQuantity={setQuantity}
+        onConfirm={() => handleAddToCart(product, quantity)}
+      />
+      <Toaster richColors position="top-center" />
     </div>
   );
 }

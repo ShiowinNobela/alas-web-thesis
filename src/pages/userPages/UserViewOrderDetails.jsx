@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 import useUserStore from '@/stores/userStore';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 
@@ -14,8 +13,8 @@ import {
   HashIcon,
   PiggyBankIcon,
   LocationEditIcon,
-  ArrowLeftIcon,
 } from 'lucide-react';
+import BackButton from '@/components/bigComponents/BackButton';
 
 function fetchOrder(id) {
   const user = JSON.parse(window.localStorage.getItem('user'));
@@ -31,7 +30,6 @@ function fetchOrder(id) {
 export default function UserViewOrderDetails() {
   const { id } = useParams();
   const user = useUserStore((state) => state.user);
-  const navigate = useNavigate();
 
   const {
     data: order,
@@ -70,13 +68,7 @@ export default function UserViewOrderDetails() {
   return (
     <section className="bg-neutral h-full py-8 pb-40">
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-        <button
-          onClick={() => navigate(-1)}
-          className="hover:text-content text-lighter flex items-center gap-2 text-sm transition-colors"
-        >
-          <ArrowLeftIcon size={16} />
-          Back
-        </button>
+        <BackButton />
 
         <div className="flex flex-col items-start space-y-2">
           <h1 className="text-content font-heading text-2xl font-semibold">
