@@ -1,30 +1,15 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { Flame, ShoppingCart } from 'lucide-react';
 import AddToCartModal from '../modals/AddToCartModal';
+import { useAddToCart } from '@/hooks/useAddToCart';
 
-function ProductCard({ product, onAddToCart }) {
+function ProductCard({ product }) {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-
-  const handleAdd = () => {
-    if (onAddToCart) {
-      // Open modal instead of directly adding to cart
-      setOpen(true);
-    }
-  };
-
-  const handleConfirmAdd = () => {
-    if (onAddToCart) {
-      onAddToCart(product, quantity);
-      setOpen(false);
-      setQuantity(1);
-    }
-  };
+  const { open, setOpen, quantity, setQuantity, handleAdd, handleAddToCart } =
+    useAddToCart();
 
   return (
     <>
@@ -99,7 +84,7 @@ function ProductCard({ product, onAddToCart }) {
         product={product}
         quantity={quantity}
         setQuantity={setQuantity}
-        onConfirm={handleConfirmAdd}
+        onConfirm={() => handleAddToCart(product, quantity)}
       />
     </>
   );
@@ -116,7 +101,6 @@ ProductCard.propTypes = {
     category: PropTypes.string,
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
-  onAddToCart: PropTypes.func,
 };
 
 export default ProductCard;

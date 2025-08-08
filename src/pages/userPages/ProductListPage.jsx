@@ -5,15 +5,15 @@ import ProductCard from '@/components/bigComponents/ProductCard.jsx';
 import Cart from '@/components/bigComponents/Cart.jsx';
 import { Skeleton } from '@/components/ui/skeleton.jsx';
 import useCartStore from '@/stores/cartStore';
+import useUserStore from '@/stores/userStore';
 import { Toaster } from 'sonner';
 
 function ProductPage() {
   const navigate = useNavigate();
   const { addItem } = useCartStore();
-  const user = window.localStorage.getItem('user');
+  const user = useUserStore((state) => state.user);
   const isLoggedIn = !!user;
 
-  // ✅ Fetch products using React Query
   const {
     data: products = [],
     isLoading,
