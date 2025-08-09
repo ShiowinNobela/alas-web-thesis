@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { FaEdit } from 'react-icons/fa';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { IoPersonAddOutline } from 'react-icons/io5';
-import { Badge, ToggleSwitch, ButtonGroup, Button } from 'flowbite-react';
+import { Badge, ToggleSwitch, Button } from 'flowbite-react';
 import {
   Table,
   TableBody,
@@ -13,12 +11,9 @@ import {
   TableHeadCell,
   TableRow,
 } from 'flowbite-react';
-import {
-  HiUserCircle,
-  HiUserGroup,
-  HiOutlineUsers,
-  HiIdentification,
-} from 'react-icons/hi';
+import { UserCircle, Users, User, Contact, Edit, UserPlus } from 'lucide-react';
+import ButtonGroupFilter from '@/components/bigComponents/ButtonGroupFilter';
+import RoleBadge from '@/components/bigComponents/RoleBadge';
 
 const fetchUser = async () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
@@ -32,7 +27,9 @@ const fetchUser = async () => {
 
 const fetchAdminUsers = async (role) => {
   const params = {};
-  if (role && role !== 'All') params.role = role;
+  if (role && role !== 'All') {
+    params.role = role;
+  }
 
   const res = await axios.get('/api/adminUser', { params });
   return res.data.data || [];
@@ -61,15 +58,16 @@ function AccountManagement() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['adminUsers', statusFilter], // include filter in key
+    queryKey: ['adminUsers', statusFilter],
     queryFn: () => fetchAdminUsers(statusFilter),
   });
 
+  // Updated roleTabs with Lucide icons
   const roleTabs = [
-    { label: 'All', value: 'All', icon: HiUserCircle },
-    { label: 'Admin', value: 'admin', icon: HiUserGroup },
-    { label: 'Staff', value: 'staff', icon: HiOutlineUsers },
-    { label: 'Customer', value: 'customer', icon: HiIdentification },
+    { label: 'All', value: 'All', icon: UserCircle },
+    { label: 'Admin', value: 'admin', icon: Users },
+    { label: 'Staff', value: 'staff', icon: User },
+    { label: 'Customer', value: 'customer', icon: Contact },
   ];
 
   const toggleUserStatus = useMutation({
@@ -92,31 +90,19 @@ function AccountManagement() {
         );
 
   return (
-    <div className="flex flex-col overflow-x-auto">
-      <main className="mx-auto w-full overflow-x-auto rounded-xs border bg-white shadow">
-        {/* Tabs + Add Button */}
+    <div className="flex flex-col overflow-x-auto p-4">
+      <main className="mx-auto w-full overflow-x-auto rounded-xl border bg-white shadow ring-1">
         <div className="flex flex-row justify-between px-4 py-4">
-          <ButtonGroup outline>
-            {roleTabs.map((tab) => {
-              const isActive = statusFilter === tab.value;
-              const Icon = tab.icon;
-              return (
-                <Button
-                  key={tab.value}
-                  onClick={() => setStatusFilter(tab.value)}
-                  color={isActive ? 'default' : 'gray'}
-                  className="capitalize"
-                >
-                  <Icon className="me-2 h-4 w-4" />
-                  {tab.label}
-                </Button>
-              );
-            })}
-          </ButtonGroup>
+          <ButtonGroupFilter
+            options={roleTabs}
+            value={statusFilter}
+            onChange={setStatusFilter}
+            activeButtonClassName="bg-slate-500 text-white font-medium"
+          />
 
           <Link to="/Admin/AdminAddUser">
-            <Button outline>
-              <IoPersonAddOutline className="h-5 w-5" />
+            <Button outline color="gray">
+              <UserPlus className="h-5 w-5" />
               Add User
             </Button>
           </Link>
@@ -124,7 +110,7 @@ function AccountManagement() {
 
         {/* Table */}
         {isLoading ? (
-          <div className="p-6 text-center text-gray-600">Loading users...</div>
+          <div className="text-lighter p-6 text-center">Loading users...</div>
         ) : isError ? (
           <div className="p-6 text-center text-red-600">
             Failed to load users.
@@ -132,7 +118,7 @@ function AccountManagement() {
         ) : (
           <div className="overflow-x-auto">
             <Table hoverable>
-              <TableHead className="text-black uppercase">
+              <TableHead className="text-content border-y-2 uppercase">
                 <TableRow>
                   <TableHeadCell>Username</TableHeadCell>
                   <TableHeadCell>Role</TableHeadCell>
@@ -146,30 +132,30 @@ function AccountManagement() {
                   <TableHeadCell>Actions</TableHeadCell>
                 </TableRow>
               </TableHead>
-              <TableBody className="divide-y divide-gray-100 bg-white">
+              <TableBody className="divide-y bg-white">
                 {filteredUsers.map((user) => (
                   <TableRow
                     key={user.id}
                     className="transition duration-150 ease-in-out hover:bg-gray-50"
                   >
-                    <TableCell className="w-[21%] text-sm text-gray-800">
-                      <div className="font-medium text-blue-600">
+                    <TableCell className="text-content text-sm">
+                      <div className="font-medium text-teal-600">
                         {user.username ?? '–'}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-lighter text-xs">
                         {user.email ?? '–'}
                       </div>
                     </TableCell>
 
-                    <TableCell className="w-[5%] text-sm text-gray-600 capitalize">
-                      {user.role_name ?? '–'}
+                    <TableCell className="text-content">
+                      <RoleBadge role={user.role_name} />
                     </TableCell>
 
-                    <TableCell className="hidden w-[35%] text-sm text-gray-600 lg:table-cell">
+                    <TableCell className="text-lighter hidden text-xs lg:table-cell">
                       {user.address ?? '–'}
                     </TableCell>
 
-                    <TableCell className="hidden w-[18%] text-sm text-gray-600 lg:table-cell">
+                    <TableCell className="text-lighter hidden text-sm lg:table-cell">
                       {user.contact_number ?? '–'}
                     </TableCell>
 
@@ -183,7 +169,17 @@ function AccountManagement() {
                     </TableCell>
 
                     <TableCell className="flex items-center gap-2 py-2">
+                      <Button
+                        outline
+                        color="gray"
+                        onClick={() =>
+                          navigate(`/Admin/AdminUserEdit/${user.id}`)
+                        }
+                      >
+                        <Edit className="h-5 w-5" />
+                      </Button>
                       <ToggleSwitch
+                        color={user.is_active ? 'success' : 'failure'}
                         checked={user.is_active}
                         onChange={() =>
                           toggleUserStatus.mutate({
@@ -197,14 +193,6 @@ function AccountManagement() {
                           toggleUserStatus.isLoading
                         }
                       />
-                      <Button
-                        outline
-                        onClick={() =>
-                          navigate(`/Admin/AdminUserEdit/${user.id}`)
-                        }
-                      >
-                        <FaEdit className="h-5 w-5" />
-                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

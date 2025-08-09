@@ -1,11 +1,4 @@
-import {
-  Bell,
-  Settings,
-  User,
-  Clock,
-  Database,
-  HelpCircle,
-} from 'lucide-react';
+import { Bell, Settings, User, Database, HelpCircle } from 'lucide-react';
 import useUserStore from '@/stores/userStore';
 import {
   Dropdown,
@@ -16,22 +9,53 @@ import {
 import { HiUser, HiBell, HiCog, HiLogout } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { handleLogout } from '@/utils/logout';
+import { useLocation } from 'react-router-dom';
 
 // Not sure yet what to actually put here
 function AdminNavbar() {
   const user = useUserStore((state) => state.user);
-  const currentTime = new Date().toLocaleTimeString('en-US', {
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const location = useLocation();
+
+  const getCurrentPageName = () => {
+    const path = location.pathname;
+
+    // Remove the "/Admin/" part and get the route segment
+    const routeSegment = path.replace(/^\/Admin\//, '').split('/')[0];
+
+    // Handle the index route (Login page)
+    if (path.endsWith('/Admin') || path.endsWith('/Admin/')) {
+      return 'Login';
+    }
+
+    // Map route paths to display names
+    const pageNames = {
+      DashBoard: 'Dashboard',
+      AddProduct: 'Add Product',
+      EditProduct: 'Edit Product',
+      ProductManagement: 'Product Management',
+      AccountManagement: 'Account Management',
+      Orders: 'Orders',
+      AdminOrderDetails: 'Order Details',
+      PopUpInfoPage: 'Info Page',
+      AdminAddUser: 'Add User',
+      ViewOrder: 'View Order',
+      AdminUserEdit: 'Edit User',
+      InventoryManagement: 'Inventory',
+      WalkInOrdersTable: 'Walk-in Orders',
+      WalkInOrdering: 'Walk-in Ordering',
+      SalesPage: 'Sales',
+      NotificationPage: 'Notifications',
+    };
+
+    return pageNames[routeSegment] || routeSegment;
+  };
+
+  const currentPageName = getCurrentPageName();
 
   return (
-    <nav className="bg-background flex h-14 items-center justify-between border-b px-4">
+    <nav className="border-admin flex h-14 items-center justify-between border-b bg-white px-4">
       <div className="flex items-center gap-4">
-        <h1 className="text-foreground text-lg font-semibold">
-          Welcome to Admin Dashboard
-        </h1>
+        <h1 className="text-content text-xl font-bold">{currentPageName}</h1>
       </div>
 
       <div className="flex items-center gap-4">
@@ -43,10 +67,6 @@ function AdminNavbar() {
           <div className="flex items-center gap-1">
             <Database className="h-3 w-3" />
             <span>DB: 45ms</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            <span>{currentTime}</span>
           </div>
         </div>
 
