@@ -95,7 +95,7 @@ function InventoryManagement() {
   return (
     <>
       <div className="bg-admin-bg flex h-full flex-col overflow-x-auto">
-        <div className="mx-auto max-w-screen-2xl px-4 py-8">
+        <div className="mx-auto w-6xl px-4 py-8">
           <div className="relative overflow-hidden bg-white shadow-xl sm:rounded-lg">
             {/* Summary Section */}
             <div className="flex flex-col space-y-3 px-4 py-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">

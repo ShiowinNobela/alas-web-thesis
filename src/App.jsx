@@ -34,6 +34,7 @@ import AdminOrderDetails from './pages/adminPages/AdminOrderDetails.jsx';
 import AboutUs from './pages/userPages/AboutUs.jsx';
 import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 import AdminLayout from './pages/layouts/AdminLayout';
+import Notifs from './pages/adminPages/Notifs.jsx';
 
 function App() {
   return (
@@ -85,6 +86,7 @@ function App() {
           <Route path="WalkInOrdering" element={<WalkInOrdering />} />
           <Route path="SalesPage" element={<SalesPage />} />
           <Route path="NotificationPage" element={<NotificationPage />} />
+          <Route path="Notifs" element={<Notifs />} />
         </Route>
       </Routes>
     </>

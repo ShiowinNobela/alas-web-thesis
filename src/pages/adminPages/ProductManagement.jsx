@@ -73,11 +73,10 @@ function ProductManagement() {
       <div className="flex h-full flex-col overflow-x-auto bg-white">
         <section className="bg-gray-50">
           <div className="mx-auto max-w-screen-2xl px-4 py-8">
-            {/* Reserved for AdminProfile or other top-right actions */}
           </div>
 
           {/* Page Header */}
-          <div className="flex w-full items-center justify-between">
+          <div className="flex w-full items-center justify-between pr-5">
             <div />
             <div>
               <Link to="/Admin/AddProduct">
@@ -89,7 +88,7 @@ function ProductManagement() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid w-full grid-cols-4 gap-5 pt-5 pl-3">
+          <div className="grid w-full grid-cols-4 gap-5 pt-5 px-5">
             {data.map((d) => (
               <Card
                 className="max-w-sm overflow-hidden rounded-lg shadow-lg"

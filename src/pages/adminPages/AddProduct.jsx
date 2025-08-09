@@ -46,13 +46,10 @@ function AddProduct() {
     <>
       <div className="flex h-full flex-col overflow-x-auto bg-white">
         <div className="bg-gray-50">
-          <div className="mx-auto max-w-screen-2xl px-4 py-8">
-            <AdminProfile />
-          </div>
-          <div className="flex w-full items-center justify-between">
+          <div className="flex w-full items-center justify-between pt-5">
             <BackButton onClick={() => navigate('/Admin/ProductManagement')} />
           </div>
-          <div className="grid h-135 w-full grid-cols-2 gap-7 pr-8 pl-4">
+          <div className="grid h-135 w-full grid-cols-2 gap-7 px-8 pt-5">
             <div className="flex h-full flex-col gap-3 rounded-2xl bg-gray-800 p-7">
               <BaseInput
                 label="Product Id"

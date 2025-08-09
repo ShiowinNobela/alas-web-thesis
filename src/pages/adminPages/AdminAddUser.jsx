@@ -30,7 +30,7 @@ function AdminAddUser() {
       <div className="flex h-full flex-col overflow-x-auto bg-white">
         <div className="flex items-center">
           <form
-            className="mx-auto flex h-8/10 w-2/3 flex-col gap-6 rounded-2xl border border-[#cccacb] bg-[#E2E0E1] p-5 shadow-xl"
+            className="mx-auto flex w-2/3 flex-col gap-6 rounded-2xl border border-[#cccacb] bg-[#E2E0E1] p-5 shadow-xl mt-10"
             onSubmit={handleCreatAdminUser}
           >
             <h2 className="m-1 text-center text-3xl font-extrabold text-[#262626] uppercase">

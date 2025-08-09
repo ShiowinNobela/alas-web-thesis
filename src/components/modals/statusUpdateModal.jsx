@@ -1,6 +1,7 @@
-import PropTypes from "prop-types";
+import React from 'react';
+import Upload from '../Chinges/Upload.jsx';
 
-export default function StatusModal({
+const StatusUpdateModal = ({
   show,
   title,
   textareaValue,
@@ -8,67 +9,67 @@ export default function StatusModal({
   onCancel,
   onConfirm,
   confirmButtonLabel,
-  cancelButtonLabel = "Cancel",
-}) {
+  showImageUpload = false,
+  uploadedImage,
+  onImageUpload
+}) => {
   if (!show) return null;
 
   return (
-    <div
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center w-full p-4 overflow-x-hidden overflow-y-auto h-[calc(100%-1rem)] max-h-full bg-black/50"
-      aria-hidden="true"
-      tabIndex={-1}
-    >
-      <div className="relative w-full max-w-2xl max-h-full">
-        <div className="relative bg-white rounded-lg shadow">
-          {/* Header */}
-          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-300">
-            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-            <button
-              onClick={onCancel}
-              type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              <svg
-                className="w-3 h-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 14"
-              >
-                z``
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 13"
-                />
-              </svg>
-              <span className="sr-only">Close modal</span>
-            </button>
-          </div>
-
-          {/* Body */}
-          <div className="p-6 space-y-4 text-gray-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 ">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
+        <div className="p-6">
+          <h2 className="text-xl font-semibold mb-4">{title}</h2>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Admin Notes:
+            </label>
             <textarea
               value={textareaValue}
               onChange={onTextareaChange}
-              placeholder="Enter your reason..."
-              className="w-full h-40 p-3 border border-gray-300 text-sm rounded-lg resize-none bg-gray-50 text-gray-900 dark:bg-gray-200 dark:border-gray-500 dark:text-black dark:placeholder-gray-500 focus:ring-rose-400 focus:border-rose-400"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              rows="4"
+              placeholder="Enter notes for this status update..."
             />
           </div>
 
-          {/* Footer */}
-          <div className="flex justify-end p-4 space-x-3 border-t border-gray-200 rounded-b dark:border-gray-300">
+          {showImageUpload && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Upload Supporting Document (Optional):
+              </label>
+              <div className="border border-gray-300 rounded-lg p-4">
+                <Upload
+                  onUploadSuccess={(url) => onImageUpload(url)}
+                  currentImage={uploadedImage}
+                />
+                {uploadedImage && (
+                  <div className="mt-3">
+                    <p className="text-sm text-green-600">✓ Image uploaded successfully</p>
+                    <div className="mt-2">
+                      <img 
+                        src={uploadedImage} 
+                        alt="Supporting document" 
+                        className="w-full h-32 object-cover rounded border"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="flex gap-3 justify-end">
             <button
               onClick={onCancel}
-              className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-300 dark:text-slate-800 dark:border-gray-500 dark:hover:bg-gray-400 dark:focus:ring-gray-600"
+              className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              {cancelButtonLabel}
+              Cancel
             </button>
             <button
               onClick={onConfirm}
-              className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-800"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               {confirmButtonLabel}
             </button>
@@ -77,15 +78,6 @@ export default function StatusModal({
       </div>
     </div>
   );
-}
-
-StatusModal.propTypes = {
-  show: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  textareaValue: PropTypes.string.isRequired,
-  onTextareaChange: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
-  confirmButtonLabel: PropTypes.string.isRequired,
-  cancelButtonLabel: PropTypes.string,
 };
+
+export default StatusUpdateModal;

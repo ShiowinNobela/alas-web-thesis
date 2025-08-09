@@ -24,6 +24,7 @@ import {
 import StatusFilterDropdown from '../../components/StatusFilterDropdown';
 import dayjs from 'dayjs';
 import { toast, Toaster } from 'sonner';
+import Upload from '../../components/Chinges/Upload.jsx';
 
 const tableHeadStyle = 'px-6 py-3 text-center';
 
@@ -49,6 +50,7 @@ function AdminViewOrderPage() {
   const [searchId, setSearchId] = useState('');
   const [summaryData, setSummaryData] = useState([]);
   const [last30SummaryData, setLast30SummaryData] = useState([]);
+  const [uploadedImage, setUploadedImage] = useState('');
 
   const user = JSON.parse(window.localStorage.getItem('user'));
 
@@ -230,7 +232,9 @@ function AdminViewOrderPage() {
       ? `/api/adminOrder/status-update/${orderId}`
       : `/api/adminOrder/cancel/${orderId}`;
 
-    const data = status ? { notes: note, status } : { notes: note };
+    const data = status 
+      ? { notes: note, status, shipping_image: uploadedImage } 
+      : { notes: note };
 
     axios
       .patch(url, data, {
@@ -256,6 +260,7 @@ function AdminViewOrderPage() {
         setUpdateStatus('');
         setModalTitle('');
         setConfirmButtonLabel('');
+        setUploadedImage(''); // Reset uploaded image
         if (startDate && endDate) {
           fetchOrderSummary(startDate, endDate);
         } else {
@@ -263,8 +268,8 @@ function AdminViewOrderPage() {
         }
       })
       .catch((err) => {
-        console.error('Cancel failed:', err);
-        alert('Failed to cancel order.');
+        console.error('Status update failed:', err);
+        alert('Failed to update order status.');
       });
   };
 
@@ -711,9 +716,15 @@ function AdminViewOrderPage() {
           title={modalTitle}
           textareaValue={adminNote}
           onTextareaChange={(e) => setAdminNote(e.target.value)}
-          onCancel={() => setStatusUpdateModal(false)}
+          onCancel={() => {
+            setStatusUpdateModal(false);
+            setUploadedImage('');
+          }}
           onConfirm={() => statusUpdate(updatingId, adminNote, updateStatus)}
           confirmButtonLabel={confirmButtonLabel}
+          showImageUpload={updateStatus === 'shipping' || updateStatus === 'delivered'}
+          uploadedImage={uploadedImage}
+          onImageUpload={setUploadedImage}
         />
       </div>
     </>
