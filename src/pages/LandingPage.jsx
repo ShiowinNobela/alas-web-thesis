@@ -1,11 +1,8 @@
 import { Button } from '@/components/ui/button';
 import LandPagePic1 from '../components/images/lp1.jpg';
-import Picture1 from '../components/images/PicCallMeDebra.jpg';
-import Picture2 from '../components/images/PicHikari.jpg';
-import Picture3 from '../components/images/PicLeBlanc.jpg';
-import Picture4 from '../components/images/PicZeroBlitz.jpg';
 import herogif from '@/components/images/herogif.gif';
 import { FireExtinguisherIcon } from 'lucide-react';
+import BentoGrid from '@/components/bigComponents/BentoGrid';
 
 const LandingPage = () => {
   return (
@@ -18,7 +15,7 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-black/30"></div>
           <div className="relative z-10 container mx-auto px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h1 className="font-heading mb-6 text-4xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-6xl">
+              <h1 className="font-heading mb-6 text-5xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-6xl">
                 Artisanal Hot Sauce and Some Spicy Stuff
               </h1>
               <p className="mb-8 text-lg text-white opacity-90 md:text-xl">
@@ -67,34 +64,147 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="bg-neutral flex min-h-screen flex-col p-16 text-center sm:px-10">
-        <h2 className="text-content font-heading mb-16 text-4xl font-extrabold drop-shadow sm:text-5xl lg:text-6xl">
-          Our Signature Collection
-        </h2>
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { src: Picture1, name: 'Call Me Debra' },
-            { src: Picture2, name: 'Hikari' },
-            { src: Picture3, name: 'Lé Blanc' },
-            { src: Picture4, name: 'Zero Blitz' },
-          ].map((prod, i) => (
-            <div
-              key={i}
-              className="flex transform cursor-pointer flex-col items-center rounded-3xl bg-black/40 p-8 backdrop-blur-lg transition-transform hover:scale-105 hover:shadow-2xl"
-            >
-              <img
-                src={prod.src}
-                alt={prod.name}
-                className="mb-6 h-[200px] w-[200px] rounded-full border-4 border-[#EA1A20] object-cover shadow-lg"
-              />
-              <p className="text-content mb-6 text-2xl font-bold tracking-wide sm:text-3xl">
-                {prod.name}
-              </p>
-              <button className="rounded-full bg-white px-6 py-3 font-semibold tracking-wide text-black uppercase transition hover:bg-gray-200">
-                Add to Cart
-              </button>
+      <section className="bg-amber-400/20 py-16">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="mb-12 text-center">
+            <h2 className="font-heading text-4xl font-bold text-gray-800">
+              Spice Up Your Life, Like Damn Move
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-gray-600">
+              Artisanal heat crafted for flavor explorers. Each product tells a
+              story of passion.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {/* I don't know how to design this */}
+            <div className="group relative overflow-hidden rounded-2xl bg-amber-50 shadow-lg">
+              <div className="absolute -top-10 -right-10 z-0 h-40 w-40 rounded-full bg-amber-200/50"></div>
+              <div className="relative z-10 p-6">
+                <div className="mb-4 flex h-48 items-center justify-center">
+                  <img
+                    src="https://i.guim.co.uk/img/media/1d3a1b588915aaae8d2ceefae6294414d7181077/0_100_5758_3455/master/5758.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=5a7552da71c715988803a0d764fc3390"
+                    alt="Classic ALAS Hot Sauce"
+                    className="h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="mb-1 text-xl font-bold">Classic ALAS</h3>
+                  <div className="mb-3 flex justify-center gap-1">
+                    {[...Array(3)].map((_, i) => (
+                      <FireExtinguisherIcon
+                        key={i}
+                        className="h-4 w-4 fill-amber-500 text-amber-500"
+                      />
+                    ))}
+                  </div>
+                  <p className="mb-4 text-sm text-gray-600">
+                    The perfect balance of heat and flavor
+                  </p>
+                  <button className="w-full rounded-lg bg-amber-500 py-2 text-sm font-medium text-white transition hover:bg-amber-600">
+                    ₱300.00 • Add to Cart
+                  </button>
+                </div>
+              </div>
             </div>
-          ))}
+
+            <div className="group relative overflow-hidden rounded-2xl bg-red-50 shadow-lg">
+              <div className="absolute -bottom-10 -left-10 z-0 h-40 w-40 rounded-full bg-red-200/50"></div>
+              <div className="relative z-10 p-6">
+                <div className="mb-4 flex h-48 items-center justify-center">
+                  <img
+                    src="https://i.guim.co.uk/img/media/1d3a1b588915aaae8d2ceefae6294414d7181077/0_100_5758_3455/master/5758.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=5a7552da71c715988803a0d764fc3390"
+                    alt="Extra Hot ALAS"
+                    className="h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="mb-1 text-xl font-bold">Extra Hot</h3>
+                  <div className="mb-3 flex justify-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <FireExtinguisherIcon
+                        key={i}
+                        className="h-4 w-4 fill-red-500 text-red-500"
+                      />
+                    ))}
+                  </div>
+                  <p className="mb-4 text-sm text-gray-600">
+                    For those who dare to go hotter
+                  </p>
+                  <button className="w-full rounded-lg bg-red-500 py-2 text-sm font-medium text-white transition hover:bg-red-600">
+                    ₱400.00 • Challenge Accepted
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden rounded-2xl bg-emerald-50 shadow-lg">
+              <div className="absolute -top-5 -right-5 z-0 h-32 w-32 rounded-full bg-emerald-200/50"></div>
+              <div className="relative z-10 p-6">
+                <div className="mb-4 flex h-48 items-center justify-center">
+                  <img
+                    src="https://i.guim.co.uk/img/media/1d3a1b588915aaae8d2ceefae6294414d7181077/0_100_5758_3455/master/5758.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=5a7552da71c715988803a0d764fc3390"
+                    alt="Gift Set"
+                    className="h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="mb-1 text-xl font-bold">Gift Collection</h3>
+                  <div className="mb-3 flex justify-center gap-1">
+                    {[...Array(4)].map((_, i) => (
+                      <FireExtinguisherIcon
+                        key={i}
+                        className="h-4 w-4 fill-emerald-500 text-emerald-500"
+                      />
+                    ))}
+                  </div>
+                  <p className="mb-4 text-sm text-gray-600">
+                    The perfect spicy gift package
+                  </p>
+                  <button className="w-full rounded-lg bg-emerald-500 py-2 text-sm font-medium text-white transition hover:bg-emerald-600">
+                    ₱999.00 • Give the Gift of Heat
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden rounded-2xl bg-purple-50 shadow-lg">
+              <div className="absolute -bottom-5 -left-5 z-0 h-32 w-32 rounded-full bg-purple-200/50"></div>
+              <div className="relative z-10 p-6">
+                <div className="mb-4 flex h-48 items-center justify-center">
+                  <img
+                    src="https://i.guim.co.uk/img/media/1d3a1b588915aaae8d2ceefae6294414d7181077/0_100_5758_3455/master/5758.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=5a7552da71c715988803a0d764fc3390"
+                    alt="New Product"
+                    className="h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="mb-1 text-xl font-bold">Ghost Pepper Blend</h3>
+                  <div className="mb-3 flex justify-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <FireExtinguisherIcon
+                        key={i}
+                        className="h-4 w-4 fill-purple-500 text-purple-500"
+                      />
+                    ))}
+                  </div>
+                  <p className="mb-4 text-sm text-gray-600">
+                    Our newest extreme heat experience
+                  </p>
+                  <button className="w-full rounded-lg bg-purple-500 py-2 text-sm font-medium text-white transition hover:bg-purple-600">
+                    ₱450.00 • Try It If You Dare
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <button className="inline-flex items-center gap-2 rounded-full border-2 border-amber-500 px-6 py-2.5 font-medium text-amber-600 transition hover:bg-amber-50">
+              <FireExtinguisherIcon className="h-5 w-5" />
+              Explore Our Full Range
+            </button>
+          </div>
         </div>
       </section>
 
@@ -114,6 +224,8 @@ const LandingPage = () => {
           className="h-[400px] w-auto transform rounded-2xl object-cover shadow-2xl transition-transform hover:scale-105 md:h-[500px]"
         />
       </section>
+
+      <BentoGrid />
     </>
   );
 };

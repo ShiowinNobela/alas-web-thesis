@@ -25,6 +25,7 @@ import {
   CheckCircle,
   XCircle,
 } from 'lucide-react';
+import SummaryCard from '@/components/bigComponents/SummaryCard';
 
 const fetchProducts = async () => {
   const res = await axios.get('/api/products/admin');
@@ -108,41 +109,28 @@ function InventoryManagement() {
   };
 
   return (
-    <div className="flex flex-col overflow-x-auto p-4">
+    <div className="bg-admin flex flex-col overflow-x-auto p-4">
       <main className="mx-auto w-full overflow-x-auto rounded-xl border bg-white shadow ring-1">
         {/* Summary Cards */}
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
-          <div className="rounded-lg border p-4 shadow-sm">
-            <div className="flex items-center gap-3">
-              <AlertTriangle className="h-6 w-6 text-yellow-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">
-                  Low Stock Items
-                </p>
-                <p className="text-2xl font-semibold">{lowStockItems}</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-lg border p-4 shadow-sm">
-            <div className="flex items-center gap-3">
-              <Package className="h-6 w-6 text-blue-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">
-                  Total Products
-                </p>
-                <p className="text-2xl font-semibold">{totalProducts}</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-lg border p-4 shadow-sm">
-            <div className="flex items-center gap-3">
-              <Package className="h-6 w-6 text-green-500" />
-              <div>
-                <p className="text-sm font-medium text-gray-500">Total Stock</p>
-                <p className="text-2xl font-semibold">{totalStock}</p>
-              </div>
-            </div>
-          </div>
+          <SummaryCard
+            iconKey="lowStock"
+            iconColor="text-yellow-500"
+            title="Low Stock Items"
+            value={lowStockItems}
+          />
+          <SummaryCard
+            iconKey="packageBlue"
+            iconColor="text-blue-500"
+            title="Total Products"
+            value={totalProducts}
+          />
+          <SummaryCard
+            iconKey="packageGreen"
+            iconColor="text-green-500"
+            title="Total Stock"
+            value={totalStock}
+          />
         </div>
 
         {/* Action Bar */}
