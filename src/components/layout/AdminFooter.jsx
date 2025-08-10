@@ -2,7 +2,7 @@ function AdminFooter() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-border/40 border-t bg-transparent px-6 py-4">
+    <footer className="border-border/40 bg-admin border-t px-6 py-4">
       <div className="text-muted-foreground flex items-center justify-between text-sm">
         <div className="flex items-center gap-4">
           <span>© {currentYear} Admin Panel. All rights reserved.</span>

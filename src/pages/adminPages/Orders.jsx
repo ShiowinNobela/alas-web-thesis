@@ -161,7 +161,7 @@ function AdminViewOrderPage() {
   return (
     <>
       <Toaster richColors />
-      <div className="bg-neutral flex flex-col overflow-x-auto">
+      <div className="bg-admin flex flex-col overflow-x-auto">
         <main className="flex w-full flex-col gap-4 p-4">
           <OrderSummary
             summaryData={summaryData}

@@ -10,7 +10,7 @@ const AdminLayout = () => {
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden shadow-md">
         <AdminNavbar />
-        <div className="bg-admin-bg flex flex-1 flex-col overflow-auto">
+        <div className="bg-admin flex flex-1 flex-col overflow-auto">
           <main className="flex-1">
             <Outlet />
           </main>

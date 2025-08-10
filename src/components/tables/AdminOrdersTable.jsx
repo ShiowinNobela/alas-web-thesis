@@ -24,12 +24,12 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
+import PropTypes from 'prop-types';
 
 export default function AdminOrdersTable({
   orders,
   sortConfig,
   handleSort,
-  getStatusColor,
   onStatusUpdateClick,
   onViewHistory,
   isLoading = false,
@@ -95,7 +95,7 @@ export default function AdminOrdersTable({
           <TableHeadCell>Order Info</TableHeadCell>
           <TableHeadCell>Items</TableHeadCell>
           <TableHeadCell>
-            <div
+            <button
               className="flex cursor-pointer items-center hover:underline"
               onClick={() => handleSort('date')}
             >
@@ -113,10 +113,10 @@ export default function AdminOrdersTable({
                   <path d="M7 10l5 5 5-5H7z" />
                 )}
               </svg>
-            </div>
+            </button>
           </TableHeadCell>
           <TableHeadCell>
-            <div
+            <button
               className="flex cursor-pointer items-center hover:underline"
               onClick={() => handleSort('total')}
             >
@@ -135,7 +135,7 @@ export default function AdminOrdersTable({
                   <path d="M7 10l5 5 5-5H7z" />
                 )}
               </svg>
-            </div>
+            </button>
           </TableHeadCell>
           <TableHeadCell>
             <div className="leading-tight">
@@ -357,7 +357,7 @@ export default function AdminOrdersTable({
           )}
         </TableBody>
 
-        <tfoot className="bg-admin font-semibold text-white">
+        <tfoot className="bg-black text-sm text-white">
           <tr>
             <td colSpan={9} className="px-6 py-6">
               <ul className="list-inside list-disc space-y-1">
@@ -374,3 +374,36 @@ export default function AdminOrdersTable({
     </div>
   );
 }
+
+AdminOrdersTable.propTypes = {
+  orders: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      username: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+      order_date: PropTypes.string.isRequired,
+      items: PropTypes.arrayOf(
+        PropTypes.shape({
+          item_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+            .isRequired,
+          product_name: PropTypes.string.isRequired,
+          quantity: PropTypes.number.isRequired,
+        })
+      ).isRequired,
+      total_amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
+      payment_method: PropTypes.string.isRequired,
+      status: PropTypes.string.isRequired,
+      cancel_requested: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  sortConfig: PropTypes.shape({
+    key: PropTypes.string.isRequired,
+    direction: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  }).isRequired,
+  handleSort: PropTypes.func.isRequired,
+  onStatusUpdateClick: PropTypes.func.isRequired,
+  onViewHistory: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  emptyMessage: PropTypes.string,
+};

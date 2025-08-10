@@ -24,9 +24,9 @@ function ProductManagement() {
 
   return (
     <div className="bg-admin-bg min-h-screen p-4">
-      <div className="mx-auto max-w-screen-2xl px-4">
+      <div className="mx-auto max-w-screen-2xl">
         {/* Header with add product button */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between rounded-xl bg-white p-4 ring-1">
           <h1 className="flex items-center gap-2 text-2xl font-bold">
             <Package className="h-6 w-6" />
             Product Management

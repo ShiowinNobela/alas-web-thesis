@@ -1,24 +1,35 @@
 import { useNavigate } from 'react-router-dom';
-import { Card, Spinner } from 'flowbite-react';
-import { HiSwitchHorizontal } from 'react-icons/hi';
 import { useQuery } from '@tanstack/react-query';
+import {
+  Button,
+  Card,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Spinner,
+  Table,
+  TableHead,
+  TableRow,
+  TableHeadCell,
+  TableBody,
+  TableCell,
+} from 'flowbite-react';
+import { useState } from 'react';
+import SummaryCard from '@/components/bigComponents/SummaryCard';
 
 const fetchWalkInOrders = async () => {
   const res = await fetch('http://localhost:3000/api/walkInOrders/');
-  if (!res.ok) {
-    throw new Error('Network response was not ok');
-  }
+  if (!res.ok) throw new Error('Network response was not ok');
   const json = await res.json();
   return json.data;
 };
-
-const tableHeadStyle = 'px-6 py-3 text-center';
 
 function WalkInOrders() {
   const navigate = useNavigate();
 
   const {
-    data: orders,
+    data: orders = [],
     isLoading,
     error,
   } = useQuery({
@@ -29,36 +40,63 @@ function WalkInOrders() {
     retry: 1,
   });
 
-  const totalAmount = orders?.reduce(
+  // Summary calculations
+  const totalOrders = orders.length;
+  const totalAmount = orders.reduce(
     (sum, order) => sum + parseFloat(order.total_amount || 0),
     0
   );
+  const totalDiscount = orders.reduce(
+    (sum, order) => sum + parseFloat(order.discount_amount || 0),
+    0
+  );
+
+  // Optional: track editing modal state if you want to edit order details
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingOrder, setEditingOrder] = useState(null);
+
+  const openEditModal = (order) => {
+    setEditingOrder(order);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingOrder(null);
+  };
 
   return (
-    <div className="flex min-h-full flex-col gap-3 overflow-auto px-4 py-7">
-      <div className="bg-admin flex h-[25%] w-full flex-row space-x-6 rounded-xl p-6 shadow">
-        <Card
-          title="Sales"
-          className="hover:bg-secondary w-1/4 flex-none cursor-pointer rounded-lg p-4 shadow transition"
-          onClick={() => navigate('/Admin/Orders')}
-          role="button"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="mb-1 text-lg font-bold">Walk-In Orders</h2>
-              <p className="text-sm text-gray-600">Hello Admin!</p>
-            </div>
-            <HiSwitchHorizontal className="h-6 w-6 text-blue-600" />
-          </div>
+    <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
+      <div className="mb-4 grid grid-cols-1 gap-4 rounded-xl bg-white p-4 ring-1 md:grid-cols-4">
+        <Card className="shadow-sm ring-1">
+          <h2 className="text-xl font-semibold">Walk-In Orders</h2>
+          <Button onClick={() => navigate('/Admin/WalkInOrdering')} size="sm">
+            Add a Walk-In Order?
+          </Button>
         </Card>
+        <SummaryCard
+          iconKey="orders"
+          iconColor="text-blue-600"
+          title="Total Walk-In Orders"
+          value={totalOrders}
+        />
+        <SummaryCard
+          iconKey="sales"
+          iconColor="text-green-600"
+          title="Total Walk-In Sales"
+          value={`₱ ${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+        />
 
-        <div className="flex flex-grow flex-row gap-x-2">
-          <h1 className="text-2xl font-bold">Walk-In Orders</h1>
-        </div>
+        <SummaryCard
+          iconKey="discount"
+          iconColor="text-green-600"
+          title="Total Walk-In Discounts"
+          value={`₱ ${totalDiscount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+        />
       </div>
 
       {isLoading && (
-        <div className="flex h-full items-center justify-center">
+        <div className="flex justify-center py-12">
           <Spinner size="xl" />
         </div>
       )}
@@ -68,62 +106,80 @@ function WalkInOrders() {
           Failed to load orders: {error.message}
         </p>
       )}
-      {orders?.length === 0 && !isLoading && (
+
+      {!isLoading && orders.length === 0 && (
         <p className="text-center text-gray-500">No walk-in orders yet.</p>
       )}
 
-      {orders?.length > 0 && (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <div className="bg-admin rounded-t-lg px-6 py-3 text-xs font-semibold text-white uppercase">
-            <span>Total Orders: {orders.length}</span>
-            <span className="ml-4">
-              Total Amount: ₱{' '}
-              {totalAmount.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}
-            </span>
-          </div>
-          <table className="w-full rounded-2xl text-left text-sm text-slate-800">
-            <thead className="bg-admin sticky top-0 text-xs text-white uppercase">
-              <tr>
-                <th className={tableHeadStyle}>Order ID</th>
-                <th className={tableHeadStyle}>Customer Name</th>
-                <th className={tableHeadStyle}>Email</th>
-                <th className={tableHeadStyle}>Date</th>
-                <th className={tableHeadStyle}>Total Amount</th>
-                <th className={tableHeadStyle}>Discount</th>
-                <th className={tableHeadStyle}>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
+      {orders.length > 0 && (
+        <div className="relative overflow-x-auto rounded-xl shadow-md ring-1">
+          <Table hoverable striped className="ring-1">
+            <TableHead>
+              <TableRow>
+                <TableHeadCell>Order ID</TableHeadCell>
+                <TableHeadCell>Customer Name</TableHeadCell>
+                <TableHeadCell>Email</TableHeadCell>
+                <TableHeadCell>Date</TableHeadCell>
+                <TableHeadCell>Total Amount</TableHeadCell>
+                <TableHeadCell>Discount</TableHeadCell>
+                <TableHeadCell>Notes</TableHeadCell>
+                <TableHeadCell>Actions</TableHeadCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {orders.map((order) => (
-                <tr
+                <TableRow
                   key={order.id}
-                  className="cursor-pointer border border-gray-200 bg-white hover:bg-gray-50"
+                  className="cursor-pointer hover:bg-gray-50"
+                  onClick={() => openEditModal(order)}
                 >
-                  <td className="px-6 py-3 text-center">{order.id}</td>
-                  <td className="px-6 py-3 text-center">
+                  <TableCell className="text-center">{order.id}</TableCell>
+                  <TableCell className="text-center">
                     {order.customer_name}
-                  </td>
-                  <td className="px-6 py-3 text-center">
+                  </TableCell>
+                  <TableCell className="text-center">
                     {order.customer_email}
-                  </td>
-                  <td className="px-6 py-3 text-center">
+                  </TableCell>
+                  <TableCell className="text-center">
                     {new Date(order.sale_date).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-3 text-center">
+                  </TableCell>
+                  <TableCell className="text-center">
                     ₱ {parseFloat(order.total_amount).toLocaleString()}
-                  </td>
-                  <td className="px-6 py-3 text-center">
+                  </TableCell>
+                  <TableCell className="text-center">
                     ₱ {parseFloat(order.discount_amount).toLocaleString()}
-                  </td>
-                  <td className="px-6 py-3 text-center">{order.notes}</td>
-                </tr>
+                  </TableCell>
+                  <TableCell className="text-center">{order.notes}</TableCell>
+                  <TableCell className="flex justify-center gap-2">
+                    <Button
+                      size="xs"
+                      outline
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openEditModal(order);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
+      <Modal show={isModalOpen} size="md" onClose={closeModal}>
+        <ModalHeader>Edit Order #{editingOrder?.id}</ModalHeader>
+        <ModalBody>
+          <p>Implement edit form here...</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={closeModal} color="gray">
+            Close
+          </Button>
+          <Button /* onClick={handleSave} */>Save Changes</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 }

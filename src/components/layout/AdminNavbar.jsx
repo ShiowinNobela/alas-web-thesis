@@ -53,7 +53,7 @@ function AdminNavbar() {
   const currentPageName = getCurrentPageName();
 
   return (
-    <nav className="border-admin flex h-14 items-center justify-between border-b bg-white px-4">
+    <nav className="flex h-14 items-center justify-between border-b border-black bg-white px-4">
       <div className="flex items-center gap-4">
         <h1 className="text-content text-xl font-bold">{currentPageName}</h1>
       </div>
