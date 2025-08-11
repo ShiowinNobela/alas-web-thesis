@@ -3,7 +3,7 @@ import { ThemeConfig } from 'flowbite-react';
 import ContactUs from './pages/userPages/ContactUs.jsx';
 import LoginPage from './pages/userPages/LoginPage.jsx';
 import RegPage from './pages/userPages/RegistrationPage.jsx';
-import LandPage from './pages/LandingPage.jsx';
+import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
 import ProductDetailsPage from './pages/userPages/ProductDetailsPage.jsx';
 import { Route, Routes } from 'react-router-dom';

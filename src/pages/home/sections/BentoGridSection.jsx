@@ -239,7 +239,7 @@ const BentoGrid = () => {
   ];
 
   return (
-    <section className="bg-neutral font-heading min-h-screen px-6 py-16 text-center sm:px-10">
+    <section className="bg-neutral font-heading min-h-screen px-6 py-24 text-center sm:px-10">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
