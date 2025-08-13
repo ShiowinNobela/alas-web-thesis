@@ -38,7 +38,7 @@ function AddToCartModal({
             <div className="flex-1">
               <h3 className="font-medium">{product.name}</h3>
               <p className="text-primary text-lg font-semibold">
-                ${parseFloat(product.price).toFixed(2)}
+                ₱{parseFloat(product.price).toFixed(2)}
               </p>
               <p className="text-muted-foreground text-sm">
                 {product.stock_quantity > 0
@@ -80,7 +80,7 @@ function AddToCartModal({
                 <p className="text-muted-foreground text-sm">
                   Subtotal:{' '}
                   <span className="text-foreground font-medium">
-                    ${(parseFloat(product.price) * (quantity || 0)).toFixed(2)}
+                    ₱{(parseFloat(product.price) * (quantity || 0)).toFixed(2)}
                   </span>
                 </p>
               </div>

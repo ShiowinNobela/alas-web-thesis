@@ -2,6 +2,7 @@ import ShowcaseButton from '@/components/bigComponents/ShowcaseButton';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { FlameIcon, StarIcon, ArrowRightIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   HotSauces,
   PickledJalapeno,
@@ -169,6 +170,7 @@ export default function ProductsShowcaseSection() {
           className="mt-14 text-center"
           whileHover={{ scale: 1.05 }}
         >
+          <Link to="/ProductListPage">
           <Button variant="CTA" className="group relative overflow-hidden">
             <motion.span
               className="relative z-10 flex items-center justify-center gap-2"
@@ -197,6 +199,7 @@ export default function ProductsShowcaseSection() {
               transition={{ duration: 0.4, ease: 'easeOut' }}
             />
           </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

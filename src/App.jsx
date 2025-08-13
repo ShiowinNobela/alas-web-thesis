@@ -35,11 +35,13 @@ import AboutUs from './pages/userPages/AboutUs.jsx';
 import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 import AdminLayout from './pages/layouts/AdminLayout';
 import Notifs from './pages/adminPages/Notifs.jsx';
+import ScrollToTop from './components/bigComponents/ScrollToTop';
 
 function App() {
   return (
     <>
       <ThemeConfig dark={false} />
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/LoginPage" element={<LoginPage />}></Route>

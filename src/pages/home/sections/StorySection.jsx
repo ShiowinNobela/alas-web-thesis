@@ -2,6 +2,7 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRightIcon, AwardIcon } from 'lucide-react';
 import { AwardImage, StoryImage } from '@/assets/images';
 import ShowcaseButton from '@/components/bigComponents/ShowcaseButton';
+import { Link } from 'react-router-dom';
 
 const StorySection = () => {
   const x = useMotionValue(0);
@@ -130,6 +131,7 @@ const StorySection = () => {
               </p>
             </motion.div>
 
+            <Link to="/AboutUs">
             <ShowcaseButton
               size="md"
               icon={<ArrowRightIcon className="h-5 w-5" />}
@@ -137,6 +139,7 @@ const StorySection = () => {
             >
               Read Our Full Story
             </ShowcaseButton>
+            </Link>  
           </motion.div>
         </div>
       </div>

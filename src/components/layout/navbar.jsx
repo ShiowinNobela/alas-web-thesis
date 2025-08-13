@@ -64,12 +64,16 @@ function Navbar() {
             </Link>
           )}
 
-          <Button
-            variant={'CTA'}
-            to={storedUser ? '/ProductListPage' : '/LoginPage'}
-          >
-            Order Now
-          </Button>
+          <Link
+              to={storedUser ? '/ProductListPage' : '/LoginPage'}
+              onClick={closeMobileMenu}
+            >
+              <Button
+                variant="CTA"
+              >
+                Order Now
+              </Button>
+          </Link>
         </nav>
 
         {/* Hamburger Icon */}
@@ -77,8 +81,8 @@ function Navbar() {
           onClick={toggleMobileMenu}
           className="block focus:outline-none lg:hidden"
           aria-label="Toggle Menu"
-        >
-          {mobileMenuOpen ? (
+          >
+         {mobileMenuOpen ? (
             <AiOutlineClose size={24} />
           ) : (
             <AiOutlineMenu size={24} />
@@ -87,7 +91,7 @@ function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`fixed top-0 left-0 z-40 h-full w-[70%] max-w-xs transform bg-[#EA1A20] text-white ${
+          className={`fixed top-0 left-0 z-40 h-screen w-[70%] max-w-xs transform bg-[#EA1A20] text-white ${
             mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out`}
         >
@@ -95,16 +99,9 @@ function Navbar() {
             <Link to="/" onClick={closeMobileMenu}>
               <img className="h-12 w-auto" src={Logo} alt="Logo" />
             </Link>
-            <button
-              onClick={closeMobileMenu}
-              aria-label="Close Menu"
-              className="text-white"
-            >
-              <AiOutlineClose size={24} />
-            </button>
           </div>
 
-          <nav className="font-heading flex flex-col gap-1 px-5 py-4 text-lg uppercase">
+          <nav className="font-heading flex flex-col gap-1 px-5 py-4 text-lg uppercase flex-1">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
@@ -140,7 +137,6 @@ function Navbar() {
             >
               Order
             </Button>
-            !twf
           </nav>
         </div>
       </div>

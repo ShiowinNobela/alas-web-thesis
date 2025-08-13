@@ -11,6 +11,7 @@ import {
   Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -127,44 +128,44 @@ function Footer() {
               </h4>
               <ul className="space-y-3">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/AboutUs"
                     className="text-lighter text-sm transition-colors hover:text-red-600"
                   >
                     About Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/ContactUs"
                     className="text-lighter text-sm transition-colors hover:text-red-600"
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-lighter text-sm transition-colors hover:text-red-600"
                   >
                     Shipping
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-lighter text-sm transition-colors hover:text-red-600"
                   >
                     Returns
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    to="/Faqs"
                     className="text-lighter text-sm transition-colors hover:text-red-600"
                   >
                     FAQ
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
