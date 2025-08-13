@@ -7,15 +7,12 @@ import { Skeleton } from '@/components/ui/skeleton.jsx';
 import useCartStore from '@/stores/cartStore';
 import useUserStore from '@/stores/userStore';
 import { Toaster } from 'sonner';
-import { useState } from 'react';
-import { ShoppingCart, X } from 'lucide-react';
 
 function ProductPage() {
   const navigate = useNavigate();
   const { addItem } = useCartStore();
   const user = useUserStore((state) => state.user);
   const isLoggedIn = !!user;
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const {
     data: products = [],
@@ -36,10 +33,6 @@ function ProductPage() {
     }
 
     addItem(product, quantity);
-  };
-
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
   };
 
   return (
@@ -74,39 +67,11 @@ function ProductPage() {
         </div>
 
         {isLoggedIn && (
-          <div className="hidden lg:block sticky top-0 h-auto w-64 overflow-y-auto border-l border-gray-200 bg-white">
+          <div className="sticky top-0 hidden h-auto w-64 overflow-y-auto border-l border-gray-200 bg-white lg:block">
             <Cart />
           </div>
         )}
-      </div>    
-      {isLoggedIn && (
-        <button
-          onClick={toggleCart}
-          className="lg:hidden fixed bottom-4 right-4 z-50 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors"
-        >
-          <ShoppingCart size={24} />
-        </button>
-      )}
-
-
-      {isLoggedIn && isCartOpen && (
-        <div className="lg:hidden fixed inset-0 z-[60] bg-black/50" onClick={toggleCart}>
-          <div className="fixed right-0 top-0 h-full w-60 max-w-[90vw] bg-white shadow-lg transform transition-transform z-[60]">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-lg font-semibold">Your Cart</h2>
-              <button
-                onClick={toggleCart}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="h-[calc(100vh-80px)] overflow-y-auto">
-              <Cart />
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
 
       <Toaster richColors position="top-center" />
     </div>
