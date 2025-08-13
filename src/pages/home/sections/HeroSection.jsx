@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button';
 import { FireExtinguisherIcon, FlameIcon } from 'lucide-react';
 import herogif from '@/components/images/herogif.gif';
 import { Link } from 'react-router-dom';
+import useUserStore from '@/stores/userStore';
 
 const HeroSection = () => {
-  const storedUser = JSON.parse(window.localStorage.getItem('user'));
+  const user = useUserStore((state) => state.user);
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -77,21 +79,20 @@ const HeroSection = () => {
               variants={item}
               className="flex flex-col justify-center gap-4 px-8 sm:flex-row"
             >
+              <Link to={user ? '/ProductListPage' : '/LoginPage'}>
+                <Button variant="CTA" className="px-6 font-medium text-white">
+                  Order Now
+                </Button>
+              </Link>
 
-            <Link to={storedUser ? '/ProductListPage' : '/LoginPage'}>
-              <Button variant="CTA" className="px-6 font-medium text-white">
-              Order Now
-              </Button>
-            </Link>  
-
-            <Link to="/ProductListPage">
-              <Button
-              variant="outline"
-              className="bg-white/20 px-6 font-medium text-white backdrop-blur-sm transition hover:bg-white/40 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:outline-none"
-              >
-                VIEW MENU
-              </Button>
-            </Link>  
+              <Link to="/ProductListPage">
+                <Button
+                  variant="outline"
+                  className="bg-white/20 px-6 font-medium text-white backdrop-blur-sm transition hover:bg-white/40 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:outline-none"
+                >
+                  VIEW MENU
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </motion.div>

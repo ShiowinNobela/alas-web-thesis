@@ -13,8 +13,8 @@ function ProductCard({ product }) {
 
   return (
     <>
-      <Card className="z-10 flex flex-col gap-2 p-4 shadow-md transition-transform hover:scale-[1.05] hover:ring-2 hover:ring-amber-400">
-        <div className="relative mb-3">
+      <Card className="group z-10 flex flex-col gap-2 p-4 shadow-md transition-transform hover:scale-[1.02] hover:ring-2 hover:ring-amber-500">
+        <div className="relative mb-3 overflow-hidden rounded-md">
           <span className="text-content absolute top-0 left-0 z-10 rounded-full bg-gray-200 px-2 py-1 text-xs font-bold">
             {product.category || 'Category'}
           </span>
@@ -25,10 +25,12 @@ function ProductCard({ product }) {
 
           {/* Product Image */}
           <div className="relative flex h-45 w-full items-center justify-center overflow-hidden rounded-md bg-white pt-2">
+            <div className="absolute inset-0 z-10 bg-gradient-to-br from-red-200/15 via-orange-200/15 to-yellow-200/15 mix-blend-multiply transition-opacity"></div>
+
             <img
               src={product.image}
-              alt={product.name || 'Product image'}
-              className="h-full w-full object-contain"
+              alt={product.name}
+              className="relative z-0 h-full w-full object-contain transition-transform duration-500 group-hover:scale-105 group-hover:rotate-4"
             />
           </div>
         </div>
@@ -45,7 +47,7 @@ function ProductCard({ product }) {
           <div className="mb-4 flex items-center">
             {[...Array(5)].map((_, i) => (
               <span key={i}>
-                <Flame className="size-4 fill-amber-300 text-orange-400" />
+                <Flame className="text-primary size-5" />
               </span>
             ))}
             <p className="ml-2 flex justify-center text-sm">Extreme</p>
