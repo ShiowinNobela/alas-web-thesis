@@ -1,8 +1,3 @@
-// Unlike the other modals this is a smart modal
-// It handles it's own states and operations
-// Because it's function is to update user info
-// Which only happens on this modal anyway
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '../ui/button';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -15,14 +10,14 @@ import {
   DialogDescription,
 } from '../ui/dialog';
 import PropTypes from 'prop-types';
-
 import { useMutation } from '@tanstack/react-query';
 import TextInput from '../bigComponents/TextInput';
-import PasswordInput from '../bigComponents/PasswordInput';
+import { toast } from 'sonner'; // <-- import Sonner toast
 
 function UserUpdateModal({ open, onClose }) {
   const user = useUserStore((state) => state.user);
   const token = JSON.parse(window.localStorage.getItem('user'));
+
   const [username, setUsername] = useState(user.username);
   const [address, setAddress] = useState(user.address);
   const [contactNumber, setContactNumber] = useState(user.contact_number);
@@ -42,7 +37,11 @@ function UserUpdateModal({ open, onClose }) {
       }),
     onSuccess: (res) => {
       useUserStore.getState().setUser(res.data);
+      toast.success('Profile updated successfully!');
       onClose();
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || 'Failed to update profile');
     },
   });
 
@@ -50,96 +49,55 @@ function UserUpdateModal({ open, onClose }) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Update User Data</DialogTitle>
+          <DialogTitle>Update User Information</DialogTitle>
           <DialogDescription>
-            Update your data for whatever you need below.
+            Update your account details below.
           </DialogDescription>
         </DialogHeader>
-        <Tabs defaultValue="account" className="max-w-sm">
-          <TabsList>
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
-          </TabsList>
 
-          <TabsContent value="account">
-            <div className="space-y-4 py-2">
-              <TextInput
-                label="Username"
-                type="text"
-                value={username}
-                onChange={setUsername}
-                placeholder={user.username}
-                // error={errors.username}
-              />
-              <TextInput
-                label="Address"
-                type="text"
-                value={address}
-                onChange={setAddress}
-                placeholder={address}
-                // error={errors.username}
-              />
-              <TextInput
-                label="Contact Number"
-                type="text"
-                value={contactNumber}
-                onChange={setContactNumber}
-                placeholder={user.contact_number}
-                // error={errors.username}
-              />
-              <div className="mt-2 w-1/3">
-                <Button
-                  disabled={
-                    isPending ||
-                    !(username || '').trim() ||
-                    !(address || '').trim() ||
-                    !(contactNumber || '').trim()
-                  }
-                  onClick={() =>
-                    updateUser({
-                      username,
-                      address,
-                      contact_number: contactNumber,
-                    })
-                  }
-                >
-                  Save Changes
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
+        <div className="space-y-4 py-2">
+          <TextInput
+            label="Username"
+            type="text"
+            value={username}
+            onChange={setUsername}
+            placeholder={user.username}
+          />
+          <TextInput
+            label="Address"
+            type="text"
+            value={address}
+            onChange={setAddress}
+            placeholder="Enter your address"
+          />
+          <TextInput
+            label="Contact Number"
+            type="text"
+            value={contactNumber}
+            onChange={setContactNumber}
+            placeholder="Enter your contact number"
+          />
 
-          <TabsContent value="password">
-            <div className="space-y-4 py-2">
-              <PasswordInput
-                label="Password"
-                // value={password}
-                // onChange={setPassword}
-                placeholder="********"
-                // error={errors.password}
-                showRequirements={false}
-              />
-              <PasswordInput
-                label="Input New Password"
-                // value={password}
-                // onChange={setPassword}
-                placeholder="********"
-                // error={errors.password}
-              />
-              <PasswordInput
-                label="Confirm new password"
-                // value={password}
-                // onChange={setPassword}
-                placeholder="********"
-                // error={errors.password}
-                showRequirements={false}
-              />
-              <div className="mt-2 w-full max-w-1/3">
-                <Button>Update Password</Button>
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+          <div className="mt-2 w-1/3">
+            <Button
+              disabled={
+                isPending ||
+                !(username || '').trim() ||
+                !(address || '').trim() ||
+                !(contactNumber || '').trim()
+              }
+              onClick={() =>
+                updateUser({
+                  username,
+                  address,
+                  contact_number: contactNumber,
+                })
+              }
+            >
+              Save Changes
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -148,7 +106,6 @@ function UserUpdateModal({ open, onClose }) {
 UserUpdateModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
 };
 
 export default UserUpdateModal;

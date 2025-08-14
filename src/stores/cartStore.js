@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { toast } from 'sonner';
 import debounce from 'lodash/debounce';
+import { showCartToast } from '@/components/bigComponents/CartToast.jsx';
 
 const useCartStore = create((set, get) => {
   const debouncedMap = new Map();
@@ -58,7 +59,7 @@ const useCartStore = create((set, get) => {
           cart_total: get().cart_total + product.price * quantity,
         });
 
-        toast.success(`${product.name} added to cart`);
+        showCartToast(product.name);
       } catch (err) {
         toast.error('Failed to add item to cart' + err);
       }

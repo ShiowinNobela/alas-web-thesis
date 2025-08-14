@@ -6,7 +6,6 @@ import Cart from '@/components/bigComponents/Cart.jsx';
 import { Skeleton } from '@/components/ui/skeleton.jsx';
 import useCartStore from '@/stores/cartStore';
 import useUserStore from '@/stores/userStore';
-import { Toaster } from 'sonner';
 
 function ProductPage() {
   const navigate = useNavigate();
@@ -72,8 +71,6 @@ function ProductPage() {
           </div>
         )}
       </div>
-
-      <Toaster richColors position="top-center" />
     </div>
   );
 }
