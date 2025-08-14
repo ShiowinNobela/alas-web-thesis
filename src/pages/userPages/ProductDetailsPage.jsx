@@ -6,7 +6,6 @@ import { Flame, ShoppingCart, Star } from 'lucide-react';
 import BackButton from '@/components/bigComponents/BackButton';
 import AddToCartModal from '@/components/modals/AddToCartModal';
 import { useAddToCart } from '@/hooks/useAddToCart';
-import { Toaster } from 'sonner';
 
 function ProductDetailsPage() {
   const { id } = useParams();
@@ -89,7 +88,6 @@ function ProductDetailsPage() {
         setQuantity={setQuantity}
         onConfirm={() => handleAddToCart(product, quantity)}
       />
-      <Toaster richColors position="top-center" />
     </div>
   );
 }

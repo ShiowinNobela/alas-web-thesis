@@ -1,6 +1,7 @@
 import Footer from '@/components/layout/footer';
 import Navbar from '@/components/layout/navbar';
 import { Outlet } from 'react-router';
+import { Toaster } from 'sonner';
 
 function MainLayout() {
   return (
@@ -10,6 +11,7 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
+      <Toaster richColors />
     </div>
   );
 }
