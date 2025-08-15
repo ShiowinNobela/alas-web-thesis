@@ -47,23 +47,18 @@ function NotificationPage() {
         if (response.data && response.data.data) {
           const responseData = response.data.data;
 
-          // Try different possible structures
           let adminLogs = [];
           let pagination = {};
 
           if (responseData.adminLogs) {
-            // Structure: { adminLogs: [], pagination: {} }
             adminLogs = responseData.adminLogs;
             pagination = responseData.pagination || {};
           } else if (Array.isArray(responseData)) {
-            // Structure: [log1, log2, ...]
             adminLogs = responseData;
           } else if (responseData.logs) {
-            // Structure: { logs: [], pagination: {} }
             adminLogs = responseData.logs;
             pagination = responseData.pagination || {};
           } else {
-            // Look for any array property
             for (const key of Object.keys(responseData)) {
               if (Array.isArray(responseData[key])) {
                 adminLogs = responseData[key];
@@ -77,7 +72,6 @@ function NotificationPage() {
           setTotalLogs(pagination.total_records || 0);
           setCurrentPage(pagination.current_page || page);
         } else {
-          // Fallback for unexpected response structure
           setLogs([]);
           setTotalPages(1);
           setTotalLogs(0);
@@ -96,7 +90,6 @@ function NotificationPage() {
   useEffect(() => {
     fetchLogs(1, searchTerm);
 
-    // Set up auto-refresh every 30 seconds
     const interval = setInterval(() => {
       fetchLogs(currentPage, searchTerm);
     }, 30000);
@@ -115,66 +108,74 @@ function NotificationPage() {
     fetchLogs(1, '');
   };
 
-  // Test function to manually create a log entry
-  const testActivityLog = async () => {
-    try {
-      const response = await axios.post(
-        '/api/admin-activity-logs/test',
-        {
-          action: 'TEST',
-          description: 'Manual test log entry',
-          details: { test: true, timestamp: new Date().toISOString() },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
-      toast.success('Test log created successfully');
-      // Refresh logs after creating test entry
-      setTimeout(() => fetchLogs(1, ''), 1000);
-    } catch (error) {
-      console.error('Test log creation failed:', error);
-      toast.error('Test log creation failed');
-    }
-  };
-
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       fetchLogs(newPage, searchTerm);
     }
   };
 
+  const formatChangeData = (data) => {
+    if (!data) return null;
+    if (typeof data === 'string') {
+      return data;
+    }
+        if (typeof data === 'object') {
+        try {
+          return Object.entries(data)
+            .map(([key, value]) => {
+              const formattedKey = key
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+              
+              if (value === null || value === undefined) {
+                return `${formattedKey}: (empty)`;
+              }
+              if (typeof value === 'boolean') {
+                return `${formattedKey}: ${value ? 'Yes' : 'No'}`;
+              }
+              if (typeof value === 'number') {
+                return `${formattedKey}: ${value}`;
+              }
+              return `${formattedKey}: ${value}`;
+            })
+            .join(', ');
+        } catch (error) {
+          return JSON.stringify(data);
+        }
+      }
+      
+      return String(data);
+    };
+
   const getActionColor = (action) => {
     const actionColors = {
-      CREATE: 'text-green-600 bg-green-50',
-      UPDATE: 'text-blue-600 bg-blue-50',
-      DELETE: 'text-red-600 bg-red-50',
-      LOGIN: 'text-purple-600 bg-purple-50',
-      LOGOUT: 'text-gray-600 bg-gray-50',
-      EDIT: 'text-blue-600 bg-blue-50',
-      MODIFY: 'text-orange-600 bg-orange-50',
-      INVENTORY_UPDATE: 'text-indigo-600 bg-indigo-50',
-      PRICE_UPDATE: 'text-yellow-600 bg-yellow-50',
-      STOCK_UPDATE: 'text-cyan-600 bg-cyan-50',
-      PRODUCT_UPDATE: 'text-blue-600 bg-blue-50',
-      ORDER_STATUS_UPDATE: 'text-purple-600 bg-purple-50',
-      USER_STATUS_UPDATE: 'text-orange-600 bg-orange-50',
-      ADJUST_STOCK: 'text-indigo-600 bg-indigo-50',
-      ADJUST: 'text-indigo-600 bg-indigo-50',
+      CREATE: 'text-green-700 bg-green-50 border border-green-200',
+      UPDATE: 'text-orange-700 bg-orange-50 border border-orange-200',
+      DELETE: 'text-red-700 bg-red-50 border border-red-200',
+      LOGIN: 'text-blue-700 bg-blue-50 border border-blue-200',
+      LOGOUT: 'text-gray-700 bg-gray-50 border border-gray-200',
+      EDIT: 'text-orange-700 bg-orange-50 border border-orange-200',
+      MODIFY: 'text-amber-700 bg-amber-50 border border-amber-200',
+      INVENTORY_UPDATE: 'text-orange-700 bg-orange-50 border border-orange-200',
+      PRICE_UPDATE: 'text-amber-700 bg-amber-50 border border-amber-200',
+      STOCK_UPDATE: 'text-green-700 bg-green-50 border border-green-200',
+      PRODUCT_UPDATE: 'text-orange-700 bg-orange-50 border border-orange-200',
+      ORDER_STATUS_UPDATE: 'text-blue-700 bg-blue-50 border border-blue-200',
+      USER_STATUS_UPDATE: 'text-amber-700 bg-amber-50 border border-amber-200',
+      ADJUST_STOCK: 'text-green-700 bg-green-50 border border-green-200',
+      ADJUST: 'text-green-700 bg-green-50 border border-green-200',
     };
-    return actionColors[action?.toUpperCase()] || 'text-gray-600 bg-gray-50';
+    return actionColors[action?.toUpperCase()] || 'text-gray-700 bg-gray-50 border border-gray-200';
   };
 
   return (
-    <div className="h-screen w-full overflow-auto bg-white p-5">
+    <div className="h-screen w-full overflow-auto bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 p-5">
       <div className="flex h-full flex-col">
-        {/* Header */}
-        <div className="flex flex-row justify-between rounded-t-2xl bg-gray-300 p-5">
+        <div className="flex flex-row justify-between rounded-t-2xl border-b border-gray-200 p-5 shadow-sm">
           <div className="flex h-full flex-row items-center justify-center">
-            <IoIosNotifications className="text-secondary mr-3 text-4xl" />
-            <h1 className="text-secondary text-2xl font-bold">
+            <IoIosNotifications className="text-orange-600 mr-3 text-4xl" />
+            <h1 className="text-gray-900 text-2xl font-bold">
               Admin Activity Logs
             </h1>
           </div>
@@ -186,38 +187,30 @@ function NotificationPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              className="focus:ring-primary rounded border border-gray-300 bg-white px-4 py-2 text-black shadow-md focus:ring-2 focus:outline-none"
+              className="focus:ring-orange-500 rounded border border-gray-300 px-4 py-2 text-black shadow-md focus:ring-2 focus:outline-none"
             />
             <button
               onClick={handleSearch}
-              className="bg-primary hover:bg-primary-dark flex items-center rounded px-4 py-2 text-white transition-colors"
+              className="bg-orange-600 hover:bg-orange-700 flex items-center rounded px-4 py-2 text-white transition-colors shadow-sm"
             >
               <HiOutlineSearch className="mr-1 h-4 w-4" />
               Search
             </button>
             <button
               onClick={handleRefresh}
-              className="flex items-center rounded bg-gray-500 px-4 py-2 text-white transition-colors hover:bg-gray-600"
+              className="flex items-center rounded bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700 shadow-sm"
             >
               <HiOutlineRefresh className="mr-1 h-4 w-4" />
               Refresh
             </button>
-            <button
-              onClick={testActivityLog}
-              className="flex items-center rounded bg-yellow-500 px-4 py-2 text-white transition-colors hover:bg-yellow-600"
-            >
-              Test Log
-            </button>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex min-h-0 flex-1 flex-col rounded-b-2xl bg-gray-50 p-5 shadow-lg">
-          {/* Stats */}
-          <div className="mb-4 rounded-lg border bg-white p-3">
+        <div className="flex min-h-0 flex-1 flex-col rounded-b-2xl  backdrop-blur-sm p-5 shadow-lg">
+          <div className="mb-4 rounded-lg border border-gray-200 p-3 shadow-sm">
             <p className="text-sm text-gray-600">
               Total Activity Logs:{' '}
-              <span className="text-primary font-semibold">{totalLogs}</span>
+              <span className="text-orange-600 font-semibold">{totalLogs}</span>
               {searchTerm && (
                 <span className="ml-2">
                   | Showing results for:{' '}
@@ -227,17 +220,15 @@ function NotificationPage() {
             </p>
           </div>
 
-          {/* Loading */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2"></div>
+              <div className="border-orange-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>
               <span className="ml-2 text-gray-600">
                 Loading activity logs...
               </span>
             </div>
           ) : (
             <>
-              {/* Logs Table */}
               <div className="flex-1 space-y-3 overflow-y-auto">
                 {logs.length === 0 ? (
                   <div className="py-12 text-center">
@@ -257,7 +248,6 @@ function NotificationPage() {
                       key={log.id}
                       className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition hover:shadow-md"
                     >
-                      {/* Header */}
                       <div className="mb-3 flex flex-wrap items-center justify-between gap-4">
                         <div className="flex items-center space-x-3">
                           <span
@@ -299,7 +289,6 @@ function NotificationPage() {
                         </div>
                       </div>
 
-                      {/* Content */}
                       <div className="border-t border-gray-100 pt-3">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                           <div>
@@ -317,23 +306,23 @@ function NotificationPage() {
                               </p>
                               <div className="space-y-1 rounded bg-gray-50 p-2 font-mono text-sm text-gray-600">
                                 {log.before_data && (
-                                  <div>
-                                    <span className="text-red-600">
+                                  <div className="rounded bg-red-50 p-2 border-l-4 border-red-400">
+                                    <span className="text-red-700 font-medium text-xs uppercase tracking-wide">
                                       Before:
-                                    </span>{' '}
-                                    {typeof log.before_data === 'object'
-                                      ? JSON.stringify(log.before_data)
-                                      : log.before_data}
+                                    </span>
+                                    <p className="text-sm text-red-800 mt-1">
+                                      {formatChangeData(log.before_data)}
+                                    </p>
                                   </div>
                                 )}
                                 {log.after_data && (
-                                  <div>
-                                    <span className="text-green-600">
+                                  <div className="rounded bg-green-50 p-2 border-l-4 border-green-400">
+                                    <span className="text-green-700 font-medium text-xs uppercase tracking-wide">
                                       After:
-                                    </span>{' '}
-                                    {typeof log.after_data === 'object'
-                                      ? JSON.stringify(log.after_data)
-                                      : log.after_data}
+                                    </span>
+                                    <p className="text-sm text-green-800 mt-1">
+                                      {formatChangeData(log.after_data)}
+                                    </p>
                                   </div>
                                 )}
                               </div>
@@ -362,7 +351,6 @@ function NotificationPage() {
                 )}
               </div>
 
-              {/* Pagination */}
               {totalPages > 1 && (
                 <div className="mt-6 flex items-center justify-between rounded-lg border-t border-gray-200 bg-white px-4 py-3">
                   <div className="flex flex-1 justify-between sm:hidden">
@@ -421,7 +409,7 @@ function NotificationPage() {
                                 onClick={() => handlePageChange(page)}
                                 className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
                                   page === currentPage
-                                    ? 'bg-primary focus-visible:outline-primary z-10 text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2'
+                                    ? 'bg-orange-600 focus-visible:outline-orange-600 z-10 text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2'
                                     : 'text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0'
                                 }`}
                               >

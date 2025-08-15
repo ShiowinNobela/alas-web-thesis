@@ -102,18 +102,18 @@ function SalesPage() {
     ) || 0;
 
   return (
-    <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-white">
-      <div className="flex h-full flex-col space-y-6 overflow-x-auto bg-white p-6">
+    <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50">
+      <div className="flex h-full flex-col space-y-6 overflow-x-auto p-6">
         {/* tiles */}
         <div>
           <div className="flex flex-row gap-x-8 p-7">
             <div
-              className="hover:bg-secondary h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              className="hover:bg-green-100 h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 transition-all hover:-translate-y-1 hover:shadow-md border border-gray-200"
               role="button"
             >
               <div className="flex justify-between">
                 <div>
-                  <h2 className="mb-1 text-xl font-bold uppercase">
+                  <h2 className="mb-1 text-xl font-bold uppercase text-green-600">
                     {' '}
                     Fullfilment Rate
                   </h2>
@@ -124,13 +124,13 @@ function SalesPage() {
               </div>
             </div>
             <div
-              className="hover:bg-secondary h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              className=" h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 transition-all hover:-translate-y-1 hover:bg-orange-100 hover:shadow-md border border-gray-200"
               role="button"
             >
               <div className="flex justify-between">
                 <div>
-                  <h2 className="mb-1 text-xl font-bold uppercase">Website</h2>
-                  <p className="text-md mb-1 text-gray-600">
+                  <h2 className="mb-1 text-xl font-bold uppercase text-orange-500 ">Website</h2>
+                  <p className="text-md mb-1 text-orange-500">
                     Total Website Sales
                   </p>
                   <p className="text-lg font-semibold">
@@ -140,13 +140,13 @@ function SalesPage() {
               </div>
             </div>
             <div
-              className="hover:bg-secondary h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              className=" h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 transition-all hover:-translate-y-1 hover:bg-green-100 hover:shadow-md border border-gray-200"
               role="button"
             >
               <div className="flex justify-between">
                 <div>
-                  <h2 className="mb-1 text-xl font-bold uppercase">Walk-In</h2>
-                  <p className="text-md mb-1 text-gray-600">
+                  <h2 className="mb-1 text-xl font-bold uppercase text-green-500">Walk-In</h2>
+                  <p className="text-md mb-1 text-green-500">
                     Total Walk-In Sales
                   </p>
                   <p className="mt-5 mb-1 text-lg font-semibold">
@@ -159,13 +159,13 @@ function SalesPage() {
               </div>
             </div>
             <div
-              className="hover:bg-secondary h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              className=" h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 transition-all hover:-translate-y-1 hover:bg-orange-100 hover:shadow-md border border-gray-200"
               role="button"
             >
               <div className="flex justify-between">
                 <div>
-                  <h2 className="mb-1 text-xl font-bold uppercase">Orders</h2>
-                  <p className="text-md mb-1 text-gray-600">Total Orders</p>
+                  <h2 className="mb-1 text-xl font-bold uppercase text-orange-500">Orders</h2>
+                  <p className="text-md mb-1 text-orange-500">Total Orders</p>
                   <p className="text-lg font-semibold">
                     {' '}
                     {summary.totalOrders}
@@ -174,13 +174,13 @@ function SalesPage() {
               </div>
             </div>
             <div
-              className="hover:bg-secondary h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              className=" h-35 w-1/4 cursor-pointer rounded-lg bg-gray-100 p-4 transition-all hover:-translate-y-1 hover:bg-green-100 hover:shadow-md border border-gray-200"
               role="button"
             >
               <div className="flex justify-between">
                 <div>
-                  <h2 className="mb-1 text-xl font-bold uppercase">Items</h2>
-                  <p className="text-md mb-1 text-gray-600">Total Items Sold</p>
+                  <h2 className="mb-1 text-xl font-bold uppercase text-green-500">Items</h2>
+                  <p className="text-md mb-1 text-green-500">Total Items Sold</p>
                   <p className="text-lg font-semibold">
                     {' '}
                     {summary.totalItemsSold}{' '}
@@ -192,13 +192,13 @@ function SalesPage() {
 
           <div className="grid grid-cols-4 gap-x-8 px-7 pb-7">
             <div
-              className="hover:bg-secondary h-55 w-full cursor-pointer rounded-lg bg-gray-100 p-4 shadow-xl drop-shadow-xl transition"
+              className=" h-55 w-full cursor-pointer rounded-lg bg-gray-100 p-4 transition-all hover:-translate-y-3 hover:bg-orange-100 hover:shadow-md border border-gray-200"
               role="button"
             >
               <div className="flex justify-between">
                 <div>
-                  <h2 className="mb-8 text-3xl font-bold uppercase">Revenue</h2>
-                  <p className="mb-1 text-lg text-gray-600">Total Revenue</p>
+                  <h2 className="mb-8 text-3xl font-bold uppercase text-orange-500">Revenue</h2>
+                  <p className="mb-1 text-lg text-orange-500">Total Revenue</p>
                   <p className="text-4xl font-semibold">
                     ₱ {summary.totalRevenue.toLocaleString()}
                   </p>
@@ -206,10 +206,10 @@ function SalesPage() {
               </div>
             </div>
 
-            <div className="relative col-span-3 mr-5 w-full shadow-md sm:rounded-lg">
-              <h1> Latest Sales</h1>
+            <div className="relative col-span-3 mr-5 w-full transition-all hover:-translate-y-3 hover:bg-green-100 hover:shadow-md border border-gray-200">
+              <h1 className='p-3'> Latest Sales</h1>
               <table className="w-full text-left text-sm text-slate-800">
-                <thead className="bg-admin sticky top-0 text-xs text-white uppercase">
+                <thead className="bg-admin sticky top-0 text-xs text-black uppercase">
                   <tr>
                     <th className={tableHeadStyle}>User Info</th>
                     <th className={tableHeadStyle}>Order ID</th>

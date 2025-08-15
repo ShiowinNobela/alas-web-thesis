@@ -90,7 +90,7 @@ function AccountManagement() {
         );
 
   return (
-    <div className="bg-admin flex flex-col overflow-x-auto p-4">
+    <div className="flex flex-col overflow-x-auto p-4 bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 h-full">
       <main className="mx-auto w-full overflow-x-auto rounded-xl border bg-white shadow ring-1">
         <div className="flex flex-row justify-between px-4 py-4">
           <ButtonGroupFilter

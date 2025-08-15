@@ -88,7 +88,7 @@ function WalkInOrdering() {
 
   return (
     <>
-      <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-white p-6">
+      <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 p-6">
         <div className="flex min-h-full w-full flex-col overflow-auto p-5">
           <div className="mx-auto flex w-full max-w-[1400px] flex-row overflow-hidden rounded-2xl shadow-2xl drop-shadow-2xl">
             {/* form */}
@@ -224,11 +224,13 @@ function WalkInOrdering() {
             </div>
 
             {/* cart */}
-            <div className="flex h-full w-[350px] flex-col bg-white p-5">
-              <div className="mb-4 flex flex-col items-center justify-center">
-                <h1 className="mb-4 text-2xl font-semibold">Cart</h1>
+            <div className="flex h-full w-[350px] flex-col bg-white">
+              <div className="flex h-full flex-col p-5">
+                <div className="mb-4 flex flex-col items-center justify-center">
+                  <h1 className="mb-4 text-2xl font-semibold">Cart</h1>
+                </div>
 
-                <div className="flex max-h-[500px] min-h-[400px] flex-col">
+                <div className="flex flex-1 flex-col">
                   <div className="flex-1 overflow-y-auto">
                     {cartItems.length === 0 ? (
                       <p className="text-center text-gray-500">
@@ -246,13 +248,13 @@ function WalkInOrdering() {
                             </h2>
                             <div className="grid grid-cols-3 items-center gap-2">
                               <FaPlus
-                                className="mx-auto cursor-pointer hover:text-[#EA1A20]"
+                                className="mx-auto cursor-pointer hover:text-orange-600"
                                 onClick={() =>
                                   handleChangeCartQuantity(item.id, 1)
                                 }
                               />
                               <FaMinus
-                                className="mx-auto cursor-pointer hover:text-[#EA1A20]"
+                                className="mx-auto cursor-pointer hover:text-orange-600"
                                 onClick={() =>
                                   handleChangeCartQuantity(item.id, -1)
                                 }
@@ -263,7 +265,7 @@ function WalkInOrdering() {
                             </div>
                           </div>
                           <TiDeleteOutline
-                            className="h-5 w-5 cursor-pointer text-[#d80c0c]"
+                            className="h-5 w-5 cursor-pointer text-red-600"
                             onClick={() => handleRemoveFromCart(item.id)}
                           />
                         </div>
@@ -272,37 +274,35 @@ function WalkInOrdering() {
                   </div>
 
                   {/* total */}
-                  <div className="pt-4">
-                    <div className="w-full border-t pt-4">
-                      <div className="text-md mb-2 flex justify-between font-semibold">
-                        <p>Subtotal:</p>
-                        <p>₱ {subtotal}</p>
+                  <div className="mt-auto border-t pt-4">
+                    <div className="text-md mb-2 flex justify-between font-semibold">
+                      <p>Subtotal:</p>
+                      <p>₱ {subtotal}</p>
+                    </div>
+                    <div className="text-md mb-2 flex items-center justify-between font-semibold">
+                      <p>Discount:</p>
+                      <div className="flex flex-row items-center gap-2">
+                        <p>₱</p>
+                        <input
+                          type="number"
+                          className="h-10 w-20 border-b border-gray-400 px-2 focus:border-orange-500 focus:outline-none"
+                          value={discount_amount}
+                          min={0}
+                          max={subtotal}
+                          onChange={(e) => setDiscount(e.target.value)}
+                        />
                       </div>
-                      <div className="text-md mb-2 flex items-center justify-between font-semibold">
-                        <p>Discount:</p>
-                        <div className="flex flex-row items-center gap-2">
-                          <p>₱</p>
-                          <input
-                            type="number"
-                            className="h-10 w-20 border-b border-gray-400 px-2"
-                            value={discount_amount}
-                            min={0}
-                            max={subtotal}
-                            onChange={(e) => setDiscount(e.target.value)}
-                          />
-                        </div>
-                      </div>
+                    </div>
 
-                      <div className="flex justify-between text-xl font-extrabold uppercase">
-                        <p>Total:</p>
-                        <p>₱ {total}</p>
-                      </div>
+                    <div className="flex justify-between text-xl font-extrabold uppercase">
+                      <p>Total:</p>
+                      <p>₱ {total}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+            </div>
 
           <Toaster richColors />
         </div>

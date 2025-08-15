@@ -66,7 +66,7 @@ function WalkInOrders() {
   };
 
   return (
-    <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
+    <div className="bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 flex h-full flex-col overflow-x-auto p-4">
       <div className="mb-4 grid grid-cols-1 gap-4 rounded-xl bg-white p-4 ring-1 md:grid-cols-4">
         <Card className="shadow-sm ring-1">
           <h2 className="text-xl font-semibold">Walk-In Orders</h2>

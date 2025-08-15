@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
 import { HiOutlineSearch, HiOutlineRefresh, HiBell, HiCheck, HiX, HiExclamation } from 'react-icons/hi';
 import { IoIosNotifications } from 'react-icons/io';
+import { Flame, Package, AlertTriangle, CheckCircle, Clock, Search, RefreshCw } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 function Notifs() {
   const [notifications, setNotifications] = useState([]);
@@ -211,21 +214,31 @@ function Notifs() {
     const isCritical = notification.type === 'CRITICAL_STOCK' || 
                       notification.type === 'LOW_STOCK' || 
                       notification.priority === 'critical';
-    const iconClass = `h-6 w-6 ${
-      isResolved ? 'text-green-500' :
-      isCritical ? 'text-red-500' : 
-      notification.acknowledged_at ? 'text-blue-500' : 
-      'text-yellow-500'
-    }`;
 
     if (isResolved) {
-      return <HiCheck className={iconClass} />;
+      return (
+        <div className="rounded-full bg-green-100 p-2">
+          <CheckCircle className="h-6 w-6 text-green-600" />
+        </div>
+      );
     } else if (isCritical) {
-      return <HiExclamation className={iconClass} />;
+      return (
+        <div className="rounded-full bg-red-100 p-2">
+          <Flame className="h-6 w-6 text-red-600" />
+        </div>
+      );
     } else if (notification.acknowledged_at) {
-      return <HiCheck className={iconClass} />;
+      return (
+        <div className="rounded-full bg-blue-100 p-2">
+          <HiCheck className="h-6 w-6 text-blue-600" />
+        </div>
+      );
     } else {
-      return <HiBell className={iconClass} />;
+      return (
+        <div className="rounded-full bg-yellow-100 p-2">
+          <AlertTriangle className="h-6 w-6 text-yellow-600" />
+        </div>
+      );
     }
   };
 
@@ -238,25 +251,29 @@ function Notifs() {
     
     if (isResolved) {
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+          <CheckCircle className="h-3 w-3" />
           RESOLVED
         </span>
       );
     } else if (notification.type === 'CRITICAL_STOCK' || notification.type === 'LOW_STOCK' || notification.priority === 'critical') {
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">
+          <Flame className="h-3 w-3" />
           CRITICAL
         </span>
       );
     } else if (notification.acknowledged_at) {
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+          <HiCheck className="h-3 w-3" />
           ACKNOWLEDGED
         </span>
       );
     } else {
       return (
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
+          <Clock className="h-3 w-3" />
           PENDING
         </span>
       );
@@ -283,219 +300,312 @@ function Notifs() {
 
   if (loading) {
     return (
-      <div className="h-screen w-full overflow-auto bg-white p-5">
+      <section className="bg-neutral min-h-screen py-10">
         <div className="flex h-full items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading inventory notifications...</p>
+            <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-gray-200 border-t-red-600"></div>
+            <p className="mt-6 text-lg font-medium text-gray-600">Loading spicy notifications...</p>
+            <p className="mt-2 text-sm text-gray-400">Getting the latest inventory heat checks</p>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="h-screen w-full overflow-auto bg-white p-5">
-      <Toaster richColors />
-      <div className="flex h-full flex-col">
-        {/* Header */}
-        <div className="flex flex-row justify-between rounded-t-2xl bg-gray-300 p-5">
-          <div className="flex h-full flex-row items-center justify-center">
-            <IoIosNotifications className="text-secondary mr-3 text-4xl" />
-            <h1 className="text-secondary text-2xl font-bold">
-              Inventory Notifications
-            </h1>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <input
-              type="text"
-              placeholder="Search notifications..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="focus:ring-primary rounded border border-gray-300 bg-white px-4 py-2 text-black shadow-md focus:ring-2 focus:outline-none"
-            />
-            
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              className="focus:ring-primary rounded border border-gray-300 bg-white px-4 py-2 text-black shadow-md focus:ring-2 focus:outline-none"
-            >
-              <option value="all">All Notifications</option>
-              <option value="critical">Critical Only</option>
-              <option value="unacknowledged">Unacknowledged</option>
-              <option value="acknowledged">Acknowledged</option>
-              <option value="resolved">Resolved</option>
-            </select>
-
-            <button
-              onClick={triggerBatchCheck}
-              className="flex items-center space-x-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition-colors"
-              disabled={loading}
-            >
-              <HiOutlineRefresh className="h-4 w-4" />
-              <span>Batch Check</span>
-            </button>
-
-            <button
-              onClick={fetchNotifications}
-              className="flex items-center space-x-2 rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700 transition-colors"
-            >
-              <HiOutlineRefresh className="h-4 w-4" />
-              <span>Refresh</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="bg-gray-100 px-5 py-3 border-b">
-          <div className="flex items-center justify-between text-sm text-gray-600">
-            <span>
-              Total Notifications: <span className="font-semibold text-gray-900">{totalNotifications}</span>
-            </span>
-            <span>
-              Critical: <span className="font-semibold text-red-600">
-                {Array.isArray(notifications) ? notifications.filter(n => 
-                  (n.type === 'CRITICAL_STOCK' || n.type === 'LOW_STOCK' || n.priority === 'critical') && 
-                  n.status !== 'resolved' && n.resolution_status !== 'resolved' && !n.resolved && !n.is_resolved && !n.resolved_at
-                ).length : 0}
-              </span>
-            </span>
-            <span>
-              Resolved: <span className="font-semibold text-green-600">
-                {Array.isArray(notifications) ? notifications.filter(n => 
-                  n.status === 'resolved' || n.resolution_status === 'resolved' || n.resolved === true || n.is_resolved === true || n.resolved_at
-                ).length : 0}
-              </span>
-            </span>
-            <span>
-              Unacknowledged: <span className="font-semibold text-yellow-600">
-                {Array.isArray(notifications) ? notifications.filter(n => 
-                  !n.acknowledged_at && n.status !== 'resolved' && n.resolution_status !== 'resolved' && !n.resolved && !n.is_resolved && !n.resolved_at
-                ).length : 0}
-              </span>
-            </span>
-            <span>
-              Showing: <span className="font-semibold text-gray-900">{Array.isArray(filteredNotifications) ? filteredNotifications.length : 0}</span>
-            </span>
-          </div>
-        </div>
-
-        {/* Notifications List */}
-        <div className="flex-1 overflow-auto">
-          {filteredNotifications.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <div className="text-center">
-                <HiBell className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-4 text-lg font-medium text-gray-900">No notifications found</h3>
-                <p className="mt-2 text-gray-500">
-                  {searchTerm || filterType !== 'all' 
-                    ? 'Try adjusting your filters or search terms.' 
-                    : 'No inventory notifications at this time.'}
-                </p>
+    <section className="bg-neutral min-h-screen py-10">
+      <Toaster 
+        richColors 
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: '0.5rem',
+            boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+          },
+        }}
+      />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        {/* Header Section */}
+        <div className="mb-8 text-center">
+          <div className="mb-6 flex items-center justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-red-100 to-amber-100 blur-sm"></div>
+              <div className="relative rounded-full bg-gradient-to-br from-red-50 to-amber-50 p-4">
+                <Flame className="h-12 w-12 text-red-600" />
               </div>
             </div>
+          </div>
+          <h1 className="font-heading text-4xl font-bold text-content mb-2">
+            Inventory Heat Monitor
+          </h1>
+          <p className="text-lighter text-lg font-medium">
+            Track your sauce stock levels and critical alerts
+          </p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="relative overflow-hidden bg-white shadow-lg transition-all hover:shadow-red-200 hover:-translate-y-1">
+            <div className="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-red-100 opacity-20"></div>
+            <CardContent className="relative z-10 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-red-600 uppercase tracking-wider">Total Alerts</p>
+                  <p className="text-3xl font-bold text-red-900">{totalNotifications}</p>
+                </div>
+                <div className="rounded-full bg-red-100 p-3">
+                  <Package className="h-6 w-6 text-red-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="relative overflow-hidden bg-white shadow-lg transition-all hover:shadow-orange-200 hover:-translate-y-1">
+            <div className="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-orange-100 opacity-20"></div>
+            <CardContent className="relative z-10 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-orange-600 uppercase tracking-wider">Critical Stock</p>
+                  <p className="text-3xl font-bold text-orange-900">
+                    {Array.isArray(notifications) ? notifications.filter(n => 
+                      (n.type === 'CRITICAL_STOCK' || n.type === 'LOW_STOCK' || n.priority === 'critical') && 
+                      n.status !== 'resolved' && n.resolution_status !== 'resolved' && !n.resolved && !n.is_resolved && !n.resolved_at
+                    ).length : 0}
+                  </p>
+                </div>
+                <div className="rounded-full bg-orange-100 p-3">
+                  <AlertTriangle className="h-6 w-6 text-orange-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="relative overflow-hidden bg-white shadow-lg transition-all hover:shadow-green-200 hover:-translate-y-1">
+            <div className="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-green-100 opacity-20"></div>
+            <CardContent className="relative z-10 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-green-600 uppercase tracking-wider">Resolved</p>
+                  <p className="text-3xl font-bold text-green-900">
+                    {Array.isArray(notifications) ? notifications.filter(n => 
+                      n.status === 'resolved' || n.resolution_status === 'resolved' || n.resolved === true || n.is_resolved === true || n.resolved_at
+                    ).length : 0}
+                  </p>
+                </div>
+                <div className="rounded-full bg-green-100 p-3">
+                  <CheckCircle className="h-6 w-6 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="relative overflow-hidden bg-white shadow-lg transition-all hover:shadow-yellow-200 hover:-translate-y-1">
+            <div className="absolute -top-4 -right-4 h-20 w-20 rounded-full bg-yellow-100 opacity-20"></div>
+            <CardContent className="relative z-10 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-yellow-600 uppercase tracking-wider">Pending</p>
+                  <p className="text-3xl font-bold text-yellow-900">
+                    {Array.isArray(notifications) ? notifications.filter(n => 
+                      !n.acknowledged_at && n.status !== 'resolved' && n.resolution_status !== 'resolved' && !n.resolved && !n.is_resolved && !n.resolved_at
+                    ).length : 0}
+                  </p>
+                </div>
+                <div className="rounded-full bg-yellow-100 p-3">
+                  <Clock className="h-6 w-6 text-yellow-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Controls Section */}
+        <Card className="mb-8 bg-white shadow-lg">
+          <CardContent className="p-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search alerts..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-4 text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-200 focus:outline-none sm:w-64"
+                  />
+                </div>
+                
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-200 focus:outline-none"
+                >
+                  <option value="all">All Notifications</option>
+                  <option value="critical">🔥 Critical Only</option>
+                  <option value="unacknowledged">⏳ Unacknowledged</option>
+                  <option value="acknowledged">✅ Acknowledged</option>
+                  <option value="resolved">🎯 Resolved</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={triggerBatchCheck}
+                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transition-all"
+                  disabled={loading}
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Batch Check
+                </Button>
+
+                <Button
+                  onClick={fetchNotifications}
+                  variant="outline"
+                  className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Refresh
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Notifications List */}
+        <div className="space-y-4">
+          {filteredNotifications.length === 0 ? (
+            <Card className="bg-white shadow-lg">
+              <CardContent className="flex flex-col items-center justify-center py-16">
+                <div className="mb-6 rounded-full bg-gray-100 p-6">
+                  <HiBell className="h-12 w-12 text-gray-400" />
+                </div>
+                <h3 className="font-heading text-xl font-bold text-gray-900 mb-2">No Heat Alerts Found</h3>
+                <p className="text-gray-500 text-center max-w-md">
+                  {searchTerm || filterType !== 'all' 
+                    ? 'Try adjusting your filters or search terms to find specific notifications.' 
+                    : 'Your sauce inventory is running smooth! No critical alerts at this time.'}
+                </p>
+              </CardContent>
+            </Card>
           ) : (
-            <div className="divide-y divide-gray-200">
+            <div className="space-y-4">
               {filteredNotifications.map((notification) => (
-                <div
+                <Card
                   key={notification.id}
-                  className={`p-6 transition-colors hover:bg-gray-50 ${
+                  className={`overflow-hidden transition-all hover:shadow-lg hover:-translate-y-0.5 ${
                     notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at
-                      ? 'bg-green-50 border-l-4 border-green-500'
+                      ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500'
                       : notification.type === 'CRITICAL_STOCK' || notification.type === 'LOW_STOCK' || notification.priority === 'critical' 
-                        ? 'bg-red-50 border-l-4 border-red-500' 
+                        ? 'bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500' 
                         : !notification.acknowledged_at 
-                          ? 'bg-yellow-50 border-l-4 border-yellow-500' 
-                          : 'bg-blue-50 border-l-4 border-blue-500'
+                          ? 'bg-gradient-to-r from-yellow-50 to-amber-50 border-l-4 border-yellow-500' 
+                          : 'bg-gradient-to-r from-blue-50 to-sky-50 border-l-4 border-blue-500'
                   }`}
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4 flex-1">
-                      <div className="flex-shrink-0">
-                        {getNotificationIcon(notification)}
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h3 className="text-sm font-medium text-gray-900">
-                              {notification.title || `Stock Alert - ${notification.product_name || notification.entity_id}`}
-                            </h3>
-                            <p className="mt-1 text-sm text-gray-500">
-                              {notification.message}
-                            </p>
-                            {notification.entity_id && (
-                              <p className="mt-1 text-xs text-gray-400">
-                                Product ID: {notification.entity_id}
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-4 flex-1">
+                        <div className="flex-shrink-0 mt-1">
+                          {getNotificationIcon(notification)}
+                        </div>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex-1">
+                              <h3 className="font-heading text-lg font-semibold text-gray-900 mb-1">
+                                {notification.title || `🌶️ Stock Alert - ${notification.product_name || notification.entity_id}`}
+                              </h3>
+                              <p className="text-gray-700 mb-2 leading-relaxed">
+                                {notification.message}
                               </p>
-                            )}
-                            <div className="mt-2 flex items-center space-x-3">
-                              <span className="text-xs text-gray-400">
-                                {formatDate(notification.created_at)}
-                              </span>
-                              {getPriorityBadge(notification)}
-                              {notification.acknowledged_at && (
-                                <span className="text-xs text-gray-400">
-                                  Acknowledged: {formatDate(notification.acknowledged_at)}
-                                </span>
-                              )}
-                              {(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
-                                <span className="text-xs text-green-600">
-                                  Resolved: {notification.resolved_at ? formatDate(notification.resolved_at) : 'Just now'}
-                                </span>
+                              {notification.entity_id && (
+                                <div className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 mb-3">
+                                  <Package className="mr-1 h-3 w-3" />
+                                  Product ID: {notification.entity_id}
+                                </div>
                               )}
                             </div>
+                            <div className="ml-4">
+                              {getPriorityBadge(notification)}
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {formatDate(notification.created_at)}
+                            </div>
+                            {notification.acknowledged_at && (
+                              <div className="flex items-center gap-1 text-blue-600">
+                                <CheckCircle className="h-3 w-3" />
+                                Acknowledged: {formatDate(notification.acknowledged_at)}
+                              </div>
+                            )}
+                            {(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
+                              <div className="flex items-center gap-1 text-green-600">
+                                <CheckCircle className="h-3 w-3" />
+                                Resolved: {notification.resolved_at ? formatDate(notification.resolved_at) : 'Just now'}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center space-x-2 ml-4">
-                      {!notification.acknowledged_at && !(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
-                        <button
-                          onClick={() => acknowledgeNotification(notification.id)}
-                          className="text-green-600 hover:text-green-800 text-sm font-medium px-3 py-1 border border-green-300 rounded hover:bg-green-50 transition-colors"
-                          title="Acknowledge notification"
-                        >
-                          Acknowledge
-                        </button>
-                      )}
-                      
-                      {notification.entity_id && !(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
-                        <>
-                          <button
-                            onClick={() => navigateToInventory(notification.entity_id)}
-                            className="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-1 border border-blue-300 rounded hover:bg-blue-50 transition-colors"
-                            title="Go to Inventory Management"
+                      <div className="flex flex-col gap-2 ml-6">
+                        {!notification.acknowledged_at && !(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
+                          <Button
+                            onClick={() => acknowledgeNotification(notification.id)}
+                            size="sm"
+                            variant="outline"
+                            className="border-green-300 text-green-600 hover:bg-green-50 hover:border-green-400 transition-all"
                           >
-                            Check Stock
-                          </button>
-                          
-                          <button
-                            onClick={() => resolveProductNotifications(notification.entity_id)}
-                            className="text-purple-600 hover:text-purple-800 text-sm font-medium px-3 py-1 border border-purple-300 rounded hover:bg-purple-50 transition-colors"
-                            title="Resolve all notifications for this product"
-                          >
-                            Resolve
-                          </button>
-                        </>
-                      )}
-                      
-                      {(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
-                        <span className="text-green-600 text-sm font-medium px-3 py-1 bg-green-100 rounded">
-                          ✓ Resolved
-                        </span>
-                      )}
+                            <HiCheck className="mr-1 h-3 w-3" />
+                            Acknowledge
+                          </Button>
+                        )}
+                        
+                        {notification.entity_id && !(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
+                          <>
+                            <Button
+                              onClick={() => navigateToInventory(notification.entity_id)}
+                              size="sm"
+                              variant="outline"
+                              className="border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all"
+                            >
+                              <Package className="mr-1 h-3 w-3" />
+                              Check Stock
+                            </Button>
+                            
+                            <Button
+                              onClick={() => resolveProductNotifications(notification.entity_id)}
+                              size="sm"
+                              className="bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 transition-all"
+                            >
+                              <CheckCircle className="mr-1 h-3 w-3" />
+                              Resolve
+                            </Button>
+                          </>
+                        )}
+                        
+                        {(notification.status === 'resolved' || notification.resolution_status === 'resolved' || notification.resolved === true || notification.is_resolved === true || notification.resolved_at) && (
+                          <div className="flex items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
+                            <CheckCircle className="h-3 w-3" />
+                            Resolved
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

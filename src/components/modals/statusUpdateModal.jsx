@@ -47,13 +47,6 @@ const StatusUpdateModal = ({
                 {uploadedImage && (
                   <div className="mt-3">
                     <p className="text-sm text-green-600">✓ Image uploaded successfully</p>
-                    <div className="mt-2">
-                      <img 
-                        src={uploadedImage} 
-                        alt="Supporting document" 
-                        className="w-full h-32 object-cover rounded border"
-                      />
-                    </div>
                   </div>
                 )}
               </div>

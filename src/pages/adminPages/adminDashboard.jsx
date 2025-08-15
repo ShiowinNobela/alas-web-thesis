@@ -116,7 +116,7 @@ function adminDashboard() {
 
   return (
     <>
-      <div className="h-screen w-full overflow-auto bg-[#F3EDE8] p-5">
+      <div className="h-screen w-full overflow-auto bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 p-5">
         <div className="flex flex-col gap-5">
           <div className="flex flex-row gap-5">
             <div className="w-xs rounded-lg border-2 border-[#d6d6d6] bg-white p-6 shadow-md dark:border-gray-700 dark:bg-gray-800">
