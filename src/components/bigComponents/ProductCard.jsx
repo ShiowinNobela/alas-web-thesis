@@ -13,7 +13,7 @@ function ProductCard({ product }) {
 
   return (
     <>
-      <Card className="group z-10 flex flex-col gap-2 p-4 shadow-md transition-transform hover:scale-[1.02] hover:ring-2 hover:ring-amber-500">
+      <Card className="group z-10 flex flex-col gap-2 p-5 shadow-md transition-transform hover:scale-[1.02] hover:ring-2 hover:ring-amber-500">
         <div className="relative mb-3 overflow-hidden rounded-md">
           <span className="text-content absolute top-0 left-0 z-10 rounded-full bg-gray-200 px-2 py-1 text-xs font-bold">
             {product.category || 'Category'}

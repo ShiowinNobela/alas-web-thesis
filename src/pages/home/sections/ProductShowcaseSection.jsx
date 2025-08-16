@@ -3,12 +3,6 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { FlameIcon, StarIcon, ArrowRightIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import {
-  HotSauces,
-  PickledJalapeno,
-  BigBaldBob,
-  Powders,
-} from '@/assets/images';
 
 const container = {
   hidden: { opacity: 0 },
@@ -32,7 +26,8 @@ const hoverEffect = {
 const products = [
   {
     name: 'Classic ALAS',
-    image: HotSauces,
+    image:
+      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351166/BGAlas_izc4p1.jpg',
     heatLevel: 'Medium Heat',
     size: '150ml',
     description: 'The perfect balance of heat and flavor with a hint of sweet.',
@@ -40,7 +35,8 @@ const products = [
   },
   {
     name: 'Pickled Jalapeno',
-    image: PickledJalapeno,
+    image:
+      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351168/pickledjalapeno_rv2vzc.jpg',
     heatLevel: 'Hot',
     size: '120ml',
     description: 'Fruity habanero flavor with an intense, lingering heat.',
@@ -48,7 +44,8 @@ const products = [
   },
   {
     name: 'Big Bald Bob',
-    image: BigBaldBob,
+    image:
+      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351167/bigbaldbob_zxev1u.jpg',
     heatLevel: 'Mild',
     size: '200ml',
     description: 'Rich smoky flavor with a subtle warmth that builds slowly.',
@@ -56,7 +53,8 @@ const products = [
   },
   {
     name: 'Powder Extreme',
-    image: Powders,
+    image:
+      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351170/powders_lziet3.jpg',
     heatLevel: 'Extreme',
     size: '100ml',
     description: 'For true heat seekers - use sparingly!',
@@ -118,6 +116,7 @@ export default function ProductsShowcaseSection() {
                 <img
                   src={product.image}
                   alt={product.name}
+                  loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
@@ -171,34 +170,34 @@ export default function ProductsShowcaseSection() {
           whileHover={{ scale: 1.05 }}
         >
           <Link to="/ProductListPage">
-          <Button variant="CTA" className="group relative overflow-hidden">
-            <motion.span
-              className="relative z-10 flex items-center justify-center gap-2"
-              whileHover={{ gap: 3 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-            >
-              Explore Our Full Menu
+            <Button variant="CTA" className="group relative overflow-hidden">
               <motion.span
-                initial={{ x: 0 }}
-                animate={{ x: 3 }}
-                transition={{
-                  repeat: Infinity,
-                  repeatType: 'reverse',
-                  duration: 0.8,
-                  ease: 'easeInOut',
-                }}
+                className="relative z-10 flex items-center justify-center gap-2"
+                whileHover={{ gap: 3 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
-                <ArrowRightIcon className="h-5 w-5" />
+                Explore Our Full Menu
+                <motion.span
+                  initial={{ x: 0 }}
+                  animate={{ x: 3 }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    duration: 0.8,
+                    ease: 'easeInOut',
+                  }}
+                >
+                  <ArrowRightIcon className="h-5 w-5" />
+                </motion.span>
               </motion.span>
-            </motion.span>
 
-            <motion.span
-              className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-600 opacity-0 group-hover:opacity-100"
-              initial={{ x: '-100%' }}
-              whileHover={{ x: '0%', opacity: 1 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
-            />
-          </Button>
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-600 opacity-0 group-hover:opacity-100"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: '0%', opacity: 1 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              />
+            </Button>
           </Link>
         </motion.div>
       </div>

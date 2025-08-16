@@ -1,6 +1,5 @@
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRightIcon, AwardIcon } from 'lucide-react';
-import { AwardImage, StoryImage } from '@/assets/images';
 import ShowcaseButton from '@/components/bigComponents/ShowcaseButton';
 import { Link } from 'react-router-dom';
 
@@ -38,9 +37,10 @@ const StorySection = () => {
               className="relative h-full overflow-hidden rounded-2xl shadow-2xl"
             >
               <img
-                src={StoryImage}
+                src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351167/BGSos_fjwqb0.jpg"
                 alt="Our team crafting hot sauces"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
               <motion.div
                 initial={{ opacity: 0 }}
@@ -63,9 +63,10 @@ const StorySection = () => {
               className="absolute -right-10 bottom-0 z-10 w-40 overflow-hidden rounded-xl border-4 border-amber-400 bg-white shadow-[0_10px_20px_rgba(0,0,0,0.3)] md:-right-12 md:bottom-2 md:w-48 lg:-right-14 lg:bottom-4 lg:w-56"
             >
               <img
-                src={AwardImage}
+                src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351169/lp2_q6mjhd.jpg"
                 alt="Award winning hot sauce"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-amber-500/10">
                 <AwardIcon className="h-8 w-8 text-amber-400 drop-shadow-lg" />
@@ -132,14 +133,14 @@ const StorySection = () => {
             </motion.div>
 
             <Link to="/AboutUs">
-            <ShowcaseButton
-              size="md"
-              icon={<ArrowRightIcon className="h-5 w-5" />}
-              className="hover:bg-amber-600"
-            >
-              Read Our Full Story
-            </ShowcaseButton>
-            </Link>  
+              <ShowcaseButton
+                size="md"
+                icon={<ArrowRightIcon className="h-5 w-5" />}
+                className="hover:bg-amber-600"
+              >
+                Read Our Full Story
+              </ShowcaseButton>
+            </Link>
           </motion.div>
         </div>
       </div>

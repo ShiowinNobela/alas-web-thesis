@@ -88,7 +88,7 @@ const TestimonialSection = () => {
               key={index}
               variants={item}
               whileHover={{ y: -10 }}
-              className="group relative overflow-hidden rounded-2xl bg-white shadow-lg"
+              className="group relative overflow-hidden rounded-xl bg-white shadow-lg"
             >
               <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-orange-300/30"></div>
 
@@ -99,6 +99,7 @@ const TestimonialSection = () => {
                       src={testimonial.image}
                       alt={testimonial.name}
                       className="h-full w-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                   <div>

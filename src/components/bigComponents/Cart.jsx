@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Toaster } from 'sonner';
 import useCartStore from '@/stores/cartStore';
 import { useEffect } from 'react';
 import { Button } from '../ui/button';
@@ -60,7 +59,7 @@ function Cart() {
             {items.map((item) => (
               <article
                 key={item.product_id}
-                className="flex items-center gap-2 rounded-md border bg-white p-2 text-sm shadow-sm"
+                className="flex items-center gap-2 rounded-xl border bg-white p-2 text-sm shadow-sm"
               >
                 <img
                   src={item.image}
@@ -152,8 +151,6 @@ function Cart() {
           </Link>
         </div>
       )}
-
-      <Toaster richColors position="top-center" />
     </div>
   );
 }
