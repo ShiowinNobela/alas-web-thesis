@@ -11,7 +11,7 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
-      <Toaster richColors />
+      <Toaster position="bottom-center" richColors />
     </div>
   );
 }

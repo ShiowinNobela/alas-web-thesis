@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { FireExtinguisherIcon, FlameIcon } from 'lucide-react';
-import herogif from '@/components/images/herogif.gif';
 import { Link } from 'react-router-dom';
 import useUserStore from '@/stores/userStore';
 
@@ -43,7 +42,9 @@ const HeroSection = () => {
         animate={{ scale: 1 }}
         transition={{ duration: 1.2, ease: 'easeOut' }}
         className="flex min-h-[500px] w-full items-center justify-center bg-cover bg-center bg-no-repeat md:min-h-[500px]"
-        style={{ backgroundImage: `url(${herogif})` }}
+        style={{
+          backgroundImage: `url(${'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351380/herogif_rs4vtw.gif'})`,
+        }}
       >
         <motion.div
           initial={{ opacity: 0 }}

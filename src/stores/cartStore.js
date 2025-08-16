@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import axios from 'axios';
 import { toast } from 'sonner';
 import debounce from 'lodash/debounce';
-import { showCartToast } from '@/components/bigComponents/CartToast.jsx';
+import { showCartToast } from '@/components/toasts/CartToast.jsx';
 
 const useCartStore = create((set, get) => {
   const debouncedMap = new Map();
