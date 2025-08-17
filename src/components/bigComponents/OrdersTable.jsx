@@ -22,8 +22,8 @@ export default function OrdersTable({ orders, onCancelOrder }) {
     setExpandedOrderIds(
       (prev) =>
         prev.includes(orderId)
-          ? prev.filter((id) => id !== orderId) // Remove if already present
-          : [...prev, orderId] // Add if not present
+          ? prev.filter((id) => id !== orderId)
+          : [...prev, orderId]
     );
   };
 
@@ -68,53 +68,53 @@ export default function OrdersTable({ orders, onCancelOrder }) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="text-lighter h-full rounded-2xl p-8 text-center shadow">
-            <p className="font-heading text-lg font-semibold">
+          <Card className="text-lighter h-full rounded-2xl p-6 sm:p-8 text-center shadow">
+            <PackageSearch className="text-lighter mx-auto mb-4 size-20 sm:size-32" />
+            <p className="font-heading text-base sm:text-lg font-semibold mb-2">
               No orders found
             </p>
-            <PackageSearch className="text-lighter mx-auto mb-2 size-40" />
-            <p className="text-sm">
+            <p className="text-sm text-gray-600">
               Try adjusting your filters or search keyword.
             </p>
           </Card>
         </motion.div>
       ) : (
         orders.map((order, index) => {
-          const isExpanded = expandedOrderIds.includes(order.id);
+          const isExpanded = expandedOrderIds.includes(order?.id);
 
           return (
             <motion.div
-              key={order.id}
+              key={order?.id || index}
               variants={cardVariants}
               initial="hidden"
               animate="visible"
               transition={{ delay: index * 0.05 }}
               layout
             >
-              <Card className="p-0">
+              <Card className="p-0 overflow-hidden relative">
                 {/* Main Content Container */}
-                <div className="flex flex-col sm:flex-row">
+                <div className="flex flex-col">
                   {/* Left Content (Order Info) */}
-                  <div className="border-secondary flex-1 border-r-2 p-6">
+                  <div className="flex-1 p-4 sm:p-6 sm:pr-52">
                     {/* --- Header --- */}
-                    <div className="border-b border-gray-200 pb-4">
+                    <div className="border-b border-gray-200 pb-3 sm:pb-4">
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
-                        <h2 className="text-lighter">
+                        <h2 className="text-lighter text-sm sm:text-base">
                           Order ID:{' '}
                           <span className="text-content font-heading font-semibold tracking-tighter">
-                            #{order.id}
+                            #{order?.id || 'N/A'}
                           </span>
                         </h2>
                         <motion.span
                           whileHover={{ scale: 1.05 }}
-                          className={`inline-flex items-center rounded-sm bg-gray-100 px-4 py-1 text-xs font-semibold shadow-sm ${getStatusStyle(order.status)}`}
+                          className={`inline-flex w-fit items-center rounded-sm bg-gray-100 px-3 py-1 text-xs font-semibold shadow-sm ${getStatusStyle(order?.status || 'unknown')}`}
                         >
-                          {order.status}
+                          {order?.status || 'Unknown'}
                         </motion.span>
                       </div>
-                      <h3 className="mt-1 text-sm">
-                        Ordered at{' '}
-                        {dayjs(order.order_date).format('D MMMM YYYY')}
+                      <h3 className="mt-1 text-xs sm:text-sm text-gray-600">
+                        Ordered on{' '}
+                        {order?.order_date ? dayjs(order.order_date).format('D MMMM YYYY') : 'Date not available'}
                       </h3>
                     </div>
 
@@ -129,8 +129,8 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                           layout
                           className="overflow-hidden"
                         >
-                          <div className="grid grid-cols-1 gap-2 py-2 md:grid-cols-3">
-                            {order.items.map((item, i) => (
+                          <div className="grid grid-cols-1 gap-2 py-3 sm:grid-cols-2 lg:grid-cols-3">
+                            {order?.items?.map((item, i) => (
                               <motion.div
                                 key={item.item_id}
                                 variants={itemVariants}
@@ -139,9 +139,9 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                                 custom={i}
                                 whileHover={{ y: -2 }}
                               >
-                                <Card className="text-content flex flex-row gap-4 rounded-lg border p-3 shadow">
+                                <Card className="text-content flex flex-row gap-3 rounded-lg border p-3 shadow-sm hover:shadow-md transition-shadow">
                                   <motion.div
-                                    className="size-12 flex-shrink-0 overflow-hidden rounded bg-orange-200"
+                                    className="size-10 sm:size-12 flex-shrink-0 overflow-hidden rounded bg-orange-200"
                                     whileHover={{ scale: 1.05 }}
                                   >
                                     <img
@@ -150,16 +150,16 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                                         'https://via.placeholder.com/80x80?text=IMG'
                                       }
                                       alt={item.product_name}
-                                      className="h-full w-full object-fill"
+                                      className="h-full w-full object-cover"
                                     />
                                   </motion.div>
                                   <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
-                                    <p className="truncate text-sm font-semibold">
+                                    <p className="truncate text-xs sm:text-sm font-semibold">
                                       {item.product_name}
                                     </p>
                                     <p className="text-lighter text-xs">
-                                      Quantity:{' '}
-                                      <span className="text-content">
+                                      Qty:{' '}
+                                      <span className="text-content font-medium">
                                         {item.quantity}
                                       </span>
                                     </p>
@@ -173,11 +173,11 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                     </AnimatePresence>
 
                     {/* --- Footer --- */}
-                    <motion.div layout className="mt-4">
+                    <motion.div layout className="mt-3 sm:mt-4">
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-lighter text-sm">
+                        <p className="text-lighter text-sm sm:text-base">
                           Total:{' '}
-                          <span className="text-content font-semibold">
+                          <span className="text-content font-semibold text-lg">
                             {new Intl.NumberFormat('en-PH', {
                               style: 'currency',
                               currency: 'PHP',
@@ -186,24 +186,95 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                           </span>
                         </p>
 
-                        <div className="text-lighter flex flex-wrap items-center gap-2 text-sm sm:gap-4">
-                          <span>{order.items.length} items</span>
+                        <div className="text-lighter flex flex-wrap items-center gap-2 text-xs sm:text-sm">
+                          <span className="flex items-center gap-1">
+                            <span className="font-medium">{order?.items?.length || 0}</span>
+                            <span>items</span>
+                          </span>
                           <span className="hidden font-bold sm:inline">·</span>
-                          <span>Expected: June 20, 1996</span>
+                          <span className="hidden sm:inline">Expected: June 20, 1996</span>
                           <span className="hidden font-bold sm:inline">·</span>
-                          <PaymentMethodIcon method={order.payment_method} />
+                          <div className="flex items-center">
+                            <PaymentMethodIcon method={order?.payment_method || 'unknown'} />
+                          </div>
                         </div>
                       </div>
                     </motion.div>
+
+                    {/* Mobile Action Buttons */}
+                    <div className="mt-4 flex flex-col gap-2 sm:hidden">
+                      <motion.div whileTap={{ scale: 0.95 }}>
+                        <Button
+                          onClick={() =>
+                            navigate(`/UserViewOrderDetails/${order?.id}`)
+                          }
+                          className="w-full"
+                        >
+                          View Details
+                        </Button>
+                      </motion.div>
+
+                      {order?.status === 'pending' ? (
+                        order?.cancel_requested === 1 ? (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span>
+                                <Button
+                                  variant="secondary"
+                                  disabled
+                                  className="w-full"
+                                >
+                                  Cancel Requested
+                                </Button>
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              This order has already requested cancellation.
+                            </TooltipContent>
+                          </Tooltip>
+                        ) : (
+                          <motion.div whileHover={{ scale: 1.02 }}>
+                            <Button
+                              variant="destructive"
+                              onClick={() => onCancelOrder(order?.id)}
+                              className="w-full"
+                            >
+                              Cancel Order
+                            </Button>
+                          </motion.div>
+                        )
+                      ) : null}
+
+                      <motion.div whileTap={{ scale: 0.95 }}>
+                        <Button
+                          variant="outline"
+                          onClick={() => toggleExpand(order?.id)}
+                          aria-label="Toggle item list"
+                          className="w-full"
+                        >
+                          {isExpanded ? (
+                            <>
+                              <ChevronUp className="mr-2 h-4 w-4" />
+                              Hide Items
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className="mr-2 h-4 w-4" />
+                              Show Items ({order?.items?.length || 0})
+                            </>
+                          )}
+                        </Button>
+                      </motion.div>
+                    </div>
                   </div>
 
-                  {/* Right Side Buttons (Stacked) - Wider version */}
-                  <div className="flex flex-col gap-3 p-6 sm:sticky sm:top-0 sm:w-48 sm:self-start">
+                  {/* Desktop Right Side Buttons - Hidden on mobile */}
+                  <div className="absolute right-0 top-0 hidden flex-col gap-3 p-6 sm:flex sm:w-48">
                     {/* View Details button */}
                     <motion.div whileTap={{ scale: 0.95 }}>
                       <Button
                         onClick={() =>
-                          navigate(`/UserViewOrderDetails/${order.id}`)
+                          navigate(`/UserViewOrderDetails/${order?.id}`)
                         }
                         className="w-full"
                       >
@@ -214,8 +285,8 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                     {/* Separator line */}
                     <div className="my-1 border-t border-gray-200"></div>
 
-                    {order.status === 'pending' ? (
-                      order.cancel_requested === 1 ? (
+                    {order?.status === 'pending' ? (
+                      order?.cancel_requested === 1 ? (
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <span>
@@ -236,7 +307,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                         <motion.div whileHover={{ scale: 1.03 }}>
                           <Button
                             variant="destructive"
-                            onClick={() => onCancelOrder(order.id)}
+                            onClick={() => onCancelOrder(order?.id)}
                             className="w-full"
                           >
                             Cancel Order
@@ -248,24 +319,21 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                     <motion.div whileTap={{ scale: 0.95 }}>
                       <Button
                         variant="outline"
-                        onClick={() => toggleExpand(order.id)}
+                        onClick={() => toggleExpand(order?.id)}
                         aria-label="Toggle item list"
                         className="w-full"
                       >
                         {isExpanded ? (
                           <>
-                            <ChevronUp className="mr-2 hidden h-4 w-4 sm:inline" />
+                            <ChevronUp className="mr-2 h-4 w-4" />
                             Hide Items
                           </>
                         ) : (
                           <>
-                            <ChevronDown className="mr-2 hidden h-4 w-4 sm:inline" />
+                            <ChevronDown className="mr-2 h-4 w-4" />
                             Show Items
                           </>
                         )}
-                        <span className="sm:hidden">
-                          {isExpanded ? 'Hide Items' : 'Show Items'}
-                        </span>
                       </Button>
                     </motion.div>
                   </div>

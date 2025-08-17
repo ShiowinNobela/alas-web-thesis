@@ -61,8 +61,8 @@ export default function OrderFiltersPanel() {
   };
 
   return (
-    <Card className="text-content flex h-full w-56 shrink-0 flex-col gap-4 rounded-2xl p-4 shadow">
-      <h3 className="font-heading border-b border-gray-200 text-lg">Filters</h3>
+    <Card className="text-content flex h-full w-full shrink-0 flex-col gap-4 rounded-2xl p-4 shadow lg:w-56">
+      <h3 className="font-heading border-b border-gray-200 pb-2 text-lg lg:block hidden">Filters</h3>
 
       {/* Search Order ID */}
       <div className="mb-2">
@@ -71,22 +71,22 @@ export default function OrderFiltersPanel() {
 
       {/* Status Filter */}
       <div className="border-b border-gray-100 pb-4">
-        <h4 className="mb-3 flex items-center justify-between text-sm font-medium">
-          <span>Status</span>
+        <h4 className="mb-3 flex items-center justify-between text-sm font-semibold">
+          <span>Order Status</span>
           {selectedStatuses.length > 0 && (
             <button
               onClick={() => clearFilters('status')}
-              className="text-info hover:text-info/70 text-xs"
+              className="text-primary hover:text-primary/70 text-xs font-medium"
             >
-              Clear
+              Clear ({selectedStatuses.length})
             </button>
           )}
         </h4>
-        <div className="leading-loose">
+        <div className="space-y-1">
           {statuses.map((status) => (
             <label
               key={status}
-              className="flex items-center gap-3 rounded px-2 py-1 text-sm text-gray-700 hover:bg-gray-50"
+              className="flex items-center gap-3 rounded-md px-2 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors"
               htmlFor={status}
             >
               <Checkbox
@@ -94,10 +94,7 @@ export default function OrderFiltersPanel() {
                 checked={selectedStatuses.includes(status)}
                 onCheckedChange={() => toggleFilter('status', status)}
               />
-              <span className="capitalize">{status}</span>
-              <span className="ml-auto text-xs text-gray-400">
-                {/* Optional: Add count here if available */}
-              </span>
+              <span className="capitalize font-medium">{status}</span>
             </label>
           ))}
         </div>
@@ -105,14 +102,14 @@ export default function OrderFiltersPanel() {
 
       {/* Payment Methods */}
       <div className="pb-2">
-        <h4 className="mb-3 flex items-center justify-between text-sm font-medium">
+        <h4 className="mb-3 flex items-center justify-between text-sm font-semibold">
           <span>Payment Method</span>
           {selectedPayments.length > 0 && (
             <button
               onClick={() => clearFilters('payment_method')}
-              className="text-info hover:text-info/70 text-xs"
+              className="text-primary hover:text-primary/70 text-xs font-medium"
             >
-              Clear
+              Clear ({selectedPayments.length})
             </button>
           )}
         </h4>
@@ -120,11 +117,12 @@ export default function OrderFiltersPanel() {
           {items.map((item) => (
             <div
               key={item.value}
-              className={`relative flex items-center gap-3 rounded-md border p-2 ${
+              className={`relative flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${
                 selectedPayments.includes(item.value)
-                  ? 'border-primary bg-muted'
-                  : 'border-lighter hover:border-primary/40'
+                  ? 'border-primary bg-primary/5 shadow-sm'
+                  : 'border-gray-200 hover:border-primary/40 hover:bg-gray-50'
               }`}
+              onClick={() => toggleFilter('payment_method', item.value)}
             >
               <Checkbox
                 checked={selectedPayments.includes(item.value)}
@@ -132,26 +130,28 @@ export default function OrderFiltersPanel() {
                   toggleFilter('payment_method', item.value)
                 }
               />
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-2 text-sm font-medium">
                 {item.Icon && <item.Icon size={16} aria-hidden="true" />}
-                <Label>{item.label}</Label>
+                <Label className="cursor-pointer">{item.label}</Label>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Optional: Add a clear all button at the bottom */}
+      {/* Clear all filters button */}
       {(selectedStatuses.length > 0 || selectedPayments.length > 0) && (
-        <button
-          onClick={() => {
-            clearFilters('status');
-            clearFilters('payment_method');
-          }}
-          className="text-info hover:text-info/70 mt-auto text-left text-sm"
-        >
-          Clear all filters
-        </button>
+        <div className="border-t pt-4 mt-auto">
+          <button
+            onClick={() => {
+              clearFilters('status');
+              clearFilters('payment_method');
+            }}
+            className="w-full text-center py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          >
+            Clear All Filters
+          </button>
+        </div>
       )}
     </Card>
   );

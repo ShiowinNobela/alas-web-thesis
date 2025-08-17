@@ -113,13 +113,31 @@ function Navbar() {
               </Link>
             ))}
             {storedUser ? (
-              <Link
-                to="/"
-                onClick={closeMobileMenu}
-                className="border-b border-white/20 py-3 transition hover:bg-white/10"
-              >
-                Account
-              </Link>
+              <>
+                <Link
+                  to="/UserOrderPage"
+                  onClick={closeMobileMenu}
+                  className="border-b border-white/20 py-3 transition hover:bg-white/10"
+                >
+                  My Orders
+                </Link>
+                <Link
+                  to="/UserSettings"
+                  onClick={closeMobileMenu}
+                  className="border-b border-white/20 py-3 transition hover:bg-white/10"
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('user');
+                    window.location.href = '/';
+                  }}
+                  className="border-b border-white/20 py-3 text-left transition hover:bg-white/10"
+                >
+                  Sign Out
+                </button>
+              </>
             ) : (
               <Link
                 to="/LoginPage"
