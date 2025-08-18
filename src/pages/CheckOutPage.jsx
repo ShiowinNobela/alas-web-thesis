@@ -1,14 +1,10 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-import ConfirmPopUp from '../components/ConfirmPopUp';
 import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
-import {
-  CheckOutInput,
-  CheckOutTextArea,
-} from '../components/CheckOutInputStyle';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import ConfirmPopUp from '../components/ConfirmPopUp';
 
 function CheckOutPage() {
   const [termsChecked, setTermsChecked] = useState(false);
@@ -27,22 +23,14 @@ function CheckOutPage() {
   useEffect(() => {
     axios
       .get('/api/users', {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { Authorization: `Bearer ${user.token}` },
       })
-      .then((response) => {
-        setGetInfo(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching user data:', error);
-      });
+      .then((response) => setGetInfo(response.data))
+      .catch((error) => console.error('Error fetching user data:', error));
   }, []);
 
   const handleConfirmOrder = () => {
     let couponCode = window.localStorage.getItem('couponCode');
-    // Remove couponCode if it's null, undefined, empty, or the string "null"/"undefined"
     if (
       !couponCode ||
       couponCode.trim() === '' ||
@@ -52,21 +40,17 @@ function CheckOutPage() {
       couponCode = null;
     }
     const payload = couponCode ? { ...getInfo, couponCode } : getInfo;
+
     axios
       .post('/api/orders', payload, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: { Authorization: `Bearer ${user.token}` },
       })
-      .then((response) => {
-        console.log('Order confirmed successfully:', response.data);
+      .then(() => {
         toast.success('Order status updated successfully!');
-        setTimeout(() => {
-          navigate('/ProductListPage');
-        }, 1000);
+        setTimeout(() => navigate('/ProductListPage'), 1000);
       })
       .catch((err) => {
-        if (err.response && err.response.status === 400) {
+        if (err.response?.status === 400) {
           toast.error('Failed to update status: Bad Request');
         } else {
           toast.error('An unexpected error occurred');
@@ -100,48 +84,40 @@ function CheckOutPage() {
                 Billing Information
               </h2>
 
-              {/* Name */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Name
                 </label>
-                <CheckOutInput
+                <Input
                   placeholder="Your Name"
-                  required
                   value={getInfo?.username}
                   readOnly
                 />
               </div>
 
-              {/* Phone Number */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Phone Number
                 </label>
-                <CheckOutInput
+                <Input
                   type="number"
                   placeholder="Your Phone Number"
-                  required
                   value={getInfo?.contact_number}
                   onChange={(e) =>
                     setGetInfo({ ...getInfo, contact_number: e.target.value })
                   }
-                  onKeyDown={(e) => {
-                    if (['e', 'E', '+', '-'].includes(e.key)) {
-                      e.preventDefault();
-                    }
-                  }}
+                  onKeyDown={(e) =>
+                    ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
+                  }
                 />
               </div>
 
-              {/* Address */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Address
                 </label>
-                <CheckOutTextArea
+                <Textarea
                   placeholder="Your Address"
-                  required
                   value={getInfo?.address}
                   onChange={(e) =>
                     setGetInfo({ ...getInfo, address: e.target.value })
@@ -149,14 +125,13 @@ function CheckOutPage() {
                 />
               </div>
 
-              {/* Note */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Note
                 </label>
-                <CheckOutTextArea
+                <Textarea
                   placeholder="Order Notes"
-                  required
+                  value={getInfo?.notes}
                   onChange={(e) =>
                     setGetInfo({ ...getInfo, notes: e.target.value })
                   }
@@ -170,28 +145,23 @@ function CheckOutPage() {
                 Payment Information
               </h2>
 
-              {/* Email */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Email
                 </label>
-                <CheckOutInput
+                <Input
                   placeholder="Your Email"
-                  required
                   value={getInfo?.email}
                   readOnly
                 />
               </div>
 
-              {/* Payment Method */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Payment Method
                 </label>
                 <select
-                  name="Payment Method"
-                  id="Payment Method"
-                  className="w-full rounded border border-gray-300 px-3 py-2 text-gray-700 shadow-inner transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full rounded border border-gray-300 px-3 py-2 text-gray-700 shadow-inner focus:ring-2 focus:ring-blue-500 focus:outline-none"
                   value={getInfo?.payment_method}
                   onChange={(e) =>
                     setGetInfo({ ...getInfo, payment_method: e.target.value })
@@ -206,34 +176,32 @@ function CheckOutPage() {
                 </select>
               </div>
 
-              {/* Account Name */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Account Name
                 </label>
-                <CheckOutInput
-                  placeholder="Your Gcash Or Bank Account Name"
-                  required
+                <Input
+                  placeholder="Your GCash or Bank Account Name"
+                  value={getInfo?.account_name}
                   onChange={(e) =>
                     setGetInfo({ ...getInfo, account_name: e.target.value })
                   }
                 />
               </div>
 
-              {/* Reference Number */}
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-700">
                   Reference Number
                 </label>
-                <CheckOutInput
-                  placeholder="Reference Num"
+                <Input
+                  placeholder="Reference Number"
+                  value={getInfo?.reference_number}
                   onChange={(e) =>
                     setGetInfo({ ...getInfo, reference_number: e.target.value })
                   }
                 />
               </div>
 
-              {/* Terms and Checkout */}
               <div className="space-y-3 border-t border-gray-300 pt-4">
                 <button
                   type="button"
@@ -242,6 +210,7 @@ function CheckOutPage() {
                 >
                   Terms and Conditions
                 </button>
+
                 <div className="flex items-center gap-3">
                   <input
                     type="checkbox"

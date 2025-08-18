@@ -14,7 +14,7 @@ import {
 import OrderHistoryModal from '@/components/modals/orderHistoryModal';
 import StatusUpdateModal from '@/components/modals/statusUpdateModal';
 import OrderSummary from '@/components/bigComponents/OrderSummary';
-import AdminOrderFilters from '@/components/bigComponents/filters/AdminOrderFilter';
+import AdminOrderFilters from '@/components/filters/AdminOrderFilter';
 import AdminOrdersTable from '@/components/tables/AdminOrdersTable';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 

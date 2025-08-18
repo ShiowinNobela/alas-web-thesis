@@ -33,7 +33,7 @@
   --color-primary-700: #2c2c54;
   --color-primary-500: #ef4444;
   --color-content: #251605;
-  --color-neutral: #f1f2eb;
+  --color-neutral: #f8f7f7;
   --color-red: #ef4444;
   --color-info: #2364aa;
   --color-admin: #f3ede8;
@@ -219,4 +219,8 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.bg-gradient {
+  @apply bg-gradient-to-b from-amber-50 to-yellow-100;
 }
