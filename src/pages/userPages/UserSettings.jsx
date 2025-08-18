@@ -93,7 +93,7 @@ function UserSettings() {
           </Card>
 
           <div className="grid grid-cols-2 gap-4 lg:col-span-2">
-            <Card className="font-heading flex flex-col items-center justify-center rounded-lg bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-red-50 hover:shadow-md">
+            <Card className="font-heading flex flex-col items-center justify-center rounded-xl bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-red-50 hover:shadow-md">
               <div className="mb-3 rounded-full bg-red-100 p-3">
                 <ShoppingCart className="text-red-600" size={24} />
               </div>
@@ -103,7 +103,7 @@ function UserSettings() {
               </p>
             </Card>
 
-            <Card className="font-heading flex flex-col items-center justify-center rounded-lg bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-amber-50 hover:shadow-md">
+            <Card className="font-heading flex flex-col items-center justify-center rounded-xl bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-amber-50 hover:shadow-md">
               <div className="mb-3 rounded-full bg-amber-100 p-3">
                 <Star className="text-amber-500" size={24} />
               </div>
@@ -115,7 +115,7 @@ function UserSettings() {
               </p>
             </Card>
 
-            <Card className="font-heading flex flex-col items-center justify-center rounded-lg bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-pink-50 hover:shadow-md">
+            <Card className="font-heading flex flex-col items-center justify-center rounded-xl bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-pink-50 hover:shadow-md">
               <div className="mb-3 rounded-full bg-pink-100 p-3">
                 <Flame className="text-pink-500" size={24} />
               </div>
@@ -125,7 +125,7 @@ function UserSettings() {
               </p>
             </Card>
 
-            <Card className="font-heading flex flex-col items-center justify-center rounded-lg bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-orange-50 hover:shadow-md">
+            <Card className="font-heading flex flex-col items-center justify-center rounded-xl bg-white px-4 py-6 transition-all hover:-translate-y-1 hover:bg-orange-50 hover:shadow-md">
               <div className="mb-3 rounded-full bg-orange-100 p-3">
                 <Award className="text-orange-600" size={24} />
               </div>
