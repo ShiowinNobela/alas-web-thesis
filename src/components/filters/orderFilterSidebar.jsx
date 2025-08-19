@@ -95,7 +95,7 @@ export default function OrderFiltersPanel() {
           {statuses.map((status) => (
             <label
               key={status}
-              className="flex cursor-pointer items-center gap-2 rounded px-2 py-1 text-sm text-gray-700 hover:bg-gray-50"
+              className="text-lighter flex cursor-pointer items-center gap-2 rounded px-2 py-1 text-sm hover:bg-gray-50"
             >
               <Checkbox
                 checked={selectedStatuses.includes(status)}

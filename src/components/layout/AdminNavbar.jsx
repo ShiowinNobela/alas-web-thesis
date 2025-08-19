@@ -10,6 +10,7 @@ import { HiUser, HiBell, HiCog, HiLogout } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { handleLogout } from '@/utils/logout';
 import { useLocation } from 'react-router-dom';
+import ThemeToggle from '../filters/ThemeToggle';
 
 // Not sure yet what to actually put here
 function AdminNavbar() {
@@ -53,7 +54,7 @@ function AdminNavbar() {
   const currentPageName = getCurrentPageName();
 
   return (
-    <nav className="flex h-14 items-center justify-between border-b border-black bg-white px-4">
+    <nav className="flex h-14 items-center justify-between border-b border-black bg-white px-4 dark:bg-black">
       <div className="flex items-center gap-4">
         <h1 className="text-content text-xl font-bold">{currentPageName}</h1>
       </div>
@@ -89,6 +90,8 @@ function AdminNavbar() {
       </div>
 
       <div className="flex items-center gap-2">
+        <ThemeToggle />
+
         <Button variant="ghost" size="sm" title="Help & Support">
           <HelpCircle className="h-4 w-4" />
         </Button>

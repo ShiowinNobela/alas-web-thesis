@@ -109,8 +109,8 @@ function InventoryManagement() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 flex flex-col overflow-x-auto p-4">
-      <main className="mx-auto w-full overflow-x-auto rounded-xl border bg-white shadow ring-1">
+    <div className="bg-admin flex flex-col overflow-x-auto p-4">
+      <main className="bg-admin mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1">
         {/* Summary Cards */}
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
           <SummaryCard
@@ -168,7 +168,7 @@ function InventoryManagement() {
                   <TableHeadCell>Actions</TableHeadCell>
                 </TableRow>
               </TableHead>
-              <TableBody className="divide-y bg-white">
+              <TableBody className="text-content divide-y bg-white dark:bg-black">
                 {products.map((product) => (
                   <TableRow
                     key={product.id}

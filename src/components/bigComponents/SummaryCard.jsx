@@ -35,7 +35,7 @@ export default function SummaryCard({
       <div className="flex items-center gap-3">
         <IconComponent className={`h-6 w-6 ${iconColor}`} />
         <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
+          <p className="text-lighter text-sm font-medium">{title}</p>
           <p className="text-2xl font-semibold">{value}</p>
         </div>
       </div>
