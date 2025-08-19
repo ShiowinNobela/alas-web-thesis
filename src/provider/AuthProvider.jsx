@@ -6,15 +6,14 @@ import PropTypes from 'prop-types';
 const AuthProvider = ({ children }) => {
   const setUser = useUserStore((state) => state.setUser);
   const [loading, setLoading] = useState(true);
-  axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true; // fetch user using cookie
 
   useEffect(() => {
     axios
-      .get('/api/users', { withCredentials: true }) // fetch user using cookie
+      .get('/api/users', { withCredentials: true })
       .then((res) => {
         setUser(res.data);
 
-        // optional: update user in localStorage (without token)
         localStorage.setItem('user', JSON.stringify(res.data));
       })
       .catch((err) => {

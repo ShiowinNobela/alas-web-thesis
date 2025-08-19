@@ -89,7 +89,7 @@ export default function UserViewOrderDetails() {
 
   return (
     <TooltipProvider>
-      <section className="bg-gradient h-full py-8 pb-40">
+      <section className="bg-neutral h-full py-8 pb-40">
         <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
           <BackButton />
 

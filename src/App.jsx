@@ -36,12 +36,14 @@ import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 import AdminLayout from './pages/layouts/AdminLayout';
 import Notifs from './pages/adminPages/Notifs.jsx';
 import ScrollToTop from './utils/ScrollToTop';
+import { useTheme } from './provider/ThemeProvider';
 
 function App() {
+  const { isDarkMode } = useTheme();
   return (
     <>
-      <ThemeConfig dark={false} />
       <ScrollToTop />
+      <ThemeConfig dark={isDarkMode} />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/LoginPage" element={<LoginPage />}></Route>

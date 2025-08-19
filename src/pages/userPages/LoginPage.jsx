@@ -102,7 +102,7 @@ function LoginPage() {
           <div className="absolute top-40 right-20 h-16 w-16 animate-pulse rounded-full bg-gradient-to-br from-red-200 to-pink-300 opacity-20 delay-1000"></div>
           <div className="absolute bottom-40 left-20 h-12 w-12 animate-pulse rounded-full bg-gradient-to-br from-orange-200 to-red-300 opacity-20 delay-500"></div>
         </div>
-        <Card className="text-content w-full max-w-md rounded-md p-6 shadow-sm sm:p-8">
+        <Card className="w-full max-w-md rounded-md p-6 text-black shadow-sm sm:p-8 dark:text-white">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
@@ -110,7 +110,8 @@ function LoginPage() {
                 alt="Alas Delis Logo"
                 className="mx-auto h-20 w-20 shrink-0 object-contain"
               />
-              <h1 className="font-heading text-center text-3xl leading-tight font-bold tracking-tight">
+
+              <h1 className="text-content font-heading text-center text-3xl leading-tight font-bold tracking-tight">
                 SIGN IN
               </h1>
               <p className="text-center text-sm text-gray-500">

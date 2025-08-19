@@ -4,6 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import Logo from '@/components/images/logo.png';
 import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
+import ThemeToggle from '../filters/ThemeToggle';
 
 const navItemStyle =
   'px-2 py-2 border-b-2 border-transparent hover:border-brand hover:text-brand transition-all cursor-pointer';
@@ -39,13 +40,13 @@ function Navbar() {
               alt="Logo"
             />
           </Link>
-          <h1 className="font-logo text-content hidden text-xl lg:block">
+          <h1 className="font-logo hidden text-xl text-black lg:block">
             Alas Delis and Spices
           </h1>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="font-heading text-content hidden items-center gap-8 text-lg md:flex">
+        <nav className="font-heading hidden items-center gap-8 text-lg text-black md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.to}
@@ -64,15 +65,13 @@ function Navbar() {
             </Link>
           )}
 
+          <ThemeToggle />
+
           <Link
-              to={storedUser ? '/ProductListPage' : '/LoginPage'}
-              onClick={closeMobileMenu}
-            >
-              <Button
-                variant="CTA"
-              >
-                Order Now
-              </Button>
+            to={storedUser ? '/ProductListPage' : '/LoginPage'}
+            onClick={closeMobileMenu}
+          >
+            <Button variant="CTA">Order Now</Button>
           </Link>
         </nav>
 
@@ -81,8 +80,8 @@ function Navbar() {
           onClick={toggleMobileMenu}
           className="block focus:outline-none lg:hidden"
           aria-label="Toggle Menu"
-          >
-         {mobileMenuOpen ? (
+        >
+          {mobileMenuOpen ? (
             <AiOutlineClose size={24} />
           ) : (
             <AiOutlineMenu size={24} />
@@ -101,7 +100,7 @@ function Navbar() {
             </Link>
           </div>
 
-          <nav className="font-heading flex flex-col gap-1 px-5 py-4 text-lg uppercase flex-1">
+          <nav className="font-heading flex flex-1 flex-col gap-1 px-5 py-4 text-lg uppercase">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
