@@ -1,6 +1,6 @@
 export const getStatusStyle = (status) => {
   const baseStyle =
-    'bg-gray-200 shadow-lg px-2 py-1 rounded-sm text-sm font-semibold font-heading tracking-wider capitalize';
+    'bg-gray-200 shadow-md px-2 py-1 rounded-sm text-sm font-semibold  tracking-wider capitalize';
 
   const colorMap = {
     pending: 'bg-orange-300 text-orange-900',

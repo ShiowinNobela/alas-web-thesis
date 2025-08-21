@@ -39,7 +39,9 @@ function ProductPage() {
       <div className="flex">
         <div className="mx-auto h-screen flex-1 overflow-y-auto">
           <div className="flex flex-col items-center justify-center py-8">
-            <h1 className="font-heading text-4xl">Our Sauce Collection</h1>
+            <h1 className="font-heading text-content text-4xl">
+              Our Flavorful Lineup
+            </h1>
             <p className="text-lighter text-lg">
               From mild to wild - find your perfect heat level
             </p>

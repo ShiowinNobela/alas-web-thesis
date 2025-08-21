@@ -37,7 +37,7 @@ function ProductCard({ product }) {
 
         {/* Product Info - Left Aligned */}
         <div className="text-content flex-1 text-left">
-          <h3 className="font-heading mb-1 line-clamp-1 text-lg">
+          <h3 className="mb-1 line-clamp-1 font-semibold tracking-wide">
             {product.name}
           </h3>
           <p className="text-lighter mb-2 line-clamp-2 min-h-[2rem] text-sm">

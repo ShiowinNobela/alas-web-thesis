@@ -107,15 +107,15 @@ function UserViewOrderPage() {
         <div className="mx-auto max-w-6xl p-4 sm:py-8 md:px-6 lg:px-8">
           {/* Header Section */}
           <div className="mb-6 text-center sm:mb-8">
-            <div className="mb-2 flex items-center justify-center">
+            <div className="mb-2 flex flex-col items-start justify-center">
               <h1 className="text-content font-heading text-2xl font-semibold sm:text-3xl">
                 Your Orders
               </h1>
+              <p className="text-lighter text-base sm:text-lg">
+                Track your recent orders and stay updated on their status in one
+                place.
+              </p>
             </div>
-            <p className="text-lighter mx-auto max-w-2xl text-base sm:text-lg">
-              Track your recent orders and stay updated on their status in one
-              place.
-            </p>
           </div>
 
           {/* Main Content Layout */}
@@ -128,7 +128,7 @@ function UserViewOrderPage() {
             {/* Orders Table - Full width on mobile */}
             <div className="min-w-0 flex-1">
               {isLoading ? (
-                <div className="bg-background flex h-64 items-center justify-center rounded-lg border text-gray-500 sm:h-96">
+                <div className="bg-background text-lighter flex h-64 items-center justify-center rounded-lg border sm:h-96">
                   <div className="text-center">
                     <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2"></div>
                     <p className="text-sm sm:text-base">Loading orders...</p>

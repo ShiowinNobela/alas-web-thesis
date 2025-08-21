@@ -139,7 +139,7 @@ export default function UserViewOrderDetails() {
                     {/* CONTENT COLUMN */}
                     <div className="flex flex-1 flex-col justify-between">
                       <div>
-                        <h3 className="font-heading text-base md:text-lg">
+                        <h3 className="text-base md:text-lg">
                           {item.product_name}
                         </h3>
                         <p className="text-muted-foreground text-sm">

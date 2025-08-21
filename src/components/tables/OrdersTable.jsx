@@ -61,7 +61,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
   return (
     <div className="space-y-3">
       <div className="flex items-center px-2 sm:px-0">
-        <h2 className="font-heading text-content text-lg font-semibold sm:text-xl">
+        <h2 className="text-content font-semibold sm:text-xl">
           {orders.length} {orders.length === 1 ? 'Order' : 'Orders'}
         </h2>
       </div>
@@ -105,7 +105,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
                         <h2 className="text-lighter text-sm sm:text-base">
                           Order ID:{' '}
-                          <span className="text-content font-heading font-semibold tracking-tighter">
+                          <span className="text-content font-semibold tracking-tighter">
                             #{order?.id || 'N/A'}
                           </span>
                         </h2>
@@ -116,7 +116,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                           {order?.status || 'Unknown'}
                         </motion.span>
                       </div>
-                      <h3 className="mt-1 text-xs text-gray-600 sm:text-sm">
+                      <h3 className="text-lighter mt-1 text-xs sm:text-sm">
                         Ordered on{' '}
                         {order?.order_date
                           ? dayjs(order.order_date).format('D MMMM YYYY')

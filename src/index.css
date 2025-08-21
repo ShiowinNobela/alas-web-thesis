@@ -31,7 +31,7 @@
 @theme {
   --font-*: initial;
   --font-sans: Rubik, serif;
-  /* --font-heading: Bebas, serif; */
+  --font-heading: Bebas, serif;
   /* Trying this no brand font style */
   --font-logo: Jost, serif;
   --color-brand: #ef2917;
