@@ -40,13 +40,13 @@ function Navbar() {
               alt="Logo"
             />
           </Link>
-          <h1 className="font-logo hidden text-xl text-black lg:block">
+          <h1 className="font-heading hidden text-xl text-black lg:block">
             Alas Delis and Spices
           </h1>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="font-heading hidden items-center gap-8 text-lg text-black md:flex">
+        <nav className="hidden items-center gap-8 font-medium text-black md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.to}
@@ -100,7 +100,7 @@ function Navbar() {
             </Link>
           </div>
 
-          <nav className="font-heading flex flex-1 flex-col gap-1 px-5 py-4 text-lg uppercase">
+          <nav className="flex flex-1 flex-col gap-1 px-5 py-4 text-lg uppercase">
             {navLinks.map((link) => (
               <Link
                 key={link.to}
