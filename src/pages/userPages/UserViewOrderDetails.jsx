@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import {
@@ -87,21 +87,23 @@ export default function UserViewOrderDetails() {
     }
   }
 
+  console.log(id)
+
   return (
     <TooltipProvider>
-      <section className="bg-neutral h-full py-8 pb-40">
-        <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+      <section className="h-full py-8 pb-40 bg-neutral">
+        <div className="max-w-6xl px-4 mx-auto md:px-6 lg:px-8">
           <BackButton />
 
           <div className="flex flex-col items-start space-y-2">
-            <h1 className="text-content font-heading text-xl font-semibold md:text-3xl">
+            <h1 className="text-xl font-semibold text-content font-heading md:text-3xl">
               Your Order Details
             </h1>
-            <div className="flex w-full flex-col space-y-2 md:flex-row md:justify-between md:space-y-0">
+            <div className="flex flex-col w-full space-y-2 md:flex-row md:justify-between md:space-y-0">
               <div className="flex flex-col space-y-1 md:flex-row md:items-center md:space-y-0 md:space-x-2">
-                <p className="text-lighter text-sm md:text-base">
+                <p className="text-sm text-lighter md:text-base">
                   Order Number
-                  <span className="text-content tracking-tighter">
+                  <span className="tracking-tighter text-content">
                     {' '}
                     #{order?.id || 'N/A'}{' '}
                   </span>
@@ -119,9 +121,9 @@ export default function UserViewOrderDetails() {
             </div>
           </div>
 
-          <div className="mt-5 flex w-full flex-col items-stretch justify-center space-y-4 xl:flex-row xl:space-y-0 xl:space-x-4">
-            <div className="flex w-full flex-col items-start justify-start space-y-4">
-              <Card className="w-full flex-col space-y-4">
+          <div className="flex flex-col items-stretch justify-center w-full mt-5 space-y-4 xl:flex-row xl:space-y-0 xl:space-x-4">
+            <div className="flex flex-col items-start justify-start w-full space-y-4">
+              <Card className="flex-col w-full space-y-4">
                 {order.items?.map((item) => (
                   <CardContent
                     key={item.item_id}
@@ -132,22 +134,22 @@ export default function UserViewOrderDetails() {
                       <img
                         src={item.image}
                         alt={item.product_name}
-                        className="w-full object-cover"
+                        className="object-cover w-full"
                       />
                     </div>
 
                     {/* CONTENT COLUMN */}
-                    <div className="flex flex-1 flex-col justify-between">
+                    <div className="flex flex-col justify-between flex-1">
                       <div>
                         <h3 className="text-base md:text-lg">
                           {item.product_name}
                         </h3>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-sm text-muted-foreground">
                           {item.category}
                         </p>
                       </div>
 
-                      <div className="mt-2 flex flex-col space-y-1 text-sm md:flex-row md:space-y-0 md:space-x-8 md:divide-x md:divide-gray-200">
+                      <div className="flex flex-col mt-2 space-y-1 text-sm md:flex-row md:space-y-0 md:space-x-8 md:divide-x md:divide-gray-200">
                         <p>
                           Quantity{' '}
                           <span className="font-semibold">{item.quantity}</span>
@@ -164,18 +166,21 @@ export default function UserViewOrderDetails() {
                         </p>
                       </div>
 
-                      <div className="mt-2 flex space-x-2">
+                      <div className="flex mt-2 space-x-2">
                         <Button size="sm">Order Again</Button>
-                        <Button size="sm" variant="outline">
-                          Review Product
-                        </Button>
+                        <Link to={`/GiveReview/${order?.id}?product_id=${item.product_id}`}
+                        >
+                          <Button size="sm" variant="outline">
+                            Review Product
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </CardContent>
                 ))}
               </Card>
 
-              <div className="flex w-full flex-col items-stretch justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+              <div className="flex flex-col items-stretch justify-center w-full space-y-4 md:flex-row md:space-y-0 md:space-x-4">
                 <Card className="w-full">
                   <CardHeader>
                     <CardTitle> Order Summary</CardTitle>
@@ -200,13 +205,13 @@ export default function UserViewOrderDetails() {
                   </CardContent>
                   <CardFooter className="flex justify-between pt-2">
                     <span className="font-semibold">Total</span>
-                    <span className="text-primary font-semibold">
+                    <span className="font-semibold text-primary">
                       {order?.total_amount || '0.00'}
                     </span>
                   </CardFooter>
                 </Card>
 
-                <Card className="w-full flex-col space-y-4">
+                <Card className="flex-col w-full space-y-4">
                   <CardHeader>
                     <CardTitle>Courier</CardTitle>
                   </CardHeader>
@@ -215,11 +220,11 @@ export default function UserViewOrderDetails() {
                       <img
                         src="https://i.ibb.co/L8KSdNQ/image-3.png"
                         alt="Courier Logo"
-                        className="h-8 w-8"
+                        className="w-8 h-8"
                       />
                       <div className="flex flex-col">
                         <span className="text-base">Free Delivery</span>
-                        <span className="text-muted-foreground text-sm">
+                        <span className="text-sm text-muted-foreground">
                           Delivery within 24 Hours
                         </span>
                       </div>
@@ -235,8 +240,8 @@ export default function UserViewOrderDetails() {
                 <AdminNotes order={order} />
               </div>
             </div>
-            <div className="flex w-full flex-col items-center gap-4 md:items-start xl:w-5/12">
-              <Card className="w-full flex-col space-y-2">
+            <div className="flex flex-col items-center w-full gap-4 md:items-start xl:w-5/12">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle>Customer</CardTitle>
                 </CardHeader>
@@ -256,7 +261,7 @@ export default function UserViewOrderDetails() {
                 </CardContent>
               </Card>
 
-              <Card className="w-full flex-col space-y-2">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle>Payment Information</CardTitle>
                 </CardHeader>
@@ -288,23 +293,23 @@ export default function UserViewOrderDetails() {
                 </CardContent>
               </Card>
 
-              <Card className="w-full flex-col space-y-2">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle>Notes</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {order.notes?.trim() ? order.notes : 'No notes'}
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="w-full flex-col space-y-2">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle>More Information</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {order.notes?.trim() ? order.notes : 'No notes'}
                   </p>
                 </CardContent>
