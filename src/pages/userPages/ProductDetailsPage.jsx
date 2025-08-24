@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
@@ -6,19 +5,42 @@ import { Flame, ShoppingCart, Star } from 'lucide-react';
 import BackButton from '@/components/bigComponents/BackButton';
 import AddToCartModal from '@/components/modals/AddToCartModal';
 import { useAddToCart } from '@/hooks/useAddToCart';
+import { useQuery } from '@tanstack/react-query';
+import NotFoundPage from './NotFoundPage';
 
 function ProductDetailsPage() {
   const { id } = useParams();
-  const [product, setProduct] = useState({});
   const { open, setOpen, quantity, setQuantity, handleAdd, handleAddToCart } =
     useAddToCart();
 
-  useEffect(() => {
-    axios
-      .get('/api/products/' + id)
-      .then((res) => setProduct(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['product', id],
+    queryFn: async () => {
+      const res = await axios.get(`/api/products/${id}`);
+      return res.data;
+    },
+    retry: false,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
+  if (isError) {
+    if (error.response?.status === 404) {
+      return <NotFoundPage />;
+    }
+    return <div>Error loading product</div>;
+  }
 
   return (
     <div className="bg-neutral min-h-screen">

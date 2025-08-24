@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import useCartStore from '@/stores/cartStore';
 
 function AddToCartModal({
   open,
@@ -17,6 +18,29 @@ function AddToCartModal({
   setQuantity,
   onConfirm,
 }) {
+  const { items } = useCartStore();
+
+  const existingItem = items.find((i) => i.product_id === product.id);
+  const alreadyInCart = existingItem ? existingItem.quantity : 0;
+
+  const maxAddable = Math.max(product.stock_quantity - alreadyInCart, 0);
+
+  const handleQuantityChange = (e) => {
+    const { value } = e.target;
+    if (value === '') {
+      setQuantity('');
+    } else {
+      const numValue = parseInt(value, 10) || 1;
+      setQuantity(Math.min(numValue, maxAddable));
+    }
+  };
+
+  const handleBlur = () => {
+    if (!quantity || quantity < 1) {
+      setQuantity(1);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
@@ -51,38 +75,39 @@ function AddToCartModal({
           {/* Quantity Input */}
           <div className="space-y-2">
             <label htmlFor="quantity" className="block text-sm font-medium">
-              Quantity
+              Quantity to Add
             </label>
             <div className="flex items-center gap-4">
               <Input
                 id="quantity"
                 type="number"
                 min="1"
-                max={product.stock_quantity}
+                max={maxAddable}
                 value={quantity}
-                onChange={(e) => {
-                  const { value } = e.target;
-                  if (value === '') {
-                    setQuantity('');
-                  } else {
-                    const numValue = parseInt(value) || 1;
-                    setQuantity(Math.min(numValue, product.stock_quantity));
-                  }
-                }}
-                onBlur={() => {
-                  if (!quantity || quantity < 1) {
-                    setQuantity(1);
-                  }
-                }}
+                onChange={handleQuantityChange}
+                onBlur={handleBlur}
                 className="w-20"
               />
               <div className="flex-1 text-right">
                 <p className="text-muted-foreground text-sm">
-                  Subtotal:{' '}
-                  <span className="text-foreground font-medium">
-                    ₱{(parseFloat(product.price) * (quantity || 0)).toFixed(2)}
-                  </span>
+                  {product.stock_quantity > 0
+                    ? `${product.stock_quantity} available`
+                    : 'Out of stock'}
                 </p>
+
+                {alreadyInCart > 0 && (
+                  <p className="text-primary text-sm">
+                    You already have {alreadyInCart} in your cart
+                  </p>
+                )}
+
+                {alreadyInCart > 0 && (
+                  <p className="text-muted-foreground text-sm">
+                    {maxAddable > 0
+                      ? `${maxAddable} more can be added`
+                      : 'No more can be added'}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -90,7 +115,7 @@ function AddToCartModal({
           {/* Add to Cart Button */}
           <Button
             onClick={onConfirm}
-            disabled={quantity < 1 || quantity > product.stock_quantity}
+            disabled={quantity < 1 || quantity > maxAddable}
             className="mt-4 w-full"
             size="lg"
           >

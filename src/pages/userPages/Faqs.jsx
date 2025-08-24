@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { questions } from '../../questions.js';
+import { questions } from '@/utils/questions';
 import { Minus, Plus } from 'lucide-react';
 
 function Faqs() {
