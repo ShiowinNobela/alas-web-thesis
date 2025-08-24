@@ -37,6 +37,7 @@ import AdminLayout from './pages/layouts/AdminLayout';
 import Notifs from './pages/adminPages/Notifs.jsx';
 import ScrollToTop from './utils/ScrollToTop';
 import { useTheme } from './provider/ThemeProvider';
+import NotFoundPage from './pages/userPages/NotFoundPage';
 
 function App() {
   const { isDarkMode } = useTheme();
@@ -46,6 +47,7 @@ function App() {
       <ThemeConfig dark={isDarkMode} />
       <Routes>
         <Route element={<MainLayout />}>
+          <Route path="*" element={<NotFoundPage />} />
           <Route path="/LoginPage" element={<LoginPage />}></Route>
           <Route path="/RegPage" element={<RegPage />}></Route>
           <Route path="/" element={<LandPage />}></Route>
