@@ -90,18 +90,19 @@ function AccountManagement() {
         );
 
   return (
-    <div className="flex flex-col overflow-x-auto p-4 bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 h-full">
-      <main className="mx-auto w-full overflow-x-auto rounded-xl border bg-white shadow ring-1">
-        <div className="flex flex-row justify-between px-4 py-4">
+    <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
+      <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1 dark:text-white">
+        <div className="flex flex-row justify-between p-5">
           <ButtonGroupFilter
             options={roleTabs}
             value={statusFilter}
             onChange={setStatusFilter}
-            activeButtonClassName="bg-slate-500 text-white font-medium"
+            color="alternative"
+            className="border border-black dark:border-white"
           />
 
           <Link to="/Admin/AdminAddUser">
-            <Button outline color="gray">
+            <Button color="gray" className="gap-2 dark:text-white">
               <UserPlus className="h-5 w-5" />
               Add User
             </Button>
@@ -110,15 +111,15 @@ function AccountManagement() {
 
         {/* Table */}
         {isLoading ? (
-          <div className="text-lighter p-6 text-center">Loading users...</div>
+          <div className="p-6 text-center">Loading users...</div>
         ) : isError ? (
           <div className="p-6 text-center text-red-600">
             Failed to load users.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <Table hoverable>
-              <TableHead className="text-content border-y-2 uppercase">
+            <Table hoverable striped>
+              <TableHead className="uppercase">
                 <TableRow>
                   <TableHeadCell>Username</TableHeadCell>
                   <TableHeadCell>Role</TableHeadCell>
@@ -132,30 +133,28 @@ function AccountManagement() {
                   <TableHeadCell>Actions</TableHeadCell>
                 </TableRow>
               </TableHead>
-              <TableBody className="divide-y bg-white">
+              <TableBody className="text-content">
                 {filteredUsers.map((user) => (
                   <TableRow
                     key={user.id}
                     className="transition duration-150 ease-in-out hover:bg-gray-50"
                   >
-                    <TableCell className="text-content text-sm">
-                      <div className="font-medium text-teal-600">
+                    <TableCell className="text-sm">
+                      <div className="font-medium text-teal-600 dark:text-teal-400">
                         {user.username ?? '–'}
                       </div>
-                      <div className="text-lighter text-xs">
-                        {user.email ?? '–'}
-                      </div>
+                      <div className="text-xs">{user.email ?? '–'}</div>
                     </TableCell>
 
-                    <TableCell className="text-content">
+                    <TableCell className="">
                       <RoleBadge role={user.role_name} />
                     </TableCell>
 
-                    <TableCell className="text-lighter hidden text-xs lg:table-cell">
+                    <TableCell className="hidden text-xs lg:table-cell">
                       {user.address ?? '–'}
                     </TableCell>
 
-                    <TableCell className="text-lighter hidden text-sm lg:table-cell">
+                    <TableCell className="hidden text-sm lg:table-cell">
                       {user.contact_number ?? '–'}
                     </TableCell>
 
@@ -168,16 +167,7 @@ function AccountManagement() {
                       </Badge>
                     </TableCell>
 
-                    <TableCell className="flex items-center gap-2 py-2">
-                      <Button
-                        outline
-                        color="gray"
-                        onClick={() =>
-                          navigate(`/Admin/AdminUserEdit/${user.id}`)
-                        }
-                      >
-                        <Edit className="h-5 w-5" />
-                      </Button>
+                    <TableCell className="flex items-center justify-end gap-2 py-4">
                       <ToggleSwitch
                         color={user.is_active ? 'success' : 'failure'}
                         checked={user.is_active}
@@ -193,6 +183,14 @@ function AccountManagement() {
                           toggleUserStatus.isLoading
                         }
                       />
+                      <Button
+                        color="gray"
+                        onClick={() =>
+                          navigate(`/Admin/AdminUserEdit/${user.id}`)
+                        }
+                      >
+                        <Edit className="size-4" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -90,7 +90,7 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
           onKeyDown={(e) => {
             if (e.key === 'Enter') onSearch();
           }}
-          color="white"
+          color="gray"
         />
       </div>
 
@@ -102,7 +102,7 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
             value={startDate ? new Date(startDate) : null}
             onChange={handleStartDateChange}
             maxDate={new Date()}
-            color="white"
+            color="gray"
           />
         </div>
         <h3>TO</h3>
@@ -114,13 +114,13 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
             onChange={handleEndDateChange}
             minDate={startDate ? new Date(startDate) : null}
             maxDate={new Date()}
-            color="white"
+            color="gray"
           />
         </div>
 
         <StatusFilterDropdown selected={status} onChange={handleStatusChange} />
 
-        <Button onClick={handleResetFilters} color="gray">
+        <Button color="gray" onClick={handleResetFilters}>
           Reset All
         </Button>
       </div>

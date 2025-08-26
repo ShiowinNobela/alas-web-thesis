@@ -32,17 +32,23 @@
   --font-*: initial;
   --font-sans: Rubik, serif;
   --font-heading: Bebas, serif;
-  /* Trying this no brand font style */
   --font-logo: Jost, serif;
   --color-brand: #ef2917;
   --color-lighter: #888888;
-  --color-primary-700: #2c2c54;
-  --color-primary-500: #ef4444;
   --color-content: #251605;
   --color-neutral: #fffcf9;
   --color-red: #ef4444;
   --color-info: #2364aa;
   --color-admin: #f3ede8;
+}
+
+@theme {
+  --color-primary-500: oklch(
+    0.35 0 0
+  ); /* dark gray (used for focus borders, not too harsh) */
+  --color-primary-600: oklch(0.3 0 0); /* darker */
+  --color-primary-700: oklch(0.25 0 0); /* near black */
+  --color-primary-800: oklch(0.2 0 0); /* almost pure black */
 }
 
 /* Theme Variables */
@@ -106,12 +112,10 @@
   --foreground: oklch(0.95 0 0);
   --card: oklch(0.3 0.03 270);
   --card-foreground: oklch(0.93 0 0);
-  --color-primary-500: #ff7b7b;
-  --color-primary-700: #4a4a8a;
   --color-content: oklch(0.88 0.03 70);
   --color-neutral: oklch(0.25 0.01 270);
   --border: oklch(0.3 0 0);
-  --border: oklch(0.45 0 0); /* soft light gray */
+  --border: oklch(0.45 0 0);
   --ring: oklch(0.7 0.25 30 / 0.4);
   --color-info: #64b5f6;
   --color-red: #ff7b7b;
@@ -129,7 +133,7 @@
   --chart-3: oklch(0.68 0.2 263);
   --chart-4: oklch(0.5 0.22 264);
   --chart-5: oklch(0.4 0.18 266);
-  --color-admin: oklch(0.25 0.05 50);
+  --color-admin: oklch(0.2 0.02 240);
   --muted-foreground: oklch(0.75 0 0);
 }
 

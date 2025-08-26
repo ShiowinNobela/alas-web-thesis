@@ -6,11 +6,10 @@ const ButtonGroupFilter = ({
   value,
   onChange,
   className = '',
-  buttonClassName = '',
-  activeButtonClassName = 'bg-stone-500 text-blue-800',
+  activeButtonClassName = ' text-primary dark:text-primary ',
 }) => {
   return (
-    <ButtonGroup outline className={className}>
+    <ButtonGroup className={className}>
       {options.map((option) => {
         const isActive = value === option.value;
         const Icon = option.icon;
@@ -18,10 +17,8 @@ const ButtonGroupFilter = ({
           <Button
             key={option.value}
             onClick={() => onChange(option.value)}
-            color="dark"
-            className={`capitalize ${buttonClassName} ${
-              isActive ? activeButtonClassName : ''
-            }`}
+            color="alternative"
+            className={`dark:hover:text-primary hover:text-primary focus:ring-0 dark:text-white ${isActive ? activeButtonClassName : ''}`}
           >
             {option.icon && <Icon className="me-2 h-4 w-4" />}
             {option.label}
