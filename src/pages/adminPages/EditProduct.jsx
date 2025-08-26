@@ -1,16 +1,12 @@
-// import Sidebar from "../../components/sidebar.jsx";
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
-// import { Category } from "../constants.js";
 import { useNavigate, useParams } from 'react-router-dom';
-import AdminProfile from '../../components/Chinges/AdminProfile.jsx';
-import BackButton from '../../components/Chinges/BackButton.jsx';
 import BaseInput from '../../components/Chinges/baseInput.jsx';
 import Description from '../../components/Chinges/Description.jsx';
 import DropDown from '../../components/Chinges/DropDown.jsx';
-import Upload from '../../components/Chinges/Upload.jsx';
-import UploadButton from '../../components/Chinges/UploadButton.jsx';
+import Upload from '../../components/bigComponents/Upload.jsx';
+import { Button } from 'flowbite-react';
 
 function AddProduct() {
   const { id } = useParams();
@@ -34,19 +30,6 @@ function AddProduct() {
       })
       .catch((err) => console.log(err));
   }, []);
-
-  // const handleUpdate = (event) => {
-  //   event.preventDefault();
-  //   axios.put('/api/products/' + id, values)
-  //   .then(res => {
-  //     setValues({
-  //       is_active: Boolean(res.data.is_active)
-  //     })
-  //     console.log(res);
-  //     Navigate('/Admin/ProductManagement')
-  //   })
-  //   .catch(err =>console.log(err))
-  // }
 
   const handleUpdate = (event) => {
     event.preventDefault();
@@ -193,7 +176,9 @@ function AddProduct() {
 
           {/* Save Button Centered */}
           <div className="mt-10 flex justify-center">
-            <UploadButton onClick={handleUpdate}>Save</UploadButton>
+            <Button color="gray" onClick={handleUpdate}>
+              Upload
+            </Button>
           </div>
         </section>
 

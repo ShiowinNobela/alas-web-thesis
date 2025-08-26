@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useLocation, Link } from 'react-router-dom';
-import Logo from '@/components/images/logo.png';
+import Logo from '/logo-alas1.jpg';
 import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '../filters/ThemeToggle';
@@ -30,23 +30,19 @@ function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white drop-shadow-md">
+    <header className="bg-card sticky top-0 z-50 w-full drop-shadow-md">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-2">
-        <div className="flex flex-row items-center justify-center">
+        <div className="flex flex-row items-center justify-center gap-4">
           <Link to="/" onClick={closeMobileMenu}>
-            <img
-              className="h-15 w-auto cursor-pointer transition-all duration-200"
-              src={Logo}
-              alt="Logo"
-            />
+            <img className="h-14 w-auto cursor-pointer" src={Logo} alt="Logo" />
           </Link>
-          <h1 className="font-heading hidden text-xl text-black lg:block">
+          <h1 className="font-heading text-content hidden text-xl lg:block">
             Alas Delis and Spices
           </h1>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 font-medium text-black md:flex">
+        <nav className="text-content hidden items-center gap-8 font-medium md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.to}

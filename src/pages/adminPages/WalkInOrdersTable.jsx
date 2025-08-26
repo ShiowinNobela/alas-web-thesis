@@ -67,7 +67,7 @@ function WalkInOrders() {
 
   return (
     <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
-      <div className="mb-4 grid grid-cols-1 gap-4 rounded-xl bg-white p-4 ring-1 md:grid-cols-4">
+      <div className="bg-card mb-4 grid grid-cols-1 gap-4 rounded-xl p-4 ring-1 md:grid-cols-4">
         <Card className="shadow-sm ring-1">
           <h2 className="text-xl font-semibold">Walk-In Orders</h2>
           <Button onClick={() => navigate('/Admin/WalkInOrdering')} size="sm">
@@ -126,34 +126,29 @@ function WalkInOrders() {
                 <TableHeadCell>Actions</TableHeadCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody className="text-content">
               {orders.map((order) => (
                 <TableRow
                   key={order.id}
                   className="cursor-pointer hover:bg-gray-50"
                   onClick={() => openEditModal(order)}
                 >
-                  <TableCell className="text-center">{order.id}</TableCell>
-                  <TableCell className="text-center">
-                    {order.customer_name}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {order.customer_email}
-                  </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-xs">{order.id}</TableCell>
+                  <TableCell>{order.customer_name}</TableCell>
+                  <TableCell>{order.customer_email}</TableCell>
+                  <TableCell>
                     {new Date(order.sale_date).toLocaleDateString()}
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell>
                     ₱ {parseFloat(order.total_amount).toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell>
                     ₱ {parseFloat(order.discount_amount).toLocaleString()}
                   </TableCell>
-                  <TableCell className="text-center">{order.notes}</TableCell>
+                  <TableCell>{order.notes}</TableCell>
                   <TableCell className="flex justify-center gap-2">
                     <Button
-                      size="xs"
-                      outline
+                      color="gray"
                       onClick={(e) => {
                         e.stopPropagation();
                         openEditModal(order);

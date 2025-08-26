@@ -33,6 +33,7 @@
   --font-sans: Rubik, serif;
   --font-heading: Bebas, serif;
   --font-logo: Jost, serif;
+
   --color-brand: #ef2917;
   --color-lighter: #888888;
   --color-content: #251605;
@@ -40,15 +41,14 @@
   --color-red: #ef4444;
   --color-info: #2364aa;
   --color-admin: #f3ede8;
-}
 
-@theme {
-  --color-primary-500: oklch(
-    0.35 0 0
-  ); /* dark gray (used for focus borders, not too harsh) */
-  --color-primary-600: oklch(0.3 0 0); /* darker */
-  --color-primary-700: oklch(0.25 0 0); /* near black */
-  --color-primary-800: oklch(0.2 0 0); /* almost pure black */
+  /* Flowbite Color Scheme
+  Adjust this to adjust flowbite color scheme, mostly for buttons
+  Remove color prop in button to use this colors instead */
+  --color-primary-500: oklch(0.35 0 0);
+  --color-primary-600: oklch(0.3 0 0);
+  --color-primary-700: oklch(0.25 0 0);
+  --color-primary-800: oklch(0.2 0 0);
 }
 
 /* Theme Variables */
@@ -114,6 +114,8 @@
   --card-foreground: oklch(0.93 0 0);
   --color-content: oklch(0.88 0.03 70);
   --color-neutral: oklch(0.25 0.01 270);
+  --color-lighter: oklch(0.7 0.02 270);
+  --color-layout: oklch(0.2 0.02 270);
   --border: oklch(0.3 0 0);
   --border: oklch(0.45 0 0);
   --ring: oklch(0.7 0.25 30 / 0.4);

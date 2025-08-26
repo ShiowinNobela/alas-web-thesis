@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import AdminProfile from '../../components/Chinges/AdminProfile.jsx';
-import BackButton from '../../components/Chinges/BackButton.jsx';
 import BaseInput from '../../components/Chinges/BaseInput.jsx';
 import Description from '../../components/Chinges/Description.jsx';
 import DropDown from '../../components/Chinges/DropDown.jsx';
-import Upload from '../../components/Chinges/Upload.jsx';
-import UploadButton from '../../components/Chinges/UploadButton.jsx';
+import Upload from '../../components/bigComponents/Upload.jsx';
+import BackButton from '@/components/bigComponents/BackButton.jsx';
+import { Button } from 'flowbite-react';
 
 function AddProduct() {
   const [values, setValues] = useState({
@@ -118,7 +117,9 @@ function AddProduct() {
                     }
                   />
                   <div className="mt-8">
-                    <UploadButton onClick={handleSubmit} />
+                    <Button color="gray" onClick={handleSubmit}>
+                      Upload
+                    </Button>
                   </div>
                 </div>
               </div>
