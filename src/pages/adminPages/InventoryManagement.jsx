@@ -110,7 +110,7 @@ function InventoryManagement() {
 
   return (
     <div className="bg-admin flex flex-col overflow-x-auto p-4">
-      <main className="bg-admin mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1">
+      <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1">
         {/* Summary Cards */}
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
           <SummaryCard
@@ -155,8 +155,8 @@ function InventoryManagement() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <Table hoverable>
-              <TableHead className="text-content border-y-2 uppercase">
+            <Table hoverable striped>
+              <TableHead className="uppercase">
                 <TableRow>
                   <TableHeadCell>ID</TableHeadCell>
                   <TableHeadCell>Name</TableHeadCell>
@@ -168,7 +168,7 @@ function InventoryManagement() {
                   <TableHeadCell>Actions</TableHeadCell>
                 </TableRow>
               </TableHead>
-              <TableBody className="text-content divide-y bg-white dark:bg-black">
+              <TableBody className="text-content">
                 {products.map((product) => (
                   <TableRow
                     key={product.id}
@@ -201,7 +201,7 @@ function InventoryManagement() {
                         {product.is_active ? 'Active' : 'Inactive'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-gray-500">
+                    <TableCell className="text-sm">
                       {new Date(product.updated_at).toLocaleString()}
                     </TableCell>
                     <TableCell className="flex items-center gap-2">

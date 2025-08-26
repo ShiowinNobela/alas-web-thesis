@@ -90,8 +90,8 @@ export default function AdminOrdersTable({
 
   return (
     <div className="relative overflow-x-auto shadow-md ring-1 sm:rounded-lg">
-      <Table hoverable className="text-content border-y-2">
-        <TableHead className="text-content border-y-2">
+      <Table hoverable striped>
+        <TableHead>
           <TableHeadCell>Order Info</TableHeadCell>
           <TableHeadCell>Items</TableHeadCell>
           <TableHeadCell>
@@ -99,7 +99,7 @@ export default function AdminOrdersTable({
               className="flex cursor-pointer items-center hover:underline"
               onClick={() => handleSort('date')}
             >
-              Date
+              DATE
               <svg
                 className="ms-1.5 h-3 w-3"
                 aria-hidden="true"
@@ -120,7 +120,7 @@ export default function AdminOrdersTable({
               className="flex cursor-pointer items-center hover:underline"
               onClick={() => handleSort('total')}
             >
-              Total
+              TOTAL
               <svg
                 className="ms-1.5 h-3 w-3"
                 aria-hidden="true"
@@ -149,7 +149,7 @@ export default function AdminOrdersTable({
           <TableHeadCell></TableHeadCell>
         </TableHead>
 
-        <TableBody className="divide-y bg-white">
+        <TableBody className="text-content">
           {isLoading ? (
             <TableRow>
               <TableCell colSpan={9} className="px-2 py-8 text-center">
@@ -174,7 +174,7 @@ export default function AdminOrdersTable({
                     <div className="flex items-center">
                       <div>
                         <p className="font-primary text-sm">{order.username}</p>
-                        <p className="text-xs text-gray-500">{order.email}</p>
+                        <p className="text-lighter text-xs">{order.email}</p>
                         <Badge color="indigo" className="mt-1 w-fit">
                           #{order.id}
                         </Badge>
@@ -194,7 +194,7 @@ export default function AdminOrdersTable({
                         </div>
                       ))}
                       {order.items.length > 3 && (
-                        <div className="text-xs whitespace-nowrap text-gray-500">
+                        <div className="text-lighter text-xs whitespace-nowrap">
                           +{order.items.length - 2} more items
                         </div>
                       )}
@@ -202,10 +202,10 @@ export default function AdminOrdersTable({
                   </TableCell>
 
                   <TableCell className="min-w-[140px]">
-                    <div className="text-sm font-medium text-gray-800">
+                    <div className="text-sm font-medium">
                       {formattedDate.date}
                     </div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-lighter text-xs">
                       {formattedDate.time}
                     </div>
                   </TableCell>

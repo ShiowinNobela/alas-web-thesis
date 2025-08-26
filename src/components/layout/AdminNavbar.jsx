@@ -54,9 +54,9 @@ function AdminNavbar() {
   const currentPageName = getCurrentPageName();
 
   return (
-    <nav className="flex h-14 items-center justify-between border-b border-black bg-white px-4 dark:bg-black">
+    <nav className="bg-card border-content flex h-14 items-center justify-between border-b px-4">
       <div className="flex items-center gap-4">
-        <h1 className="text-content text-xl font-bold">{currentPageName}</h1>
+        <h1 className="text-xl font-bold">{currentPageName}</h1>
       </div>
 
       <div className="flex items-center gap-4">
@@ -107,20 +107,20 @@ function AdminNavbar() {
           <DropdownItem>
             <div>
               <p className="text-sm font-medium">New user registered</p>
-              <p className="text-xs text-gray-500">john.doe@example.com</p>
-              <p className="mt-1 text-xs text-gray-400">2 minutes ago</p>
+              <p className="text-lighter text-xs">john.doe@example.com</p>
+              <p className="text-lighter mt-1 text-xs">2 minutes ago</p>
             </div>
           </DropdownItem>
           <DropdownItem>
             <div>
               <p className="text-sm font-medium">Server maintenance</p>
-              <p className="text-xs text-gray-500">2:00 AM - 4:00 AM</p>
-              <p className="mt-1 text-xs text-gray-400">1 hour ago</p>
+              <p className="text-lighter text-xs">2:00 AM - 4:00 AM</p>
+              <p className="text-lighter mt-1 text-xs">1 hour ago</p>
             </div>
           </DropdownItem>
           <DropdownDivider />
           <DropdownItem>
-            <div className="text-center text-sm text-gray-500">View all</div>
+            <div className="text-lighter text-center text-sm">View all</div>
           </DropdownItem>
         </Dropdown>
 
@@ -139,7 +139,7 @@ function AdminNavbar() {
         >
           <DropdownHeader>
             <span className="block text-sm font-medium">{user.username}</span>
-            <span className="block truncate text-sm text-gray-500">
+            <span className="text-lighter block truncate text-sm">
               {user.email}
             </span>
           </DropdownHeader>

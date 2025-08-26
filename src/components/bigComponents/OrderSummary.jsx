@@ -42,7 +42,7 @@ const OrderSummary = ({
       : 'Last 30 days';
 
   return (
-    <div className="flex w-full flex-row space-x-4 rounded-xl bg-white p-4 ring-1">
+    <div className="bg-card flex w-full flex-row space-x-4 rounded-xl p-4 ring-1">
       <div className="w-1/7 flex-none cursor-pointer rounded-lg p-4 transition">
         <div className="flex items-center justify-between">
           <div>
