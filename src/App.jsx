@@ -1,50 +1,58 @@
 import './App.css';
-import { ThemeConfig } from 'flowbite-react';
+
+// React & Router
+import { Route, Routes } from 'react-router-dom';
+
+// Layouts
+import MainLayout from './pages/layouts/MainLayout.jsx';
+import AdminLayout from './pages/layouts/AdminLayout.jsx';
+
+// Utilities
+import ScrollToTop from './utils/ScrollToTop';
+
+// User Pages
+import LandPage from './pages/home/LandingPage.jsx';
 import ContactUs from './pages/userPages/ContactUs.jsx';
 import LoginPage from './pages/userPages/LoginPage.jsx';
 import RegPage from './pages/userPages/RegistrationPage.jsx';
-import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
 import ProductDetailsPage from './pages/userPages/ProductDetailsPage.jsx';
-import { Route, Routes } from 'react-router-dom';
-import UserSettings from './pages/userPages/UserSettings';
+import UserSettings from './pages/userPages/UserSettings.jsx';
 import GiveReview from './pages/GiveReview.jsx';
 import Faqs from './pages/userPages/Faqs.jsx';
+import UserOrderPage from './pages/userPages/UserOrderPage.jsx';
+import UserOrderPage2 from './pages/userPages/UserOrderPage2.jsx';
+import UserViewOrderDetails from './pages/userPages/UserViewOrderDetails.jsx';
+import AboutUs from './pages/userPages/AboutUs.jsx';
+import NotFoundPage from './pages/userPages/NotFoundPage.jsx';
+
+// Admin Pages
 import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
-import AddProd from './pages/adminPages/AddProduct.jsx';
 import Login from './pages/adminPages/LoginAdmin.jsx';
+import AddProd from './pages/adminPages/AddProduct.jsx';
 import EditProd from './pages/adminPages/EditProduct.jsx';
 import ProdManagement from './pages/adminPages/ProductManagement.jsx';
 import AccManagement from './pages/adminPages/AccountManagement.jsx';
 import Orders from './pages/adminPages/Orders.jsx';
 import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx';
-import MainLayout from './pages/layouts/MainLayout.jsx';
 import AdminAddUser from './pages/adminPages/AdminAddUser.jsx';
-import CheckOutPage from './pages/CheckOutPage.jsx';
 import ViewOrder from './pages/adminPages/ViewOrder.jsx';
 import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx';
-import UserOrderPage from './pages/userPages/UserOrderPage.jsx';
-import UserOrderPage2 from './pages/userPages/UserOrderPage2';
-import UserViewOrderDetails from './pages/userPages/UserViewOrderDetails.jsx';
 import InventoryManagement from './pages/adminPages/InventoryManagement.jsx';
 import WalkInOrdering from './pages/adminPages/WalkInOrdering.jsx';
 import SalesPage from './pages/adminPages/SalesPage.jsx';
 import WalkInOrderTable from './pages/adminPages/WalkInOrdersTable.jsx';
 import AdminOrderDetails from './pages/adminPages/AdminOrderDetails.jsx';
-import AboutUs from './pages/userPages/AboutUs.jsx';
 import NotificationPage from './pages/adminPages/NotificationPage.jsx';
-import AdminLayout from './pages/layouts/AdminLayout';
 import Notifs from './pages/adminPages/Notifs.jsx';
-import ScrollToTop from './utils/ScrollToTop';
-import { useTheme } from './provider/ThemeProvider';
-import NotFoundPage from './pages/userPages/NotFoundPage';
+
+// Checkout
+import CheckOutPage from './pages/CheckOutPage.jsx';
 
 function App() {
-  const { isDarkMode } = useTheme();
   return (
     <>
       <ScrollToTop />
-      <ThemeConfig dark={isDarkMode} />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="*" element={<NotFoundPage />} />

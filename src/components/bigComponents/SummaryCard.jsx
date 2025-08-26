@@ -1,21 +1,26 @@
 import { Card } from 'flowbite-react';
 import {
-  HiSwitchHorizontal,
-  HiShoppingCart,
-  HiCurrencyDollar,
-  HiTag,
-} from 'react-icons/hi';
-import { AlertTriangle, Package } from 'lucide-react';
+  ShoppingCart,
+  DollarSign,
+  Tag,
+  RefreshCw,
+  AlertTriangle,
+  Package,
+  User,
+  Home,
+} from 'lucide-react';
 import PropTypes from 'prop-types';
 
 const iconsMap = {
-  orders: HiShoppingCart,
-  sales: HiCurrencyDollar,
-  discount: HiTag,
-  switch: HiSwitchHorizontal,
+  orders: ShoppingCart,
+  walkInOrders: Home,
+  sales: DollarSign,
+  discount: Tag,
+  switch: RefreshCw,
   lowStock: AlertTriangle,
   packageBlue: Package,
   packageGreen: Package,
+  customer: User,
 };
 
 export default function SummaryCard({
@@ -26,7 +31,7 @@ export default function SummaryCard({
   className = '',
   paddingClass = '',
 }) {
-  const IconComponent = iconsMap[iconKey] || HiSwitchHorizontal;
+  const IconComponent = iconsMap[iconKey] || ShoppingCart;
 
   return (
     <Card

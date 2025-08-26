@@ -1,4 +1,3 @@
-import Chart from 'react-apexcharts';
 import {
   Card,
   Table,
@@ -9,25 +8,11 @@ import {
   TableRow,
   Button,
 } from 'flowbite-react';
+import SummaryCard from '@/components/bigComponents/SummaryCard';
+import RevenueChart from '@/components/charts/RevenueChart';
 
 function AdminDashboard() {
-  const revenueOptions = {
-    chart: {
-      id: 'revenue-chart',
-      toolbar: { show: false },
-    },
-    xaxis: {
-      categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 3,
-    },
-    colors: ['#f59e0b'], // amber-500
-    dataLabels: { enabled: false },
-    grid: { strokeDashArray: 4 },
-  };
-
+  const revenueCategories = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const revenueSeries = [
     {
       name: 'Revenue',
@@ -40,53 +25,47 @@ function AdminDashboard() {
       {/* Performance Indicators */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6">
         {[
-          { title: 'Total Sales', value: '$12,450' },
-          { title: 'Orders', value: '320' },
-          { title: 'Walk In Orders', value: '20' },
-          { title: 'Customers', value: '120' },
-          { title: 'Refunds', value: '5' },
+          {
+            title: 'Total Sales',
+            value: '$12,450',
+            icon: 'sales',
+            color: 'text-green-600',
+          },
+          {
+            title: 'Orders',
+            value: '320',
+            icon: 'orders',
+            color: 'text-blue-600',
+          },
+          {
+            title: 'Walk In Orders',
+            value: '20',
+            icon: 'walkInOrders',
+            color: 'text-yellow-600',
+          },
+          {
+            title: 'Customers',
+            value: '120',
+            icon: 'customer',
+            color: 'text-yellow-400',
+          },
+          {
+            title: 'Refunds',
+            value: '5',
+            icon: 'lowStock',
+            color: 'text-red-600',
+          },
         ].map((item, idx) => (
-          <Card key={idx} className="rounded-2xl shadow-sm ring-1">
-            <h3 className="text-sm font-medium text-gray-500">{item.title}</h3>
-            <p className="text-2xl font-semibold">{item.value}</p>
-          </Card>
+          <SummaryCard
+            key={idx}
+            iconKey={item.icon || 'orders'}
+            iconColor={item.color || 'text-blue-600'}
+            title={item.title}
+            value={item.value}
+          />
         ))}
       </div>
-
-      {/* Revenue Chart with ApexCharts */}
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
-        <h3 className="mb-4 text-lg font-semibold">Revenue (This Week)</h3>
-        <Chart
-          options={{
-            ...revenueOptions,
-            theme: { mode: 'light' },
-            chart: {
-              ...revenueOptions.chart,
-              background: 'transparent',
-            },
-            grid: { borderColor: 'rgba(107, 114, 128, 0.2)' },
-            xaxis: {
-              ...revenueOptions.xaxis,
-              labels: { style: { colors: '#7e8693' } },
-            },
-            yaxis: {
-              labels: {
-                style: { colors: '#7e8693' },
-                formatter: (value) => `₱ ${value}`,
-              },
-            },
-            tooltip: {
-              y: {
-                formatter: (value) => `₱ ${value}`,
-              },
-            },
-          }}
-          series={revenueSeries}
-          type="line"
-          height={180}
-        />
-      </Card>
-
+      <RevenueChart series={revenueSeries} categories={revenueCategories} />
       {/* Low Stock Alert */}
       <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
         <h3 className="mb-4 text-lg font-semibold">Low Stock Alerts</h3>
@@ -99,7 +78,6 @@ function AdminDashboard() {
           ))}
         </ul>
       </Card>
-
       {/* Recent Orders */}
       <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
         <h3 className="mb-4 text-lg font-semibold">Recent Orders</h3>
@@ -141,7 +119,6 @@ function AdminDashboard() {
           </TableBody>
         </Table>
       </Card>
-
       {/* Quick Actions */}
       <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
         <h3 className="mb-4 text-lg font-semibold">Quick Actions</h3>
