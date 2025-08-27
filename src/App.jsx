@@ -18,7 +18,7 @@ import RegPage from './pages/userPages/RegistrationPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
 import ProductDetailsPage from './pages/userPages/ProductDetailsPage.jsx';
 import UserSettings from './pages/userPages/UserSettings.jsx';
-import GiveReview from './pages/GiveReview.jsx';
+import GiveReview from './pages/userPages/GiveReview.jsx';
 import Faqs from './pages/userPages/Faqs.jsx';
 import UserOrderPage from './pages/userPages/UserOrderPage.jsx';
 import UserOrderPage2 from './pages/userPages/UserOrderPage2.jsx';
@@ -47,7 +47,7 @@ import NotificationPage from './pages/adminPages/NotificationPage.jsx';
 import Notifs from './pages/adminPages/Notifs.jsx';
 
 // Checkout
-import CheckOutPage from './pages/CheckOutPage.jsx';
+import CheckOutPage from './pages/userPages/CheckOutPage.jsx';
 
 function App() {
   return (

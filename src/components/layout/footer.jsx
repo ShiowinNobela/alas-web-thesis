@@ -15,9 +15,9 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="border-t border-gray-200 bg-white">
+    <footer className="bg-card border-t border-gray-200">
       {/* Main Footer Content */}
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="text-content mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
           {/* Company Info with Unique Branding */}
           <div className="space-y-6">
@@ -29,7 +29,7 @@ function Footer() {
                 <Flame className="h-4 w-4 text-red-500" />
                 <Flame className="h-4 w-4 text-orange-500" />
                 <Flame className="h-4 w-4 text-yellow-500" />
-                <span className="ml-2 text-xs text-gray-500">Est. 2020</span>
+                <span className="text-lighter ml-2 text-xs">Est. 2020</span>
               </div>
               <p className="text-lighter text-sm leading-relaxed">
                 Handcrafted sauces that bring the heat and flavor to every meal.
@@ -201,7 +201,7 @@ function Footer() {
                   <Twitter className="h-4 w-4" />
                 </Button>
               </div>
-              <p className="mt-2 text-xs text-gray-500">
+              <p className="text-lighter mt-2 text-xs">
                 Share your spicy creations with #SpiceAndFire
               </p>
             </div>
@@ -244,7 +244,7 @@ function Footer() {
       {/* <Separator /> */}
 
       {/* Bottom Footer */}
-      <div className="bg-gray-50">
+      <div className="bg-card">
         <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
             <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-6">
@@ -254,13 +254,13 @@ function Footer() {
               <div className="flex space-x-4">
                 <a
                   href="#"
-                  className="text-xs text-gray-500 transition-colors hover:text-red-600"
+                  className="text-lighter text-xs transition-colors hover:text-red-600"
                 >
                   Privacy
                 </a>
                 <a
                   href="#"
-                  className="text-xs text-gray-500 transition-colors hover:text-red-600"
+                  className="text-lighter text-xs transition-colors hover:text-red-600"
                 >
                   Terms
                 </a>
@@ -268,7 +268,7 @@ function Footer() {
             </div>
 
             {/* Made with Love */}
-            <div className="flex items-center text-xs text-gray-500">
+            <div className="text-lighter flex items-center text-xs">
               <span>Made with</span>
               <Flame className="mx-1 h-3 w-3 text-red-500" />
               <span>in Spice City</span>

@@ -10,7 +10,7 @@ const LandingPage = () => {
     <>
       <HeroSection />
 
-      <section className="border-b-2 border-zinc-300 bg-white py-4">
+      <section className="bg-card border-b-2 border-zinc-300 py-4">
         <div className="container mx-auto px-4">
           <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-3 sm:flex-row sm:gap-0">
             <div className="text-center text-xl sm:text-left">
@@ -22,9 +22,7 @@ const LandingPage = () => {
                 </span>
               </span>
             </div>
-            <Button className="bg-red-600 px-5 py-1.5 font-medium whitespace-nowrap text-white transition hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none">
-              Shop Sauces
-            </Button>
+            <Button>Shop Sauces</Button>
           </div>
         </div>
       </section>

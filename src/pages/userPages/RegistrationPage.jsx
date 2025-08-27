@@ -2,11 +2,12 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextInput from '@/components/bigComponents/TextInput';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import PromptLink from '@/components/bigComponents/PromptLink';
 import PasswordInput from '@/components/bigComponents/PasswordInput';
+import Logo from '/logo-alas1.jpg';
 
 function RegistrationPage() {
   const [values, setValues] = useState({
@@ -105,11 +106,11 @@ function RegistrationPage() {
   return (
     <>
       <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
-        <Card className="text-content bg-card w-full max-w-md p-6 shadow-sm sm:p-8">
+        <Card className="text-content w-full max-w-md sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
-                src="./src/components/images/logo-alas1.jpg"
+                src={Logo}
                 alt="Alas Delis Logo"
                 className="mx-auto h-20 w-20 shrink-0 object-contain"
               />
@@ -212,7 +213,6 @@ function RegistrationPage() {
           </div>
         </Card>
       </section>
-      <Toaster richColors />
     </>
   );
 }

@@ -81,17 +81,12 @@ const HeroSection = () => {
               className="flex flex-col justify-center gap-4 px-8 sm:flex-row"
             >
               <Link to={user ? '/ProductListPage' : '/LoginPage'}>
-                <Button variant="CTA" className="px-6 font-medium text-white">
-                  Order Now
-                </Button>
-              </Link>
-
-              <Link to="/ProductListPage">
                 <Button
-                  variant="outline"
-                  className="bg-white/20 px-6 font-medium text-white backdrop-blur-sm transition hover:bg-white/40 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:outline-none"
+                  variant="CTA"
+                  size="lg"
+                  className="px-8 font-medium text-white"
                 >
-                  VIEW MENU
+                  Order Now
                 </Button>
               </Link>
             </motion.div>

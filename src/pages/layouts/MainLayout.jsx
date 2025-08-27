@@ -11,7 +11,7 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
-      <Toaster position="bottom-center" richColors />
+      <Toaster position="bottom-center" richColors visibleToasts={1} />
     </div>
   );
 }
