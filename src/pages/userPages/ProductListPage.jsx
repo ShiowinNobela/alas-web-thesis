@@ -3,9 +3,10 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import ProductCard from '@/components/bigComponents/ProductCard.jsx';
 import Cart from '@/components/bigComponents/Cart.jsx';
-import { Skeleton } from '@/components/ui/skeleton.jsx';
 import useCartStore from '@/stores/cartStore';
 import useUserStore from '@/stores/userStore';
+import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton';
+import ProductErrorState from '@/components/errorUI/ProductErrorUI';
 
 function ProductPage() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function ProductPage() {
   } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
+      // await new Promise((resolve) => setTimeout(resolve, 1200)); // Loading simulation
       const res = await axios.get('/api/products');
       return res.data;
     },
@@ -48,9 +50,15 @@ function ProductPage() {
           </div>
           <div className="flex-l mx-auto max-w-6xl px-4 pb-20">
             {isLoading ? (
-              <Skeleton className="h-[20px] w-[100px] rounded-full" />
+              <div className="mx-auto max-w-7xl">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {[...Array(8)].map((_, i) => (
+                    <ProductCardSkeleton key={i} />
+                  ))}
+                </div>
+              </div>
             ) : isError ? (
-              <p className="text-center">Failed to load products.</p>
+              <ProductErrorState onRetry={() => window.location.reload()} />
             ) : (
               <div className="mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

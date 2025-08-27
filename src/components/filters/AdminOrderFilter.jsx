@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Datepicker, TextInput, Button } from 'flowbite-react';
 import { HiOutlineSearch } from 'react-icons/hi';
 import dayjs from 'dayjs';
-import StatusFilterDropdown from '@/components/StatusFilterDropdown';
+import StatusFilterDropdown from '@/components/filters/StatusFilterDropdown';
 
 const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
   const [searchParams, setSearchParams] = useSearchParams();

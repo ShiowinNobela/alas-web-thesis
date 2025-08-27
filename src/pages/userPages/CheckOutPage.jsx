@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import ConfirmPopUp from '../components/ConfirmPopUp';
 
 function CheckOutPage() {
   const [termsChecked, setTermsChecked] = useState(false);
@@ -232,53 +231,6 @@ function CheckOutPage() {
               </div>
             </div>
           </div>
-
-          {/* Confirm Pop Up */}
-          <ConfirmPopUp open={open} onClose={() => setOpen(false)}>
-            <div className="p-6 text-center">
-              <h2 className="mb-4 text-xl font-semibold">
-                Terms and Conditions
-              </h2>
-              <p className="mb-4 text-sm text-gray-600">
-                All sales are subject to product availability. In the event that
-                an item is out of stock, you will be notified and refunded if
-                necessary.
-              </p>
-              <p className="mb-4 text-sm text-gray-600">
-                Please ensure that all shipping and contact information provided
-                is accurate. We are not responsible for delays or failed
-                deliveries due to incorrect information.
-              </p>
-              <p className="mb-4 text-sm text-gray-600">
-                Orders can only be cancelled prior to processing. Once an order
-                has been processed and prepared for shipment, it cannot be
-                cancelled or refunded.
-              </p>
-              <p className="mb-6 text-sm text-gray-600">
-                By placing an order, you agree to these terms and acknowledge
-                that sauces are non-returnable and non-refundable once delivered
-                unless the product is defective or damaged during shipping.
-              </p>
-
-              <div className="flex justify-center gap-4">
-                <button
-                  onClick={() => {
-                    setTermsChecked(true);
-                    setOpen(false);
-                  }}
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                >
-                  Yes, I Accept
-                </button>
-                <button
-                  className="rounded-lg bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </ConfirmPopUp>
         </div>
       </section>
     </>

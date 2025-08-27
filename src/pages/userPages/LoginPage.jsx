@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 import PasswordInput from '@/components/bigComponents/PasswordInput';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import TextInput from '@/components/bigComponents/TextInput';
 import PromptLink from '@/components/bigComponents/PromptLink';
+import Logo from '/logo-alas1.jpg';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -102,11 +103,11 @@ function LoginPage() {
           <div className="absolute top-40 right-20 h-16 w-16 animate-pulse rounded-full bg-gradient-to-br from-red-200 to-pink-300 opacity-20 delay-1000"></div>
           <div className="absolute bottom-40 left-20 h-12 w-12 animate-pulse rounded-full bg-gradient-to-br from-orange-200 to-red-300 opacity-20 delay-500"></div>
         </div>
-        <Card className="w-full max-w-md rounded-md p-6 text-black shadow-sm sm:p-8 dark:text-white">
+        <Card className="text-content w-full max-w-md sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
-                src="./src/components/images/logo-alas1.jpg"
+                src={Logo}
                 alt="Alas Delis Logo"
                 className="mx-auto h-20 w-20 shrink-0 object-contain"
               />
@@ -179,7 +180,6 @@ function LoginPage() {
           </div>
         </Card>
       </section>
-      <Toaster richColors visibleToasts={1} />
     </>
   );
 }
