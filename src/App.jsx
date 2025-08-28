@@ -48,6 +48,7 @@ import Notifs from './pages/adminPages/Notifs.jsx';
 
 // Checkout
 import CheckOutPage from './pages/userPages/CheckOutPage.jsx';
+import PrivateRoute from './components/layout/PrivateRoute';
 
 function App() {
   return (
@@ -65,42 +66,53 @@ function App() {
             element={<ProductDetailsPage />}
           ></Route>
           <Route path="/ContactUs" element={<ContactUs />}></Route>
-          <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
+
           <Route path="*" element={<h1>404 Not Found</h1>}></Route>
           <Route path="/Faqs" element={<Faqs />}></Route>
-          <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
+
           <Route path="/AboutUs" element={<AboutUs />}></Route>
-          <Route path="/UserOrderPage" element={<UserOrderPage />} />
-          <Route path="/UserOrderPage2" element={<UserOrderPage2 />} />
-          <Route path="/UserSettings" element={<UserSettings />} />
-          <Route
-            path="/UserViewOrderDetails/:id"
-            element={<UserViewOrderDetails />}
-          ></Route>
+
+          {/* Protected user routes */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
+            <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
+            <Route path="/UserOrderPage" element={<UserOrderPage />} />
+            <Route path="/UserOrderPage2" element={<UserOrderPage2 />} />
+            <Route path="/UserSettings" element={<UserSettings />} />
+            <Route
+              path="/UserViewOrderDetails/:id"
+              element={<UserViewOrderDetails />}
+            />
+          </Route>
         </Route>
 
         <Route path="/Admin" element={<AdminLayout />}>
           <Route index element={<Login />} />
-          <Route path="DashBoard" element={<AdminDashboard />} />
-          <Route path="AddProduct" element={<AddProd />} />
-          <Route path="EditProduct/:id" element={<EditProd />} />
-          <Route path="ProductManagement" element={<ProdManagement />} />
-          <Route path="AccountManagement" element={<AccManagement />} />
-          <Route path="Orders" element={<Orders />} />
-          <Route path="AdminOrderDetails/:id" element={<AdminOrderDetails />} />
-          <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
-          <Route path="AdminAddUser" element={<AdminAddUser />} />
-          <Route path="ViewOrder/:id" element={<ViewOrder />} />
-          <Route path="AdminUserEdit/:id" element={<AdminUserEdit />} />
-          <Route
-            path="InventoryManagement"
-            element={<InventoryManagement />}
-          ></Route>
-          <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
-          <Route path="WalkInOrdering" element={<WalkInOrdering />} />
-          <Route path="SalesPage" element={<SalesPage />} />
-          <Route path="NotificationPage" element={<NotificationPage />} />
-          <Route path="Notifs" element={<Notifs />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="DashBoard" element={<AdminDashboard />} />
+            <Route path="AddProduct" element={<AddProd />} />
+            <Route path="EditProduct/:id" element={<EditProd />} />
+            <Route path="ProductManagement" element={<ProdManagement />} />
+            <Route path="AccountManagement" element={<AccManagement />} />
+            <Route path="Orders" element={<Orders />} />
+            <Route
+              path="AdminOrderDetails/:id"
+              element={<AdminOrderDetails />}
+            />
+            <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
+            <Route path="AdminAddUser" element={<AdminAddUser />} />
+            <Route path="ViewOrder/:id" element={<ViewOrder />} />
+            <Route path="AdminUserEdit/:id" element={<AdminUserEdit />} />
+            <Route
+              path="InventoryManagement"
+              element={<InventoryManagement />}
+            ></Route>
+            <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
+            <Route path="WalkInOrdering" element={<WalkInOrdering />} />
+            <Route path="SalesPage" element={<SalesPage />} />
+            <Route path="NotificationPage" element={<NotificationPage />} />
+            <Route path="Notifs" element={<Notifs />} />
+          </Route>
         </Route>
       </Routes>
     </>
