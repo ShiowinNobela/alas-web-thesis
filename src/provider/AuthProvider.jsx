@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import useUserStore from '@/stores/userStore';
 import PropTypes from 'prop-types';
 
 const AuthProvider = ({ children }) => {
   const setUser = useUserStore((state) => state.setUser);
-  const [loading, setLoading] = useState(true);
+  const clearUser = useUserStore((state) => state.clearUser);
   axios.defaults.withCredentials = true; // fetch user using cookie
 
   useEffect(() => {
@@ -13,19 +13,14 @@ const AuthProvider = ({ children }) => {
       .get('/api/users', { withCredentials: true })
       .then((res) => {
         setUser(res.data);
-
         localStorage.setItem('user', JSON.stringify(res.data));
       })
       .catch((err) => {
-        console.error('User not authenticated');
+        console.error('User not authenticated' + err);
+        clearUser();
         localStorage.removeItem('user'); // cleanup
-      })
-      .finally(() => {
-        setLoading(false);
       });
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
+  }, [setUser, clearUser]);
 
   return children;
 };
