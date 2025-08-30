@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from '@/components/layout/AdminSidebar';
 import AdminNavbar from '@/components/layout/AdminNavbar';
 import AdminFooter from '@/components/layout/AdminFooter';
+import { Toaster } from 'sonner';
 
 const AdminLayout = () => {
   return (
@@ -19,6 +20,7 @@ const AdminLayout = () => {
           <footer className="text-muted-foreground border-t px-4 py-3 text-sm">
             <AdminFooter />
           </footer>
+          <Toaster richColors visibleToasts={1} />
         </div>
       </div>
     </div>

@@ -1,4 +1,11 @@
-import { Bell, Settings, User, Database, HelpCircle } from 'lucide-react';
+import {
+  Bell,
+  Settings,
+  User,
+  Database,
+  HelpCircle,
+  LogOut,
+} from 'lucide-react';
 import useUserStore from '@/stores/userStore';
 import {
   Dropdown,
@@ -6,29 +13,20 @@ import {
   DropdownHeader,
   DropdownItem,
 } from 'flowbite-react';
-import { HiUser, HiBell, HiCog, HiLogout } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { handleLogout } from '@/utils/logout';
 import { useLocation } from 'react-router-dom';
 import ThemeToggle from '../filters/ThemeToggle';
 
-// Not sure yet what to actually put here
 function AdminNavbar() {
   const user = useUserStore((state) => state.user);
   const location = useLocation();
 
   const getCurrentPageName = () => {
     const path = location.pathname;
-
-    // Remove the "/Admin/" part and get the route segment
     const routeSegment = path.replace(/^\/Admin\//, '').split('/')[0];
 
-    // Handle the index route (Login page)
-    if (path.endsWith('/Admin') || path.endsWith('/Admin/')) {
-      return 'Login';
-    }
-
-    // Map route paths to display names
+    // map paths to display names
     const pageNames = {
       DashBoard: 'Dashboard',
       AddProduct: 'Add Product',
@@ -48,17 +46,19 @@ function AdminNavbar() {
       NotificationPage: 'Notifications',
     };
 
-    return pageNames[routeSegment] || routeSegment;
+    return pageNames[routeSegment] || routeSegment || 'Admin';
   };
 
   const currentPageName = getCurrentPageName();
 
   return (
     <nav className="bg-card border-content flex h-14 items-center justify-between border-b px-4">
+      {/* Page title */}
       <div className="flex items-center gap-4">
         <h1 className="text-xl font-bold">{currentPageName}</h1>
       </div>
 
+      {/* Middle: status */}
       <div className="flex items-center gap-4">
         <div className="text-muted-foreground hidden items-center gap-3 text-sm md:flex">
           <div className="flex items-center gap-1">
@@ -70,25 +70,9 @@ function AdminNavbar() {
             <span>DB: 45ms</span>
           </div>
         </div>
-
-        {/* <Dropdown
-          label={
-            <div className="flex items-center gap-1">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Quick Add</span>
-            </div>
-          }
-          inline
-        >
-          <DropdownHeader>
-            <span className="block text-sm font-medium">Quick Actions</span>
-          </DropdownHeader>
-          <DropdownItem icon={HiUser}>Add User</DropdownItem>
-          <DropdownItem icon={HiCog}>Create Project</DropdownItem>
-          <DropdownItem icon={HiBell}>Send Notification</DropdownItem>
-        </Dropdown> */}
       </div>
 
+      {/* Actions */}
       <div className="flex items-center gap-2">
         <ThemeToggle />
 
@@ -96,6 +80,7 @@ function AdminNavbar() {
           <HelpCircle className="h-4 w-4" />
         </Button>
 
+        {/* Notifications */}
         <Dropdown
           label={<Bell className="h-4 w-4" />}
           inline
@@ -128,6 +113,7 @@ function AdminNavbar() {
           <Settings className="h-4 w-4" />
         </Button>
 
+        {/* User dropdown */}
         <Dropdown
           label={
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
@@ -138,17 +124,19 @@ function AdminNavbar() {
           placement="bottom-end"
         >
           <DropdownHeader>
-            <span className="block text-sm font-medium">{user.username}</span>
+            <span className="block text-sm font-medium">
+              {user?.username || 'Guest'}
+            </span>
             <span className="text-lighter block truncate text-sm">
-              {user.email}
+              {user?.email || 'Not signed in'}
             </span>
           </DropdownHeader>
-          <DropdownItem icon={HiUser}>Profile</DropdownItem>
-          <DropdownItem icon={HiCog}>Account Settings</DropdownItem>
-          <DropdownItem icon={HiBell}>Personal Notifications</DropdownItem>
+          <DropdownItem>Profile</DropdownItem>
+          <DropdownItem>Account Settings</DropdownItem>
+          <DropdownItem>Personal Notifications</DropdownItem>
           <DropdownDivider />
           <DropdownItem
-            icon={HiLogout}
+            icon={LogOut}
             onClick={handleLogout}
             className="text-red-600"
           >

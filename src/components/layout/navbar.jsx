@@ -34,9 +34,9 @@ function Navbar() {
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-2">
         <div className="flex flex-row items-center justify-center gap-4">
           <Link to="/" onClick={closeMobileMenu}>
-            <img className="h-14 w-auto cursor-pointer" src={Logo} alt="Logo" />
+            <img className="h-12 w-auto cursor-pointer" src={Logo} alt="Logo" />
           </Link>
-          <h1 className="font-heading text-content hidden text-xl lg:block">
+          <h1 className="font-heading text-content hidden text-lg lg:block">
             Alas Delis and Spices
           </h1>
         </div>

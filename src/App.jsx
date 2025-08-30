@@ -28,7 +28,6 @@ import NotFoundPage from './pages/userPages/NotFoundPage.jsx';
 
 // Admin Pages
 import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
-import Login from './pages/adminPages/LoginAdmin.jsx';
 import AddProd from './pages/adminPages/AddProduct.jsx';
 import EditProd from './pages/adminPages/EditProduct.jsx';
 import ProdManagement from './pages/adminPages/ProductManagement.jsx';
@@ -49,6 +48,7 @@ import Notifs from './pages/adminPages/Notifs.jsx';
 // Checkout
 import CheckOutPage from './pages/userPages/CheckOutPage.jsx';
 import PrivateRoute from './components/layout/PrivateRoute';
+import ProductListLayout from './pages/layouts/ProductListLayout';
 
 function App() {
   return (
@@ -60,7 +60,7 @@ function App() {
           <Route path="/LoginPage" element={<LoginPage />}></Route>
           <Route path="/RegPage" element={<RegPage />}></Route>
           <Route path="/" element={<LandPage />}></Route>
-          <Route path="/ProductListPage" element={<ProductPage />}></Route>
+
           <Route
             path="/ProductDetailsPage/:id"
             element={<ProductDetailsPage />}
@@ -85,10 +85,12 @@ function App() {
             />
           </Route>
         </Route>
+        <Route element={<ProductListLayout />}>
+          <Route path="/ProductListPage" element={<ProductPage />}></Route>
+        </Route>
 
-        <Route path="/Admin" element={<AdminLayout />}>
-          <Route index element={<Login />} />
-          <Route element={<PrivateRoute />}>
+        <Route element={<PrivateRoute />}>
+          <Route path="/Admin" element={<AdminLayout />}>
             <Route path="DashBoard" element={<AdminDashboard />} />
             <Route path="AddProduct" element={<AddProd />} />
             <Route path="EditProduct/:id" element={<EditProd />} />
