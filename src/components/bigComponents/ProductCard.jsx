@@ -24,7 +24,7 @@ function ProductCard({ product }) {
           </span>
 
           {/* Product Image */}
-          <div className="relative flex h-45 w-full items-center justify-center overflow-hidden rounded-md bg-white pt-2">
+          <div className="relative flex h-35 w-full items-center justify-center overflow-hidden rounded-md bg-white pt-2">
             <div className="absolute inset-0 z-10 bg-gradient-to-br from-red-200/15 via-orange-200/15 to-yellow-200/15 mix-blend-multiply transition-opacity"></div>
 
             <img

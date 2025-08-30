@@ -23,21 +23,23 @@ function ProductManagement() {
   });
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50">
+    <div className="bg-admin min-h-screen p-4">
       <div className="mx-auto max-w-screen-2xl">
         {/* Header with add product button */}
-        <div className="mb-4 flex items-center justify-between rounded-xl  p-4 ring-1">
-          <h1 className="flex items-center gap-2 text-2xl font-bold">
-            <Package className="h-6 w-6" />
-            Product Management
-          </h1>
-          <Link to="/Admin/AddProduct">
-            <Button gradientDuoTone="purpleToBlue">
-              <PlusCircle className="mr-2 h-5 w-5" />
-              Add Product
-            </Button>
-          </Link>
-        </div>
+        <Card className="bg-card mb-4 ring-1">
+          <div className="flex items-center justify-between">
+            <h1 className="flex items-center gap-2 text-2xl font-bold">
+              <Package className="h-6 w-6" />
+              Product Management
+            </h1>
+            <Link to="/Admin/AddProduct">
+              <Button gradientDuoTone="purpleToBlue">
+                <PlusCircle className="mr-2 h-5 w-5" />
+                Add Product
+              </Button>
+            </Link>
+          </div>
+        </Card>
 
         {/* Loading and error states */}
         {isLoading && (

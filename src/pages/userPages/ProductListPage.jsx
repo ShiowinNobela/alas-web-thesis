@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import ProductCard from '@/components/bigComponents/ProductCard.jsx';
-import Cart from '@/components/bigComponents/Cart.jsx';
 import useCartStore from '@/stores/cartStore';
 import useUserStore from '@/stores/userStore';
 import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton';
@@ -37,11 +36,11 @@ function ProductPage() {
   };
 
   return (
-    <div className="bg-neutral min-h-screen">
+    <div className="bg-neutral min-h-full">
       <div className="flex">
-        <div className="mx-auto h-screen flex-1 overflow-y-auto">
-          <div className="flex flex-col items-center justify-center py-8">
-            <h1 className="font-heading text-content text-4xl">
+        <div className="mx-auto h-full flex-1">
+          <div className="flex flex-col items-center justify-center py-10">
+            <h1 className="font-heading text-content text-5xl">
               Our Flavorful Lineup
             </h1>
             <p className="text-lighter text-lg">
@@ -74,12 +73,6 @@ function ProductPage() {
             )}
           </div>
         </div>
-
-        {isLoggedIn && (
-          <div className="sticky top-0 hidden h-auto w-64 overflow-y-auto border-l border-gray-200 bg-white lg:block">
-            <Cart />
-          </div>
-        )}
       </div>
     </div>
   );
