@@ -17,14 +17,12 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/api': import.meta.env.PROD
-        ? undefined
-        : {
-            target: 'http://localhost:3000',
-            changeOrigin: true,
-            secure: false,
-            ws: true,
-          },
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+        ws: true,
+      },
     },
   },
   build: {
