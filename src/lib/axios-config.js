@@ -22,17 +22,4 @@ axios.interceptors.request.use(
   }
 );
 
-// Add a response interceptor for error handling
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Redirect to login if unauthorized
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
-);
-
 export default axios;
