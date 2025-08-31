@@ -28,6 +28,7 @@ export default defineConfig({
   },
   build: {
     assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
+    outDir: 'dist',
   },
   base: './',
 });
