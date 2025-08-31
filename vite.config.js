@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), flowbiteReact()],
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -18,11 +19,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://flux-backend-1-5yv1.onrender.com/',
+        target: import.meta.env.VITE_API_URL || 'http://localhost:3000',
         changeOrigin: true,
         secure: false,
         ws: true,
       },
     },
+  },
+  build: {
+    assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
   },
 });
