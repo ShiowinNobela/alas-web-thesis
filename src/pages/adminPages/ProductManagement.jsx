@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Button, Badge, Spinner, Alert } from 'flowbite-react';
 import { PlusCircle, Edit, Package, AlertTriangle } from 'lucide-react';
-import Placeholder from '@/components/images/placeholder.JPG';
+import Placeholder from '@/components/images/prod1.jpg';
 import axios from 'axios';
 
 const fetchProducts = async () => {
