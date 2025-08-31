@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
 import PasswordInput from '@/components/bigComponents/PasswordInput';
@@ -8,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import TextInput from '@/components/bigComponents/TextInput';
 import PromptLink from '@/components/bigComponents/PromptLink';
 import Logo from '/logo-alas1.jpg';
-import useUserStore from '@/stores/userStore';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -17,37 +15,13 @@ function LoginPage() {
     username: '',
     password: '',
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const { setUser } = useUserStore();
 
-  // Check if user is already logged in on component mount
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await axios.get('/api/users', {
-          withCredentials: true,
-        });
-        if (response.data) {
-          setUser(response.data);
-          // Redirect based on role
-          if (response.data.role_name === 'admin') {
-            navigate('/Admin/DashBoard', { replace: true });
-          } else {
-            navigate('/', { replace: true });
-          }
-        }
-      } catch (error) {
-        console.log('User not authenticated');
-      }
-    };
-
-    checkAuthStatus();
-  }, [navigate, setUser]);
+    axios.defaults.withCredentials = true;
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
 
     const newErrors = {
       username: username.trim() ? '' : 'Username is required',
@@ -58,40 +32,42 @@ function LoginPage() {
 
     if (newErrors.username || newErrors.password) {
       toast.error('Please fill in all required fields!');
-      setIsLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post('/api/users/login/', {
-        username,
-        password,
-      });
+      // Step 1: Log in and set cookie
+      await axios.post(
+        '/api/users/login/',
+        { username, password },
+        { withCredentials: true }
+      );
 
-      // Update user store with the response data
-      setUser(response.data.user);
+      // Step 2: Fetch current user using the cookie
+      const res = await axios.get('/api/users', { withCredentials: true });
+      const userData = res.data;
 
-      // Redirect based on role
-      if (response.data.user.role_name === 'admin') {
-        navigate('/Admin/DashBoard', { replace: true });
-      } else {
-        navigate('/', { replace: true });
-      }
+      // Optional: store user info (no tokens)
+      window.localStorage.setItem('user', JSON.stringify(userData));
 
-      toast.success('Login successful!');
+      // Step 3: Redirect
+      window.location.href =
+        userData.role_name === 'admin' ? '/Admin/DashBoard' : '/';
     } catch (err) {
       const res = err.response;
 
       if (!res) {
         toast.error('No response from server!');
-      } else if (res.status === 401) {
-        toast.error('Invalid credentials!');
-      } else if (res.status === 403) {
-        toast.error('Access forbidden. Please check your permissions.');
-      } else {
-        const msg = res.data?.message || 'Unexpected error';
-        toast.error(msg);
+        return;
       }
+
+      if (res.status === 401) {
+        toast.error('Invalid credentials!');
+        return;
+      }
+
+      const msg = res.data?.message || 'Unexpected error';
+      toast.error(msg);
 
       if (res.data?.error) {
         setErrors((prev) => ({
@@ -99,10 +75,25 @@ function LoginPage() {
           ...res.data.error,
         }));
       }
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Optional auto-redirect if user already in localStorage
+    const userRaw = window.localStorage.getItem('user');
+    if (userRaw) {
+      try {
+        const user = JSON.parse(userRaw);
+        if (user?.role_name === 'admin') {
+          window.location.href = '/Admin/DashBoard';
+        } else {
+          window.location.href = '/';
+        }
+      } catch {
+        window.localStorage.removeItem('user'); // Clean up corrupted data
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -164,12 +155,8 @@ function LoginPage() {
                 </a>
               </div>
 
-              <Button
-                type="submit"
-                className="font-heading w-full! uppercase"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Signing In...' : 'Sign In'}
+              <Button type="submit" className="font-heading w-full! uppercase">
+                Sign In
               </Button>
 
               <PromptLink

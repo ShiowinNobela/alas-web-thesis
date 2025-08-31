@@ -14,10 +14,12 @@ const AuthProvider = ({ children }) => {
       .get('/api/users', { withCredentials: true })
       .then((res) => {
         setUser(res.data);
+        localStorage.setItem('user', JSON.stringify(res.data));
       })
       .catch((err) => {
         console.error('User not authenticated' + err);
         clearUser();
+        localStorage.removeItem('user');
       });
   }, [setUser, clearUser]);
 
