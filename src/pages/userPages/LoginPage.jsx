@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -32,6 +32,7 @@ function LoginPage() {
 
     if (newErrors.username || newErrors.password) {
       toast.error('Please fill in all required fields!');
+      setIsLoading(false);
       return;
     }
 
@@ -63,23 +64,6 @@ function LoginPage() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    // Only auto-redirect if we're not in the middle of a login attempt
-    const userRaw = window.localStorage.getItem('user');
-    if (userRaw && !isLoading) {
-      try {
-        const user = JSON.parse(userRaw);
-        if (user?.role_name === 'admin') {
-          navigate('/Admin/DashBoard', { replace: true });
-        } else {
-          navigate('/', { replace: true });
-        }
-      } catch {
-        window.localStorage.removeItem('user');
-      }
-    }
-  }, [navigate, isLoading]);
 
   return (
     <>
