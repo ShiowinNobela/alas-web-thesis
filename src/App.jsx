@@ -56,18 +56,15 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="*" element={<NotFoundPage />} />
           <Route path="/LoginPage" element={<LoginPage />}></Route>
           <Route path="/RegPage" element={<RegPage />}></Route>
           <Route path="/" element={<LandPage />}></Route>
-
           <Route
             path="/ProductDetailsPage/:id"
             element={<ProductDetailsPage />}
           ></Route>
           <Route path="/ContactUs" element={<ContactUs />}></Route>
 
-          <Route path="*" element={<h1>404 Not Found</h1>}></Route>
           <Route path="/Faqs" element={<Faqs />}></Route>
 
           <Route path="/AboutUs" element={<AboutUs />}></Route>
@@ -85,6 +82,7 @@ function App() {
             />
           </Route>
         </Route>
+
         <Route element={<ProductListLayout />}>
           <Route path="/ProductListPage" element={<ProductPage />}></Route>
         </Route>
@@ -116,6 +114,8 @@ function App() {
             <Route path="Notifs" element={<Notifs />} />
           </Route>
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

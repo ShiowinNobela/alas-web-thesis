@@ -24,8 +24,10 @@ export default defineConfig({
         ws: true,
       },
     },
+    historyApiFallback: true,
   },
   build: {
     assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
   },
+  base: './',
 });
