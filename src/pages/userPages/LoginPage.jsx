@@ -16,10 +16,12 @@ function LoginPage() {
     username: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const newErrors = {
       username: username.trim() ? '' : 'Username is required',
@@ -55,16 +57,14 @@ function LoginPage() {
 
       if (!res) {
         toast.error('No response from server!');
-        return;
-      }
-
-      if (res.status === 401) {
+      } else if (res.status === 401) {
         toast.error('Invalid credentials!');
-        return;
+      } else if (res.status === 403) {
+        toast.error('Access forbidden. Please check your permissions.');
+      } else {
+        const msg = res.data?.message || 'Unexpected error';
+        toast.error(msg);
       }
-
-      const msg = res.data?.message || 'Unexpected error';
-      toast.error(msg);
 
       if (res.data?.error) {
         setErrors((prev) => ({
@@ -72,13 +72,15 @@ function LoginPage() {
           ...res.data.error,
         }));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // Optional auto-redirect if user already in localStorage
+    // Only auto-redirect if we're not in the middle of a login attempt
     const userRaw = window.localStorage.getItem('user');
-    if (userRaw) {
+    if (userRaw && !isLoading) {
       try {
         const user = JSON.parse(userRaw);
         if (user?.role_name === 'admin') {
@@ -87,10 +89,10 @@ function LoginPage() {
           navigate('/', { replace: true });
         }
       } catch {
-        window.localStorage.removeItem('user'); // Clean up corrupted data
+        window.localStorage.removeItem('user');
       }
     }
-  }, [navigate]);
+  }, [navigate, isLoading]);
 
   return (
     <>
@@ -152,8 +154,12 @@ function LoginPage() {
                 </a>
               </div>
 
-              <Button type="submit" className="font-heading w-full! uppercase">
-                Sign In
+              <Button
+                type="submit"
+                className="font-heading w-full! uppercase"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Signing In...' : 'Sign In'}
               </Button>
 
               <PromptLink
