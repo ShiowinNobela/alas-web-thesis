@@ -36,22 +36,9 @@ function LoginPage() {
     }
 
     try {
-      // Step 1: Log in and set cookie
       await axios.post('/api/users/login/', { username, password });
 
-      // Step 2: Fetch current user using the cookie
-      const res = await axios.get('/api/users');
-      const userData = res.data;
-
-      // Optional: store user info (no tokens)
-      window.localStorage.setItem('user', JSON.stringify(userData));
-
-      // Step 3: Redirect
-      if (userData.role_name === 'admin') {
-        navigate('/Admin/DashBoard', { replace: true });
-      } else {
-        navigate('/', { replace: true });
-      }
+      navigate('/loading', { replace: true });
     } catch (err) {
       const res = err.response;
 
