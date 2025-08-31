@@ -18,7 +18,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000/',
+        target: 'https://flux-backend-1-5yv1.onrender.com/',
         changeOrigin: true,
         secure: false,
         ws: true,
