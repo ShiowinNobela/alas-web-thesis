@@ -25,7 +25,6 @@ import UserOrderPage2 from './pages/userPages/UserOrderPage2.jsx';
 import UserViewOrderDetails from './pages/userPages/UserViewOrderDetails.jsx';
 import AboutUs from './pages/userPages/AboutUs.jsx';
 import NotFoundPage from './pages/userPages/NotFoundPage.jsx';
-import LoadingPage from './pages/userPages/LoadingPage.jsx'; // ← Add this import
 
 // Admin Pages
 import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
@@ -67,8 +66,6 @@ function App() {
           <Route path="/ContactUs" element={<ContactUs />}></Route>
           <Route path="/Faqs" element={<Faqs />}></Route>
           <Route path="/AboutUs" element={<AboutUs />}></Route>
-
-          <Route path="/loading" element={<LoadingPage />}></Route>
 
           {/* Protected user routes */}
           <Route element={<PrivateRoute />}>

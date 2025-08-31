@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import TextInput from '@/components/bigComponents/TextInput';
 import PromptLink from '@/components/bigComponents/PromptLink';
 import Logo from '/logo-alas1.jpg';
+import useUserStore from '@/stores/userStore';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -18,6 +19,31 @@ function LoginPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { setUser } = useUserStore();
+
+  // Check if user is already logged in on component mount
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await axios.get('/api/users', {
+          withCredentials: true,
+        });
+        if (response.data) {
+          setUser(response.data);
+          // Redirect based on role
+          if (response.data.role_name === 'admin') {
+            navigate('/Admin/DashBoard', { replace: true });
+          } else {
+            navigate('/', { replace: true });
+          }
+        }
+      } catch (error) {
+        console.log('User not authenticated');
+      }
+    };
+
+    checkAuthStatus();
+  }, [navigate, setUser]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -37,9 +63,22 @@ function LoginPage() {
     }
 
     try {
-      await axios.post('/api/users/login/', { username, password });
+      const response = await axios.post('/api/users/login/', {
+        username,
+        password,
+      });
 
-      navigate('/loading', { replace: true });
+      // Update user store with the response data
+      setUser(response.data.user);
+
+      // Redirect based on role
+      if (response.data.user.role_name === 'admin') {
+        navigate('/Admin/DashBoard', { replace: true });
+      } else {
+        navigate('/', { replace: true });
+      }
+
+      toast.success('Login successful!');
     } catch (err) {
       const res = err.response;
 

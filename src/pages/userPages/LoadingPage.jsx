@@ -11,10 +11,18 @@ function LoadingPage() {
     const timeout = setTimeout(() => {
       setIsTimedOut(true);
       navigate('/LoginPage', { replace: true });
-    }, 10000); // 10 second timeout
+    }, 15000); // 10 second timeout
 
     return () => clearTimeout(timeout);
-  }, [navigate]);
+  }, []);
+
+  useEffect(() => {
+    console.log('Auth status:', { isAuthenticated, hasCheckedAuth, user });
+    if (hasCheckedAuth) {
+      console.log('Navigation triggered');
+      // ... navigation logic ...
+    }
+  }, [isAuthenticated, hasCheckedAuth, navigate, user]);
 
   useEffect(() => {
     if (hasCheckedAuth) {
@@ -30,22 +38,11 @@ function LoadingPage() {
     }
   }, [isAuthenticated, hasCheckedAuth, navigate, user]);
 
-  if (isTimedOut) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold">Login Timeout</h2>
-          <p className="text-gray-500">Please try signing in again</p>
-          <button
-            onClick={() => navigate('/LoginPage')}
-            className="text-brand mt-4 hover:underline"
-          >
-            Go to Login
-          </button>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (isTimedOut && !hasCheckedAuth) {
+      navigate('/LoginPage', { replace: true });
+    }
+  }, [isTimedOut, hasCheckedAuth, navigate]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
