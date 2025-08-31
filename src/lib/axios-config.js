@@ -6,6 +6,8 @@ axios.defaults.baseURL = import.meta.env.PROD
   ? 'https://flux-backend-1-5yv1.onrender.com'
   : 'http://localhost:3000';
 
+axios.defaults.withCredentials = true;
+
 // Add a request interceptor to include the token
 axios.interceptors.request.use(
   (config) => {
