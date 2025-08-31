@@ -30,5 +30,5 @@ export default defineConfig({
     assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
     outDir: 'dist',
   },
-  base: './',
+  base: '/',
 });
