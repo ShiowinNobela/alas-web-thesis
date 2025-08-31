@@ -82,15 +82,15 @@ function LoginPage() {
       try {
         const user = JSON.parse(userRaw);
         if (user?.role_name === 'admin') {
-          window.location.href = '/Admin/DashBoard';
+          navigate('/Admin/DashBoard', { replace: true });
         } else {
-          window.location.href = '/';
+          navigate('/', { replace: true });
         }
       } catch {
         window.localStorage.removeItem('user'); // Clean up corrupted data
       }
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <>
