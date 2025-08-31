@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
 import PasswordInput from '@/components/bigComponents/PasswordInput';
@@ -15,10 +16,7 @@ function LoginPage() {
     username: '',
     password: '',
   });
-
-  useEffect(() => {
-    axios.defaults.withCredentials = true;
-  }, []);
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -37,22 +35,21 @@ function LoginPage() {
 
     try {
       // Step 1: Log in and set cookie
-      await axios.post(
-        '/api/users/login/',
-        { username, password },
-        { withCredentials: true }
-      );
+      await axios.post('/api/users/login/', { username, password });
 
       // Step 2: Fetch current user using the cookie
-      const res = await axios.get('/api/users', { withCredentials: true });
+      const res = await axios.get('/api/users');
       const userData = res.data;
 
       // Optional: store user info (no tokens)
       window.localStorage.setItem('user', JSON.stringify(userData));
 
       // Step 3: Redirect
-      window.location.href =
-        userData.role_name === 'admin' ? '/Admin/DashBoard' : '/';
+      if (userData.role_name === 'admin') {
+        navigate('/Admin/DashBoard', { replace: true });
+      } else {
+        navigate('/', { replace: true });
+      }
     } catch (err) {
       const res = err.response;
 
