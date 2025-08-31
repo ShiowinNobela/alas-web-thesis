@@ -1,17 +1,26 @@
 /* Font Definitions */
 @font-face {
-  font-family: Bebas;
-  src: url('../src/assets/fonts/Jost-Semibold.ttf');
+  font-family: 'Bebas';
+  src: url('/fonts/Jost-Regular.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: Jost;
-  src: url('../src/assets/fonts/RedditSans-Regular.ttf');
+  font-family: 'Jost';
+  src: url('/fonts/RedditSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: Rubik;
-  src: url('../src/assets/fonts/Rubik-Regular.ttf');
+  font-family: 'Rubik';
+  src: url('/fonts/Rubik-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @config "../tailwind.config.js";
