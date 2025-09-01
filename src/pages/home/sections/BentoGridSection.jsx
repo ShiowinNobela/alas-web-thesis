@@ -1,9 +1,4 @@
 import { motion } from 'framer-motion';
-import Picture1 from '@/components/images/PicCallMeDebra.jpg';
-import Picture2 from '@/components/images/PicHikari.jpg';
-import Picture3 from '@/components/images/PicLeBlanc.jpg';
-import Picture4 from '@/components/images/PicZeroBlitz.jpg';
-import Picture5 from '@/assets/images/BGAlas.jpg';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -38,7 +33,7 @@ const itemVariants = {
 const BentoGrid = () => {
   const mainItems = [
     {
-      src: Picture1,
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302419/alas_uploads/ffgfhv57rvygxjkriw9e.jpg',
       name: 'Call Me Debra',
       col: 'col-span-2',
       row: 'row-span-2',
@@ -58,7 +53,7 @@ const BentoGrid = () => {
       },
     },
     {
-      src: Picture2,
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749428840/alas_uploads/oiozltbt0elfb21gutjx.jpg',
       name: 'Hikari',
       col: 'col-span-1',
       row: 'row-span-1',
@@ -78,7 +73,7 @@ const BentoGrid = () => {
       },
     },
     {
-      src: Picture3,
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749429258/alas_uploads/tt7sizbzygeudeg38x4u.jpg',
       name: 'Lé Blanc',
       col: 'col-span-1',
       row: 'row-span-1',
@@ -102,8 +97,8 @@ const BentoGrid = () => {
       },
     },
     {
-      src: Picture4,
-      name: 'Zero Blitz',
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302297/alas_uploads/gzl6lzcevjp8uhyza6h8.jpg',
+      name: 'Birds Eye Gambit',
       col: 'col-span-2',
       row: 'row-span-1',
       overlay: 'bg-gradient-to-r from-black/60 to-red-900/50',
@@ -122,8 +117,8 @@ const BentoGrid = () => {
       },
     },
     {
-      src: Picture5,
-      name: 'Nebula',
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302469/alas_uploads/y3alljz8lpsne23jbdm2.jpg',
+      name: 'Grin',
       col: 'col-span-1',
       row: 'row-span-1',
       overlay: 'bg-gradient-to-b from-indigo-900/70 to-purple-900/60',
@@ -146,8 +141,8 @@ const BentoGrid = () => {
       },
     },
     {
-      src: Picture2,
-      name: 'Crimson',
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302550/alas_uploads/zgb62etqzs0pmyohucar.jpg',
+      name: 'Gypsy Bu',
       col: 'col-span-1',
       row: 'row-span-2',
       overlay: 'bg-gradient-to-t from-red-900/70 via-black/40 to-transparent',
@@ -169,8 +164,8 @@ const BentoGrid = () => {
 
   const extraItems = [
     {
-      src: Picture3,
-      name: 'Mystic',
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749430659/alas_uploads/gdnrmuifue2oitvhudi8.jpg',
+      name: 'Swan Song',
       col: 'col-span-1',
       row: 'row-span-1',
       overlay: 'bg-gradient-to-b from-emerald-900/60 to-teal-500/40',
@@ -190,8 +185,8 @@ const BentoGrid = () => {
       button: true,
     },
     {
-      src: Picture4,
-      name: 'Vortex',
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302380/alas_uploads/gpdvbwvqnx1l2ri4fbx9.jpg',
+      name: 'Cabron',
       col: 'col-span-1',
       row: 'row-span-1',
       overlay: 'bg-gradient-to-tr from-violet-900/70 to-fuchsia-500/50',
@@ -211,8 +206,8 @@ const BentoGrid = () => {
       button: true,
     },
     {
-      src: Picture1,
-      name: 'Solaris',
+      src: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302191/alas_uploads/jhoewzaufjiglbxcfdvx.jpg',
+      name: 'Ballad of Q',
       col: 'col-span-2',
       row: 'row-span-1',
       overlay: 'bg-gradient-to-r from-amber-900/60 to-yellow-500/50',
@@ -267,9 +262,11 @@ const BentoGrid = () => {
               src={prod.src}
               alt={prod.name}
               className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.4 }}
             />
+
             <div className={`absolute inset-0 ${prod.overlay}`} />
             <motion.div
               className="relative z-10 flex h-full w-full flex-col items-center justify-end p-4"
@@ -303,6 +300,7 @@ const BentoGrid = () => {
               src={prod.src}
               alt={prod.name}
               className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
               whileHover={{ scale: 1.1 }}
               transition={{ duration: 0.7 }}
             />

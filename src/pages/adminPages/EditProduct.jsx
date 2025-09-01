@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import BaseInput from '../../components/Chinges/baseInput.jsx';
-import Description from '../../components/Chinges/Description.jsx';
-import DropDown from '../../components/Chinges/DropDown.jsx';
+
 import Upload from '../../components/bigComponents/Upload.jsx';
 import { Button } from 'flowbite-react';
 
@@ -92,57 +90,7 @@ function AddProduct() {
             <div className="flex flex-col gap-1">
               <h2 className="text-lg font-semibold text-black">Basic Info</h2>
 
-              <BaseInput label="Product ID" value={values.id} readOnly />
-
-              <BaseInput
-                label="Product Name"
-                value={values.name}
-                onChange={(e) => setValues({ ...values, name: e.target.value })}
-              />
-
-              <Description
-                label="Product Description"
-                value={values.description}
-                textColor="text-black"
-                onChange={(e) =>
-                  setValues({ ...values, description: e.target.value })
-                }
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <BaseInput
-                  label="Stock Quantity"
-                  onlyNumber
-                  min="0"
-                  value={values.stock_quantity}
-                  onChange={(e) =>
-                    setValues({ ...values, stock_quantity: e.target.value })
-                  }
-                />
-                <DropDown
-                  label="Category"
-                  options={[
-                    { value: 'hot_sauce', label: 'Hot Sauce' },
-                    { value: 'chili_oils', label: 'Chili Oils' },
-                    { value: 'pickled_jalopeno', label: 'Pickled Jalopeno' },
-                    { value: 'limited_item', label: 'Limited Item' },
-                  ]}
-                  value={values.category}
-                  onChange={(e) =>
-                    setValues({ ...values, category: e.target.value })
-                  }
-                />
-              </div>
-
-              <BaseInput
-                label="Price (₱)"
-                onlyNumber
-                min="0"
-                value={values.price}
-                onChange={(e) =>
-                  setValues({ ...values, price: e.target.value })
-                }
-              />
+              <div className="grid gap-4 sm:grid-cols-2"></div>
 
               <div className="mt-2 flex items-center gap-3">
                 <label

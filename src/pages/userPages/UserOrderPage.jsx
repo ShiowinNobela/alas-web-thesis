@@ -5,7 +5,6 @@ import OrdersTable from '@/components/tables/OrdersTable';
 import { useSearchParams } from 'react-router-dom';
 import OrderFiltersPanel from '@/components/filters/orderFilterSidebar';
 import { toast } from 'sonner';
-import CancelOrderModal from '@/components/modals/cancelOrderModal';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { SlidersHorizontal } from 'lucide-react';
@@ -15,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import CancelOrderModal from '@/components/modals/CanceLOrderModal';
 
 function UserViewOrderPage() {
   const [showCancelModal, setShowCancelModal] = useState(false);
