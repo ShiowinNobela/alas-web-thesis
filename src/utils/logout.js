@@ -1,15 +1,13 @@
+import axios from 'axios';
+import useUserStore from '@/stores/userStore';
+
 export const handleLogout = async ({ redirectTo = '/LoginPage' } = {}) => {
   try {
-    // 1. Call backend to clear cookie
-    await fetch('http://localhost:3000/api/users/logout', {
-      method: 'POST',
-      credentials: 'include', // Send cookies
-    });
+    // 1. Call backend logout
+    await axios.post('/api/users/logout', {}, { withCredentials: true });
 
     // 2. Clear local storage and Zustand store
     localStorage.removeItem('user');
-
-    const { default: useUserStore } = await import('@/stores/userStore');
     useUserStore.getState().clearUser();
 
     // 3. Redirect

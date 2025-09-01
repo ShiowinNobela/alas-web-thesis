@@ -7,6 +7,7 @@ import { ThemeProvider } from './provider/ThemeProvider';
 import AuthProvider from './provider/AuthProvider';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
+import './lib/axios-config.js';
 
 const queryClient = new QueryClient();
 

@@ -2,74 +2,97 @@ import './App.css';
 
 // React & Router
 import { Route, Routes } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 
 // Layouts
 import MainLayout from './pages/layouts/MainLayout.jsx';
 import AdminLayout from './pages/layouts/AdminLayout.jsx';
+import ProductListLayout from './pages/layouts/ProductListLayout';
 
 // Utilities
 import ScrollToTop from './utils/ScrollToTop';
+import PrivateRoute from './components/layout/PrivateRoute';
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
-import ContactUs from './pages/userPages/ContactUs.jsx';
+const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
 import LoginPage from './pages/userPages/LoginPage.jsx';
 import RegPage from './pages/userPages/RegistrationPage.jsx';
-import ProductPage from './pages/userPages/ProductListPage.jsx';
-import ProductDetailsPage from './pages/userPages/ProductDetailsPage.jsx';
-import UserSettings from './pages/userPages/UserSettings.jsx';
-import GiveReview from './pages/userPages/GiveReview.jsx';
-import Faqs from './pages/userPages/Faqs.jsx';
-import UserOrderPage from './pages/userPages/UserOrderPage.jsx';
-import UserOrderPage2 from './pages/userPages/UserOrderPage2.jsx';
-import UserViewOrderDetails from './pages/userPages/UserViewOrderDetails.jsx';
+const ProductPage = lazy(() => import('./pages/userPages/ProductListPage.jsx'));
+const ProductDetailsPage = lazy(
+  () => import('./pages/userPages/ProductDetailsPage.jsx')
+);
+const UserSettings = lazy(() => import('./pages/userPages/UserSettings.jsx'));
+const GiveReview = lazy(() => import('./pages/userPages/GiveReview.jsx'));
+const Faqs = lazy(() => import('./pages/userPages/Faqs.jsx'));
+const UserOrderPage = lazy(() => import('./pages/userPages/UserOrderPage.jsx'));
+const UserOrderPage2 = lazy(
+  () => import('./pages/userPages/UserOrderPage2.jsx')
+);
+const UserViewOrderDetails = lazy(
+  () => import('./pages/userPages/UserViewOrderDetails.jsx')
+);
 import AboutUs from './pages/userPages/AboutUs.jsx';
-import NotFoundPage from './pages/userPages/NotFoundPage.jsx';
+const NotFoundPage = lazy(() => import('./pages/userPages/NotFoundPage.jsx'));
+const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
 
 // Admin Pages
-import AdminDashboard from './pages/adminPages/adminDashboard.jsx';
-import AddProd from './pages/adminPages/AddProduct.jsx';
-import EditProd from './pages/adminPages/EditProduct.jsx';
-import ProdManagement from './pages/adminPages/ProductManagement.jsx';
-import AccManagement from './pages/adminPages/AccountManagement.jsx';
-import Orders from './pages/adminPages/Orders.jsx';
-import PopUpInfoPage from './pages/adminPages/PopUpInfoPage.jsx';
-import AdminAddUser from './pages/adminPages/AdminAddUser.jsx';
-import ViewOrder from './pages/adminPages/ViewOrder.jsx';
-import AdminUserEdit from './pages/adminPages/AdminUserEdit.jsx';
-import InventoryManagement from './pages/adminPages/InventoryManagement.jsx';
-import WalkInOrdering from './pages/adminPages/WalkInOrdering.jsx';
-import SalesPage from './pages/adminPages/SalesPage.jsx';
-import WalkInOrderTable from './pages/adminPages/WalkInOrdersTable.jsx';
-import AdminOrderDetails from './pages/adminPages/AdminOrderDetails.jsx';
-import NotificationPage from './pages/adminPages/NotificationPage.jsx';
-import Notifs from './pages/adminPages/Notifs.jsx';
-
-// Checkout
-import CheckOutPage from './pages/userPages/CheckOutPage.jsx';
-import PrivateRoute from './components/layout/PrivateRoute';
-import ProductListLayout from './pages/layouts/ProductListLayout';
+const AdminDashboard = lazy(
+  () => import('./pages/adminPages/adminDashboard.jsx')
+);
+const AddProd = lazy(() => import('./pages/adminPages/AddProduct.jsx'));
+const EditProd = lazy(() => import('./pages/adminPages/EditProduct.jsx'));
+const ProdManagement = lazy(
+  () => import('./pages/adminPages/ProductManagement.jsx')
+);
+const AccManagement = lazy(
+  () => import('./pages/adminPages/AccountManagement.jsx')
+);
+const Orders = lazy(() => import('./pages/adminPages/Orders.jsx'));
+const PopUpInfoPage = lazy(
+  () => import('./pages/adminPages/PopUpInfoPage.jsx')
+);
+const AdminAddUser = lazy(() => import('./pages/adminPages/AdminAddUser.jsx'));
+const ViewOrder = lazy(() => import('./pages/adminPages/ViewOrder.jsx'));
+const AdminUserEdit = lazy(
+  () => import('./pages/adminPages/AdminUserEdit.jsx')
+);
+const InventoryManagement = lazy(
+  () => import('./pages/adminPages/InventoryManagement.jsx')
+);
+const WalkInOrdering = lazy(
+  () => import('./pages/adminPages/WalkInOrdering.jsx')
+);
+const SalesPage = lazy(() => import('./pages/adminPages/SalesPage.jsx'));
+const WalkInOrderTable = lazy(
+  () => import('./pages/adminPages/WalkInOrdersTable.jsx')
+);
+const AdminOrderDetails = lazy(
+  () => import('./pages/adminPages/AdminOrderDetails.jsx')
+);
+const NotificationPage = lazy(
+  () => import('./pages/adminPages/NotificationPage.jsx')
+);
+const Notifs = lazy(() => import('./pages/adminPages/Notifs.jsx'));
 
 function App() {
   return (
     <>
       <ScrollToTop />
+      <Suspense
+        fallback={<div className="p-4 text-center">Loading...</div>}
+      ></Suspense>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path="*" element={<NotFoundPage />} />
           <Route path="/LoginPage" element={<LoginPage />}></Route>
           <Route path="/RegPage" element={<RegPage />}></Route>
           <Route path="/" element={<LandPage />}></Route>
-
           <Route
             path="/ProductDetailsPage/:id"
             element={<ProductDetailsPage />}
           ></Route>
           <Route path="/ContactUs" element={<ContactUs />}></Route>
-
-          <Route path="*" element={<h1>404 Not Found</h1>}></Route>
           <Route path="/Faqs" element={<Faqs />}></Route>
-
           <Route path="/AboutUs" element={<AboutUs />}></Route>
 
           {/* Protected user routes */}
@@ -85,6 +108,7 @@ function App() {
             />
           </Route>
         </Route>
+
         <Route element={<ProductListLayout />}>
           <Route path="/ProductListPage" element={<ProductPage />}></Route>
         </Route>
@@ -116,6 +140,8 @@ function App() {
             <Route path="Notifs" element={<Notifs />} />
           </Route>
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

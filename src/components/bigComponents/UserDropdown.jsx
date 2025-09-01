@@ -102,7 +102,7 @@ export default function UserDropdown() {
 
             <div className="border-t">
               <button
-                onClick={() => handleLogout()}
+                onClick={handleLogout}
                 className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
               >
                 <MdOutlineLogout className="mr-2" /> Logout

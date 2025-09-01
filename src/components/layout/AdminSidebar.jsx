@@ -11,7 +11,7 @@ import {
 import { MdOutlinePointOfSale } from 'react-icons/md';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import { SiLogstash } from "react-icons/si";
+import { SiLogstash } from 'react-icons/si';
 
 const menuItems = [
   {
@@ -59,15 +59,15 @@ const menuItems = [
     icon: MdOutlinePointOfSale,
   },
   {
-      path: '/Admin/NotificationPage',
-      name: 'Activity Log',
-      icon: SiLogstash,
-    },
-    {
-      path: '/Admin/Notifs',
-      name: 'Notifications',
-      icon: IoIosNotifications,
-    }
+    path: '/Admin/NotificationPage',
+    name: 'Activity Log',
+    icon: SiLogstash,
+  },
+  {
+    path: '/Admin/Notifs',
+    name: 'Notifications',
+    icon: IoIosNotifications,
+  },
 ];
 
 function Sidebar() {

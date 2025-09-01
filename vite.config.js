@@ -24,5 +24,22 @@ export default defineConfig({
         ws: true,
       },
     },
+    historyApiFallback: true,
   },
+  build: {
+    assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
+    outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Create vendor bundles
+          react: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['flowbite-react', 'framer-motion'],
+          state: ['zustand'],
+          utils: ['axios'],
+        },
+      },
+    },
+  },
+  base: '/',
 });

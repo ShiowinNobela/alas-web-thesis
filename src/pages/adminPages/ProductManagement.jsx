@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Button, Badge, Spinner, Alert } from 'flowbite-react';
 import { PlusCircle, Edit, Package, AlertTriangle } from 'lucide-react';
-import Placeholder from '@/components/images/placeholder.JPG';
 import axios from 'axios';
 
 const fetchProducts = async () => {
@@ -62,10 +61,14 @@ function ProductManagement() {
               key={product.id}
               className="ring-1"
               imgAlt={product.name}
-              imgSrc={product.image || Placeholder}
+              imgSrc={
+                product.image ||
+                'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302621/alas_uploads/cjqs0r97a5vfzxh34mos.jpg'
+              }
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = Placeholder;
+                e.target.src =
+                  'https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302621/alas_uploads/cjqs0r97a5vfzxh34mos.jpg';
               }}
             >
               <div className="space-y-2">

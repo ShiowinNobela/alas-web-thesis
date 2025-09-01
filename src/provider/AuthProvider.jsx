@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 const AuthProvider = ({ children }) => {
   const setUser = useUserStore((state) => state.setUser);
   const clearUser = useUserStore((state) => state.clearUser);
-  axios.defaults.withCredentials = true; // fetch user using cookie
 
   useEffect(() => {
     axios
