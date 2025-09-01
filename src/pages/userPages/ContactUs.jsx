@@ -119,7 +119,7 @@ function ContactUs() {
           {/* Contact Form */}
           <motion.div variants={itemVariants} whileHover="hover">
             <motion.div variants={cardHoverVariants}>
-              <Card className="border-0 bg-white/80 py-0 shadow-xl backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
+              <Card className="bg-card/80 border py-0 shadow-xl backdrop-blur-sm transition-all duration-300 hover:shadow-2xl">
                 <CardHeader className="rounded-t-lg bg-gradient-to-r from-red-500 to-orange-500 py-2 text-white">
                   <CardTitle className="flex items-center text-xl">
                     <motion.div
@@ -220,7 +220,7 @@ function ContactUs() {
               <motion.div variants={cardHoverVariants}>
                 <Card className="border-0 bg-gradient-to-br from-yellow-50 to-orange-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-xl">
+                    <CardTitle className="flex items-center text-xl text-black">
                       <motion.div
                         animate={{
                           x: [-2, 2, -2],
@@ -234,7 +234,7 @@ function ContactUs() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <motion.div
-                      className="flex items-start space-x-3 rounded-lg bg-white/60 p-3"
+                      className="bg-card/70 flex items-start space-x-3 rounded-lg p-3"
                       whileHover={{ x: 5 }}
                     >
                       <MapPin className="mt-0.5 h-5 w-5 text-red-500" />
@@ -242,30 +242,30 @@ function ContactUs() {
                         <p className="text-content font-bold">
                           Alas Delis and Spices
                         </p>
-                        <p className="text-lighter text-sm">
+                        <p className="text-content text-sm">
                           Old Balara, Tandang Sora Avenue
                         </p>
-                        <p className="text-lighter text-sm">
+                        <p className="text-content text-sm">
                           Quezon City, Philippines
                         </p>
                       </div>
                     </motion.div>
 
                     <motion.div
-                      className="flex items-center space-x-3 rounded-lg bg-white/60 p-3"
+                      className="bg-card/70 flex items-center space-x-3 rounded-lg p-3"
                       whileHover={{ x: 5 }}
                     >
                       <Phone className="h-5 w-5 text-green-500" />
                       <div>
                         <p className="text-content font-bold">0995 285 8665</p>
-                        <p className="text-lighter text-sm">
+                        <p className="text-content text-sm">
                           📞 Call for custom orders & bulk pricing
                         </p>
                       </div>
                     </motion.div>
 
                     <motion.div
-                      className="flex items-center space-x-3 rounded-lg bg-white/60 p-3"
+                      className="bg-card/70 flex items-center space-x-3 rounded-lg p-3"
                       whileHover={{ x: 5 }}
                     >
                       <Mail className="h-5 w-5 text-blue-500" />
@@ -273,7 +273,7 @@ function ContactUs() {
                         <p className="text-content font-bold">
                           kraffle02@gmail.com
                         </p>
-                        <p className="text-lighter text-sm">
+                        <p className="text-content text-sm">
                           ⚡ Lightning-fast replies (usually within 2 hours!)
                         </p>
                       </div>
@@ -287,7 +287,7 @@ function ContactUs() {
               <motion.div variants={cardHoverVariants}>
                 <Card className="border-0 bg-gradient-to-br from-green-50 to-blue-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-xl">
+                    <CardTitle className="flex items-center text-xl text-black">
                       <motion.div
                         animate={{
                           rotate: [0, 10, -10, 0],
@@ -357,7 +357,7 @@ function ContactUs() {
                   >
                     <Heart className="mr-2 h-4 w-4 text-red-500" />
                   </motion.div>
-                  <h4 className="text-content text-sm font-bold">
+                  <h4 className="text-sm font-bold text-black">
                     Made with Love
                   </h4>
                 </div>
@@ -384,7 +384,7 @@ function ContactUs() {
                   >
                     <Star className="mr-2 h-4 w-4 text-yellow-500" />
                   </motion.div>
-                  <h4 className="text-content text-sm font-bold">
+                  <h4 className="text-sm font-bold text-black">
                     Artisanal Blends
                   </h4>
                 </div>
