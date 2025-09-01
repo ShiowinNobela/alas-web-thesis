@@ -79,70 +79,69 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <Suspense
-        fallback={<div className="p-4 text-center">Loading...</div>}
-      ></Suspense>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/LoginPage" element={<LoginPage />}></Route>
-          <Route path="/RegPage" element={<RegPage />}></Route>
-          <Route path="/" element={<LandPage />}></Route>
-          <Route
-            path="/ProductDetailsPage/:id"
-            element={<ProductDetailsPage />}
-          ></Route>
-          <Route path="/ContactUs" element={<ContactUs />}></Route>
-          <Route path="/Faqs" element={<Faqs />}></Route>
-          <Route path="/AboutUs" element={<AboutUs />}></Route>
-
-          {/* Protected user routes */}
-          <Route element={<PrivateRoute />}>
-            <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
-            <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
-            <Route path="/UserOrderPage" element={<UserOrderPage />} />
-            <Route path="/UserOrderPage2" element={<UserOrderPage2 />} />
-            <Route path="/UserSettings" element={<UserSettings />} />
+      <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/LoginPage" element={<LoginPage />}></Route>
+            <Route path="/RegPage" element={<RegPage />}></Route>
+            <Route path="/" element={<LandPage />}></Route>
             <Route
-              path="/UserViewOrderDetails/:id"
-              element={<UserViewOrderDetails />}
-            />
-          </Route>
-        </Route>
-
-        <Route element={<ProductListLayout />}>
-          <Route path="/ProductListPage" element={<ProductPage />}></Route>
-        </Route>
-
-        <Route element={<PrivateRoute />}>
-          <Route path="/Admin" element={<AdminLayout />}>
-            <Route path="DashBoard" element={<AdminDashboard />} />
-            <Route path="AddProduct" element={<AddProd />} />
-            <Route path="EditProduct/:id" element={<EditProd />} />
-            <Route path="ProductManagement" element={<ProdManagement />} />
-            <Route path="AccountManagement" element={<AccManagement />} />
-            <Route path="Orders" element={<Orders />} />
-            <Route
-              path="AdminOrderDetails/:id"
-              element={<AdminOrderDetails />}
-            />
-            <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
-            <Route path="AdminAddUser" element={<AdminAddUser />} />
-            <Route path="ViewOrder/:id" element={<ViewOrder />} />
-            <Route path="AdminUserEdit/:id" element={<AdminUserEdit />} />
-            <Route
-              path="InventoryManagement"
-              element={<InventoryManagement />}
+              path="/ProductDetailsPage/:id"
+              element={<ProductDetailsPage />}
             ></Route>
-            <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
-            <Route path="WalkInOrdering" element={<WalkInOrdering />} />
-            <Route path="SalesPage" element={<SalesPage />} />
-            <Route path="NotificationPage" element={<NotificationPage />} />
-            <Route path="Notifs" element={<Notifs />} />
-          </Route>
-        </Route>
+            <Route path="/ContactUs" element={<ContactUs />}></Route>
+            <Route path="/Faqs" element={<Faqs />}></Route>
+            <Route path="/AboutUs" element={<AboutUs />}></Route>
 
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+            {/* Protected user routes */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
+              <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
+              <Route path="/UserOrderPage" element={<UserOrderPage />} />
+              <Route path="/UserOrderPage2" element={<UserOrderPage2 />} />
+              <Route path="/UserSettings" element={<UserSettings />} />
+              <Route
+                path="/UserViewOrderDetails/:id"
+                element={<UserViewOrderDetails />}
+              />
+            </Route>
+          </Route>
+
+          <Route element={<ProductListLayout />}>
+            <Route path="/ProductListPage" element={<ProductPage />}></Route>
+          </Route>
+
+          <Route element={<PrivateRoute />}>
+            <Route path="/Admin" element={<AdminLayout />}>
+              <Route path="DashBoard" element={<AdminDashboard />} />
+              <Route path="AddProduct" element={<AddProd />} />
+              <Route path="EditProduct/:id" element={<EditProd />} />
+              <Route path="ProductManagement" element={<ProdManagement />} />
+              <Route path="AccountManagement" element={<AccManagement />} />
+              <Route path="Orders" element={<Orders />} />
+              <Route
+                path="AdminOrderDetails/:id"
+                element={<AdminOrderDetails />}
+              />
+              <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
+              <Route path="AdminAddUser" element={<AdminAddUser />} />
+              <Route path="ViewOrder/:id" element={<ViewOrder />} />
+              <Route path="AdminUserEdit/:id" element={<AdminUserEdit />} />
+              <Route
+                path="InventoryManagement"
+                element={<InventoryManagement />}
+              ></Route>
+              <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
+              <Route path="WalkInOrdering" element={<WalkInOrdering />} />
+              <Route path="SalesPage" element={<SalesPage />} />
+              <Route path="NotificationPage" element={<NotificationPage />} />
+              <Route path="Notifs" element={<Notifs />} />
+            </Route>
+          </Route>
+
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }

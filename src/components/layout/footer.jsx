@@ -50,7 +50,7 @@ function Footer() {
 
             {/* Unique Heat Level Guide */}
             <div className="rounded-lg border border-orange-200 bg-gradient-to-r from-yellow-50 to-red-50 p-4">
-              <h4 className="text-content font-heading mb-2 text-sm font-semibold">
+              <h4 className="font-heading mb-2 text-sm font-semibold text-black">
                 Heat Level Guide
               </h4>
               <div className="space-y-1">
@@ -208,7 +208,7 @@ function Footer() {
 
             {/* Unique Features */}
             <div className="rounded-lg bg-gray-50 p-4">
-              <h5 className="text-content font-heading mb-3 text-sm font-semibold">
+              <h5 className="font-heading mb-3 text-sm font-semibold text-black">
                 Why Choose Us?
               </h5>
               <div className="space-y-2">
@@ -229,7 +229,7 @@ function Footer() {
 
             {/* Fun Sauce Fact */}
             <div className="rounded-lg border-l-4 border-red-500 bg-gradient-to-r from-red-50 to-orange-50 p-4">
-              <h5 className="text-content font-heading mb-1 text-sm font-semibold">
+              <h5 className="font-heading mb-1 text-sm font-semibold text-black">
                 Spicy Fact
               </h5>
               <p className="text-lighter text-xs">

@@ -31,10 +31,10 @@ function Navbar() {
 
   return (
     <header className="bg-card sticky top-0 z-50 w-full drop-shadow-md">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-2">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-4">
         <div className="flex flex-row items-center justify-center gap-4">
           <Link to="/" onClick={closeMobileMenu}>
-            <img className="h-12 w-auto cursor-pointer" src={Logo} alt="Logo" />
+            <img className="h-11 w-auto cursor-pointer" src={Logo} alt="Logo" />
           </Link>
           <h1 className="font-heading text-content hidden text-lg lg:block">
             Alas Delis and Spices
