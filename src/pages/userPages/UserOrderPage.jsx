@@ -34,6 +34,11 @@ function UserViewOrderPage() {
     [searchParams]
   );
 
+  const monthYearFilter = useMemo(
+    () => searchParams.get('month_year'),
+    [searchParams]
+  );
+
   const queryClient = useQueryClient();
 
   const fetchOrders = async () => {
@@ -74,6 +79,18 @@ function UserViewOrderPage() {
     keepPreviousData: true,
   });
 
+  const filteredOrders = useMemo(() => {
+    if (!monthYearFilter || orders.length === 0) return orders;
+    
+    const [year, month] = monthYearFilter.split('-');
+    
+    return orders.filter(order => {
+      const orderDate = new Date(order.order_date);
+      return orderDate.getFullYear() === parseInt(year) && 
+             (orderDate.getMonth() + 1) === parseInt(month);
+    });
+  }, [orders, monthYearFilter]);
+
   const cancelOrderMutation = useMutation({
     mutationFn: ({ orderId, note }) =>
       axios.put(`/api/orders/cancel/${orderId}`, { notes: note }),
@@ -103,15 +120,15 @@ function UserViewOrderPage() {
 
   return (
     <TooltipProvider>
-      <main className="bg-neutral min-h-screen pb-8 sm:pb-4">
-        <div className="mx-auto max-w-6xl p-4 sm:py-8 md:px-6 lg:px-8">
+      <main className="min-h-screen pb-8 bg-neutral sm:pb-4">
+        <div className="max-w-6xl p-4 mx-auto sm:py-8 md:px-6 lg:px-8">
           {/* Header Section */}
           <div className="mb-6 text-center sm:mb-8">
-            <div className="mb-2 flex flex-col items-start justify-center">
-              <h1 className="text-content font-heading text-2xl font-semibold sm:text-3xl">
+            <div className="flex flex-col items-start justify-center mb-2">
+              <h1 className="text-2xl font-semibold text-content font-heading sm:text-3xl">
                 Your Orders
               </h1>
-              <p className="text-lighter text-base sm:text-lg">
+              <p className="text-base text-lighter sm:text-lg">
                 Track your recent orders and stay updated on their status in one
                 place.
               </p>
@@ -121,23 +138,23 @@ function UserViewOrderPage() {
           {/* Main Content Layout */}
           <div className="flex gap-6">
             {/* Desktop Sidebar - Hidden on mobile */}
-            <div className="sticky top-4 hidden h-fit self-start lg:block">
-              <OrderFiltersPanel order={orders} />
+            <div className="sticky self-start hidden top-4 h-fit lg:block">
+              <OrderFiltersPanel />
             </div>
 
             {/* Orders Table - Full width on mobile */}
-            <div className="min-w-0 flex-1">
+            <div className="flex-1 min-w-0">
               {isLoading ? (
-                <div className="bg-background text-lighter flex h-64 items-center justify-center rounded-lg border sm:h-96">
+                <div className="flex items-center justify-center h-64 border rounded-lg bg-background text-lighter sm:h-96">
                   <div className="text-center">
-                    <div className="border-primary mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2"></div>
+                    <div className="w-8 h-8 mx-auto mb-4 border-b-2 rounded-full border-primary animate-spin"></div>
                     <p className="text-sm sm:text-base">Loading orders...</p>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <OrdersTable
-                    orders={orders || []}
+                    orders={filteredOrders || []}
                     onCancelOrder={(id) => {
                       setCancelingOrderId(id);
                       setShowCancelModal(true);
@@ -154,19 +171,19 @@ function UserViewOrderPage() {
         <div className="lg:hidden">
           <Button
             size="icon"
-            className="fixed right-10 bottom-10 z-50 rounded-full shadow-lg"
+            className="fixed z-50 rounded-full shadow-lg right-10 bottom-10"
             onClick={() => setShowMobileFilters(true)}
           >
-            <SlidersHorizontal className="h-5 w-5" />
+            <SlidersHorizontal className="w-5 h-5" />
           </Button>
 
           <Dialog open={showMobileFilters} onOpenChange={setShowMobileFilters}>
             <DialogContent className="w-[90%] max-w-sm rounded-2xl p-0">
-              <DialogHeader className="border-b p-4">
+              <DialogHeader className="p-4 border-b">
                 <DialogTitle>Order Filters</DialogTitle>
               </DialogHeader>
               <div className="max-h-[70vh] overflow-y-auto px-2">
-                <OrderFiltersPanel order={orders} />
+                <OrderFiltersPanel />
               </div>
             </DialogContent>
           </Dialog>
