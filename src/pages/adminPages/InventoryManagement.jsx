@@ -19,7 +19,6 @@ import {
 } from 'flowbite-react';
 import {
   Edit,
-  Package,
   PackagePlus,
   AlertTriangle,
   CheckCircle,
@@ -197,6 +196,7 @@ function InventoryManagement() {
                       <Badge
                         color={product.is_active ? 'success' : 'failure'}
                         icon={product.is_active ? CheckCircle : XCircle}
+                        className="flex items-center justify-center gap-1 px-3"
                       >
                         {product.is_active ? 'Active' : 'Inactive'}
                       </Badge>
@@ -239,10 +239,14 @@ function InventoryManagement() {
         <ModalBody>
           <form id="editForm" onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="restock_quantity"
+                className="mb-2 block text-sm font-medium text-gray-700"
+              >
                 Restock Amount
               </label>
               <input
+                id="restock_quantity"
                 type="number"
                 name="restock_quantity"
                 value={formData.restock_quantity}
@@ -252,10 +256,14 @@ function InventoryManagement() {
               />
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="price"
+                className="mb-2 block text-sm font-medium text-gray-700"
+              >
                 Price
               </label>
               <input
+                id="price"
                 type="number"
                 step="0.01"
                 name="price"
