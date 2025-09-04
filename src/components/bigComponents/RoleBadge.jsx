@@ -6,17 +6,17 @@ const RoleBadge = ({ role }) => {
   const roleConfig = {
     admin: {
       icon: Shield,
-      color: 'blue',
+      color: 'cyan',
       text: 'Admin',
     },
     staff: {
       icon: Briefcase,
-      color: 'teal',
+      color: 'blue',
       text: 'Staff',
     },
     customer: {
       icon: ShoppingCart,
-      color: 'lime',
+      color: 'yellow',
       text: 'Customer',
     },
     default: {
@@ -35,7 +35,7 @@ const RoleBadge = ({ role }) => {
     <Badge
       color={color}
       icon={icon}
-      className="flex items-center justify-center gap-1"
+      className="flex items-center justify-center gap-1 px-3"
     >
       {text}
     </Badge>
