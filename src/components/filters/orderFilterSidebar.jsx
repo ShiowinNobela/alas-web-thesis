@@ -13,7 +13,7 @@ const statuses = [
   'cancelled',
   'refunded',
   'returned',
-];``
+];
 
 const items = [
   { value: 'gcash', label: 'GCash', Icon: SwatchBook },
@@ -150,7 +150,6 @@ export default function OrderFiltersPanel() {
 
       <InputSearch placeholder="Search orders..." />
 
-      {/* Month-Year Filter */}
       <div className="relative pb-3 border-b border-lighter">
         <h4 className="flex items-center justify-between mb-2 text-sm font-semibold">
           <span className="flex items-center gap-1">

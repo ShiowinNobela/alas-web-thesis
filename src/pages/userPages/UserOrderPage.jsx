@@ -39,6 +39,7 @@ function UserViewOrderPage() {
     [searchParams]
   );
 
+
   const queryClient = useQueryClient();
 
   const fetchOrders = async () => {
@@ -62,7 +63,11 @@ function UserViewOrderPage() {
       .map((p) => `payment_method=${encodeURIComponent(p)}`)
       .join('&');
 
-    const queryString = [statusQuery, paymentQuery].filter(Boolean).join('&');
+    const monthYearQuery = monthYearFilter
+      ? `month_year=${encodeURIComponent(monthYearFilter)}`
+      : '';
+
+    const queryString = [statusQuery, paymentQuery, monthYearQuery].filter(Boolean).join('&');
     const url = `/api/orders${queryString ? `?${queryString}` : ''}`;
 
     const response = await axios.get(url);
@@ -74,22 +79,10 @@ function UserViewOrderPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['orders', statusFilters, paymentFilters, orderIdSearch],
+    queryKey: ['orders', statusFilters, paymentFilters, orderIdSearch, monthYearFilter],
     queryFn: fetchOrders,
     keepPreviousData: true,
   });
-
-  const filteredOrders = useMemo(() => {
-    if (!monthYearFilter || orders.length === 0) return orders;
-    
-    const [year, month] = monthYearFilter.split('-');
-    
-    return orders.filter(order => {
-      const orderDate = new Date(order.order_date);
-      return orderDate.getFullYear() === parseInt(year) && 
-             (orderDate.getMonth() + 1) === parseInt(month);
-    });
-  }, [orders, monthYearFilter]);
 
   const cancelOrderMutation = useMutation({
     mutationFn: ({ orderId, note }) =>
@@ -154,7 +147,7 @@ function UserViewOrderPage() {
               ) : (
                 <div className="space-y-4">
                   <OrdersTable
-                    orders={filteredOrders || []}
+                    orders={orders || []}
                     onCancelOrder={(id) => {
                       setCancelingOrderId(id);
                       setShowCancelModal(true);

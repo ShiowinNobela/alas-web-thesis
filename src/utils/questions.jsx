@@ -15,7 +15,7 @@ export const questions = [
             <Link to="/ProductListPage" className="text-blue-600 underline">
               visit our Menu page
             </Link>
-            to start shopping right away.
+           {' '} to start shopping right away.
           </p>
         ),
       },
@@ -27,12 +27,19 @@ export const questions = [
       {
         question: 'Can I cancel or modify an order after placing it?',
         answer:
-          'Orders can be modified or canceled within a limited time after placing, depending on order status. Contact customer support for assistance.',
+          "Please contact us within 1 hour of placing your order or before it moves to 'Preparing for Shipment' status. You can also contact us through our social media pages if there's a concern you want help with.",
       },
       {
         question: 'How many product variants are available?',
-        answer:
-          'There are over 20 product variants available, depending on the season and crop availability.',
+        answer: (
+          <p>
+            There are over 20 product variants available, depending on the season and crop availability. You can also check our {' '}
+            <Link to="/" className="text-blue-600 underline">
+              Seasonal Item Selection 
+            </Link>
+            {' '} Here to know which items are currently available and when will other items will be available.
+          </p>
+        ),
       },
       {
         question: 'Do you offer bulk orders for gifting or events?',
@@ -44,6 +51,16 @@ export const questions = [
         answer:
           'Yes, banners and notifications on the website will display upcoming events and stall locations.',
       },
+      {
+        question: 'Do you offer subscriptions or recurring orders?',
+        answer:
+          'Not currently, but we are exploring this option! Follow us on social media or sign up for our newsletter to be the first to know when we launch a subscription service.',
+      },
+      {
+        question: 'What are your packaging materials made of?',
+        answer:
+          'We are committed to sustainability. We use recyclable cardboard and glass jars. Please reuse or recycle where possible!',
+      },
     ],
   },
   {
@@ -53,7 +70,7 @@ export const questions = [
         question: 'What payment methods are accepted?',
         // sample list
         answer: (
-          <ul className="list-disc pl-5">
+          <ul className="pl-5 list-disc">
             <li>GCash</li>
             <li>Maya (QR code)</li>
             <li>Direct bank transfer</li>
@@ -111,6 +128,11 @@ export const questions = [
         answer:
           'Check the order tracking link provided in the confirmation email or message. If there’s no update or delay, contact support to get assistance and coordinate with the courier service if needed.',
       },
+      {
+        question: 'Do you deliver on weekends/holidays',
+        answer:
+          'This depends on our courier schedules. Delivery attempts are typically made everyday. You will be notified by the courier or by us if there will be delays and delivery is available in your area.',
+      },
     ],
   },
   {
@@ -129,7 +151,7 @@ export const questions = [
       {
         question: 'Can I request a refund for a damaged item?',
         answer:
-          'Refunds are possible for items damaged in transit, especially if a replacement is not available.',
+          'Refunds are possible for items damaged in transit, especially if a replacement is not available. You will receive an email confirmation once the refund has been initiated',
       },
       {
         question: 'How long do refunds usually take to process?',
@@ -173,8 +195,14 @@ export const questions = [
     questions: [
       {
         question: 'How can I create an account?',
-        answer:
-          'Click “Sign Up” on the website and enter the required information. A confirmation email will be sent to verify the registration.',
+        answer: ( 
+        <div>
+           <p> Click “Sign Up” on the website and enter the required information. A confirmation email will be sent to verify the registration. or click here {' '} 
+            <Link to="/RegPage" className="text-blue-600 underline">Sign Up</Link>
+           </p>
+           
+           </div>
+           )
       },
       {
         question: 'What should I do if I forget my password?',
@@ -192,6 +220,11 @@ export const questions = [
           'Yes, frequent customers may qualify for rewards such as discounts or “buy five get one free” promos.',
       },
       {
+        question: 'How do I join the loyalty program?',
+        answer:
+          "It's automatic! Create an account and start purchasing. You can earn vouchers on hitting milestones, which you can redeem on future orders. You can check your vouchers in the cart.",
+      },
+      {
         question: 'How do I leave a product review?',
         // Full jsx sample (icons, images, text colors)
         answer: (
@@ -203,7 +236,7 @@ export const questions = [
             </p>
 
             <div className="flex items-center gap-2 text-green-600">
-              <Signature className="h-5 w-5" />
+              <Signature className="w-5 h-5" />
               <span>
                 Verified purchase reviews are marked with a check icon.
               </span>
@@ -212,7 +245,7 @@ export const questions = [
             <img
               src="https://preview.redd.it/u7lozj3xywo91.jpg?width=1080&crop=smart&auto=webp&s=3031b3dd9263f0cc01ccf4c567d5fb73373da915"
               alt="Review screenshot"
-              className="rounded border"
+              className="border rounded"
             />
           </div>
         ),
@@ -224,4 +257,45 @@ export const questions = [
       },
     ],
   },
+  {
+    category: 'Product Quality & Sourcing',
+    questions: [
+      {
+        question: 'How fresh are your products? / What is your shelf life?',
+        answer: 'Our products are made in small batches weekly. We recommend consuming them within [X] days for optimal freshness. Each jar is labeled with a "Best Before" date.'
+      },
+      {
+        question: 'Are your ingredients locally sourced?',
+        answer:
+          'Yes, we prioritize working with local farmers and suppliers to ensure freshness and support our community. We source our raw materials from [Region/Farm].',
+      },
+    ],
+  },
+  {
+    category: 'Contact & Support',
+    questions: [
+      {
+        question: "What's the best way to contact customer service?",
+        answer: (
+          <div>
+            <p>
+              For the fastest response, please message us on our official Facebook Page or Instagram account
+            </p>
+            <a href="https://www.facebook.com/alas918" className="text-blue-600 underline">
+              https://www.facebook.com/alas918
+            </a>
+            <p>
+              You can also email us at [email@address.com]. Our team typically responds within 24 hours on business days.
+            </p>
+          </div>
+        )
+      },
+      {
+        question: 'What are your customer service hours',
+        answer:
+          'Our online support team is available from 8 AM - 10 PM, Monday to Sunday, excluding public holidays.',
+      },
+    ],
+  },
+
 ];
