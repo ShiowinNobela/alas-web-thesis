@@ -10,8 +10,14 @@ import {
 } from 'flowbite-react';
 import SummaryCard from '@/components/bigComponents/SummaryCard';
 import RevenueChart from '@/components/charts/RevenueChart';
+import CardSkeleton from '@/components/skeletons/CardSkeleton';
+import ChartSkeleton from '@/components/skeletons/ChartSkeleton';
+import ListCardSkeleton from '@/components/skeletons/ListCardSkeleton';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 function AdminDashboard() {
+
+  const isLoading = false;
   const revenueCategories = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const revenueSeries = [
     {
@@ -21,11 +27,11 @@ function AdminDashboard() {
   ];
 
   return (
-    <div className="bg-admin grid grid-cols-1 gap-6 p-4 lg:grid-cols-6">
+    <div className="grid grid-cols-1 gap-6 p-4 bg-admin lg:grid-cols-6">
       {/* Performance Indicators */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6">
-        {[
-          {
+        {isLoading?  [...Array(5)].map((_, idx) => <CardSkeleton key={idx} />)
+          : [{
             title: 'Total Sales',
             value: '$12,450',
             icon: 'sales',
@@ -65,9 +71,19 @@ function AdminDashboard() {
           />
         ))}
       </div>
-      <RevenueChart series={revenueSeries} categories={revenueCategories} />
+      
+      {/* Revenue Chart */}
+      {isLoading ? (
+        <ChartSkeleton />
+      ) : (
+        <RevenueChart series={revenueSeries} categories={revenueCategories} />
+      )}
+
       {/* Low Stock Alert */}
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
+      {isLoading ? (
+        <ListCardSkeleton items={4} />
+      ) : (
+        <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
         <h3 className="mb-4 text-lg font-semibold">Low Stock Alerts</h3>
         <ul className="space-y-3">
           {['Hot Sauce', 'BBQ Sauce', 'Garlic Mayo'].map((item, idx) => (
@@ -78,8 +94,15 @@ function AdminDashboard() {
           ))}
         </ul>
       </Card>
+      )}
+      
+
+
       {/* Recent Orders */}
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
+      {isLoading ? (
+        <TableSkeleton columns={4} rows={3} />
+      ) : (
+      <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-4">
         <h3 className="mb-4 text-lg font-semibold">Recent Orders</h3>
         <Table striped hoverable>
           <TableHead>
@@ -88,7 +111,7 @@ function AdminDashboard() {
             <TableHeadCell>Status</TableHeadCell>
             <TableHeadCell>Total</TableHeadCell>
           </TableHead>
-          <TableBody className="text-content divide-y">
+          <TableBody className="divide-y text-content">
             {[
               {
                 id: '#1234',
@@ -119,8 +142,13 @@ function AdminDashboard() {
           </TableBody>
         </Table>
       </Card>
+      )}
+      
       {/* Quick Actions */}
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
+      {isLoading ? (
+        <ListCardSkeleton items={4} />
+      ) : (
+      <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
         <h3 className="mb-4 text-lg font-semibold">Quick Actions</h3>
         <div className="flex flex-col gap-3">
           <Button color="gray">Add Product</Button>
@@ -128,8 +156,11 @@ function AdminDashboard() {
           <Button color="gray">Manage Orders</Button>
         </div>
       </Card>
+      )}
+
     </div>
   );
+
 }
 
 export default AdminDashboard;

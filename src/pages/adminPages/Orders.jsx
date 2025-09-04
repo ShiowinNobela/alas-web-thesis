@@ -17,6 +17,7 @@ import OrderSummary from '@/components/bigComponents/OrderSummary';
 import AdminOrderFilters from '@/components/filters/AdminOrderFilter';
 import AdminOrdersTable from '@/components/tables/AdminOrdersTable';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 function AdminViewOrderPage() {
   const queryClient = useQueryClient();
@@ -38,6 +39,7 @@ function AdminViewOrderPage() {
   const [searchId, setSearchId] = useState('');
   const [uploadedImage, setUploadedImage] = useState('');
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const isLoading = false;
 
   const { data: orders = [], refetch: refetchOrders } = useQuery({
     queryKey: ['orders', status, startDate, endDate, searchId],
@@ -161,8 +163,8 @@ function AdminViewOrderPage() {
   return (
     <>
       <Toaster richColors />
-      <div className="bg-admin flex flex-col overflow-x-auto">
-        <main className="flex w-full flex-col gap-4 p-4">
+      <div className="flex flex-col overflow-x-auto bg-admin">
+        <main className="flex flex-col w-full gap-4 p-4">
           <OrderSummary
             summaryData={summaryData}
             last30SummaryData={last30SummaryData}
@@ -178,15 +180,18 @@ function AdminViewOrderPage() {
             searchId={searchId}
             setSearchId={setSearchId}
           />
-
-          <AdminOrdersTable
-            orders={sortedOrders}
-            sortConfig={sortConfig}
-            handleSort={handleSort}
-            getStatusColor={getStatusStyle}
-            onStatusUpdateClick={handleStatusUpdateClick}
-            onViewHistory={fetchOrderHistory}
-          />
+          {isLoading ? (
+        <TableSkeleton columns={4} rows={10} />
+        ) : (
+            <AdminOrdersTable
+              orders={sortedOrders}
+              sortConfig={sortConfig}
+              handleSort={handleSort}
+              getStatusColor={getStatusStyle}
+              onStatusUpdateClick={handleStatusUpdateClick}
+              onViewHistory={fetchOrderHistory}
+            />
+        )}
         </main>
 
         {showHistoryModal && (

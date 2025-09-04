@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import CancelOrderModal from '@/components/modals/CanceLOrderModal';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 function UserViewOrderPage() {
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -138,12 +139,7 @@ function UserViewOrderPage() {
             {/* Orders Table - Full width on mobile */}
             <div className="flex-1 min-w-0">
               {isLoading ? (
-                <div className="flex items-center justify-center h-64 border rounded-lg bg-background text-lighter sm:h-96">
-                  <div className="text-center">
-                    <div className="w-8 h-8 mx-auto mb-4 border-b-2 rounded-full border-primary animate-spin"></div>
-                    <p className="text-sm sm:text-base">Loading orders...</p>
-                  </div>
-                </div>
+                <TableSkeleton columns={6} rows={10} />
               ) : (
                 <div className="space-y-4">
                   <OrdersTable

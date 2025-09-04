@@ -87,6 +87,10 @@ export const questions = [
         question: 'Can I pay using a credit card or debit card?',
         answer: 'No, we cannot accept credit or debit cards as payment.',
       },
+      {
+        question: 'Is my payment information secure?',
+        answer: 'Yes, your security is our top priority. We do our best to protect your personal and payment information during all transactions. We do not store your credit card details on our servers.',
+      },
     ],
   },
   {
