@@ -17,6 +17,9 @@ import {
 } from 'flowbite-react';
 import { useState } from 'react';
 import SummaryCard from '@/components/bigComponents/SummaryCard';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import { Edit, Receipt} from 'lucide-react';
+
 
 const fetchWalkInOrders = async () => {
   const res = await fetch('http://localhost:3000/api/walkInOrders/');
@@ -32,6 +35,7 @@ function WalkInOrders() {
     data: orders = [],
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ['walkInOrders'],
     queryFn: fetchWalkInOrders,
@@ -51,7 +55,7 @@ function WalkInOrders() {
     0
   );
 
-  // Optional: track editing modal state if you want to edit order details
+  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingOrder, setEditingOrder] = useState(null);
 
@@ -65,15 +69,44 @@ function WalkInOrders() {
     setEditingOrder(null);
   };
 
+  const handleSaveChanges = () => {
+    console.log('Saving changes for order:', editingOrder);
+    closeModal();
+  };
+
+  const formatCurrency = (amount) => {
+    return `₱ ${parseFloat(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-PH', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
-    <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
-      <div className="bg-card mb-4 grid grid-cols-1 gap-4 rounded-xl p-4 ring-1 md:grid-cols-4">
+    <div className="flex flex-col h-full p-4 overflow-x-auto bg-admin">
+      <div className="grid grid-cols-1 gap-4 p-4 mb-4 bg-card rounded-xl ring-1 md:grid-cols-4">
+        
         <Card className="shadow-sm ring-1">
-          <h2 className="text-xl font-semibold">Walk-In Orders</h2>
-          <Button onClick={() => navigate('/Admin/WalkInOrdering')} size="sm">
-            Add a Walk-In Order?
-          </Button>
+          <div className="flex flex-col items-center text-center">
+            <Receipt className="w-8 h-8 mb-2 text-blue-600" />
+            <h2 className="text-xl font-semibold">Walk-In Orders</h2>
+            <Button 
+              onClick={() => navigate('/Admin/WalkInOrdering')} 
+              size="sm"
+              className="mt-3"
+              color="blue"
+            >
+              Create New Order
+            </Button>
+          </div>
         </Card>
+        
         <SummaryCard
           iconKey="orders"
           iconColor="text-blue-600"
@@ -84,76 +117,125 @@ function WalkInOrders() {
           iconKey="sales"
           iconColor="text-green-600"
           title="Total Walk-In Sales"
-          value={`₱ ${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+          value={formatCurrency(totalAmount)}
         />
 
         <SummaryCard
           iconKey="discount"
           iconColor="text-green-600"
           title="Total Walk-In Discounts"
-          value={`₱ ${totalDiscount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+          value={formatCurrency(totalDiscount)}
         />
       </div>
 
       {isLoading && (
-        <div className="flex justify-center py-12">
-          <Spinner size="xl" />
+        <div className="p-4 bg-white rounded-lg shadow-sm ring-1">
+          <TableSkeleton columns={8} rows={5} />
         </div>
       )}
 
       {error && (
-        <p className="text-center text-red-600">
-          Failed to load orders: {error.message}
-        </p>
+        <div className="flex flex-col items-center justify-center p-6 text-red-600 bg-white rounded-lg shadow-sm ring-1 min-h-[200px]">
+          <div className="text-center">
+            <p className="font-medium">Failed to load walk-in orders</p>
+            <p className="mt-1 text-sm">{error.message}</p>
+            <Button 
+              onClick={() => refetch()} 
+              color="gray"
+              className="mt-4"
+            >
+              Try Again
+            </Button>
+          </div>
+        </div>
       )}
 
-      {!isLoading && orders.length === 0 && (
-        <p className="text-center text-gray-500">No walk-in orders yet.</p>
+      {!isLoading && !error && orders.length === 0 && (
+        <div className="flex flex-col items-center justify-center p-6 text-gray-500 bg-white rounded-lg shadow-sm ring-1 min-h-[200px]">
+          <Receipt className="w-12 h-12 mb-3 opacity-50" />
+          <p className="text-lg font-medium">No walk-in orders yet</p>
+          <p className="mt-1 text-sm">Create your first walk-in order to get started</p>
+          <Button 
+            onClick={() => navigate('/Admin/WalkInOrdering')} 
+            color="blue"
+            className="mt-4"
+          >
+            Create Order
+          </Button>
+        </div>
       )}
 
-      {orders.length > 0 && (
-        <div className="relative overflow-x-auto rounded-xl shadow-md ring-1">
-          <Table hoverable striped className="ring-1">
-            <TableHead>
+      {!isLoading && !error && orders.length > 0 && (
+        <div className="relative overflow-x-auto shadow-md rounded-xl ring-1">
+          <Table hoverable striped>
+            <TableHead className="bg-gray-50">
               <TableRow>
                 <TableHeadCell>Order ID</TableHeadCell>
-                <TableHeadCell>Customer Name</TableHeadCell>
-                <TableHeadCell>Email</TableHeadCell>
-                <TableHeadCell>Date</TableHeadCell>
+                <TableHeadCell>Customer</TableHeadCell>
+                <TableHeadCell>Date & Time</TableHeadCell>
                 <TableHeadCell>Total Amount</TableHeadCell>
                 <TableHeadCell>Discount</TableHeadCell>
+                <TableHeadCell>Net Amount</TableHeadCell>
                 <TableHeadCell>Notes</TableHeadCell>
                 <TableHeadCell>Actions</TableHeadCell>
               </TableRow>
             </TableHead>
-            <TableBody className="text-content">
+            <TableBody className="divide-y">
               {orders.map((order) => (
                 <TableRow
                   key={order.id}
-                  className="cursor-pointer hover:bg-gray-50"
+                  className="transition-colors cursor-pointer hover:bg-gray-50"
                   onClick={() => openEditModal(order)}
                 >
-                  <TableCell className="text-xs">{order.id}</TableCell>
-                  <TableCell>{order.customer_name}</TableCell>
-                  <TableCell>{order.customer_email}</TableCell>
-                  <TableCell>
-                    {new Date(order.sale_date).toLocaleDateString()}
+                  <TableCell className="font-mono text-sm font-medium">
+                    #{order.id}
                   </TableCell>
+                  
                   <TableCell>
-                    ₱ {parseFloat(order.total_amount).toLocaleString()}
+                    <div className="flex flex-col">
+                      <span className="font-medium">{order.customer_name}</span>
+                      {order.customer_email && (
+                        <span className="text-xs text-gray-500">{order.customer_email}</span>
+                      )}
+                    </div>
                   </TableCell>
+                  
                   <TableCell>
-                    ₱ {parseFloat(order.discount_amount).toLocaleString()}
+                    {formatDate(order.sale_date)}
                   </TableCell>
-                  <TableCell>{order.notes}</TableCell>
-                  <TableCell className="flex justify-center gap-2">
+                  
+                  <TableCell className="font-medium">
+                    {formatCurrency(order.total_amount)}
+                  </TableCell>
+                  
+                  <TableCell className={order.discount_amount > 0 ? "text-orange-600" : "text-gray-400"}>
+                    {order.discount_amount > 0 ? formatCurrency(order.discount_amount) : "None"}
+                  </TableCell>
+                  
+                  <TableCell className="font-medium text-green-600">
+                    {formatCurrency(order.total_amount - (order.discount_amount || 0))}
+                  </TableCell>
+                  
+                  <TableCell>
+                    {order.notes ? (
+                      <span className="text-sm text-gray-600 line-clamp-1" title={order.notes}>
+                        {order.notes}
+                      </span>
+                    ) : (
+                      <span className="text-sm text-gray-400">No notes</span>
+                    )}
+                  </TableCell>
+                  
+                  <TableCell>
                     <Button
                       color="gray"
+                      size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         openEditModal(order);
                       }}
                     >
+                      <Edit className="w-4 h-4 mr-1" />
                       Edit
                     </Button>
                   </TableCell>
@@ -163,16 +245,77 @@ function WalkInOrders() {
           </Table>
         </div>
       )}
-      <Modal show={isModalOpen} size="md" onClose={closeModal}>
-        <ModalHeader>Edit Order #{editingOrder?.id}</ModalHeader>
+
+      {/* Edit Modal */}
+      <Modal show={isModalOpen} size="lg" onClose={closeModal}>
+        <ModalHeader>
+          Edit Walk-In Order #{editingOrder?.id}
+        </ModalHeader>
         <ModalBody>
-          <p>Implement edit form here...</p>
+          {editingOrder ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Customer Name</label>
+                  <input
+                    type="text"
+                    defaultValue={editingOrder.customer_name}
+                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Customer Email</label>
+                  <input
+                    type="email"
+                    defaultValue={editingOrder.customer_email}
+                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Notes</label>
+                <textarea
+                  defaultValue={editingOrder.notes}
+                  rows={3}
+                  className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Total Amount</label>
+                  <div className="mt-1 text-lg font-semibold">
+                    {formatCurrency(editingOrder.total_amount)}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Discount</label>
+                  <input
+                    type="number"
+                    defaultValue={editingOrder.discount_amount}
+                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Net Amount</label>
+                  <div className="mt-1 text-lg font-semibold text-green-600">
+                    {formatCurrency(editingOrder.total_amount - (editingOrder.discount_amount || 0))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>Loading order details...</div>
+          )}
         </ModalBody>
         <ModalFooter>
-          <Button onClick={closeModal} color="gray">
-            Close
+          <Button color="gray" onClick={closeModal}>
+            Cancel
           </Button>
-          <Button /* onClick={handleSave} */>Save Changes</Button>
+          <Button onClick={handleSaveChanges} color="blue">
+            Save Changes
+          </Button>
         </ModalFooter>
       </Modal>
     </div>

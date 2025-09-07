@@ -14,6 +14,7 @@ import {
 import { UserCircle, Users, User, Contact, Edit, UserPlus } from 'lucide-react';
 import ButtonGroupFilter from '@/components/bigComponents/ButtonGroupFilter';
 import RoleBadge from '@/components/bigComponents/RoleBadge';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 const fetchUser = async () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
@@ -40,7 +41,7 @@ function AccountManagement() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  useQuery({
+  const { isLoading: isVerifyingUser, isError: isVerificationError } = useQuery({
     queryKey: ['currentUser'],
     queryFn: fetchUser,
     onSuccess: (data) => {
@@ -48,21 +49,25 @@ function AccountManagement() {
         window.location.href = '/';
       }
     },
-    onError: () => {
-      console.error('Unable to fetch user.');
+    onError: (error) => {
+      console.error('Unable to fetch user:', error);
+      if (error.response?.status === 401) {
+        window.location.href = '/login';
+      }
     },
+    retry: 1,
   });
 
   const {
     data: users = [],
-    isLoading,
-    isError,
+    isLoading: isUsersLoading,
+    isError: isUsersError,
   } = useQuery({
     queryKey: ['adminUsers', statusFilter],
     queryFn: () => fetchAdminUsers(statusFilter),
+    enabled: !isVerifyingUser && !isVerificationError, 
   });
 
-  // Updated roleTabs with Lucide icons
   const roleTabs = [
     { label: 'All', value: 'All', icon: UserCircle },
     { label: 'Admin', value: 'admin', icon: Users },
@@ -80,6 +85,10 @@ function AccountManagement() {
     onSuccess: () => {
       queryClient.invalidateQueries('adminUsers');
     },
+    onError: (error) => {
+      console.error('Failed to update user status:', error);
+      // Will Add Toast Later - 1
+    },
   });
 
   const filteredUsers =
@@ -89,10 +98,21 @@ function AccountManagement() {
           (user) => user.role_name.toLowerCase() === statusFilter.toLowerCase()
         );
 
+  if (isVerifyingUser) {
+    return (
+      <div className="flex items-center justify-center h-full p-4 bg-admin">
+        <div className="text-center">
+          <div className="w-12 h-12 mx-auto border-b-2 border-gray-900 rounded-full animate-spin"></div>
+          <p className="mt-2">Verifying permissions...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
-      <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1 dark:text-white">
-        <div className="flex flex-row justify-between p-5">
+    <div className="flex flex-col h-full p-4 overflow-x-auto bg-admin">
+      <main className="w-full mx-auto overflow-x-auto border shadow bg-card rounded-xl ring-1 dark:text-white">
+        <div className="flex flex-col gap-4 p-5 sm:flex-row sm:justify-between sm:items-center">
           <ButtonGroupFilter
             options={roleTabs}
             value={statusFilter}
@@ -102,19 +122,27 @@ function AccountManagement() {
           />
 
           <Link to="/Admin/AdminAddUser">
-            <Button color="gray" className="gap-2 dark:text-white">
-              <UserPlus className="h-5 w-5" />
+            <Button color="gray" className="w-full gap-2 dark:text-white sm:w-auto">
+              <UserPlus className="w-5 h-5" />
               Add User
             </Button>
           </Link>
         </div>
 
-        {/* Table */}
-        {isLoading ? (
-          <div className="p-6 text-center">Loading users...</div>
-        ) : isError ? (
-          <div className="p-6 text-center text-red-600">
-            Failed to load users.
+        {/* Table Section */}
+        {isUsersLoading ? (
+          <TableSkeleton columns={6} rows={5} />
+        ) : isUsersError ? (
+          <div className="flex items-center justify-center p-6 text-red-600 bg-white rounded-lg shadow-sm ring-1 min-h-[200px] mx-4 mb-4 dark:bg-gray-800 dark:text-white">
+            Failed to load users. Please try again.
+          </div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-6 text-gray-500 bg-white rounded-lg shadow-sm ring-1 min-h-[200px] mx-4 mb-4 dark:bg-gray-800 dark:text-white">
+            <UserCircle className="w-12 h-12 mb-2 opacity-50" />
+            <p>No users found</p>
+            {statusFilter !== 'All' && (
+              <p className="mt-1 text-sm">Try changing your filter settings</p>
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -143,7 +171,9 @@ function AccountManagement() {
                       <div className="font-medium text-teal-600 dark:text-teal-400">
                         {user.username ?? '–'}
                       </div>
-                      <div className="text-xs">{user.email ?? '–'}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        {user.email ?? '–'}
+                      </div>
                     </TableCell>
 
                     <TableCell className="">
@@ -168,29 +198,33 @@ function AccountManagement() {
                     </TableCell>
 
                     <TableCell className="flex items-center justify-end gap-2 py-4">
-                      <ToggleSwitch
-                        color={user.is_active ? 'success' : 'failure'}
-                        checked={user.is_active}
-                        onChange={() =>
-                          toggleUserStatus.mutate({
-                            id: user.id,
-                            newStatus: !user.is_active,
-                          })
-                        }
-                        label=""
-                        disabled={
-                          user.role_name === 'admin' ||
-                          toggleUserStatus.isLoading
-                        }
-                      />
-                      <Button
-                        color="gray"
-                        onClick={() =>
-                          navigate(`/Admin/AdminUserEdit/${user.id}`)
-                        }
-                      >
-                        <Edit className="size-4" />
-                      </Button>
+                      <div className="flex flex-col items-end gap-2 sm:flex-row">
+                        <ToggleSwitch
+                          color={user.is_active ? 'success' : 'failure'}
+                          checked={user.is_active}
+                          onChange={() =>
+                            toggleUserStatus.mutate({
+                              id: user.id,
+                              newStatus: !user.is_active,
+                            })
+                          }
+                          label=""
+                          disabled={
+                            user.role_name === 'admin' ||
+                            toggleUserStatus.isLoading
+                          }
+                          title={user.role_name === 'admin' ? 'Cannot deactivate admin users' : ''}
+                        />
+                        <Button
+                          color="gray"
+                          onClick={() =>
+                            navigate(`/Admin/AdminUserEdit/${user.id}`)
+                          }
+                          size="sm"
+                        >
+                          <Edit className="size-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

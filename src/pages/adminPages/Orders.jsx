@@ -18,6 +18,7 @@ import AdminOrderFilters from '@/components/filters/AdminOrderFilter';
 import AdminOrdersTable from '@/components/tables/AdminOrdersTable';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import { el } from 'date-fns/locale';
 
 function AdminViewOrderPage() {
   const queryClient = useQueryClient();
@@ -39,9 +40,9 @@ function AdminViewOrderPage() {
   const [searchId, setSearchId] = useState('');
   const [uploadedImage, setUploadedImage] = useState('');
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const isLoading = false;
+ 
 
-  const { data: orders = [], refetch: refetchOrders } = useQuery({
+  const { data: orders = [], refetch: refetchOrders, isLoading: isOrdersLoading, isError: isOrdersError } = useQuery({
     queryKey: ['orders', status, startDate, endDate, searchId],
     queryFn: () => {
       if (searchId) {
@@ -57,7 +58,7 @@ function AdminViewOrderPage() {
     },
   });
 
-  const { data: summaryData = [] } = useQuery({
+  const { data: summaryData = [], isLoading: isSummaryLoading, isError: isSummaryError } = useQuery({
     queryKey: ['orderSummary', startDate, endDate],
     queryFn: () =>
       fetchOrderSummary(
@@ -67,7 +68,7 @@ function AdminViewOrderPage() {
     enabled: !!startDate && !!endDate,
   });
 
-  const { data: last30SummaryData = [] } = useQuery({
+  const { data: last30SummaryData = [], isLoading: isLast30SummaryLoading, isError: isLast30SummaryError } = useQuery({
     queryKey: ['last30OrderSummary'],
     queryFn: fetchLast30OrderSummary,
   });
@@ -150,6 +151,7 @@ function AdminViewOrderPage() {
     queryClient.invalidateQueries(['orders']);
     queryClient.invalidateQueries(['orderSummary']);
     queryClient.invalidateQueries(['last30OrderSummary']);
+    toast.info('Data refreshed');
   }, [queryClient]);
 
   const handleSearchById = useCallback(() => {
@@ -158,7 +160,19 @@ function AdminViewOrderPage() {
       refetchOrders();
       return;
     }
-  }, [searchId, refetchOrders]);
+
+    toast.loading('Searching for order...');
+    refetchOrders().finally(() => {
+      toast.dismiss();
+      if (orders.length === 0) {
+        toast.error('No order found with that ID.');
+      } else {
+        toast.success('Order found.');
+      }
+    });
+  }, [searchId, refetchOrders, orders.length]);
+
+  const isLoading = isOrdersLoading || isSummaryLoading || isLast30SummaryLoading;
 
   return (
     <>
@@ -172,6 +186,8 @@ function AdminViewOrderPage() {
             endDate={endDate}
             onRefresh={handleRefresh}
             onShowInfoModal={() => setShowInfoModal(true)}
+            isLoading={isSummaryLoading || isLast30SummaryLoading}
+            isError={isSummaryError || isLast30SummaryError}
           />
 
           <AdminOrderFilters
@@ -179,10 +195,43 @@ function AdminViewOrderPage() {
             onSearch={handleSearchById}
             searchId={searchId}
             setSearchId={setSearchId}
+            isLoading={isOrdersLoading}
           />
-          {isLoading ? (
-        <TableSkeleton columns={4} rows={10} />
-        ) : (
+
+          {isOrdersLoading ? (
+            <TableSkeleton columns={7} rows={10} />
+          ) : isOrdersError ? (
+            <div className="flex items-center justify-center p-6 text-red-600 bg-white rounded-lg shadow-sm ring-1 min-h-[200px]">
+              <div className="text-center">
+                <p className="font-medium">Failed to load orders</p>
+                <p className="mt-1 text-sm">Please try again later</p>
+                <button 
+                  onClick={() => refetchOrders()} 
+                  className="px-4 py-2 mt-3 text-sm bg-gray-100 rounded-md hover:bg-gray-200"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          ) : sortedOrders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-6 text-gray-500 bg-white rounded-lg shadow-sm ring-1 min-h-[200px]">
+              <svg className="w-12 h-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <p className="text-lg font-medium">No orders found</p>
+              {searchId ? (
+                <p className="mt-1 text-sm">No order found with ID: {searchId}</p>
+              ) : status || startDate || endDate ? (
+                <p className="mt-1 text-sm">Try adjusting your filters</p>
+              ) : null}
+              <button 
+                onClick={handleRefresh}
+                className="px-4 py-2 mt-4 text-sm text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200"
+              >
+                Clear Filters
+              </button>
+            </div>
+          ) : (
             <AdminOrdersTable
               orders={sortedOrders}
               sortConfig={sortConfig}
@@ -191,7 +240,7 @@ function AdminViewOrderPage() {
               onStatusUpdateClick={handleStatusUpdateClick}
               onViewHistory={fetchOrderHistory}
             />
-        )}
+          )}
         </main>
 
         {showHistoryModal && (
