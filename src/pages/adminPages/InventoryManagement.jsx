@@ -17,17 +17,11 @@ import {
   TableRow,
   ToggleSwitch,
 } from 'flowbite-react';
-import {
-  Edit,
-  PackagePlus,
-  AlertTriangle,
-  CheckCircle,
-  XCircle,
-} from 'lucide-react';
+import { Edit, PackagePlus, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import SummaryCard from '@/components/bigComponents/SummaryCard';
 
 const fetchProducts = async () => {
-  const res = await axios.get('/api/products/admin');
+  const res = await axios.get('/api/products/admin/list');
   return res.data;
 };
 
@@ -45,13 +39,8 @@ function InventoryManagement() {
 
   // Summary calculations
   const totalProducts = products.length;
-  const totalStock = products.reduce(
-    (sum, item) => sum + item.stock_quantity,
-    0
-  );
-  const lowStockItems = products.filter(
-    (item) => item.stock_quantity <= 10
-  ).length;
+  const totalStock = products.reduce((sum, item) => sum + item.stock_quantity, 0);
+  const lowStockItems = products.filter((item) => item.stock_quantity <= 10).length;
 
   // Toggle product status
   const toggleProductStatus = useMutation({
@@ -112,24 +101,9 @@ function InventoryManagement() {
       <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1">
         {/* Summary Cards */}
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
-          <SummaryCard
-            iconKey="lowStock"
-            iconColor="text-yellow-500"
-            title="Low Stock Items"
-            value={lowStockItems}
-          />
-          <SummaryCard
-            iconKey="packageBlue"
-            iconColor="text-blue-500"
-            title="Total Products"
-            value={totalProducts}
-          />
-          <SummaryCard
-            iconKey="packageGreen"
-            iconColor="text-green-500"
-            title="Total Stock"
-            value={totalStock}
-          />
+          <SummaryCard iconKey="lowStock" iconColor="text-yellow-500" title="Low Stock Items" value={lowStockItems} />
+          <SummaryCard iconKey="packageBlue" iconColor="text-blue-500" title="Total Products" value={totalProducts} />
+          <SummaryCard iconKey="packageGreen" iconColor="text-green-500" title="Total Stock" value={totalStock} />
         </div>
 
         {/* Action Bar */}
@@ -145,13 +119,9 @@ function InventoryManagement() {
 
         {/* Table */}
         {isLoading ? (
-          <div className="text-lighter p-6 text-center">
-            Loading products...
-          </div>
+          <div className="text-lighter p-6 text-center">Loading products...</div>
         ) : isError ? (
-          <div className="p-6 text-center text-red-600">
-            Failed to load products.
-          </div>
+          <div className="p-6 text-center text-red-600">Failed to load products.</div>
         ) : (
           <div className="overflow-x-auto">
             <Table hoverable striped>
@@ -169,10 +139,7 @@ function InventoryManagement() {
               </TableHead>
               <TableBody className="text-content">
                 {products.map((product) => (
-                  <TableRow
-                    key={product.id}
-                    className="transition duration-150 ease-in-out hover:bg-gray-50"
-                  >
+                  <TableRow key={product.id} className="transition duration-150 ease-in-out hover:bg-gray-50">
                     <TableCell className="font-medium">{product.id}</TableCell>
                     <TableCell>{product.name}</TableCell>
                     <TableCell>
@@ -189,9 +156,7 @@ function InventoryManagement() {
                         product.stock_quantity
                       )}
                     </TableCell>
-                    <TableCell>
-                      ₱{parseFloat(product.price).toFixed(2)}
-                    </TableCell>
+                    <TableCell>₱{parseFloat(product.price).toFixed(2)}</TableCell>
                     <TableCell>
                       <Badge
                         color={product.is_active ? 'success' : 'failure'}
@@ -201,16 +166,9 @@ function InventoryManagement() {
                         {product.is_active ? 'Active' : 'Inactive'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm">
-                      {new Date(product.updated_at).toLocaleString()}
-                    </TableCell>
+                    <TableCell className="text-sm">{new Date(product.updated_at).toLocaleString()}</TableCell>
                     <TableCell className="flex items-center gap-2">
-                      <Button
-                        outline
-                        color="gray"
-                        size="sm"
-                        onClick={() => openEditModal(product)}
-                      >
+                      <Button outline color="gray" size="sm" onClick={() => openEditModal(product)}>
                         <Edit className="h-4 w-4" />
                       </Button>
                       <ToggleSwitch
@@ -239,10 +197,7 @@ function InventoryManagement() {
         <ModalBody>
           <form id="editForm" onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label
-                htmlFor="restock_quantity"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="restock_quantity" className="mb-2 block text-sm font-medium text-gray-700">
                 Restock Amount
               </label>
               <input
@@ -256,10 +211,7 @@ function InventoryManagement() {
               />
             </div>
             <div>
-              <label
-                htmlFor="price"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="price" className="mb-2 block text-sm font-medium text-gray-700">
                 Price
               </label>
               <input
@@ -276,11 +228,7 @@ function InventoryManagement() {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button
-            type="submit"
-            form="editForm"
-            disabled={updateStockPrice.isLoading}
-          >
+          <Button type="submit" form="editForm" disabled={updateStockPrice.isLoading}>
             {updateStockPrice.isLoading ? 'Saving...' : 'Save Changes'}
           </Button>
           <Button color="gray" onClick={closeModal}>

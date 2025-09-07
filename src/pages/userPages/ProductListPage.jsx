@@ -36,16 +36,12 @@ function ProductPage() {
   };
 
   return (
-    <div className="bg-neutral min-h-full">
-      <div className="flex">
+    <div className="bg-neutral h-full">
+      <div className="flex pb-40">
         <div className="mx-auto h-full flex-1">
           <div className="flex flex-col items-center justify-center py-10">
-            <h1 className="font-heading text-content text-5xl">
-              Our Flavorful Lineup
-            </h1>
-            <p className="text-lighter text-lg">
-              From mild to wild - find your perfect heat level
-            </p>
+            <h1 className="font-heading text-content text-5xl">Our Flavorful Lineup</h1>
+            <p className="text-lighter text-lg">From mild to wild - find your perfect heat level</p>
           </div>
           <div className="flex-l mx-auto max-w-6xl px-4 pb-20">
             {isLoading ? (
@@ -62,11 +58,7 @@ function ProductPage() {
               <div className="mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {products.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onAddToCart={handleAddToCart}
-                    />
+                    <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
                   ))}
                 </div>
               </div>

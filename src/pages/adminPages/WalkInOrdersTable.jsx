@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import {
   Button,
   Card,
@@ -19,10 +20,12 @@ import { useState } from 'react';
 import SummaryCard from '@/components/bigComponents/SummaryCard';
 
 const fetchWalkInOrders = async () => {
-  const res = await fetch('http://localhost:3000/api/walkInOrders/');
-  if (!res.ok) throw new Error('Network response was not ok');
-  const json = await res.json();
-  return json.data;
+  try {
+    const res = await axios.get('http://localhost:3000/api/walkInOrders/');
+    return res.data.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message);
+  }
 };
 
 function WalkInOrders() {
@@ -42,14 +45,8 @@ function WalkInOrders() {
 
   // Summary calculations
   const totalOrders = orders.length;
-  const totalAmount = orders.reduce(
-    (sum, order) => sum + parseFloat(order.total_amount || 0),
-    0
-  );
-  const totalDiscount = orders.reduce(
-    (sum, order) => sum + parseFloat(order.discount_amount || 0),
-    0
-  );
+  const totalAmount = orders.reduce((sum, order) => sum + parseFloat(order.total_amount || 0), 0);
+  const totalDiscount = orders.reduce((sum, order) => sum + parseFloat(order.discount_amount || 0), 0);
 
   // Optional: track editing modal state if you want to edit order details
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,12 +71,7 @@ function WalkInOrders() {
             Add a Walk-In Order?
           </Button>
         </Card>
-        <SummaryCard
-          iconKey="orders"
-          iconColor="text-blue-600"
-          title="Total Walk-In Orders"
-          value={totalOrders}
-        />
+        <SummaryCard iconKey="orders" iconColor="text-blue-600" title="Total Walk-In Orders" value={totalOrders} />
         <SummaryCard
           iconKey="sales"
           iconColor="text-green-600"
@@ -101,15 +93,9 @@ function WalkInOrders() {
         </div>
       )}
 
-      {error && (
-        <p className="text-center text-red-600">
-          Failed to load orders: {error.message}
-        </p>
-      )}
+      {error && <p className="text-center text-red-600">Failed to load orders: {error.message}</p>}
 
-      {!isLoading && orders.length === 0 && (
-        <p className="text-center text-gray-500">No walk-in orders yet.</p>
-      )}
+      {!isLoading && orders.length === 0 && <p className="text-center text-gray-500">No walk-in orders yet.</p>}
 
       {orders.length > 0 && (
         <div className="relative overflow-x-auto rounded-xl shadow-md ring-1">
@@ -136,15 +122,9 @@ function WalkInOrders() {
                   <TableCell className="text-xs">{order.id}</TableCell>
                   <TableCell>{order.customer_name}</TableCell>
                   <TableCell>{order.customer_email}</TableCell>
-                  <TableCell>
-                    {new Date(order.sale_date).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    ₱ {parseFloat(order.total_amount).toLocaleString()}
-                  </TableCell>
-                  <TableCell>
-                    ₱ {parseFloat(order.discount_amount).toLocaleString()}
-                  </TableCell>
+                  <TableCell>{new Date(order.sale_date).toLocaleDateString()}</TableCell>
+                  <TableCell>₱ {parseFloat(order.total_amount).toLocaleString()}</TableCell>
+                  <TableCell>₱ {parseFloat(order.discount_amount).toLocaleString()}</TableCell>
                   <TableCell>{order.notes}</TableCell>
                   <TableCell className="flex justify-center gap-2">
                     <Button

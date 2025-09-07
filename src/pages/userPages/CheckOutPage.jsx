@@ -1,239 +1,201 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Toaster, toast } from 'sonner';
-import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
+import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import { checkoutSchema } from '@/validations/checkoutSchema';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import BackButton from '@/components/bigComponents/BackButton';
+import TextInput from '@/components/bigComponents/TextInput';
 import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import useUserStore from '@/stores/userStore';
+import LoadingModal from '@/components/modals/LoadingModal';
 
 function CheckOutPage() {
-  const [termsChecked, setTermsChecked] = useState(false);
+  const navigate = useNavigate();
+  const user = useUserStore((state) => state.user);
+  const [formErrors, setFormErrors] = useState({});
   const [getInfo, setGetInfo] = useState({
     payment_method: '',
-    address: '',
+    address: user?.address || '',
     notes: '',
     reference_number: '',
     account_name: '',
+    contact_number: user?.contact_number || '',
+    username: user?.username || '',
+    email: user?.email || '',
   });
 
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const user = JSON.parse(window.localStorage.getItem('user'));
+  // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get('/api/users', {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then((response) => setGetInfo(response.data))
-      .catch((error) => console.error('Error fetching user data:', error));
-  }, []);
-
-  const handleConfirmOrder = () => {
-    let couponCode = window.localStorage.getItem('couponCode');
-    if (
-      !couponCode ||
-      couponCode.trim() === '' ||
-      couponCode === 'null' ||
-      couponCode === 'undefined'
-    ) {
-      couponCode = null;
-    }
-    const payload = couponCode ? { ...getInfo, couponCode } : getInfo;
-
-    axios
-      .post('/api/orders', payload, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-      .then(() => {
-        toast.success('Order status updated successfully!');
-        setTimeout(() => navigate('/ProductListPage'), 1000);
-      })
-      .catch((err) => {
-        if (err.response?.status === 400) {
-          toast.error('Failed to update status: Bad Request');
-        } else {
-          toast.error('An unexpected error occurred');
-        }
+  const placeOrderMutation = useMutation({
+    mutationFn: (orderData) => axios.post('/api/orders', orderData),
+    onSuccess: () => {
+      toast.success('Order placed successfully!');
+      setGetInfo({
+        payment_method: '',
+        address: user?.address || '',
+        notes: '',
+        reference_number: '',
+        account_name: '',
+        contact_number: user?.contact_number || '',
+        username: user?.username || '',
+        email: user?.email || '',
       });
+      setFormErrors({});
+      setIsModalOpen(false);
+      navigate('/ProductListPage');
+    },
+    onError: (err) => {
+      setIsModalOpen(false);
+      if (err.response?.status === 400) {
+        toast.error('Failed to place order: Bad Request');
+      } else {
+        toast.error('An unexpected error occurred');
+      }
+    },
+  });
+
+  const handleConfirmOrder = async () => {
+    try {
+      await checkoutSchema.validate(getInfo, { abortEarly: false });
+      setFormErrors({});
+      setIsModalOpen(true); // Show modal while loading
+      placeOrderMutation.mutate(getInfo);
+    } catch (err) {
+      if (err.name === 'ValidationError') {
+        const errors = {};
+        err.inner.forEach((e) => (errors[e.path] = e.message));
+        setFormErrors(errors);
+        toast.error('Please fill in all required fields');
+      } else {
+        console.error(err);
+        toast.error('An unexpected error occurred');
+      }
+    }
   };
 
   return (
-    <>
-      <Toaster richColors />
-      <section className="flex min-h-full items-center justify-center bg-yellow-100 py-5">
-        <div className="mx-auto w-full max-w-4xl space-y-8 rounded-2xl bg-white px-6 py-8 shadow-lg">
-          {/* HEADER */}
-          <div className="relative mb-2 text-center">
-            <button
-              className="absolute left-0 text-sm font-medium text-blue-500 hover:text-blue-700"
-              onClick={() => window.history.back()}
-            >
-              ← Back
-            </button>
-            <h1 className="text-2xl font-bold tracking-wide text-gray-900 uppercase">
-              Checkout
-            </h1>
-          </div>
-
-          {/* FORM */}
-          <div className="flex flex-col gap-8 md:flex-row">
-            {/* LEFT COLUMN - Customer Info */}
-            <div className="flex-1 space-y-6 rounded-xl bg-gray-50 p-6 shadow-md">
-              <h2 className="mb-4 text-lg font-semibold text-gray-800">
-                Billing Information
-              </h2>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Name
-                </label>
-                <Input
-                  placeholder="Your Name"
-                  value={getInfo?.username}
-                  readOnly
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Phone Number
-                </label>
-                <Input
-                  type="number"
-                  placeholder="Your Phone Number"
-                  value={getInfo?.contact_number}
-                  onChange={(e) =>
-                    setGetInfo({ ...getInfo, contact_number: e.target.value })
-                  }
-                  onKeyDown={(e) =>
-                    ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-                  }
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Address
-                </label>
-                <Textarea
-                  placeholder="Your Address"
-                  value={getInfo?.address}
-                  onChange={(e) =>
-                    setGetInfo({ ...getInfo, address: e.target.value })
-                  }
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Note
-                </label>
-                <Textarea
-                  placeholder="Order Notes"
-                  value={getInfo?.notes}
-                  onChange={(e) =>
-                    setGetInfo({ ...getInfo, notes: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            {/* RIGHT COLUMN - Payment Info */}
-            <div className="flex-1 space-y-6 rounded-xl bg-gray-50 p-6 shadow-md">
-              <h2 className="mb-4 text-lg font-semibold text-gray-800">
-                Payment Information
-              </h2>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Email
-                </label>
-                <Input
-                  placeholder="Your Email"
-                  value={getInfo?.email}
-                  readOnly
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Payment Method
-                </label>
-                <select
-                  className="w-full rounded border border-gray-300 px-3 py-2 text-gray-700 shadow-inner focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  value={getInfo?.payment_method}
-                  onChange={(e) =>
-                    setGetInfo({ ...getInfo, payment_method: e.target.value })
-                  }
-                >
-                  <option disabled value="">
-                    -- select an option --
-                  </option>
-                  <option value="GCash">GCash</option>
-                  <option value="bank_transfer">Bank Transfer</option>
-                  <option value="Maya">Maya</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Account Name
-                </label>
-                <Input
-                  placeholder="Your GCash or Bank Account Name"
-                  value={getInfo?.account_name}
-                  onChange={(e) =>
-                    setGetInfo({ ...getInfo, account_name: e.target.value })
-                  }
-                />
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-700">
-                  Reference Number
-                </label>
-                <Input
-                  placeholder="Reference Number"
-                  value={getInfo?.reference_number}
-                  onChange={(e) =>
-                    setGetInfo({ ...getInfo, reference_number: e.target.value })
-                  }
-                />
-              </div>
-
-              <div className="space-y-3 border-t border-gray-300 pt-4">
-                <button
-                  type="button"
-                  className="text-left text-sm font-semibold text-blue-500 underline"
-                  onClick={() => setOpen(true)}
-                >
-                  Terms and Conditions
-                </button>
-
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    checked={termsChecked}
-                    onChange={(e) => setTermsChecked(e.target.checked)}
-                  />
-                  <p className="text-sm text-gray-700">
-                    I Accept All Terms and Conditions
-                  </p>
-                </div>
-
-                <button
-                  className="w-full rounded-lg bg-blue-600 py-3 font-bold text-white transition duration-300 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={!termsChecked}
-                  onClick={handleConfirmOrder}
-                >
-                  Checkout!
-                </button>
-              </div>
-            </div>
-          </div>
+    <section className="bg-neutral min-h-screen py-8">
+      <main className="relative mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+        <div className="absolute top-0 left-0 mt-4">
+          <BackButton />
         </div>
-      </section>
-    </>
+
+        <div className="mx-auto flex flex-col items-center justify-center pb-8">
+          <h1 className="text-content font-heading text-5xl">Checkout</h1>
+          <p className="text-lighter mt-2">Complete your order by filling the form below</p>
+        </div>
+
+        <div className="space-y-7">
+          {/* PERSONAL INFORMATION */}
+          <Card className="gap-5 p-8">
+            <CardTitle className="text-xl">Personal Information</CardTitle>
+            <CardDescription>
+              Your username and email are autofilled automatically but you can still change your phone number and
+              delivery address.
+            </CardDescription>
+            <TextInput label="Name *" value={getInfo.username || ''} readOnly />
+            <TextInput label="Email *" value={getInfo.email || ''} readOnly />
+            <TextInput
+              label="Phone Number *"
+              type="tel"
+              value={getInfo.contact_number || ''}
+              onChange={(value) => setGetInfo({ ...getInfo, contact_number: value })}
+              error={formErrors.contact_number}
+              placeholder="Your Phone Number"
+            />
+            <div className="mt-4">
+              <label htmlFor="checkout-address" className="text-lighter mb-1 block text-sm font-medium">
+                Delivery Address *
+              </label>
+              <Textarea
+                id="checkout-address"
+                placeholder="Your complete address"
+                value={getInfo.address || ''}
+                onChange={(e) => setGetInfo({ ...getInfo, address: e.target.value })}
+                className={formErrors.address ? 'border-red-500' : ''}
+                rows={3}
+              />
+              {formErrors.address && <p className="mt-1 text-xs text-red-500">{formErrors.address}</p>}
+            </div>
+          </Card>
+
+          {/* PAYMENT INFORMATION */}
+          <Card className="p-8">
+            <CardTitle className="text-xl">Payment Information</CardTitle>
+            <div className="mb-4">
+              <label htmlFor="checkout-payment-method" className="text-lighter mb-1 block text-sm font-medium">
+                Payment Method *
+              </label>
+              <select
+                id="checkout-payment-method"
+                value={getInfo.payment_method || ''}
+                onChange={(e) => setGetInfo({ ...getInfo, payment_method: e.target.value })}
+                className={`text-lighter w-full rounded border px-3 py-2 shadow-inner focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+                  formErrors.payment_method ? 'border-red-500' : 'border-gray-300'
+                }`}
+              >
+                <option disabled value="">
+                  -- select an option --
+                </option>
+                <option value="GCash">GCash</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="Maya">Maya</option>
+              </select>
+              {formErrors.payment_method && <p className="mt-1 text-xs text-red-500">{formErrors.payment_method}</p>}
+            </div>
+            <TextInput
+              label="Account Name *"
+              value={getInfo.account_name || ''}
+              onChange={(value) => setGetInfo({ ...getInfo, account_name: value })}
+              error={formErrors.account_name}
+              placeholder="Your GCash or Bank Account Name"
+            />
+            <TextInput
+              label="Reference Number *"
+              value={getInfo.reference_number || ''}
+              onChange={(value) => setGetInfo({ ...getInfo, reference_number: value })}
+              error={formErrors.reference_number}
+              placeholder="Reference Number"
+            />
+          </Card>
+
+          {/* ORDER NOTES */}
+          <Card className="p-8">
+            <CardTitle className="text-xl">Additional Information</CardTitle>
+            <div>
+              <label htmlFor="checkout-order-notes" className="text-lighter mb-1 block text-sm font-medium">
+                Order Notes
+              </label>
+              <Textarea
+                id="checkout-order-notes"
+                placeholder="Any special instructions for your order"
+                value={getInfo.notes || ''}
+                onChange={(e) => setGetInfo({ ...getInfo, notes: e.target.value })}
+                rows={3}
+              />
+            </div>
+          </Card>
+
+          <Button
+            onClick={handleConfirmOrder}
+            size="lg"
+            variant="CTA"
+            className="w-full py-7"
+            disabled={placeOrderMutation.isLoading}
+          >
+            {placeOrderMutation.isLoading ? 'Placing Order...' : 'Confirm Order'}
+          </Button>
+          <p className="mx-auto flex items-center justify-center text-xs">
+            By Clicking Confirm you agree to our terms and conditions
+          </p>
+        </div>
+      </main>
+      <LoadingModal isOpen={isModalOpen} onClose={setIsModalOpen} />
+    </section>
   );
 }
 

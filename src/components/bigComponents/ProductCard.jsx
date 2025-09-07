@@ -8,8 +8,7 @@ import { useAddToCart } from '@/hooks/useAddToCart';
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
-  const { open, setOpen, quantity, setQuantity, handleAdd, handleAddToCart } =
-    useAddToCart();
+  const { open, setOpen, quantity, setQuantity, handleAdd, handleAddToCart } = useAddToCart();
 
   return (
     <>
@@ -37,12 +36,8 @@ function ProductCard({ product }) {
 
         {/* Product Info - Left Aligned */}
         <div className="text-content flex-1 text-left">
-          <h3 className="mb-1 line-clamp-1 font-semibold tracking-wide">
-            {product.name}
-          </h3>
-          <p className="text-lighter mb-2 line-clamp-2 min-h-[2rem] text-sm">
-            {product.description}
-          </p>
+          <h3 className="font-heading mb-1 line-clamp-1 tracking-wide">{product.name}</h3>
+          <p className="text-lighter mb-2 line-clamp-2 min-h-[2rem] text-sm">{product.description}</p>
           {/* Hotness Rating (static for now) */}
           <div className="mb-4 flex items-center">
             {[...Array(5)].map((_, i) => (
@@ -50,11 +45,9 @@ function ProductCard({ product }) {
                 <Flame className="text-primary size-5" />
               </span>
             ))}
-            <p className="ml-2 flex justify-center text-sm">Extreme</p>
+            <p className="ml-2 flex justify-center text-sm italic">Extreme</p>
           </div>
-          <p className="mb-1 text-sm text-green-600">
-            Stock: {product.stock_quantity}
-          </p>
+          <p className="mb-1 text-sm text-green-600">Stock: {product.stock_quantity}</p>
         </div>
 
         <Button
@@ -67,13 +60,8 @@ function ProductCard({ product }) {
 
         {/* Price and Add to Cart - Bottom Row */}
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm font-semibold">
-            ₱ {parseFloat(product.price).toFixed(2)}
-          </p>
-          <Button
-            className="flex items-center justify-center gap-2"
-            onClick={handleAdd}
-          >
+          <p className="text-sm font-semibold">₱ {parseFloat(product.price).toFixed(2)}</p>
+          <Button className="flex items-center justify-center gap-2" onClick={handleAdd}>
             <ShoppingCart className="h-5 w-5" />
             <span>Add to Cart</span>
           </Button>
