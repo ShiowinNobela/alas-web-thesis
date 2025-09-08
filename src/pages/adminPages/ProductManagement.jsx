@@ -5,7 +5,7 @@ import { PlusCircle, Edit, Package, AlertTriangle } from 'lucide-react';
 import axios from 'axios';
 
 const fetchProducts = async () => {
-  const res = await axios.get('/api/products');
+  const res = await axios.get('/api/products/admin/list');
   return Array.isArray(res.data) ? res.data : res.data.data || [];
 };
 
@@ -72,20 +72,13 @@ function ProductManagement() {
               }}
             >
               <div className="space-y-2">
-                <h5 className="text-content line-clamp-2 text-lg font-bold tracking-tight">
-                  {product.name}
-                </h5>
+                <h5 className="text-content line-clamp-2 text-lg font-bold tracking-tight">{product.name}</h5>
 
                 <div className="flex items-center justify-between">
-                  <Badge
-                    color={product.stock_quantity < 11 ? 'failure' : 'success'}
-                    className="w-fit"
-                  >
+                  <Badge color={product.stock_quantity < 11 ? 'failure' : 'success'} className="w-fit">
                     Stock: {product.stock_quantity}
                   </Badge>
-                  <span className="text-content font-semibold">
-                    ₱{parseFloat(product.price).toLocaleString()}
-                  </span>
+                  <span className="text-content font-semibold">₱{parseFloat(product.price).toLocaleString()}</span>
                 </div>
 
                 <Button
@@ -107,12 +100,8 @@ function ProductManagement() {
         {!isLoading && products.length === 0 && (
           <div className="rounded-lg border-2 border-dashed py-12 text-center">
             <Package className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="text-content mt-2 text-lg font-medium">
-              No products found
-            </h3>
-            <p className="mt-1 text-gray-500">
-              Get started by adding a new product
-            </p>
+            <h3 className="text-content mt-2 text-lg font-medium">No products found</h3>
+            <p className="mt-1 text-gray-500">Get started by adding a new product</p>
             <div className="mt-6">
               <Link to="/Admin/AddProduct">
                 <Button gradientDuoTone="purpleToBlue">

@@ -5,15 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Brush, Eraser, SwatchBook, Calendar, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-const statuses = [
-  'pending',
-  'processing',
-  'shipping',
-  'delivered',
-  'cancelled',
-  'refunded',
-  'returned',
-];
+const statuses = ['pending', 'processing', 'shipping', 'delivered', 'cancelled', 'refunded', 'returned'];
 
 const items = [
   { value: 'gcash', label: 'GCash', Icon: SwatchBook },
@@ -60,13 +52,13 @@ export default function OrderFiltersPanel() {
     setSearchParams(
       (prev) => {
         const newParams = new URLSearchParams(prev);
-        
+
         if (value) {
           newParams.set('month_year', value);
         } else {
           newParams.delete('month_year');
         }
-        
+
         return newParams;
       },
       { replace: true }
@@ -78,7 +70,7 @@ export default function OrderFiltersPanel() {
     setSearchParams(
       (prev) => {
         const newParams = new URLSearchParams(prev);
-        
+
         if (filterType === 'all') {
           newParams.delete('status');
           newParams.delete('payment_method');
@@ -86,12 +78,12 @@ export default function OrderFiltersPanel() {
           setMonthYearFilter('');
         } else {
           newParams.delete(filterType);
-          
+
           if (filterType === 'month_year') {
             setMonthYearFilter('');
           }
         }
-        
+
         return newParams;
       },
       { replace: true }
@@ -100,7 +92,7 @@ export default function OrderFiltersPanel() {
 
   const formatMonthYear = (value) => {
     if (!value) return 'Select month & year';
-    
+
     const [year, month] = value.split('-');
     const date = new Date(year, month - 1);
     return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -109,39 +101,37 @@ export default function OrderFiltersPanel() {
   const generateMonths = () => {
     const months = [];
     const currentYear = currentDate.getFullYear();
-    
+
     for (let month = 0; month < 12; month++) {
       const date = new Date(currentYear, month, 1);
       months.push({
         value: `${currentYear}-${String(month + 1).padStart(2, '0')}`,
         label: date.toLocaleDateString('en-US', { month: 'short' }),
-        isCurrent: month === new Date().getMonth() && currentYear === new Date().getFullYear()
+        isCurrent: month === new Date().getMonth() && currentYear === new Date().getFullYear(),
       });
     }
-    
+
     return months;
   };
 
   const navigateYear = (direction) => {
-    setCurrentDate(prev => {
+    setCurrentDate((prev) => {
       const newDate = new Date(prev);
       newDate.setFullYear(newDate.getFullYear() + direction);
       return newDate;
     });
   };
 
-  const hasActiveFilters = selectedStatuses.length > 0 || 
-                          selectedPayments.length > 0 || 
-                          selectedMonthYear;
+  const hasActiveFilters = selectedStatuses.length > 0 || selectedPayments.length > 0 || selectedMonthYear;
 
   return (
-    <Card className="flex flex-col w-full h-full gap-4 p-4 shadow text-content shrink-0 rounded-xl lg:w-72">
-      <div className="flex items-center justify-between pb-2 border-b border-lighter">
-        <h3 className="text-lg font-bold">Filters</h3>
+    <Card className="text-content flex h-full w-full shrink-0 flex-col gap-4 rounded-xl p-4 shadow lg:w-72">
+      <div className="border-lighter flex items-center justify-between border-b pb-2">
+        <h3 className="font-heading text-lg">Filters</h3>
         {hasActiveFilters && (
           <button
             onClick={() => clearFilters('all')}
-            className="text-xs font-medium text-primary hover:text-primary/70"
+            className="text-primary hover:text-primary/70 text-xs font-medium"
           >
             Clear All
           </button>
@@ -150,28 +140,28 @@ export default function OrderFiltersPanel() {
 
       <InputSearch placeholder="Search orders..." />
 
-      <div className="relative pb-3 border-b border-lighter">
-        <h4 className="flex items-center justify-between mb-2 text-sm font-semibold">
-          <span className="flex items-center gap-1">
+      <div className="border-lighter relative border-b pb-3">
+        <h4 className="mb-2 flex items-center justify-between text-sm font-semibold">
+          <span className="font-heading flex items-center gap-1">
             <Calendar size={16} />
             Month & Year
           </span>
           {selectedMonthYear && (
             <button
               onClick={() => clearFilters('month_year')}
-              className="text-xs font-medium text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 text-xs font-medium"
             >
               Clear
             </button>
           )}
         </h4>
-        
+
         <button
           type="button"
           onClick={() => setShowCalendar(!showCalendar)}
-          className="flex items-center justify-between w-full p-2 text-sm border border-gray-300 rounded hover:bg-gray-50"
+          className="flex w-full items-center justify-between rounded border border-gray-300 p-2 text-sm hover:bg-gray-50"
         >
-          <span className={monthYearFilter ? "text-gray-800" : "text-gray-500"}>
+          <span className={monthYearFilter ? 'text-gray-800' : 'text-gray-500'}>
             {formatMonthYear(monthYearFilter)}
           </span>
           <Calendar size={16} className="text-gray-500" />
@@ -179,50 +169,62 @@ export default function OrderFiltersPanel() {
 
         {/* Calendar Dropdown */}
         {showCalendar && (
-          <div className="absolute left-0 right-0 z-10 p-3 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg top-full">
-            <div className="flex items-center justify-between mb-3">
-              <button
-                onClick={() => navigateYear(-1)}
-                className="p-1 rounded hover:bg-gray-100"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <div className="absolute top-full right-0 left-0 z-10 mt-1 rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
+            <div className="mb-3 flex items-center justify-between">
+              <button onClick={() => navigateYear(-1)} className="rounded p-1 hover:bg-gray-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
               </button>
               <span className="font-semibold">{currentDate.getFullYear()}</span>
-              <button
-                onClick={() => navigateYear(1)}
-                className="p-1 rounded hover:bg-gray-100"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <button onClick={() => navigateYear(1)} className="rounded p-1 hover:bg-gray-100">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
               </button>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-2">
-              {generateMonths().map(month => (
+              {generateMonths().map((month) => (
                 <button
                   key={month.value}
                   onClick={() => handleMonthYearChange(month.value)}
-                  className={`p-2 text-sm rounded text-center ${
+                  className={`rounded p-2 text-center text-sm ${
                     monthYearFilter === month.value
                       ? 'bg-blue-500 text-white'
                       : month.isCurrent
-                      ? 'bg-blue-100 text-blue-800'
-                      : 'hover:bg-gray-100'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'hover:bg-gray-100'
                   }`}
                 >
                   {month.label}
                 </button>
               ))}
             </div>
-            
+
             {monthYearFilter && (
-              <div className="flex items-center justify-between pt-3 mt-3 border-t border-gray-200">
-                <span className="text-sm text-gray-600">
-                  Selected: {formatMonthYear(monthYearFilter)}
-                </span>
+              <div className="mt-3 flex items-center justify-between border-t border-gray-200 pt-3">
+                <span className="text-sm text-gray-600">Selected: {formatMonthYear(monthYearFilter)}</span>
                 <button
                   onClick={() => handleMonthYearChange('')}
                   className="flex items-center text-sm text-red-500 hover:text-red-700"
@@ -237,13 +239,13 @@ export default function OrderFiltersPanel() {
       </div>
 
       {/* Status Filter */}
-      <div className="pb-3 border-b border-lighter">
-        <h4 className="flex items-center justify-between mb-2 text-sm font-semibold">
+      <div className="border-lighter border-b pb-3">
+        <h4 className="mb-2 flex items-center justify-between text-sm font-semibold">
           <span>Order Status</span>
           {selectedStatuses.length > 0 && (
             <button
               onClick={() => clearFilters('status')}
-              className="text-xs font-medium text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 text-xs font-medium"
             >
               Clear ({selectedStatuses.length})
             </button>
@@ -253,7 +255,7 @@ export default function OrderFiltersPanel() {
           {statuses.map((status) => (
             <label
               key={status}
-              className="flex items-center gap-2 px-2 py-1 text-sm rounded cursor-pointer text-lighter hover:bg-gray-50"
+              className="text-lighter flex cursor-pointer items-center gap-2 rounded px-2 py-1 text-sm hover:bg-gray-50"
             >
               <Checkbox
                 checked={selectedStatuses.includes(status)}
@@ -267,12 +269,12 @@ export default function OrderFiltersPanel() {
 
       {/* Payment Methods */}
       <div>
-        <h4 className="flex items-center justify-between mb-2 text-sm font-semibold">
+        <h4 className="mb-2 flex items-center justify-between text-sm font-semibold">
           <span>Payment Method</span>
           {selectedPayments.length > 0 && (
             <button
               onClick={() => clearFilters('payment_method')}
-              className="text-xs font-medium text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 text-xs font-medium"
             >
               Clear
             </button>

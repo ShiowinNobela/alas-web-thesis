@@ -10,16 +10,19 @@ export default function TextInput({
   onChange,
   placeholder = '',
   error,
+  readOnly = false,
 }) {
   const id = useId();
 
   return (
     <div>
       {/* Label */}
-      <Label htmlFor={id}>{label}</Label>
+      <Label className="text-lighter" htmlFor={id}>
+        {label}
+      </Label>
 
       {/* Input field with error styling */}
-      <div className="">
+      <div className="mt-1">
         <Input
           id={id}
           type={type}
@@ -27,14 +30,13 @@ export default function TextInput({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           aria-invalid={error ? 'true' : undefined}
+          readOnly={readOnly}
           className={`${error ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
         />
       </div>
 
       {/* Optional error message */}
-      {typeof error === 'string' && error && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
-      )}
+      {typeof error === 'string' && error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 }
