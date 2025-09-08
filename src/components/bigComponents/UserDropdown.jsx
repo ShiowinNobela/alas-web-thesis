@@ -1,6 +1,6 @@
 import { LuUserPen, LuShoppingBag } from 'react-icons/lu';
 import { MdOutlineNotificationsActive, MdOutlineLogout } from 'react-icons/md';
-import { LucidePersonStanding } from 'lucide-react';
+import { CircleUser, LucidePersonStanding } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import {
   DropdownMenu,
@@ -18,37 +18,37 @@ export default function UserDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="hover:bg-primary/20 flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-gray-200 transition-colors">
-          <LucidePersonStanding />
+        <button className="hover:bg-brand/25 flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-gray-100 transition-colors">
+          <CircleUser className="text-brand" />
         </button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56">
         <div className="border-b px-4 py-3">
-          <p className="text-sm font-medium text-gray-900">{user?.username}</p>
-          <p className="truncate text-sm text-gray-500">{user?.email}</p>
+          <p className="text-content text-sm font-medium">{user?.username}</p>
+          <p className="text-lighter truncate text-sm">{user?.email}</p>
         </div>
 
-        <DropdownMenuItem onClick={() => navigate('/UserSettings')} className="flex items-center">
+        <DropdownMenuItem onClick={() => navigate('/UserSettings')} className="text-content flex items-center">
           <LuUserPen className="mr-2" /> User Settings
         </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => navigate('/UserOrderPage', { state: { tab: 'orderList' } })}
-          className="flex items-center"
+          className="text-content flex items-center"
         >
           <LuShoppingBag className="mr-2" /> Order List
         </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => navigate('/UserOrderPage', { state: { tab: 'notif' } })}
-          className="flex items-center"
+          className="text-content flex items-center"
         >
           <MdOutlineNotificationsActive className="mr-2" /> Notification
         </DropdownMenuItem>
 
         <div className="border-t">
-          <DropdownMenuItem onClick={handleLogout} className="flex items-center text-red-600">
+          <DropdownMenuItem onClick={handleLogout} className="text-brand flex items-center">
             <MdOutlineLogout className="mr-2" /> Logout
           </DropdownMenuItem>
         </div>

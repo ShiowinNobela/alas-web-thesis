@@ -1,18 +1,6 @@
-import {
-  Bell,
-  Settings,
-  User,
-  Database,
-  HelpCircle,
-  LogOut,
-} from 'lucide-react';
+import { Bell, Settings, User, Database, HelpCircle, LogOut } from 'lucide-react';
 import useUserStore from '@/stores/userStore';
-import {
-  Dropdown,
-  DropdownDivider,
-  DropdownHeader,
-  DropdownItem,
-} from 'flowbite-react';
+import { Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from 'flowbite-react';
 import { Button } from '@/components/ui/button';
 import { handleLogout } from '@/utils/logout';
 import { useLocation } from 'react-router-dom';
@@ -36,9 +24,7 @@ function AdminNavbar() {
       Orders: 'Orders',
       AdminOrderDetails: 'Order Details',
       PopUpInfoPage: 'Info Page',
-      AdminAddUser: 'Add User',
       ViewOrder: 'View Order',
-      AdminUserEdit: 'Edit User',
       InventoryManagement: 'Inventory',
       WalkInOrdersTable: 'Walk-in Orders',
       WalkInOrdering: 'Walk-in Ordering',
@@ -81,11 +67,7 @@ function AdminNavbar() {
         </Button>
 
         {/* Notifications */}
-        <Dropdown
-          label={<Bell className="h-4 w-4" />}
-          inline
-          placement="bottom-end"
-        >
+        <Dropdown label={<Bell className="h-4 w-4" />} inline placement="bottom-end">
           <DropdownHeader className="flex items-center justify-between">
             <span className="text-sm font-medium">Notifications</span>
           </DropdownHeader>
@@ -124,22 +106,14 @@ function AdminNavbar() {
           placement="bottom-end"
         >
           <DropdownHeader>
-            <span className="block text-sm font-medium">
-              {user?.username || 'Guest'}
-            </span>
-            <span className="text-lighter block truncate text-sm">
-              {user?.email || 'Not signed in'}
-            </span>
+            <span className="block text-sm font-medium">{user?.username || 'Guest'}</span>
+            <span className="text-lighter block truncate text-sm">{user?.email || 'Not signed in'}</span>
           </DropdownHeader>
           <DropdownItem>Profile</DropdownItem>
           <DropdownItem>Account Settings</DropdownItem>
           <DropdownItem>Personal Notifications</DropdownItem>
           <DropdownDivider />
-          <DropdownItem
-            icon={LogOut}
-            onClick={handleLogout}
-            className="text-red-600"
-          >
+          <DropdownItem icon={LogOut} onClick={handleLogout} className="text-red-600">
             Log out
           </DropdownItem>
         </Dropdown>

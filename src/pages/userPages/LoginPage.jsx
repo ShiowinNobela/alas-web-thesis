@@ -16,10 +16,6 @@ function LoginPage() {
     password: '',
   });
 
-  useEffect(() => {
-    axios.defaults.withCredentials = true;
-  }, []);
-
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -37,11 +33,7 @@ function LoginPage() {
 
     try {
       // Step 1: Log in and set cookie
-      await axios.post(
-        '/api/users/login/',
-        { username, password },
-        { withCredentials: true }
-      );
+      await axios.post('/api/users/login/', { username, password }, { withCredentials: true });
 
       // Step 2: Fetch current user using the cookie
       const res = await axios.get('/api/users', { withCredentials: true });
@@ -51,8 +43,11 @@ function LoginPage() {
       window.localStorage.setItem('user', JSON.stringify(userData));
 
       // Step 3: Redirect
-      window.location.href =
-        userData.role_name === 'admin' ? '/Admin/DashBoard' : '/';
+      if (userData.role_name === 'admin' || userData.role_name === 'staff') {
+        window.location.href = '/Admin/DashBoard';
+      } else {
+        window.location.href = '/ProductListPage';
+      }
     } catch (err) {
       const res = err.response;
 
@@ -103,21 +98,15 @@ function LoginPage() {
           <div className="absolute top-40 right-20 h-16 w-16 animate-pulse rounded-full bg-gradient-to-br from-red-200 to-pink-300 opacity-20 delay-1000"></div>
           <div className="absolute bottom-40 left-20 h-12 w-12 animate-pulse rounded-full bg-gradient-to-br from-orange-200 to-red-300 opacity-20 delay-500"></div>
         </div>
-        <Card className="text-content w-full max-w-md sm:p-8">
+        <Card className="text-content w-full max-w-md p-4 sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
-              <img
-                src={Logo}
-                alt="Alas Delis Logo"
-                className="mx-auto h-20 w-20 shrink-0 object-contain"
-              />
+              <img src={Logo} alt="Alas Delis Logo" className="mx-auto h-20 w-20 shrink-0 object-contain" />
 
               <h1 className="text-content font-heading text-center text-3xl leading-tight font-bold tracking-tight">
                 SIGN IN
               </h1>
-              <p className="text-center text-sm text-gray-500">
-                Welcome to Alas Delis and Spices.
-              </p>
+              <p className="text-center text-sm text-gray-500">Welcome to Alas Delis and Spices.</p>
             </div>
 
             <form className="space-y-4" onSubmit={handleLogin}>
@@ -147,10 +136,7 @@ function LoginPage() {
                   />
                   Remember me
                 </label>
-                <a
-                  href="#"
-                  className="text-primary text-sm font-medium hover:underline"
-                >
+                <a href="#" className="text-primary text-sm font-medium hover:underline">
                   Forgot password?
                 </a>
               </div>
@@ -159,11 +145,7 @@ function LoginPage() {
                 Sign In
               </Button>
 
-              <PromptLink
-                promptText="Don’t have an account yet?"
-                linkText="Create an account"
-                to="/RegPage"
-              />
+              <PromptLink promptText="Don’t have an account yet?" linkText="Create an account" to="/RegPage" />
 
               <p className="text-center text-xs text-gray-400">
                 By clicking continue, you agree to our{' '}

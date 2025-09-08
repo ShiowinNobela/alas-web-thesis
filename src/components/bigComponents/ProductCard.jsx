@@ -12,7 +12,14 @@ function ProductCard({ product }) {
 
   return (
     <>
-      <Card className="group z-10 flex flex-col gap-2 p-5 shadow-md transition-transform hover:scale-[1.02] hover:ring-2 hover:ring-amber-500">
+      <Card
+        className="group z-10 flex flex-col gap-2 p-5 shadow-md transition-transform hover:scale-[1.02] hover:ring-2 hover:ring-amber-500"
+        onClick={() => {
+          if (window.innerWidth < 640) {
+            navigate(`/ProductDetailsPage/${product.id}`);
+          }
+        }}
+      >
         <div className="relative mb-3 overflow-hidden rounded-md">
           <span className="text-content absolute top-0 left-0 z-10 rounded-full bg-gray-200 px-2 py-1 text-xs font-bold">
             {product.category || 'Category'}
@@ -50,21 +57,31 @@ function ProductCard({ product }) {
           <p className="mb-1 text-sm text-green-600">Stock: {product.stock_quantity}</p>
         </div>
 
-        <Button
-          variant="outline"
-          className="mt-2 w-full text-xs"
-          onClick={() => navigate(`/ProductDetailsPage/${product.id}`)}
-        >
-          View Details
-        </Button>
-
-        {/* Price and Add to Cart - Bottom Row */}
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm font-semibold">₱ {parseFloat(product.price).toFixed(2)}</p>
-          <Button className="flex items-center justify-center gap-2" onClick={handleAdd}>
-            <ShoppingCart className="h-5 w-5" />
-            <span>Add to Cart</span>
+        <div className="hidden sm:block">
+          <Button
+            variant="outline"
+            className="mt-2 w-full text-xs"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/ProductDetailsPage/${product.id}`);
+            }}
+          >
+            View Details
           </Button>
+
+          <div className="mt-4 flex items-center justify-between">
+            <p className="text-sm font-semibold">₱ {parseFloat(product.price).toFixed(2)}</p>
+            <Button
+              className="flex items-center justify-center gap-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAdd();
+              }}
+            >
+              <ShoppingCart className="h-5 w-5" />
+              <span>Add to Cart</span>
+            </Button>
+          </div>
         </div>
       </Card>
 

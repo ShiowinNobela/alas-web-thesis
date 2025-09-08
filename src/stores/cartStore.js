@@ -29,9 +29,7 @@ const useCartStore = create((set, get) => {
 
     addItem: async (product, quantity) => {
       const currentItems = get().items;
-      const existingItem = currentItems.find(
-        (i) => i.product_id === product.id
-      );
+      const existingItem = currentItems.find((i) => i.product_id === product.id);
 
       if (existingItem) {
         const newQty = existingItem.quantity + quantity;
@@ -39,29 +37,34 @@ const useCartStore = create((set, get) => {
         return;
       }
 
+      const newItem = {
+        product_id: product.id,
+        name: product.name,
+        image: product.image,
+        price: parseFloat(product.price),
+        quantity,
+        stock_quantity: product.stock_quantity,
+      };
+
+      // Optimistic update
+      set({
+        items: [...currentItems, newItem],
+        cart_total: get().cart_total + product.price * quantity,
+      });
+
       try {
         await axios.post('/api/cart/me', {
           productId: product.id,
           quantity,
         });
-
-        const newItem = {
-          product_id: product.id,
-          name: product.name,
-          image: product.image,
-          price: parseFloat(product.price),
-          quantity,
-          stock_quantity: product.stock_quantity,
-        };
-
-        set({
-          items: [...currentItems, newItem],
-          cart_total: get().cart_total + product.price * quantity,
-        });
-
         showCartToast(product.name);
       } catch (err) {
-        toast.error('Failed to add item to cart' + err);
+        // rollback
+        toast.error('Failed to add item to cart');
+        set({
+          items: currentItems,
+          cart_total: get().cart_total,
+        });
       }
     },
 
@@ -75,9 +78,7 @@ const useCartStore = create((set, get) => {
       const priceDiff = (newQty - item.quantity) * parseFloat(item.price);
 
       set({
-        items: currentItems.map((item) =>
-          item.product_id === productId ? { ...item, quantity: newQty } : item
-        ),
+        items: currentItems.map((item) => (item.product_id === productId ? { ...item, quantity: newQty } : item)),
         cart_total: get().cart_total + priceDiff,
       });
 

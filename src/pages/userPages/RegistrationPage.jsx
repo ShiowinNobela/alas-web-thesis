@@ -32,17 +32,10 @@ function RegistrationPage() {
       username: values.username.trim() ? '' : 'Username is required',
       email: values.email.trim() ? '' : 'Email is required',
       password: values.password.trim() ? '' : 'Password is required',
-      confirmPassword: values.confirmPassword.trim()
-        ? ''
-        : 'Confirm Password is required',
+      confirmPassword: values.confirmPassword.trim() ? '' : 'Confirm Password is required',
     };
 
-    if (
-      newErrors.username ||
-      newErrors.email ||
-      newErrors.password ||
-      newErrors.confirmPassword
-    ) {
+    if (newErrors.username || newErrors.email || newErrors.password || newErrors.confirmPassword) {
       setErrors(newErrors);
       toast.error('Please fill in all required fields!');
       return;
@@ -106,20 +99,14 @@ function RegistrationPage() {
   return (
     <>
       <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
-        <Card className="text-content w-full max-w-md sm:p-8">
+        <Card className="text-content w-full max-w-md p-4 sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
-              <img
-                src={Logo}
-                alt="Alas Delis Logo"
-                className="mx-auto h-20 w-20 shrink-0 object-contain"
-              />
+              <img src={Logo} alt="Alas Delis Logo" className="mx-auto h-20 w-20 shrink-0 object-contain" />
               <h1 className="font-lg font-heading text-center text-3xl leading-tight font-bold tracking-tight">
                 CREATE ACCOUNT
               </h1>
-              <p className="text-center text-sm text-gray-500">
-                Spice up your life with flavorful, savory spices.
-              </p>
+              <p className="text-center text-sm text-gray-500">Spice up your life with flavorful, savory spices.</p>
             </div>
 
             <form className="space-y-4" onSubmit={handleCreateUser}>
@@ -156,9 +143,7 @@ function RegistrationPage() {
                     ...prev,
                     password: val.trim() ? '' : 'Password is required',
                     confirmPassword:
-                      values.confirmPassword && val !== values.confirmPassword
-                        ? 'Passwords do not match'
-                        : '',
+                      values.confirmPassword && val !== values.confirmPassword ? 'Passwords do not match' : '',
                   }));
                 }}
                 placeholder="********"
@@ -192,11 +177,7 @@ function RegistrationPage() {
                 A verification email will be sent to confirm your account.
               </p>
 
-              <PromptLink
-                promptText="Already have an account?"
-                linkText="SIGN IN"
-                to="/LoginPage"
-              />
+              <PromptLink promptText="Already have an account?" linkText="SIGN IN" to="/LoginPage" />
 
               <p className="text-center text-xs text-gray-400">
                 By clicking Register, you agree to our{' '}
