@@ -8,6 +8,7 @@ import AuthProvider from './provider/AuthProvider';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './lib/axios-config.js';
+import CartProvider from './provider/CartProvider';
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,9 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <App />
+            <CartProvider>
+              <App />
+            </CartProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>

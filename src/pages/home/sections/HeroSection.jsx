@@ -37,10 +37,7 @@ const HeroSection = () => {
 
   return (
     <section className="relative overflow-hidden">
-      <motion.div
-        initial={{ scale: 1.05 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.2, ease: 'easeOut' }}
+      <div
         className="flex min-h-[500px] w-full items-center justify-center bg-cover bg-center bg-no-repeat md:min-h-[500px]"
         style={{
           backgroundImage: `url(${'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351380/herogif_rs4vtw.gif'})`,
@@ -67,25 +64,14 @@ const HeroSection = () => {
               Artisanal Hot Sauce and Some Spicy Stuff
             </motion.h1>
 
-            <motion.p
-              variants={item}
-              className="mb-8 text-lg text-white opacity-90 md:text-xl"
-            >
-              We pride ourselves on different flavor profiles, not just heat.
-              Anything that's spicy as a whole, we have it. From powders, to
-              pickles, to oils, to sauces, name it.
+            <motion.p variants={item} className="mb-8 text-lg text-white opacity-90 md:text-xl">
+              We pride ourselves on different flavor profiles, not just heat. Anything that's spicy as a whole, we have
+              it. From powders, to pickles, to oils, to sauces, name it.
             </motion.p>
 
-            <motion.div
-              variants={item}
-              className="flex flex-col justify-center gap-4 px-8 sm:flex-row"
-            >
+            <motion.div variants={item} className="flex flex-col justify-center gap-4 px-8 sm:flex-row">
               <Link to={user ? '/ProductListPage' : '/LoginPage'}>
-                <Button
-                  variant="CTA"
-                  size="lg"
-                  className="px-8 font-medium text-white"
-                >
+                <Button variant="CTA" size="lg" className="px-8 font-medium text-white">
                   Order Now
                 </Button>
               </Link>
@@ -93,19 +79,11 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
-        <motion.div
-          variants={floatingFlame}
-          animate="animate"
-          className="absolute top-1/4 left-10 hidden lg:block"
-        >
+        <motion.div variants={floatingFlame} animate="animate" className="absolute top-1/4 left-10 hidden lg:block">
           <FlameIcon className="size-8 text-amber-400/80" />
         </motion.div>
 
-        <motion.div
-          variants={floatingFlame}
-          animate="animate"
-          className="absolute top-1/3 right-10 hidden lg:block"
-        >
+        <motion.div variants={floatingFlame} animate="animate" className="absolute top-1/3 right-10 hidden lg:block">
           <FlameIcon className="size-6 text-red-400/80" />
         </motion.div>
 
@@ -123,7 +101,7 @@ const HeroSection = () => {
         >
           <FireExtinguisherIcon className="size-10 text-amber-100" />
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };

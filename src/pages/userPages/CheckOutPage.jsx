@@ -11,9 +11,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/userStore';
 import LoadingModal from '@/components/modals/LoadingModal';
+import useCartStore from '@/stores/cartStore';
+import CartSummaryCard from '@/components/bigComponents/CartSummaryCard';
 
 function CheckOutPage() {
   const navigate = useNavigate();
+  const { items } = useCartStore();
   const user = useUserStore((state) => state.user);
   const [formErrors, setFormErrors] = useState({});
   const [getInfo, setGetInfo] = useState({
@@ -46,7 +49,7 @@ function CheckOutPage() {
       });
       setFormErrors({});
       setIsModalOpen(false);
-      navigate('/ProductListPage');
+      navigate('/UserOrderPage');
     },
     onError: (err) => {
       setIsModalOpen(false);
@@ -79,7 +82,7 @@ function CheckOutPage() {
 
   return (
     <section className="bg-neutral min-h-screen py-8">
-      <main className="relative mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+      <main className="relative mx-auto max-w-2xl px-4 pb-24 sm:px-6 lg:px-8">
         <div className="absolute top-0 left-0 mt-4">
           <BackButton />
         </div>
@@ -180,12 +183,13 @@ function CheckOutPage() {
             </div>
           </Card>
 
+          <CartSummaryCard />
           <Button
             onClick={handleConfirmOrder}
             size="lg"
             variant="CTA"
             className="w-full py-7"
-            disabled={placeOrderMutation.isLoading}
+            disabled={placeOrderMutation.isLoading || items.length === 0}
           >
             {placeOrderMutation.isLoading ? 'Placing Order...' : 'Confirm Order'}
           </Button>

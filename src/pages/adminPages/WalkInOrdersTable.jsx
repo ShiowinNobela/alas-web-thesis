@@ -21,7 +21,7 @@ import SummaryCard from '@/components/bigComponents/SummaryCard';
 
 const fetchWalkInOrders = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/walkInOrders/');
+    const res = await axios.get('/api/walkInOrders/');
     return res.data.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || error.message);

@@ -37,9 +37,7 @@ const ProdManagement = lazy(() => import('./pages/adminPages/ProductManagement.j
 const AccManagement = lazy(() => import('./pages/adminPages/AccountManagement.jsx'));
 const Orders = lazy(() => import('./pages/adminPages/Orders.jsx'));
 const PopUpInfoPage = lazy(() => import('./pages/adminPages/PopUpInfoPage.jsx'));
-const AdminAddUser = lazy(() => import('./pages/adminPages/AdminAddUser.jsx'));
 const ViewOrder = lazy(() => import('./pages/adminPages/ViewOrder.jsx'));
-const AdminUserEdit = lazy(() => import('./pages/adminPages/AdminUserEdit.jsx'));
 const InventoryManagement = lazy(() => import('./pages/adminPages/InventoryManagement.jsx'));
 const WalkInOrdering = lazy(() => import('./pages/adminPages/WalkInOrdering.jsx'));
 const SalesPage = lazy(() => import('./pages/adminPages/SalesPage.jsx'));
@@ -69,7 +67,7 @@ function App() {
               <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
               <Route path="/UserOrderPage" element={<UserOrderPage />} />
               <Route path="/UserSettings" element={<UserSettings />} />
-              <Route path="/UserViewOrderDetails/:id" element={<UserViewOrderDetails />} />
+              <Route path="/users/orders/:id" element={<UserViewOrderDetails />} />
             </Route>
           </Route>
 
@@ -87,9 +85,7 @@ function App() {
               <Route path="Orders" element={<Orders />} />
               <Route path="AdminOrderDetails/:id" element={<AdminOrderDetails />} />
               <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
-              <Route path="AdminAddUser" element={<AdminAddUser />} />
               <Route path="ViewOrder/:id" element={<ViewOrder />} />
-              <Route path="AdminUserEdit/:id" element={<AdminUserEdit />} />
               <Route path="InventoryManagement" element={<InventoryManagement />}></Route>
               <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
               <Route path="WalkInOrdering" element={<WalkInOrdering />} />

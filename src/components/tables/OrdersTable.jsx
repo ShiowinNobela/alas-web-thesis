@@ -5,11 +5,7 @@ import dayjs from 'dayjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp, PackageSearch } from 'lucide-react';
 import { Button } from '../ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Card } from '../ui/card';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import PaymentMethodIcon from '@/components/bigComponents/paymentMethodIcon';
@@ -19,11 +15,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
   const [expandedOrderIds, setExpandedOrderIds] = useState([]);
 
   const toggleExpand = (orderId) => {
-    setExpandedOrderIds((prev) =>
-      prev.includes(orderId)
-        ? prev.filter((id) => id !== orderId)
-        : [...prev, orderId]
-    );
+    setExpandedOrderIds((prev) => (prev.includes(orderId) ? prev.filter((id) => id !== orderId) : [...prev, orderId]));
   };
 
   const cardVariants = {
@@ -66,19 +58,11 @@ export default function OrdersTable({ orders, onCancelOrder }) {
         </h2>
       </div>
       {orders.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
           <Card className="text-lighter h-full rounded-2xl p-6 text-center shadow sm:p-8">
             <PackageSearch className="text-lighter mx-auto mb-4 size-20 sm:size-32" />
-            <p className="font-heading mb-2 text-base font-semibold sm:text-lg">
-              No orders found
-            </p>
-            <p className="text-sm text-gray-600">
-              Try adjusting your filters or search keyword.
-            </p>
+            <p className="font-heading mb-2 text-base font-semibold sm:text-lg">No orders found</p>
+            <p className="text-sm text-gray-600">Try adjusting your filters or search keyword.</p>
           </Card>
         </motion.div>
       ) : (
@@ -105,9 +89,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
                         <h2 className="text-lighter text-sm sm:text-base">
                           Order ID:{' '}
-                          <span className="text-content font-semibold tracking-tighter">
-                            #{order?.id || 'N/A'}
-                          </span>
+                          <span className="text-content font-semibold tracking-tighter">#{order?.id || 'N/A'}</span>
                         </h2>
                         <motion.span
                           whileHover={{ scale: 1.05 }}
@@ -118,9 +100,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                       </div>
                       <h3 className="text-lighter mt-1 text-xs sm:text-sm">
                         Ordered on{' '}
-                        {order?.order_date
-                          ? dayjs(order.order_date).format('D MMMM YYYY')
-                          : 'Date not available'}
+                        {order?.order_date ? dayjs(order.order_date).format('D MMMM YYYY') : 'Date not available'}
                       </h3>
                     </div>
 
@@ -151,23 +131,15 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                                     whileHover={{ scale: 1.05 }}
                                   >
                                     <img
-                                      src={
-                                        item.image ||
-                                        'https://via.placeholder.com/80x80?text=IMG'
-                                      }
+                                      src={item.image || 'https://via.placeholder.com/80x80?text=IMG'}
                                       alt={item.product_name}
                                       className="h-full w-full object-cover"
                                     />
                                   </motion.div>
                                   <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
-                                    <p className="truncate text-xs font-semibold sm:text-sm">
-                                      {item.product_name}
-                                    </p>
+                                    <p className="truncate text-xs font-semibold sm:text-sm">{item.product_name}</p>
                                     <p className="text-lighter text-xs">
-                                      Qty:{' '}
-                                      <span className="text-content font-medium">
-                                        {item.quantity}
-                                      </span>
+                                      Qty: <span className="text-content font-medium">{item.quantity}</span>
                                     </p>
                                   </div>
                                 </Card>
@@ -194,20 +166,14 @@ export default function OrdersTable({ orders, onCancelOrder }) {
 
                         <div className="text-lighter flex flex-wrap items-center gap-2 text-xs sm:text-sm">
                           <span className="flex items-center gap-1">
-                            <span className="font-medium">
-                              {order?.items?.length || 0}
-                            </span>
+                            <span className="font-medium">{order?.items?.length || 0}</span>
                             <span>items</span>
                           </span>
                           <span className="hidden font-bold sm:inline">·</span>
-                          <span className="hidden sm:inline">
-                            Expected: June 20, 1996
-                          </span>
+                          <span className="hidden sm:inline">Expected: June 20, 1996</span>
                           <span className="hidden font-bold sm:inline">·</span>
                           <div className="flex items-center">
-                            <PaymentMethodIcon
-                              method={order?.payment_method || 'unknown'}
-                            />
+                            <PaymentMethodIcon method={order?.payment_method || 'unknown'} />
                           </div>
                         </div>
                       </div>
@@ -216,12 +182,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
 
                   <div className="ring-primary/15 flex flex-col gap-3 p-4 ring-2 sm:w-54 sm:p-6">
                     <motion.div whileTap={{ scale: 0.95 }}>
-                      <Button
-                        onClick={() =>
-                          navigate(`/UserViewOrderDetails/${order?.id}`)
-                        }
-                        className="w-full"
-                      >
+                      <Button onClick={() => navigate(`/users/orders/${order?.id}`)} className="w-full">
                         View Details
                       </Button>
                     </motion.div>
@@ -234,26 +195,16 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <span>
-                              <Button
-                                variant="secondary"
-                                disabled
-                                className="w-full"
-                              >
+                              <Button variant="secondary" disabled className="w-full">
                                 Cancel Requested
                               </Button>
                             </span>
                           </TooltipTrigger>
-                          <TooltipContent side="left">
-                            This order has already requested cancellation.
-                          </TooltipContent>
+                          <TooltipContent side="left">This order has already requested cancellation.</TooltipContent>
                         </Tooltip>
                       ) : (
                         <motion.div whileHover={{ scale: 1.03 }}>
-                          <Button
-                            variant="destructive"
-                            onClick={() => onCancelOrder(order?.id)}
-                            className="w-full"
-                          >
+                          <Button variant="destructive" onClick={() => onCancelOrder(order?.id)} className="w-full">
                             Cancel Order
                           </Button>
                         </motion.div>
@@ -297,16 +248,14 @@ OrdersTable.propTypes = {
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       items: PropTypes.arrayOf(
         PropTypes.shape({
-          item_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
+          item_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
           product_name: PropTypes.string.isRequired,
           quantity: PropTypes.number.isRequired,
           image: PropTypes.string,
         })
       ).isRequired,
       order_date: PropTypes.string.isRequired,
-      total_amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      total_amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       payment_method: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired,
       cancel_requested: PropTypes.number,

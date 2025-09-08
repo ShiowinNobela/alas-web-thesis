@@ -1,32 +1,10 @@
 import { Link } from 'react-router-dom';
 import useCartStore from '@/stores/cartStore';
-import { useEffect } from 'react';
 import { Button } from '../ui/button';
-import {
-  Delete,
-  MilkOff,
-  Minus,
-  Plus,
-  ShoppingCart,
-  ShoppingBag,
-  ArrowRight,
-  Truck,
-  ShieldCheck,
-} from 'lucide-react';
+import { Delete, MilkOff, Minus, Plus, ShoppingCart, ShoppingBag, ArrowRight, Truck, ShieldCheck } from 'lucide-react';
 
 function Cart() {
-  const {
-    items,
-    cart_total,
-    isLoading,
-    fetchCart,
-    adjustQuantity,
-    removeItem,
-  } = useCartStore();
-
-  useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
+  const { items, cart_total, isLoading, adjustQuantity, removeItem } = useCartStore();
 
   const handleAdjust = (productId, currentQty, isIncrement, stock) => {
     const newQty = isIncrement ? currentQty + 1 : currentQty - 1;
@@ -41,19 +19,15 @@ function Cart() {
   return (
     <div className="bg-card flex h-[calc(100dvh-64px)] flex-col">
       <div className="bg-card sticky top-0 z-10 p-4 shadow-sm">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between pt-2">
           <div className="flex items-center gap-2">
             <ShoppingCart className="text-primary" size={18} />
             <h1 className="text-content font-bold">Cart</h1>
             {!cartEmpty && (
-              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs dark:text-black">
-                {items.length}
-              </span>
+              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs dark:text-black">{items.length}</span>
             )}
           </div>
-          {!cartEmpty && (
-            <p className="text-primary text-sm font-semibold">₱{subtotal}</p>
-          )}
+          {!cartEmpty && <p className="text-primary text-sm font-semibold">₱{subtotal}</p>}
         </div>
       </div>
 
@@ -80,12 +54,8 @@ function Cart() {
             <div className="mb-3 rounded-full bg-gray-100 p-3">
               <MilkOff size={30} className="text-gray-400" />
             </div>
-            <h2 className="text-content mb-1 text-sm font-semibold">
-              Cart is empty
-            </h2>
-            <p className="text-lighter mb-4 max-w-xs text-xs">
-              Add items to your cart
-            </p>
+            <h2 className="text-content mb-1 text-sm font-semibold">Cart is empty</h2>
+            <p className="text-lighter mb-4 max-w-xs text-xs">Add items to your cart</p>
             {/* <Link to="/products">
               <Button className="gap-1 rounded-full text-xs" size="sm">
                 <ShoppingBag size={14} />
@@ -109,12 +79,8 @@ function Cart() {
                 <div className="flex min-w-0 flex-1 flex-col">
                   <div className="flex items-start justify-between">
                     <div className="min-w-0 flex-1 pr-1">
-                      <h3 className="text-content line-clamp-2 text-xs leading-tight font-medium">
-                        {item.name}
-                      </h3>
-                      <p className="text-primary mt-0.5 text-xs font-semibold">
-                        ₱{parseFloat(item.price).toFixed(2)}
-                      </p>
+                      <h3 className="text-content line-clamp-2 text-xs leading-tight font-medium">{item.name}</h3>
+                      <p className="text-primary mt-0.5 text-xs font-semibold">₱{parseFloat(item.price).toFixed(2)}</p>
                     </div>
                     <button
                       onClick={() => removeItem(item.product_id)}
@@ -126,30 +92,14 @@ function Cart() {
                   <div className="mt-2 flex items-center justify-between">
                     <div className="flex items-center gap-1 rounded-full border border-gray-300 px-2 py-0.5">
                       <button
-                        onClick={() =>
-                          handleAdjust(
-                            item.product_id,
-                            item.quantity,
-                            false,
-                            item.stock_quantity
-                          )
-                        }
+                        onClick={() => handleAdjust(item.product_id, item.quantity, false, item.stock_quantity)}
                         className="flex h-5 w-5 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
                       >
                         <Minus size={10} />
                       </button>
-                      <span className="w-4 text-center text-xs font-medium">
-                        {item.quantity}
-                      </span>
+                      <span className="w-4 text-center text-xs font-medium">{item.quantity}</span>
                       <button
-                        onClick={() =>
-                          handleAdjust(
-                            item.product_id,
-                            item.quantity,
-                            true,
-                            item.stock_quantity
-                          )
-                        }
+                        onClick={() => handleAdjust(item.product_id, item.quantity, true, item.stock_quantity)}
                         className="flex h-5 w-5 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
                       >
                         <Plus size={10} />
@@ -157,9 +107,7 @@ function Cart() {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-content text-xs font-semibold">
-                        ₱{(item.price * item.quantity).toFixed(2)}
-                      </p>
+                      <p className="text-content text-xs font-semibold">₱{(item.price * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
@@ -173,9 +121,7 @@ function Cart() {
         <div className="bg-card sticky bottom-0 border-t p-5 pb-8 shadow-lg">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-content text-sm">Subtotal:</span>
-            <span className="text-primary text-base font-bold">
-              ₱{subtotal}
-            </span>
+            <span className="text-primary text-base font-bold">₱{subtotal}</span>
           </div>
           <Link to="/CheckoutPage" className="block">
             <Button

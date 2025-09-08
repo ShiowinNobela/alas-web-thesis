@@ -2,14 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import ProductCard from '@/components/bigComponents/ProductCard.jsx';
-import useCartStore from '@/stores/cartStore';
 import useUserStore from '@/stores/userStore';
 import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton';
 import ProductErrorState from '@/components/errorUI/ProductErrorUI';
 
 function ProductPage() {
   const navigate = useNavigate();
-  const { addItem } = useCartStore();
   const user = useUserStore((state) => state.user);
   const isLoggedIn = !!user;
 
@@ -26,13 +24,11 @@ function ProductPage() {
     },
   });
 
-  const handleAddToCart = (product, quantity = 1) => {
+  const handleAddToCart = () => {
     if (!isLoggedIn) {
       navigate('/LoginPage');
       return;
     }
-
-    addItem(product, quantity);
   };
 
   return (
@@ -40,10 +36,10 @@ function ProductPage() {
       <div className="flex pb-40">
         <div className="mx-auto h-full flex-1">
           <div className="flex flex-col items-center justify-center py-10">
-            <h1 className="font-heading text-content text-5xl">Our Flavorful Lineup</h1>
+            <h1 className="font-heading text-content px-4 text-3xl md:text-5xl">Our Flavorful Lineup</h1>
             <p className="text-lighter text-lg">From mild to wild - find your perfect heat level</p>
           </div>
-          <div className="flex-l mx-auto max-w-6xl px-4 pb-20">
+          <div className="flex-l mx-auto max-w-6xl pb-20 md:px-4">
             {isLoading ? (
               <div className="mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -55,8 +51,8 @@ function ProductPage() {
             ) : isError ? (
               <ProductErrorState onRetry={() => window.location.reload()} />
             ) : (
-              <div className="mx-auto max-w-7xl">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="mx-auto max-w-7xl px-1">
+                <div className="grid grid-cols-2 md:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                   {products.map((product) => (
                     <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
                   ))}

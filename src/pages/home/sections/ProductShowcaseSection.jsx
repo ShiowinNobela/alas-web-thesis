@@ -19,15 +19,13 @@ const item = {
 
 const hoverEffect = {
   scale: 1.03,
-  boxShadow:
-    '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
 };
 
 const products = [
   {
     name: 'Classic ALAS',
-    image:
-      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351166/BGAlas_izc4p1.jpg',
+    image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351166/BGAlas_izc4p1.jpg',
     heatLevel: 'Medium Heat',
     size: '150ml',
     description: 'The perfect balance of heat and flavor with a hint of sweet.',
@@ -35,8 +33,7 @@ const products = [
   },
   {
     name: 'Pickled Jalapeno',
-    image:
-      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351168/pickledjalapeno_rv2vzc.jpg',
+    image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351168/pickledjalapeno_rv2vzc.jpg',
     heatLevel: 'Hot',
     size: '120ml',
     description: 'Fruity habanero flavor with an intense, lingering heat.',
@@ -44,8 +41,7 @@ const products = [
   },
   {
     name: 'Big Bald Bob',
-    image:
-      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351167/bigbaldbob_zxev1u.jpg',
+    image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351167/bigbaldbob_zxev1u.jpg',
     heatLevel: 'Mild',
     size: '200ml',
     description: 'Rich smoky flavor with a subtle warmth that builds slowly.',
@@ -53,8 +49,7 @@ const products = [
   },
   {
     name: 'Powder Extreme',
-    image:
-      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351170/powders_lziet3.jpg',
+    image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351170/powders_lziet3.jpg',
     heatLevel: 'Extreme',
     size: '100ml',
     description: 'For true heat seekers - use sparingly!',
@@ -78,12 +73,10 @@ export default function ProductsShowcaseSection() {
             <span className="text-sm font-medium">Spicy & Flavorful</span>
           </div>
           <h2 className="font-heading text-content mb-4 text-4xl font-bold md:text-5xl">
-            Spice Up Your Life,{' '}
-            <span className="text-primary">Like Damn Bruh</span>
+            Spice Up Your Life, <span className="text-primary">Like Never Before</span>
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-gray-600">
-            Artisanal heat crafted for flavor explorers. Each product tells a
-            story of passion.
+            Artisanal heat crafted for flavor explorers. Each product tells a story of passion.
           </p>
         </motion.div>
 
@@ -124,9 +117,7 @@ export default function ProductsShowcaseSection() {
 
               <div className="p-5">
                 <div className="mb-2 flex items-start justify-between">
-                  <h3 className="font-heading text-content text-xl font-bold">
-                    {product.name}
-                  </h3>
+                  <h3 className="font-heading text-content text-xl font-bold">{product.name}</h3>
                   <div className="text-primary flex items-center">
                     <StarIcon className="h-4 w-4 fill-current" />
                     <span className="ml-1 text-sm font-medium">4.8</span>
@@ -145,9 +136,7 @@ export default function ProductsShowcaseSection() {
                 <p className="mb-4 text-gray-600">{product.description}</p>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-content text-lg font-bold">
-                    {product.price}
-                  </span>
+                  <span className="text-content text-lg font-bold">{product.price}</span>
                   <ShowcaseButton
                     size="sm"
                     icon={<ArrowRightIcon className="h-4 w-4" />}
