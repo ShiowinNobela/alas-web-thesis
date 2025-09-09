@@ -7,6 +7,7 @@ import AddToCartModal from '@/components/modals/AddToCartModal';
 import { useAddToCart } from '@/hooks/useAddToCart';
 import { useQuery } from '@tanstack/react-query';
 import NotFoundPage from './NotFoundPage';
+import ImageWithTextSkeleton from '@/components/skeletons/ImageWithTextSkeleton';
 
 function ProductDetailsPage() {
   const { id } = useParams();
@@ -18,20 +19,26 @@ function ProductDetailsPage() {
     isLoading,
     isError,
     error,
+    refetch
   } = useQuery({
     queryKey: ['product', id],
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
     queryFn: async () => {
       const res = await axios.get(`/api/products/${id}`);
       return res.data;
     },
-    retry: false,
   });
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        Loading...
-      </div>
+      <>
+      {ImageWithTextSkeleton({ 
+        imageHeight: "h-64 lg:h-auto", 
+        imageWidth: "w-full lg:w-1/2",
+        imageRounded: "rounded",
+      })}
+      </>
     );
   }
 
@@ -43,56 +50,58 @@ function ProductDetailsPage() {
   }
 
   return (
-    <div className="bg-neutral min-h-screen">
-      <section className="text-lighter overflow-hidden">
-        <div className="mx-auto max-w-5xl px-5 py-8">
-          <div className="mb-4 w-full lg:w-1/2">
+    <div className="min-h-screen bg-neutral">
+      <section className="overflow-hidden text-lighter">
+        <div className="max-w-5xl px-5 py-8 mx-auto">
+          <div className="w-full mb-4 lg:w-1/2">
             <BackButton />
           </div>
 
+
+          
           <div className="flex flex-wrap">
             <div className="w-full lg:w-1/2">
               <img
                 src={product.image}
                 alt={product.name || 'Product image'}
-                className="h-64 w-full rounded object-cover object-center lg:h-auto"
+                className="object-cover object-center w-full h-64 rounded lg:h-auto"
               />
             </div>
 
             {/* Product details */}
-            <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:py-6 lg:pl-10">
-              <h2 className="text-lighter text-sm tracking-widest">
+            <div className="w-full mt-6 lg:mt-0 lg:w-1/2 lg:py-6 lg:pl-10">
+              <h2 className="text-sm tracking-widest text-lighter">
                 {product.category}
               </h2>
-              <h1 className="font-heading text-content mb-1 text-3xl">
+              <h1 className="mb-1 text-3xl font-heading text-content">
                 {product.name}
               </h1>
-              <div className="mb-4 flex">
+              <div className="flex mb-4">
                 <span className="flex items-center">
-                  <Star className="size-5 fill-yellow-400 text-black" />
-                  <Star className="size-5 fill-yellow-400 text-black" />
-                  <Star className="size-5 fill-yellow-400 text-black" />
-                  <Star className="size-5 fill-yellow-400 text-black" />
+                  <Star className="text-black size-5 fill-yellow-400" />
+                  <Star className="text-black size-5 fill-yellow-400" />
+                  <Star className="text-black size-5 fill-yellow-400" />
+                  <Star className="text-black size-5 fill-yellow-400" />
                   <Star className="size-5" />
-                  <span className="text-lighter ml-3">(4 Reviews)</span>
+                  <span className="ml-3 text-lighter">(4 Reviews)</span>
                 </span>
               </div>
               <p className="leading-relaxed">{product.description}</p>
-              <div className="mt-6 mb-5 flex items-center border-b-2 border-gray-100 pb-5">
+              <div className="flex items-center pb-5 mt-6 mb-5 border-b-2 border-gray-100">
                 <div className="flex">
                   <span className="mr-3">Spice Level</span>
-                  <Flame className="size-5 fill-amber-500 text-red-400" />
-                  <Flame className="size-5 fill-amber-500 text-red-400" />
-                  <Flame className="size-5 fill-amber-500 text-red-400" />
+                  <Flame className="text-red-400 size-5 fill-amber-500" />
+                  <Flame className="text-red-400 size-5 fill-amber-500" />
+                  <Flame className="text-red-400 size-5 fill-amber-500" />
                 </div>
               </div>
               <div className="flex">
-                <span className="title-font text-content text-2xl font-medium">
+                <span className="text-2xl font-medium title-font text-content">
                   ₱ {parseFloat(product.price).toFixed(2)}
                 </span>
                 <Button
                   onClick={handleAdd}
-                  className="ml-auto flex gap-2 px-10"
+                  className="flex gap-2 px-10 ml-auto"
                 >
                   <ShoppingCart className="size-4" />
                   Add to cart

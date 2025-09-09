@@ -19,6 +19,9 @@ import {
 } from 'flowbite-react';
 import { Edit, PackagePlus, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import SummaryCard from '@/components/bigComponents/SummaryCard';
+import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
+import ErrorState from '@/components/States/ErrorState';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 const fetchProducts = async () => {
   const res = await axios.get('/api/products/admin/list');
@@ -30,9 +33,12 @@ function InventoryManagement() {
     data: products = [],
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ['products'],
     queryFn: fetchProducts,
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
   });
 
   const queryClient = useQueryClient();
@@ -97,8 +103,10 @@ function InventoryManagement() {
   };
 
   return (
-    <div className="bg-admin flex flex-col overflow-x-auto p-4">
-      <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1">
+    <ErrorBoundary>
+
+    <div className="flex flex-col p-4 overflow-x-auto bg-admin">
+      <main className="w-full mx-auto overflow-x-auto border shadow bg-card rounded-xl ring-1">
         {/* Summary Cards */}
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
           <SummaryCard iconKey="lowStock" iconColor="text-yellow-500" title="Low Stock Items" value={lowStockItems} />
@@ -111,7 +119,7 @@ function InventoryManagement() {
           <h2 className="text-xl font-semibold">Product Inventory</h2>
           <Link to="/Admin/AddProduct">
             <Button gradientMonochrome="info">
-              <PackagePlus className="mr-2 h-5 w-5" />
+              <PackagePlus className="w-5 h-5 mr-2" />
               Add Product
             </Button>
           </Link>
@@ -119,9 +127,14 @@ function InventoryManagement() {
 
         {/* Table */}
         {isLoading ? (
-          <div className="text-lighter p-6 text-center">Loading products...</div>
+          <TableSkeleton columns={8} rows={10} />
         ) : isError ? (
-          <div className="p-6 text-center text-red-600">Failed to load products.</div>
+         <ErrorState
+            error={isError}
+            onRetry={refetch}
+            title="Failed to load Inventory"
+            retryText="Retry Request"
+          />
         ) : (
           <div className="overflow-x-auto">
             <Table hoverable striped>
@@ -169,7 +182,7 @@ function InventoryManagement() {
                     <TableCell className="text-sm">{new Date(product.updated_at).toLocaleString()}</TableCell>
                     <TableCell className="flex items-center gap-2">
                       <Button outline color="gray" size="sm" onClick={() => openEditModal(product)}>
-                        <Edit className="h-4 w-4" />
+                        <Edit className="w-4 h-4" />
                       </Button>
                       <ToggleSwitch
                         checked={product.is_active}
@@ -197,7 +210,7 @@ function InventoryManagement() {
         <ModalBody>
           <form id="editForm" onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="restock_quantity" className="mb-2 block text-sm font-medium text-gray-700">
+              <label htmlFor="restock_quantity" className="block mb-2 text-sm font-medium text-gray-700">
                 Restock Amount
               </label>
               <input
@@ -211,7 +224,7 @@ function InventoryManagement() {
               />
             </div>
             <div>
-              <label htmlFor="price" className="mb-2 block text-sm font-medium text-gray-700">
+              <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-700">
                 Price
               </label>
               <input
@@ -228,15 +241,27 @@ function InventoryManagement() {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button type="submit" form="editForm" disabled={updateStockPrice.isLoading}>
-            {updateStockPrice.isLoading ? 'Saving...' : 'Save Changes'}
-          </Button>
+          <Button
+              type="submit"
+              form="editForm"
+              disabled={updateStockPrice.isLoading}
+            >
+              {updateStockPrice.isLoading ? (
+                <>
+                  <Spinner size="sm" className="mr-2" />
+                  Saving...
+                </>
+              ) : (
+                'Save Changes'
+              )}
+            </Button>
           <Button color="gray" onClick={closeModal}>
             Cancel
           </Button>
         </ModalFooter>
       </Modal>
     </div>
+    </ErrorBoundary>
   );
 }
 

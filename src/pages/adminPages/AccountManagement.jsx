@@ -6,6 +6,21 @@ import { UserCircle, Users, User, Contact, UserPlus } from 'lucide-react';
 import ButtonGroupFilter from '@/components/bigComponents/ButtonGroupFilter';
 import AddUserModal from '@/components/modals/AddUserModal';
 import AdminUsersTable from '@/components/tables/AdminUsersTable';
+import RoleBadge from '@/components/bigComponents/RoleBadge';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import EmptyState from '@/components/States/EmptyState';
+import ErrorState from '@/components/States/ErrorState';
+import { toast, Toaster } from "sonner";
+
+const fetchUser = async () => {
+  const user = JSON.parse(window.localStorage.getItem('user'));
+  const res = await axios.get('/api/users', {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  });
+  return res.data;
+};
 
 const fetchAdminUsers = async (role) => {
   const params = {};
@@ -19,14 +34,32 @@ function AccountManagement() {
   const [openModal, setOpenModal] = useState(false);
 
   const queryClient = useQueryClient();
+  const {isLoading: isVerifyingUser, isError: isVerificationError } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: fetchUser,
+    onSuccess: (data) => {
+      if (data.role_name !== 'admin') {
+        window.location.href = '/';
+      }
+    },
+    onError: () => {
+      console.error('Unable to fetch user.');
+      if (error.response?.status === 401) {
+        window.location.href = '/login';
+      }
+    },
+    retry: 1,
+  });
 
   const {
     data: users = [],
-    isLoading,
-    isError,
+    isLoading: isUsserLoading,
+    isError: isUserError,
+    refetch: refetchUsers
   } = useQuery({
     queryKey: ['adminUsers', statusFilter],
     queryFn: () => fetchAdminUsers(statusFilter),
+    enabled: !isVerifyingUser && !isVerificationError,
   });
 
   const toggleUserStatus = useMutation({
@@ -56,6 +89,10 @@ function AccountManagement() {
     onSettled: () => {
       queryClient.invalidateQueries(['adminUsers']);
     },
+    onError: (error) => {
+      console.error('Error updating user status:', error);
+      toast.error('Failed to update user status. Please try again.');
+    }
   });
 
   const filteredUsers =
@@ -70,33 +107,55 @@ function AccountManagement() {
     { label: 'Customer', value: 'customer', icon: Contact },
   ];
 
+  if (isVerifyingUser) {
+    return (
+      <div className="flex items-center justify-center h-full p-4 bg-admin">
+        <div className="text-center">
+          <div className="w-12 h-12 mx-auto border-b-2 border-gray-900 rounded-full animate-spin"></div>
+          <p className="mt-2">Verifying permissions...</p>
+        </div>
+      </div>
+    );
+  }     
+
   return (
-    <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
-      <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1 dark:text-white">
-        <div className="flex flex-row justify-between p-5">
-          <ButtonGroupFilter
-            options={roleTabs}
-            value={statusFilter}
+    <>
+    <Toaster richColors />
+      <div className="flex flex-col h-full p-4 overflow-x-auto bg-admin">
+        <main className="w-full mx-auto overflow-x-auto border shadow bg-card rounded-xl ring-1 dark:text-white">
+          <div className="flex flex-row justify-between p-5">
+            <ButtonGroupFilter
+              options={roleTabs}
+              value={statusFilter}
             onChange={setStatusFilter}
             color="alternative"
-            className="border border-black dark:border-white"
-          />
+            className="border border-black dark:border-white" />
 
           <Button color="gray" className="gap-2" onClick={() => setOpenModal(true)}>
-            <UserPlus className="h-5 w-5" />
+            <UserPlus className="w-5 h-5" />
             Add User
           </Button>
         </div>
 
-        <AdminUsersTable
-          users={filteredUsers}
-          isLoading={isLoading}
-          isError={isError}
-          onToggleStatus={(user) => toggleUserStatus.mutate({ id: user.id, newStatus: !user.is_active })}
-        />
+        {isUsserLoading ? (
+          <TableSkeleton rowCount={5} colCount={6} />
+        ) : isUserError ? (
+          <ErrorState
+            error={isUserError}
+            onRetry={refetchUsers}
+            title="Failed to load users"
+            retryText="Retry Request"
+          />
+        ) : (
+          <AdminUsersTable
+            users={filteredUsers}
+            onToggleStatus={(user) => toggleUserStatus.mutate({ id: user.id, newStatus: !user.is_active })}
+          />
+        )}
       </main>
       <AddUserModal show={openModal} onClose={() => setOpenModal(false)} />
     </div>
+    </>
   );
 }
 

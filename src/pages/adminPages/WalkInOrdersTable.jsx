@@ -8,7 +8,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Spinner,
   Table,
   TableHead,
   TableRow,
@@ -18,6 +17,8 @@ import {
 } from 'flowbite-react';
 import { useState } from 'react';
 import SummaryCard from '@/components/bigComponents/SummaryCard';
+import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import ErrorState from '@/components/States/ErrorState';
 
 const fetchWalkInOrders = async () => {
   try {
@@ -35,6 +36,7 @@ function WalkInOrders() {
     data: orders = [],
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ['walkInOrders'],
     queryFn: fetchWalkInOrders,
@@ -62,9 +64,13 @@ function WalkInOrders() {
     setEditingOrder(null);
   };
 
+  const formatCurrency = (amount) => {
+    return `₱ ${parseFloat(amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+  };
+
   return (
-    <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
-      <div className="bg-card mb-4 grid grid-cols-1 gap-4 rounded-xl p-4 ring-1 md:grid-cols-4">
+    <div className="flex flex-col h-full p-4 overflow-x-auto bg-admin">
+      <div className="grid grid-cols-1 gap-4 p-4 mb-4 bg-card rounded-xl ring-1 md:grid-cols-4">
         <Card className="shadow-sm ring-1">
           <h2 className="text-xl font-semibold">Walk-In Orders</h2>
           <Button onClick={() => navigate('/Admin/WalkInOrdering')} size="sm">
@@ -76,29 +82,51 @@ function WalkInOrders() {
           iconKey="sales"
           iconColor="text-green-600"
           title="Total Walk-In Sales"
-          value={`₱ ${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+          value={formatCurrency(totalAmount)}
         />
 
         <SummaryCard
           iconKey="discount"
           iconColor="text-green-600"
           title="Total Walk-In Discounts"
-          value={`₱ ${totalDiscount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+          value={formatCurrency(totalDiscount)}
         />
       </div>
 
       {isLoading && (
-        <div className="flex justify-center py-12">
-          <Spinner size="xl" />
+        <div className="p-4 bg-white rounded-lg shadow-sm ring-1">
+          <TableSkeleton columns={8} rows={5} />
         </div>
       )}
 
-      {error && <p className="text-center text-red-600">Failed to load orders: {error.message}</p>}
+      {error && (
+        <div className="p-4 bg-white rounded-lg shadow-sm ring-1">
+          <ErrorState
+            error={error}
+            onRetry={refetch}
+            title="Failed to load walk-in orders"
+            retryText="Retry"
+          />
+        </div>
+      )}
 
-      {!isLoading && orders.length === 0 && <p className="text-center text-gray-500">No walk-in orders yet.</p>}
+      {!isLoading && !error && orders.length === 0 && (
+        <div className="flex flex-col items-center justify-center p-6 text-gray-500 bg-white rounded-lg shadow-sm ring-1 min-h-[200px]">
+          <Receipt className="w-12 h-12 mb-3 opacity-50" />
+          <p className="text-lg font-medium">No walk-in orders yet</p>
+          <p className="mt-1 text-sm">Create your first walk-in order to get started</p>
+          <Button 
+            onClick={() => navigate('/Admin/WalkInOrdering')} 
+            color="blue"
+            className="mt-4"
+          >
+            Create Order
+          </Button>
+        </div>
+      )}
 
-      {orders.length > 0 && (
-        <div className="relative overflow-x-auto rounded-xl shadow-md ring-1">
+      {!isLoading && !error && orders.length > 0 &&  (
+        <div className="relative overflow-x-auto shadow-md rounded-xl ring-1">
           <Table hoverable striped className="ring-1">
             <TableHead>
               <TableRow>

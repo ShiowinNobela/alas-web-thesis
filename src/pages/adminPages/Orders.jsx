@@ -18,6 +18,8 @@ import AdminOrderFilters from '@/components/filters/AdminOrderFilter';
 import AdminOrdersTable from '@/components/tables/AdminOrdersTable';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import EmptyState from '@/components/States/EmptyState';
+import ErrorState from '@/components/States/ErrorState';
 
 function AdminViewOrderPage() {
   const queryClient = useQueryClient();
@@ -39,9 +41,9 @@ function AdminViewOrderPage() {
   const [searchId, setSearchId] = useState('');
   const [uploadedImage, setUploadedImage] = useState('');
   const [showInfoModal, setShowInfoModal] = useState(false);
-  const isLoading = false;
 
-  const { data: orders = [], refetch: refetchOrders } = useQuery({
+
+  const { data: orders = [], refetch: refetchOrders, isLoading: isOrdersLoading, isError: isOrdersError } = useQuery({
     queryKey: ['orders', status, startDate, endDate, searchId],
     queryFn: () => {
       if (searchId) {
@@ -57,7 +59,7 @@ function AdminViewOrderPage() {
     },
   });
 
-  const { data: summaryData = [] } = useQuery({
+  const { data: summaryData = [], isLoading: isSummaryLoading, isError: isSummaryError } = useQuery({
     queryKey: ['orderSummary', startDate, endDate],
     queryFn: () =>
       fetchOrderSummary(
@@ -67,7 +69,7 @@ function AdminViewOrderPage() {
     enabled: !!startDate && !!endDate,
   });
 
-  const { data: last30SummaryData = [] } = useQuery({
+  const { data: last30SummaryData = [], isLoading: isLast30SummaryLoading, isError: isLast30SummaryError } = useQuery({
     queryKey: ['last30OrderSummary'],
     queryFn: fetchLast30OrderSummary,
   });
@@ -150,6 +152,7 @@ function AdminViewOrderPage() {
     queryClient.invalidateQueries(['orders']);
     queryClient.invalidateQueries(['orderSummary']);
     queryClient.invalidateQueries(['last30OrderSummary']);
+    toast.info('Data refreshed');
   }, [queryClient]);
 
   const handleSearchById = useCallback(() => {
@@ -158,7 +161,16 @@ function AdminViewOrderPage() {
       refetchOrders();
       return;
     }
-  }, [searchId, refetchOrders]);
+  toast.loading('Searching for order...');
+    refetchOrders().finally(() => {
+      toast.dismiss();
+      if (orders.length === 0) {
+        toast.error('No order found with that ID.');
+      } else {
+        toast.success('Order found.');
+      }
+    });
+  }, [searchId, refetchOrders, orders.length])
 
   return (
     <>
@@ -172,6 +184,8 @@ function AdminViewOrderPage() {
             endDate={endDate}
             onRefresh={handleRefresh}
             onShowInfoModal={() => setShowInfoModal(true)}
+            isLoading={isSummaryLoading || isLast30SummaryLoading}
+            isError={isSummaryError || isLast30SummaryError}
           />
 
           <AdminOrderFilters
@@ -179,19 +193,42 @@ function AdminViewOrderPage() {
             onSearch={handleSearchById}
             searchId={searchId}
             setSearchId={setSearchId}
+            isLoading={isOrdersLoading}
           />
-          {isLoading ? (
-        <TableSkeleton columns={4} rows={10} />
+          {isOrdersLoading ? (
+          <TableSkeleton columns={4} rows={10} />
+          ) : 
+            isOrdersError ? (
+              <ErrorState 
+                error={isOrdersError}
+                onRetry={refetchOrders}
+                title="Failed to load orders"
+                retryText="Retry Request"
+              />  
+          ) : sortedOrders.length === 0 ? (
+            <>
+              <EmptyState
+                  title="No Orders Found"
+                  description="No orders in the system."
+                  icon={<Bug className="w-6 h-6" />}
+                  onAction={handleRefresh} />
+              <button
+                onClick={handleRefresh}
+                  className="px-4 py-2 mt-4 text-sm text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200"
+                >
+                  Clear Filters
+              </button>
+            </>
         ) : (
-            <AdminOrdersTable
-              orders={sortedOrders}
-              sortConfig={sortConfig}
-              handleSort={handleSort}
-              getStatusColor={getStatusStyle}
-              onStatusUpdateClick={handleStatusUpdateClick}
-              onViewHistory={fetchOrderHistory}
-            />
-        )}
+              <AdminOrdersTable
+                orders={sortedOrders}
+                sortConfig={sortConfig}
+                handleSort={handleSort}
+                getStatusColor={getStatusStyle}
+                onStatusUpdateClick={handleStatusUpdateClick}
+                onViewHistory={fetchOrderHistory}
+              />
+          )}
         </main>
 
         {showHistoryModal && (

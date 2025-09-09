@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/dialog';
 import CancelOrderModal from '@/components/modals/CanceLOrderModal';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
+import ErrorState from '@/components/States/ErrorState';
 
 function UserViewOrderPage() {
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -79,10 +81,13 @@ function UserViewOrderPage() {
     data: orders = [],
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     queryKey: ['orders', statusFilters, paymentFilters, orderIdSearch, monthYearFilter],
     queryFn: fetchOrders,
     keepPreviousData: true,
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
   });
 
   const cancelOrderMutation = useMutation({
@@ -113,6 +118,8 @@ function UserViewOrderPage() {
   }
 
   return (
+    <ErrorBoundary>
+
     <TooltipProvider>
       <main className="min-h-screen pb-8 bg-neutral sm:pb-4">
         <div className="max-w-6xl p-4 mx-auto sm:py-8 md:px-6 lg:px-8">
@@ -129,6 +136,7 @@ function UserViewOrderPage() {
             </div>
           </div>
 
+
           {/* Main Content Layout */}
           <div className="flex gap-6">
             {/* Desktop Sidebar - Hidden on mobile */}
@@ -140,6 +148,13 @@ function UserViewOrderPage() {
             <div className="flex-1 min-w-0">
               {isLoading ? (
                 <TableSkeleton columns={6} rows={10} />
+              ) :  isError ? (
+                <ErrorState
+                  error={isError}
+                  onRetry={refetch}
+                  title="Failed to load Orders"
+                  retryText="Retry Request"
+                />
               ) : (
                 <div className="space-y-4">
                   <OrdersTable
@@ -192,6 +207,7 @@ function UserViewOrderPage() {
         />
       </main>
     </TooltipProvider>
+    </ErrorBoundary>
   );
 }
 
