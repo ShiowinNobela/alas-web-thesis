@@ -15,17 +15,17 @@ import PrivateRoute from './components/layout/PrivateRoute';
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
-const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
 import LoginPage from './pages/userPages/LoginPage.jsx';
-import RegPage from './pages/userPages/RegistrationPage.jsx';
-const ProductPage = lazy(() => import('./pages/userPages/ProductListPage.jsx'));
+import ProductPage from './pages/userPages/ProductListPage.jsx';
+import ContactUs from './pages/userPages/ContactUs.jsx';
+const AboutUs = lazy(() => import('./pages/userPages/AboutUs.jsx'));
+const RegPage = lazy(() => import('./pages/userPages/RegistrationPage.jsx'));
 const ProductDetailsPage = lazy(() => import('./pages/userPages/ProductDetailsPage.jsx'));
 const UserSettings = lazy(() => import('./pages/userPages/UserSettings.jsx'));
 const GiveReview = lazy(() => import('./pages/userPages/GiveReview.jsx'));
 const Faqs = lazy(() => import('./pages/userPages/Faqs.jsx'));
 const UserOrderPage = lazy(() => import('./pages/userPages/UserOrderPage.jsx'));
 const UserViewOrderDetails = lazy(() => import('./pages/userPages/UserViewOrderDetails.jsx'));
-import AboutUs from './pages/userPages/AboutUs.jsx';
 const NotFoundPage = lazy(() => import('./pages/userPages/NotFoundPage.jsx'));
 const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
 
