@@ -9,6 +9,18 @@ Currently, two official plugins are available:
 
 ---
 
+# Reusable snippets I guess
+
+```js
+// Simulate a delay to see loading states
+await new Promise((resolve) => setTimeout(resolve, 1500));
+
+// Simulate an error
+throw new Error('Simulated fetch error');
+```
+
+---
+
 # Dark Mode Toggle Implementation Guide
 
 The dark mode toggle works by adding or removing a “dark” class to the main HTML of the page. When activated, it tells Tailwind CSS to switch all elements that have dark-mode styles, like backgrounds or text, to their dark colors. Tailwind only applies these when the `darkMode: 'class'` is present on the tailwind config, because by default it only rely on your computer’s theme settings.
