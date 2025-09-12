@@ -17,7 +17,7 @@ import PrivateRoute from './components/layout/PrivateRoute';
 import LandPage from './pages/home/LandingPage.jsx';
 import LoginPage from './pages/userPages/LoginPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
-import ContactUs from './pages/userPages/ContactUs.jsx';
+const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
 const AboutUs = lazy(() => import('./pages/userPages/AboutUs.jsx'));
 const RegPage = lazy(() => import('./pages/userPages/RegistrationPage.jsx'));
 const ProductDetailsPage = lazy(() => import('./pages/userPages/ProductDetailsPage.jsx'));
@@ -28,6 +28,7 @@ const UserOrderPage = lazy(() => import('./pages/userPages/UserOrderPage.jsx'));
 const UserViewOrderDetails = lazy(() => import('./pages/userPages/UserViewOrderDetails.jsx'));
 const NotFoundPage = lazy(() => import('./pages/userPages/NotFoundPage.jsx'));
 const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
+const VerifyEmailPage = lazy(() => import('./pages/userPages/VerifyEmailPage.jsx'));
 
 // Admin Pages
 const AdminDashboard = lazy(() => import('./pages/adminPages/adminDashboard.jsx'));
@@ -60,6 +61,7 @@ function App() {
             <Route path="/ContactUs" element={<ContactUs />}></Route>
             <Route path="/Faqs" element={<Faqs />}></Route>
             <Route path="/AboutUs" element={<AboutUs />}></Route>
+            <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
 
             {/* Protected user routes */}
             <Route element={<PrivateRoute />}>

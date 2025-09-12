@@ -3,10 +3,10 @@ import { Card } from '@/components/ui/card';
 
 function ProductCardSkeleton() {
   return (
-    <Card className="group z-10 flex flex-col gap-5 border-0 bg-white p-4">
+    <Card className="group z-10 flex flex-col gap-4 border-0 bg-white p-4">
       {/* Image placeholder */}
       <div className="relative overflow-hidden rounded-md p-2">
-        <Skeleton className="h-40 w-full rounded-md" />
+        <Skeleton className="h-35 w-full rounded-md" />
       </div>
 
       {/* Info placeholders */}
