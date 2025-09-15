@@ -1,11 +1,6 @@
 import ShowcaseButton from '@/components/bigComponents/ShowcaseButton';
 import { motion } from 'framer-motion';
-import {
-  StarIcon,
-  QuoteIcon,
-  MessageCircleIcon,
-  FlameIcon,
-} from 'lucide-react';
+import { StarIcon, QuoteIcon, MessageCircleIcon, FlameIcon } from 'lucide-react';
 
 const TestimonialSection = () => {
   const testimonials = [
@@ -15,8 +10,7 @@ const TestimonialSection = () => {
       content:
         'ALAS sauces transformed my cooking! The perfect balance of heat and flavor. I put it on everything from eggs to pizza. My subscribers went crazy for my recipes using these sauces!',
       rating: 5,
-      image:
-        'https://scontent.fmnl9-4.fna.fbcdn.net/v/t39.30808-1/499242487_660617000298825_7648577276595743173_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_ohc=eInaUib_ZEwQ7kNvwFKPNij&_nc_oc=AdljdpGD7sGZWwh6vL96Y4IXn4StyVPxxn96D_jg2PAVhcE8PzJQI7Ar2W_JXJchC-E&_nc_zt=24&_nc_ht=scontent.fmnl9-4.fna&_nc_gid=p7DqAlDaxru8X0wIT2GdNQ&oh=00_AfUwHS0dsaFvlDZ8zZoGqAerV0P-fsw4uk6VE11vBy5fRg&oe=68B395AD',
+      image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755266866/alas_uploads/irew6sxp4aej6qjfdmaf.jpg',
     },
     {
       name: 'Clark Trogo',
@@ -24,8 +18,7 @@ const TestimonialSection = () => {
       content:
         "We've been using ALAS hot sauces in our restaurant for 6 months now. Customers keep coming back asking what brand we use. The smoky chipotle is our bestseller!",
       rating: 4,
-      image:
-        'https://scontent.fmnl9-4.fna.fbcdn.net/v/t39.30808-6/469044029_532287313131795_586094656816260243_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=O8D9p2b0008Q7kNvwFqN2Oy&_nc_oc=Adm_AvXvznED79nssGDorOZU8KCxYHzCLORcNbR55NdAvMtWf93Bf_xwJ7FumAg6xbg&_nc_zt=23&_nc_ht=scontent.fmnl9-4.fna&_nc_gid=5eBk0ihzRZPlTW32PRs4xg&oh=00_AfXm1ZQQKveolEMglnJ824BQuiD_TLpBLmCj4_Pe5ZCyCQ&oe=68B388FE',
+      image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755266866/alas_uploads/irew6sxp4aej6qjfdmaf.jpg',
     },
     {
       name: 'Torogo Guy',
@@ -33,8 +26,7 @@ const TestimonialSection = () => {
       content:
         "I'm not usually a spicy food person, but the mild options from ALAS have just the right kick. The flavors are so complex - you can tell they use quality ingredients.",
       rating: 5,
-      image:
-        'https://scontent.fmnl9-2.fna.fbcdn.net/v/t39.30808-6/412954468_301070099586852_7104256681861247984_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=iuimq8Zrbx8Q7kNvwE7G6WD&_nc_oc=AdkA9aJVehP-Qu7y7LPWKk6HSh3vBdJHCLhD42wGquDIZ-0hYSklTWh-lu9ye2MhubE&_nc_zt=23&_nc_ht=scontent.fmnl9-2.fna&_nc_gid=y-7i5kVT8lPrwogQW9VM8A&oh=00_AfUbOGpJ33fk4_oCGaRtCpyOzQH83tx0KrqcuTs66_x0eA&oe=68B390E6',
+      image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755266866/alas_uploads/irew6sxp4aej6qjfdmaf.jpg',
     },
   ];
 
@@ -70,9 +62,8 @@ const TestimonialSection = () => {
           <h2 className="font-heading text-content mb-4 text-3xl font-bold md:text-4xl">
             What Our <span className="text-orange-600">Spice Lovers</span> Say
           </h2>
-          <p className="mx-auto max-w-2xl text-gray-600">
-            Don't just take our word for it - hear from those who've experienced
-            the ALAS difference
+          <p className="text-lighter mx-auto max-w-2xl">
+            Don't just take our word for it - hear from those who've experienced the ALAS difference
           </p>
         </motion.div>
 
@@ -88,7 +79,7 @@ const TestimonialSection = () => {
               key={index}
               variants={item}
               whileHover={{ y: -10 }}
-              className="group relative overflow-hidden rounded-xl bg-white shadow-lg"
+              className="group bg-card relative overflow-hidden rounded-xl shadow-lg"
             >
               <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-orange-300/30"></div>
 
@@ -103,16 +94,14 @@ const TestimonialSection = () => {
                     />
                   </div>
                   <div>
-                    <h3 className="text-content font-medium">
-                      {testimonial.name}
-                    </h3>
+                    <h3 className="text-content font-medium">{testimonial.name}</h3>
                     <p className="text-lighter text-sm">{testimonial.role}</p>
                   </div>
                 </div>
 
                 <QuoteIcon className="text-primary mb-4 h-6 w-6 opacity-80" />
 
-                <p className="mb-6 text-gray-600">{testimonial.content}</p>
+                <p className="text-lighter mb-6">{testimonial.content}</p>
 
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
@@ -137,7 +126,6 @@ const TestimonialSection = () => {
           className="mt-12 text-center"
         >
           <ShowcaseButton
-            size="md"
             icon={<MessageCircleIcon className="h-5 w-5" />}
             className="bg-amber-600 text-white hover:bg-amber-600"
           >

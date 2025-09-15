@@ -29,7 +29,7 @@ export default function ShowcaseButton({
         )}
         {...rest}
       >
-        <motion.a
+        <motion.span
           whileHover={{
             x: 5,
             backgroundColor: hoverBgHex,
@@ -39,12 +39,8 @@ export default function ShowcaseButton({
           className="flex items-center gap-2"
         >
           {children}
-          {icon && (
-            <span className="transition-transform group-hover:translate-x-1">
-              {icon}
-            </span>
-          )}
-        </motion.a>
+          {icon && <span className="transition-transform group-hover:translate-x-1">{icon}</span>}
+        </motion.span>
       </Button>
     </motion.div>
   );

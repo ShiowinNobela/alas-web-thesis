@@ -93,9 +93,7 @@ const StorySection = () => {
                 transition={{ duration: 0.6 }}
                 className="h-0.5 bg-amber-700"
               />
-              <span className="text-sm font-medium tracking-wider uppercase">
-                Our Journey
-              </span>
+              <span className="text-sm font-medium tracking-wider uppercase">Our Journey</span>
             </motion.div>
 
             <motion.h2
@@ -122,22 +120,17 @@ const StorySection = () => {
               className="mb-8 space-y-4 text-gray-600"
             >
               <p>
-                Our journey into the spice world came as a surprise, from
-                curiosity, to independent research, up to becoming a legit
-                business.
+                Our journey into the spice world came as a surprise, from curiosity, to independent research, up to
+                becoming a legit business.
               </p>
               <p>
-                Each bottle represents countless hours of craft. Local
-                ingredients, no compromises — just award-winning recipes.
+                Each bottle represents countless hours of craft. Local ingredients, no compromises — just award-winning
+                recipes.
               </p>
             </motion.div>
 
             <Link to="/AboutUs">
-              <ShowcaseButton
-                size="md"
-                icon={<ArrowRightIcon className="h-5 w-5" />}
-                className="hover:bg-amber-600"
-              >
+              <ShowcaseButton icon={<ArrowRightIcon className="h-5 w-5" />} className="hover:bg-amber-600">
                 Read Our Full Story
               </ShowcaseButton>
             </Link>
