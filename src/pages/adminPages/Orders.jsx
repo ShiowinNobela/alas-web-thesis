@@ -20,6 +20,8 @@ import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import EmptyState from '@/components/States/EmptyState';
 import ErrorState from '@/components/States/ErrorState';
+import OrderReportPDF from '@/components/ReportFormats/OrderReportPDF';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 function AdminViewOrderPage() {
   const queryClient = useQueryClient();
@@ -188,6 +190,7 @@ function AdminViewOrderPage() {
             isError={isSummaryError || isLast30SummaryError}
           />
 
+          <div className="flex items-center justify-between p-4">
           <AdminOrderFilters
             onRefresh={handleRefresh}
             onSearch={handleSearchById}
@@ -195,6 +198,33 @@ function AdminViewOrderPage() {
             setSearchId={setSearchId}
             isLoading={isOrdersLoading}
           />
+          {sortedOrders.length > 0 && (
+            <PDFDownloadLink
+              document={
+                <OrderReportPDF
+                  orders={sortedOrders}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              }
+              fileName={`orders-${startDate || 'all'}-to-${endDate || 'all'}.pdf`}
+            >
+              {({ loading }) =>
+                loading ? (
+                  <button className="text-gray-700 bg-gray-300 rounded">
+                    Preparing...
+                  </button>
+                ) : (
+                  <button className="text-sm text-white bg-blue-600 rounded hover:bg-blue-700">
+                    Download PDF
+                  </button>
+                )
+              }
+            </PDFDownloadLink>
+          )}
+          </div>
+          
+
           {isOrdersLoading ? (
           <TableSkeleton columns={4} rows={10} />
           ) : 

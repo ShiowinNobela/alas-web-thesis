@@ -14,69 +14,117 @@ import CardSkeleton from '@/components/skeletons/CardSkeleton';
 import ChartSkeleton from '@/components/skeletons/ChartSkeleton';
 import ListCardSkeleton from '@/components/skeletons/ListCardSkeleton';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import ErrorState from '@/components/States/ErrorState';
+import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+
 
 function AdminDashboard() {
 
-  const isLoading = false;
-  const revenueCategories = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  const revenueSeries = [
+  const { data: items, isLoading: isLoading, isError: isError, refetch: refetch } = useQuery({
+    queryKey: ['dashboard'],
+    queryFn: async () => {
+      const { data } = await axios.get('/api/dashboard/metrics');
+      return data.data || [];
+    }
+  });
+
+  const { data: weeklySales, isLoading: isLoadingWeekly } = useQuery({
+    queryKey: ['weeklySales'],
+    queryFn: async () => {
+      const { data } = await axios.get('/api/reports/weekly-sales?weeks=7');
+      return data.data;
+    },
+  });
+
+//Edit the Chart here for future changes.
+  let revenueCategories = [];
+  let revenueSeries = [];
+ if (weeklySales?.weeks?.length) {
+  revenueCategories = weeklySales.weeks.map((_, idx) => `Week ${idx + 1}`);
+  revenueSeries = [
     {
       name: 'Revenue',
-      data: [400, 300, 500, 250, 600, 450, 700],
+      data: weeklySales.weeks.map(w => w.total),
     },
   ];
+}
+
 
   return (
     <div className="grid grid-cols-1 gap-6 p-4 bg-admin lg:grid-cols-6">
-      {/* Performance Indicators */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6">
-        {isLoading?  [...Array(5)].map((_, idx) => <CardSkeleton key={idx} />)
-          : [{
-            title: 'Total Sales',
-            value: '$12,450',
-            icon: 'sales',
-            color: 'text-green-600',
-          },
-          {
-            title: 'Orders',
-            value: '320',
+
+      {/* Cardss */}
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6'>
+        {isLoading ? 
+        [...Array(5)].map((_, idx) => <CardSkeleton key={idx} /> )
+      : isError ? (
+        <ErrorState
+            error={isError}
+            onRetry={refetch}
+            title="Failed to load Dashboard Items"
+            retryText="Retry Request"
+          /> 
+      ) : ( items ) ?
+      [
+        {
+          title: "This Week's Sales ",
+              value: items?.totalSalesLast7Days || 0,
+              icon: 'sales',
+              color: 'text-green-600',
+        },
+        {
+            title: "This Week's Online Orders",
+            value: items?.onlineOrdersLast7Days || 0,
             icon: 'orders',
             color: 'text-blue-600',
-          },
-          {
-            title: 'Walk In Orders',
-            value: '20',
+        },
+        {
+            title: "This Week's Walk-in Orders",
+            value:  items?.walkInOrdersLast7Days || 0, 
             icon: 'walkInOrders',
             color: 'text-yellow-600',
-          },
-          {
-            title: 'Customers',
-            value: '120',
+        },
+        {
+            title: "This Week's Items Sold",
+            value:  items?.totalItemsSoldLast7Days || 0,
             icon: 'customer',
             color: 'text-yellow-400',
-          },
-          {
-            title: 'Refunds',
-            value: '5',
+        },
+        {
+            title: 'EMPTY FOR NOW',
+            value:  0,
             icon: 'lowStock',
             color: 'text-red-600',
-          },
-        ].map((item, idx) => (
-          <SummaryCard
-            key={idx}
-            iconKey={item.icon || 'orders'}
-            iconColor={item.color || 'text-blue-600'}
-            title={item.title}
-            value={item.value}
-          />
-        ))}
+        },
+      ] .map((item, idx) => (
+            <SummaryCard
+              key={idx}
+              iconKey={item.icon || 'orders'}
+              iconColor={item.color || 'text-blue-600'}
+              title={item.title}
+              value={item.value}
+            />
+          ))
+          : (
+          <div className="flex items-center justify-center col-span-5 p-6 text-center text-gray-500 bg-white rounded-lg shadow-sm ring-1 min-h-[120px]">
+            No performance data available
+          </div>
+        )
+      }
+
       </div>
-      
+
       {/* Revenue Chart */}
-      {isLoading ? (
+      {isLoadingWeekly ? (
         <ChartSkeleton />
       ) : (
-        <RevenueChart series={revenueSeries} categories={revenueCategories} />
+        <RevenueChart
+          title="Revenue within 7 Weeks"
+          series={revenueSeries}
+          categories={revenueCategories}
+        />
       )}
 
       {/* Low Stock Alert */}

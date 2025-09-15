@@ -80,7 +80,7 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
   }, [setSearchParams, setSearchId, onRefresh]);
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-between gap-3 px-2">
+    <div className="flex flex-wrap items-center justify-between w-full gap-3 px-2">
       <div className="flex w-full items-center gap-2 sm:w-[30%]">
         <TextInput
           placeholder="Search order by ID..."
