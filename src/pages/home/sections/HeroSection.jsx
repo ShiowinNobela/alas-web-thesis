@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { FireExtinguisherIcon, FlameIcon } from 'lucide-react';
+import { FireExtinguisherIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import useUserStore from '@/stores/userStore';
 
@@ -21,18 +21,6 @@ const HeroSection = () => {
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
-  const floatingFlame = {
-    animate: {
-      y: [0, -15, 0],
-      rotate: [0, 5, -5, 0],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    },
   };
 
   return (
@@ -77,14 +65,6 @@ const HeroSection = () => {
               </Link>
             </motion.div>
           </div>
-        </motion.div>
-
-        <motion.div variants={floatingFlame} animate="animate" className="absolute top-1/4 left-10 hidden lg:block">
-          <FlameIcon className="size-8 text-amber-400/80" />
-        </motion.div>
-
-        <motion.div variants={floatingFlame} animate="animate" className="absolute top-1/3 right-10 hidden lg:block">
-          <FlameIcon className="size-6 text-red-400/80" />
         </motion.div>
 
         <motion.div

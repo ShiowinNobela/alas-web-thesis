@@ -8,7 +8,7 @@ import ThemeToggle from '../filters/ThemeToggle';
 import { handleLogout } from '@/utils/logout';
 
 const navItemStyle =
-  'px-2 py-2 border-b-2 border-transparent hover:border-brand hover:text-brand transition-all cursor-pointer';
+  'px-2 py-2 border-b-2 border-transparent hover:border-primary hover:text-primary transition-all cursor-pointer';
 
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,7 +19,7 @@ function Navbar() {
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const isActive = (path) => location.pathname === path;
-  const getNavItemClass = (path) => `${navItemStyle} ${isActive(path) ? 'text-brand' : ''}`;
+  const getNavItemClass = (path) => `${navItemStyle} ${isActive(path) ? 'text-primary' : ''}`;
 
   const navLinks = [
     { to: '/', label: 'Home' },
@@ -30,8 +30,8 @@ function Navbar() {
   ];
 
   return (
-    <header className="bg-card sticky top-0 z-50 w-full drop-shadow-md">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-4">
+    <header className="bg-card sticky top-0 z-50 w-full border-b-2 drop-shadow-md">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-4">
         <div className="flex flex-row items-center justify-center gap-4">
           <Link to="/" onClick={closeMobileMenu}>
             <img className="h-11 w-auto cursor-pointer" src={Logo} alt="Logo" />
@@ -40,7 +40,7 @@ function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="text-content font-heading hidden items-center gap-8 tracking-wide md:flex">
+        <nav className="text-content font-heading hidden items-center gap-5 tracking-wide md:flex lg:gap-4 xl:gap-8">
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className={getNavItemClass(link.to)}>
               {link.label}
@@ -63,10 +63,12 @@ function Navbar() {
         </nav>
 
         {/* Hamburger Icon */}
-        <Button onClick={toggleMobileMenu} className="lg:hidden" aria-label="Toggle Menu" variant="CTA">
-          {mobileMenuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
-        </Button>
-
+        <div className="flex items-center gap-3 md:hidden">
+          <ThemeToggle />
+          <Button onClick={toggleMobileMenu} aria-label="Toggle Menu" variant="CTA">
+            {mobileMenuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
+          </Button>
+        </div>
         {/* Mobile Menu */}
         <div
           className={`bg-card text-content fixed top-0 left-0 z-40 h-screen w-2/3 max-w-xs transform ${
@@ -102,6 +104,7 @@ function Navbar() {
                 Sign In
               </Link>
             )}
+
             <Button
               variant="CTA"
               to={storedUser ? '/ProductListPage' : '/LoginPage'}

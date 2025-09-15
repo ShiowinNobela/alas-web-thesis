@@ -52,7 +52,7 @@ html {
   --font-other: Jost, Georgia, 'Times New Roman', Times, serif;
 
   --color-brand: #ef2917;
-  --color-lighter: #888888;
+
   --color-content: #251605;
   --color-neutral: #fffcf9;
   --color-red: #ef4444;
@@ -70,6 +70,8 @@ html {
 
 /* Theme Variables */
 :root {
+  --lighter: #888888;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -121,13 +123,14 @@ html {
 
 /* Dark Mode */
 .dark {
+  --lighter: oklch(0.78 0.015 270);
+
   --background: oklch(0.25 0.02 270);
   --foreground: oklch(0.95 0 0);
-  --card: oklch(0.3 0.03 270);
+  --card: oklch(0.32 0.015 270);
   --card-foreground: oklch(0.93 0 0);
   --color-content: oklch(0.88 0.03 70);
   --color-neutral: oklch(0.25 0.01 270);
-  --color-lighter: oklch(0.7 0.02 270);
   --color-layout: oklch(0.2 0.02 270);
   --border: oklch(0.3 0 0);
   --border: oklch(0.45 0 0);
@@ -154,6 +157,7 @@ html {
 
 /* Theme Mapping */
 @theme inline {
+  --color-lighter: var(--lighter);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

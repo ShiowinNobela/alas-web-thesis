@@ -36,9 +36,9 @@ function ProductPage() {
     <div className="bg-neutral h-full">
       <div className="flex pb-40">
         <div className="mx-auto h-full flex-1">
-          <div className="flex flex-col items-center justify-center py-10">
+          <div className="flex flex-col items-center justify-center pt-10 pb-7">
             <h1 className="font-heading text-content px-4 text-3xl md:text-5xl">Our Flavorful Lineup</h1>
-            <p className="text-lighter text-lg">From mild to wild - find your perfect heat level</p>
+            <p className="text-lighter p-4 text-center text-lg">From mild to wild - find your perfect heat level</p>
           </div>
           <div className="flex-l mx-auto max-w-6xl pb-20 md:px-4">
             {isLoading ? (

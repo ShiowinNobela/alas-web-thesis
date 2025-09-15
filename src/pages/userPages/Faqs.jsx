@@ -5,19 +5,11 @@ import { Minus, Plus } from 'lucide-react';
 
 function Faqs() {
   const [activeTab, setActiveTab] = useState(0);
-  const [show, setShow] = useState(
-    questions.map((category) =>
-      new Array(category.questions.length).fill(false)
-    )
-  );
+  const [show, setShow] = useState(questions.map((category) => new Array(category.questions.length).fill(false)));
 
   const toggleQuestion = (catIndex, questionIndex) => {
     setShow((prevShow) =>
-      prevShow.map((cat, i) =>
-        i === catIndex
-          ? cat.map((val, j) => (j === questionIndex ? !val : val))
-          : cat
-      )
+      prevShow.map((cat, i) => (i === catIndex ? cat.map((val, j) => (j === questionIndex ? !val : val)) : cat))
     );
   };
 
@@ -43,9 +35,7 @@ function Faqs() {
       <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center py-12 pb-10">
           <h1 className="font-heading text-3xl">Frequently Asked Questions</h1>
-          <p className="text-lighter text-lg">
-            Find answers to common questions about our products and services
-          </p>
+          <p className="text-lighter text-lg">Find answers to common questions about our products and services</p>
         </div>
 
         <div className="flex flex-col gap-6 md:flex-row">
@@ -56,9 +46,7 @@ function Faqs() {
                   key={index}
                   onClick={() => setActiveTab(index)}
                   className={`text-content rounded-xl p-4 text-left font-medium ${
-                    activeTab === index
-                      ? 'bg-primary dark:text-black'
-                      : 'hover:bg-amber-100'
+                    activeTab === index ? 'bg-primary dark:text-black' : 'hover:bg-amber-100'
                   }`}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
@@ -88,9 +76,7 @@ function Faqs() {
                 >
                   <article className="flex items-center justify-between rounded-xl p-4">
                     <h3 className="font-medium">{question.question}</h3>
-                    <div className="text-primary">
-                      {show[activeTab][qIndex] ? <Minus /> : <Plus />}
-                    </div>
+                    <div className="text-primary">{show[activeTab][qIndex] ? <Minus /> : <Plus />}</div>
                   </article>
                   <AnimatePresence>
                     {show[activeTab][qIndex] && (

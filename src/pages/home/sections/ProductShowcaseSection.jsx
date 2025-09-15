@@ -75,7 +75,7 @@ export default function ProductsShowcaseSection() {
           <h2 className="font-heading text-content mb-4 text-4xl font-bold md:text-5xl">
             Spice Up Your Life, <span className="text-primary">Like Never Before</span>
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-gray-600">
+          <p className="text-lighter mx-auto max-w-2xl text-lg">
             Artisanal heat crafted for flavor explorers. Each product tells a story of passion.
           </p>
         </motion.div>
@@ -92,7 +92,7 @@ export default function ProductsShowcaseSection() {
               key={index}
               variants={item}
               whileHover={hoverEffect}
-              className="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl"
+              className="group bg-card relative overflow-hidden rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl"
             >
               {index === 1 && (
                 <div className="bg-primary absolute top-3 right-3 z-10 rounded-full px-2 py-1 text-xs font-bold text-white">
@@ -129,11 +129,11 @@ export default function ProductsShowcaseSection() {
                     <FlameIcon className="h-4 w-4" />
                     {product.heatLevel}
                   </span>
-                  <span className="text-sm text-gray-500">|</span>
-                  <span className="text-sm text-gray-500">{product.size}</span>
+                  <span className="text-lighter text-sm">|</span>
+                  <span className="text-lighter text-sm">{product.size}</span>
                 </div>
 
-                <p className="mb-4 text-gray-600">{product.description}</p>
+                <p className="text-lighter mb-4">{product.description}</p>
 
                 <div className="flex items-center justify-between">
                   <span className="text-content text-lg font-bold">{product.price}</span>

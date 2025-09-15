@@ -13,25 +13,15 @@ function ProductCard({ product }) {
   return (
     <>
       <Card
-        className="group z-10 flex flex-col gap-2 p-5 shadow-md transition-transform hover:scale-[1.02] hover:ring-2 hover:ring-amber-500"
+        className="group z-10 flex flex-col gap-2 rounded-sm p-4 shadow-md transition-transform hover:ring-amber-500 sm:rounded-xl sm:hover:scale-[1.02] sm:hover:ring-2"
         onClick={() => {
-          if (window.innerWidth < 640) {
-            navigate(`/ProductDetailsPage/${product.id}`);
-          }
+          navigate(`/ProductDetailsPage/${product.id}`);
         }}
       >
         <div className="relative mb-3 overflow-hidden rounded-md">
-          <span className="text-content absolute top-0 left-0 z-10 rounded-full bg-gray-200 px-2 py-1 text-xs font-bold">
-            {product.category || 'Category'}
-          </span>
-
-          <span className="text-content absolute top-0 right-0 z-10 rounded-full bg-gray-100 px-2 py-1 text-xs font-bold">
-            {product.rating || '4.5'} <span className="text-yellow-500">★</span>
-          </span>
-
           {/* Product Image */}
-          <div className="relative flex h-35 w-full items-center justify-center overflow-hidden rounded-md bg-white pt-2">
-            <div className="absolute inset-0 z-10 bg-gradient-to-br from-red-200/15 via-orange-200/15 to-yellow-200/15 mix-blend-multiply transition-opacity"></div>
+          <div className="relative flex h-42 w-full items-center justify-center overflow-hidden rounded-md bg-white pt-2">
+            <div className="absolute inset-0 z-10 bg-gradient-to-br from-red-200/12 via-orange-200/12 to-yellow-200/12 mix-blend-multiply transition-opacity"></div>
 
             <img
               src={product.image}
@@ -46,15 +36,15 @@ function ProductCard({ product }) {
           <h3 className="font-heading mb-1 line-clamp-1 tracking-wide">{product.name}</h3>
           <p className="text-lighter mb-2 line-clamp-2 min-h-[2rem] text-sm">{product.description}</p>
           {/* Hotness Rating (static for now) */}
-          <div className="mb-4 flex items-center">
+          <div className="mb-2 flex items-center">
             {[...Array(5)].map((_, i) => (
               <span key={i}>
-                <Flame className="text-primary size-5" />
+                <Flame className="text-primary size-3" />
               </span>
             ))}
-            <p className="ml-2 flex justify-center text-sm italic">Extreme</p>
+            <p className="ml-2 flex justify-center text-xs">Extreme</p>
           </div>
-          <p className="mb-1 text-sm text-green-600">Stock: {product.stock_quantity}</p>
+          <p className="text-sm text-green-600">Stock: {product.stock_quantity}</p>
         </div>
 
         <div className="hidden sm:block">
@@ -69,7 +59,7 @@ function ProductCard({ product }) {
             View Details
           </Button>
 
-          <div className="mt-4 flex items-center justify-between">
+          <div className="font-heading mt-4 flex items-center justify-between">
             <p className="text-sm font-semibold">₱ {parseFloat(product.price).toFixed(2)}</p>
             <Button
               className="flex items-center justify-center gap-2"
@@ -78,8 +68,8 @@ function ProductCard({ product }) {
                 handleAdd();
               }}
             >
-              <ShoppingCart className="h-5 w-5" />
-              <span>Add to Cart</span>
+              <ShoppingCart className="size-5" />
+              <span className="font-heading text-sm tracking-wide">Add to Cart</span>
             </Button>
           </div>
         </div>

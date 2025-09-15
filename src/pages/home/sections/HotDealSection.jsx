@@ -9,7 +9,7 @@ const HotDealSection = () => {
   ];
 
   return (
-    <section className="bg-card/70 border-b-2 border-zinc-300 py-4">
+    <section className="bg-neutral border-b-2 border-zinc-300 py-4">
       <Marquee gradient={false} speed={70}>
         {promotions.map((promo, index) => (
           <span key={index} className="text-content font-heading mx-12 whitespace-nowrap">
