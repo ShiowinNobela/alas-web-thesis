@@ -1,139 +1,165 @@
-import { useEffect, useState } from 'react';
-import { Toaster, toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import Upload from '../../components/bigComponents/Upload.jsx';
+import { Toaster, toast } from 'sonner';
+import BackButton from '@/components/bigComponents/BackButton.jsx';
+import RHFTextInput from '@/components/rhform/RHFTextInput';
+import RHFTextarea from '@/components/rhform/RHFTextArea';
+import RHFFileUpload from '@/components/rhform/RHFFileUpload';
 import { Button } from 'flowbite-react';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
-function AddProduct() {
-  const { id } = useParams();
-  const [values, setValues] = useState({
-    id: '',
-    name: '',
-    category: '',
-    stock_quantity: '',
-    price: '',
-    image: '',
-    description: '',
-    is_active: false,
+function UpdateProduct() {
+  const { id: productId } = useParams();
+
+  const { control, handleSubmit, reset, setValue, watch } = useForm({
+    defaultValues: {
+      name: '',
+      category: '',
+      price: '',
+      image: '',
+      description: '',
+    },
   });
 
-  const navigate = useNavigate();
-  useEffect(() => {
-    axios
-      .get('/api/products/' + id)
-      .then((res) => {
-        setValues(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  // Fetch existing product
+  const {
+    data: product,
+    isLoading: loadingProduct,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['product', productId],
+    queryFn: () => axios.get(`/api/products/${productId}`).then((res) => res.data),
+  });
 
-  const handleUpdate = (event) => {
-    event.preventDefault();
-    const submitValues = {
-      ...values,
-      is_active: Boolean(values.is_active), // force boolean
-    };
-    axios
-      .put('/api/products/' + id, submitValues)
-      .then((res) => {
-        setValues({
-          ...values,
-          is_active: Boolean(res.data.is_active),
-        });
-        console.log(res);
-        toast.success('Product Details updated successfully!');
-        setTimeout(() => {
-          navigate('/Admin/ProductManagement');
-        }, 1000);
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 404) {
-          toast.error(err.response.data.message);
-        } else {
-          toast.error('An unexpected error occurred');
-        }
+  useEffect(() => {
+    if (product) {
+      reset({
+        name: product.name,
+        category: product.category,
+        price: Number(product.price),
+        image: product.image,
+        description: product.description,
       });
+    }
+  }, [product, reset]);
+
+  // Mutation for updating product
+  const mutation = useMutation({
+    mutationFn: (updatedProduct) => axios.put(`/api/products/${productId}`, updatedProduct).then((res) => res.data),
+    onSuccess: () => {
+      toast.success('Product updated successfully!');
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Something went wrong');
+    },
+  });
+
+  const onSubmit = (data) => {
+    mutation.mutate({
+      name: data.name,
+      category: data.category,
+      price: Number(data.price),
+      image: data.image,
+      description: data.description,
+    });
   };
 
   return (
-    <div className="flex h-full flex-col overflow-x-auto bg-white">
-      {/* Main Content */}
-      <main className="flex flex-col gap-2 p-6">
-        {/* Top bar with Back Button */}
-        <div className="flex items-center justify-start">
-          <button
-            onClick={() => navigate('/Admin/ProductManagement')}
-            className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-black shadow transition-colors duration-200 hover:bg-gray-200"
-          >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
+    <>
+      <div className="bg-admin flex flex-col overflow-x-auto p-4">
+        <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border p-6 shadow ring-1">
+          {/* Header */}
+          <div className="mb-6 flex w-full items-center gap-3">
+            <BackButton label="" className="py-6 ring-1" />
+
+            <div className="flex flex-col">
+              <span className="text-lighter text-sm">Update details of product: {product?.name}</span>
+              <h1 className="flex items-center gap-1 text-xl font-bold">Edit Product</h1>
+            </div>
+          </div>
+
+          {loadingProduct ? (
+            <p>Loading...</p>
+          ) : isError ? (
+            <p className="text-red-500">{error?.response?.data?.message || 'Failed to load product'}</p>
+          ) : product ? (
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="mx-auto grid w-full max-w-full grid-cols-1 items-stretch gap-8 md:grid-cols-2"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            <span className="text-sm font-medium">Back</span>
-          </button>
-        </div>
-
-        {/* Form Card */}
-        <section className="rounded-xl bg-white p-8 shadow-lg">
-          <div className="grid gap-3 md:grid-cols-[1.2fr_0.8fr]">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-lg font-semibold text-black">Basic Info</h2>
-
-              <div className="grid gap-4 sm:grid-cols-2"></div>
-
-              <div className="mt-2 flex items-center gap-3">
-                <label
-                  htmlFor="active"
-                  className="text-sm font-medium text-black"
-                >
-                  Active
-                </label>
-                <input
-                  id="active"
-                  type="checkbox"
-                  checked={!!values.is_active}
-                  onChange={(e) =>
-                    setValues({ ...values, is_active: e.target.checked })
-                  }
-                  className="h-5 w-5 rounded-md accent-[#d3723a]"
+              {/* Left side: form fields */}
+              <div className="flex flex-col gap-7">
+                <RHFFileUpload
+                  name="image"
+                  control={control}
+                  rules={{ required: 'Image is required' }}
+                  onUploadSuccess={(uploadData) => setValue('image', uploadData.url)}
                 />
+
+                <RHFTextInput
+                  name="name"
+                  control={control}
+                  label="Product Name"
+                  placeholder="Enter product name"
+                  rules={{ required: 'Name is required' }}
+                />
+
+                <RHFTextInput
+                  name="category"
+                  control={control}
+                  label="Category"
+                  placeholder="Category"
+                  rules={{ required: 'Category is required' }}
+                />
+
+                <RHFTextInput
+                  name="price"
+                  control={control}
+                  label="Price"
+                  placeholder="Price"
+                  type="number"
+                  rules={{ required: 'Price is required' }}
+                />
+
+                <RHFTextarea
+                  name="description"
+                  control={control}
+                  label="Description"
+                  placeholder="Enter product description"
+                  rows={6}
+                  rules={{ required: 'Description is required' }}
+                />
+
+                <Button type="submit" color="gray" disabled={mutation.isLoading} className="w-full">
+                  {mutation.isLoading ? 'Updating...' : 'Update Product'}
+                </Button>
               </div>
-            </div>
 
-            {/* Right Column – Image Upload */}
-            <div className="flex flex-col gap-2">
-              <h2 className="text-lg font-semibold text-black">
-                Product Image
-              </h2>
-              <Upload
-                onUploadSuccess={(url) => setValues({ ...values, image: url })}
-              />
-            </div>
-          </div>
+              {/* Right side: image preview */}
+              <div className="flex h-full flex-col items-center justify-center rounded-xl p-8 ring-1">
+                {watch('image') ? (
+                  <img
+                    src={watch('image')}
+                    alt="Uploaded preview"
+                    className="h-full max-h-[500px] w-auto rounded-lg object-cover shadow"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 text-gray-400">
+                    No image uploaded
+                  </div>
+                )}
+              </div>
+            </form>
+          ) : null}
+        </main>
+      </div>
 
-          {/* Save Button Centered */}
-          <div className="mt-10 flex justify-center">
-            <Button color="gray" onClick={handleUpdate}>
-              Upload
-            </Button>
-          </div>
-        </section>
-
-        <Toaster richColors />
-      </main>
-    </div>
+      <Toaster richColors />
+    </>
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;
