@@ -29,6 +29,7 @@ const UserViewOrderDetails = lazy(() => import('./pages/userPages/UserViewOrderD
 const NotFoundPage = lazy(() => import('./pages/userPages/NotFoundPage.jsx'));
 const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
 const VerifyEmailPage = lazy(() => import('./pages/userPages/VerifyEmailPage.jsx'));
+const ReviewPage = lazy(() => import('./pages/userPages/ReviewPage.jsx'));
 
 // Admin Pages
 const AdminDashboard = lazy(() => import('./pages/adminPages/adminDashboard.jsx'));
@@ -70,6 +71,7 @@ function App() {
               <Route path="/UserOrderPage" element={<UserOrderPage />} />
               <Route path="/UserSettings" element={<UserSettings />} />
               <Route path="/users/orders/:id" element={<UserViewOrderDetails />} />
+              <Route path="/users/reviews" element={<ReviewPage />} />
             </Route>
           </Route>
 

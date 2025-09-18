@@ -9,10 +9,11 @@ const CartProvider = ({ children }) => {
   const fetchCart = useCartStore((state) => state.fetchCart);
 
   useEffect(() => {
-    if (user) {
+    if (user?.role_name === 'customer') {
       fetchCart();
     }
   }, [user, fetchCart]);
+
   return children;
 };
 
