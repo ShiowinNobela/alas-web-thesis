@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'sonner';
-import Description from '../../components/Chinges/Description';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 import WalkInPopUp from '../../components/WalkInPopUp.jsx';
@@ -13,10 +12,7 @@ function WalkInOrdering() {
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [discount_amount, setDiscount] = useState(0);
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = Math.max(0, subtotal - Number(discount_amount) || 0);
   const [userInput, setUserInput] = useState({
     customer_name: '',
@@ -60,9 +56,7 @@ function WalkInOrdering() {
     if (existing) {
       setCartItems(
         cartItems.map((item) =>
-          item.id === selectedProduct.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+          item.id === selectedProduct.id ? { ...item, quantity: item.quantity + quantity } : item
         )
       );
     } else {
@@ -78,11 +72,7 @@ function WalkInOrdering() {
 
   const handleChangeCartQuantity = (id, delta) => {
     setCartItems((cartItems) =>
-      cartItems.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
+      cartItems.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item))
     );
   };
 
@@ -145,16 +135,6 @@ function WalkInOrdering() {
                   </div>
                 </div>
 
-                {/* remarks */}
-                <Description
-                  label="Notes"
-                  textColor="text-black"
-                  value={userInput.notes}
-                  onChange={(e) =>
-                    setUserInput({ ...userInput, notes: e.target.value })
-                  }
-                />
-
                 {/* product list */}
                 <div className="flex flex-col items-center justify-center">
                   <div className="my-5 grid max-h-[350px] w-full grid-cols-4 gap-4 overflow-y-auto p-3">
@@ -167,27 +147,18 @@ function WalkInOrdering() {
                           setSelectedProduct(d);
                         }}
                       >
-                        <img
-                          src={d.image}
-                          alt="/"
-                          className="mb-2 h-[100px] w-[100px] object-contain"
-                        />
+                        <img src={d.image} alt="/" className="mb-2 h-[100px] w-[100px] object-contain" />
                         <h1 className="text-center font-semibold">{d.name}</h1>
                         <p className="text-gray-700">₱ {d.price}</p>
 
-                        <WalkInPopUp
-                          open={open && selectedProduct?.id === d.id}
-                          onClose={() => setOpen(false)}
-                        >
+                        <WalkInPopUp open={open && selectedProduct?.id === d.id} onClose={() => setOpen(false)}>
                           <div className="p-3">
                             <h1 className="mb-2">{d.name}</h1>
                             <input
                               type="number"
                               min={1}
                               value={quantity}
-                              onChange={(e) =>
-                                setQuantity(Number(e.target.value))
-                              }
+                              onChange={(e) => setQuantity(Number(e.target.value))}
                               className="w-full rounded border px-2 py-1"
                             />
                           </div>
@@ -233,31 +204,20 @@ function WalkInOrdering() {
                 <div className="flex flex-1 flex-col">
                   <div className="flex-1 overflow-y-auto">
                     {cartItems.length === 0 ? (
-                      <p className="text-center text-gray-500">
-                        No items in cart
-                      </p>
+                      <p className="text-center text-gray-500">No items in cart</p>
                     ) : (
                       cartItems.map((item) => (
-                        <div
-                          key={item.id}
-                          className="mb-2 flex items-center justify-between"
-                        >
+                        <div key={item.id} className="mb-2 flex items-center justify-between">
                           <div className="flex w-2/3 flex-col">
-                            <h2 className="mb-2 text-center text-lg font-semibold">
-                              {item.name}
-                            </h2>
+                            <h2 className="mb-2 text-center text-lg font-semibold">{item.name}</h2>
                             <div className="grid grid-cols-3 items-center gap-2">
                               <FaPlus
                                 className="mx-auto cursor-pointer hover:text-orange-600"
-                                onClick={() =>
-                                  handleChangeCartQuantity(item.id, 1)
-                                }
+                                onClick={() => handleChangeCartQuantity(item.id, 1)}
                               />
                               <FaMinus
                                 className="mx-auto cursor-pointer hover:text-orange-600"
-                                onClick={() =>
-                                  handleChangeCartQuantity(item.id, -1)
-                                }
+                                onClick={() => handleChangeCartQuantity(item.id, -1)}
                               />
                               <p className="text-center font-bold">
                                 ₱ {item.price} x {item.quantity}
@@ -302,7 +262,7 @@ function WalkInOrdering() {
                 </div>
               </div>
             </div>
-            </div>
+          </div>
 
           <Toaster richColors />
         </div>

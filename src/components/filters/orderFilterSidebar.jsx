@@ -127,7 +127,7 @@ export default function OrderFiltersPanel() {
   return (
     <Card className="text-content flex h-full w-full shrink-0 flex-col gap-4 rounded-xl p-4 shadow lg:w-72">
       <div className="border-lighter flex items-center justify-between border-b pb-2">
-        <h3 className="font-heading text-lg">Filters</h3>
+        <h3 className="font-semibold">Filters</h3>
         {hasActiveFilters && (
           <button
             onClick={() => clearFilters('all')}
@@ -142,7 +142,7 @@ export default function OrderFiltersPanel() {
 
       <div className="border-lighter relative border-b pb-3">
         <h4 className="mb-2 flex items-center justify-between text-sm font-semibold">
-          <span className="font-heading flex items-center gap-1">
+          <span className="flex items-center gap-1">
             <Calendar size={16} />
             Month & Year
           </span>

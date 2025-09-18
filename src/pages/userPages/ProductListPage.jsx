@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import ProductCard from '@/components/bigComponents/ProductCard.jsx';
+import ProductCard from '@/components/cards/ProductCard.jsx';
 import useUserStore from '@/stores/userStore';
 import ErrorState from '@/components/States/ErrorState';
 import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton';

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeftIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button'; // adjust if needed
+import PropTypes from 'prop-types';
 
 function BackButton({ className = '', label = 'Go Back' }) {
   const navigate = useNavigate();
@@ -11,13 +12,14 @@ function BackButton({ className = '', label = 'Go Back' }) {
       onClick={() => navigate(-1)}
       className={`group hover:text-content text-lighter inline-flex items-center gap-2 transition-colors ${className}`}
     >
-      <ArrowLeftIcon
-        size={20}
-        className="transition-transform duration-200 group-hover:-translate-x-1"
-      />
+      <ArrowLeftIcon size={20} className="transition-transform duration-200 group-hover:-translate-x-1" />
       {label}
     </Button>
   );
 }
+BackButton.propTypes = {
+  className: PropTypes.string,
+  label: PropTypes.string,
+};
 
 export default BackButton;
