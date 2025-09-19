@@ -6,9 +6,10 @@ import ChartSkeleton from '@/components/skeletons/ChartSkeleton';
 import ListCardSkeleton from '@/components/skeletons/ListCardSkeleton';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import ErrorState from '@/components/States/ErrorState';
-import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery} from '@tanstack/react-query';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
 function AdminDashboard() {
   const {
@@ -24,29 +25,29 @@ function AdminDashboard() {
     },
   });
 
-  const { data: weeklySales, isLoading: isLoadingWeekly } = useQuery({
-    queryKey: ['weeklySales'],
-    queryFn: async () => {
-      const { data } = await axios.get('/api/reports/weekly-sales?weeks=7');
-      return data.data;
-    },
-  });
+  const { data: dailySales, isLoading: isLoadingDaily } = useQuery({
+  queryKey: ['dailySales'],
+  queryFn: async () => {
+    const { data } = await axios.get('/api/reports/daily-sales?days=7');
+    return data.data;
+  },
+});
 
   //Edit the Chart here for future changes.
   let revenueCategories = [];
   let revenueSeries = [];
-  if (weeklySales?.weeks?.length) {
-    revenueCategories = weeklySales.weeks.map((_, idx) => `Week ${idx + 1}`);
+  if (dailySales?.days?.length) {
+    revenueCategories = dailySales.days.map(day => dayjs(day.date).format('MMM D'));
     revenueSeries = [
       {
         name: 'Revenue',
-        data: weeklySales.weeks.map((w) => w.total),
+        data: dailySales.days.map(day => day.daily_sales),
       },
     ];
   }
 
   return (
-    <div className="bg-admin grid grid-cols-1 gap-6 p-4 lg:grid-cols-6">
+    <div className="grid grid-cols-1 gap-6 p-4 bg-admin lg:grid-cols-6">
       {/* Cardss */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6">
         {isLoading ? (
@@ -61,26 +62,26 @@ function AdminDashboard() {
         ) : items ? (
           [
             {
-              title: "This Week's Sales ",
-              value: items?.totalSalesLast7Days || 0,
+              title: "Total Sales ",
+              value: items?.totalSales|| 0,
               icon: 'sales',
               color: 'text-green-600',
             },
             {
-              title: "This Week's Online Orders",
-              value: items?.onlineOrdersLast7Days || 0,
+              title: "Total Online Orders",
+              value: items?.totalOnlineOrders || 0,
               icon: 'orders',
               color: 'text-blue-600',
             },
             {
-              title: "This Week's Walk-in Orders",
-              value: items?.walkInOrdersLast7Days || 0,
+              title: "Total Walk-in Orders",
+              value: items?.totalWalkInOrders || 0,
               icon: 'walkInOrders',
               color: 'text-yellow-600',
             },
             {
-              title: "This Week's Items Sold",
-              value: items?.totalItemsSoldLast7Days || 0,
+              title: "Total Items Sold",
+              value: items?.totalItemsSold || 0,
               icon: 'customer',
               color: 'text-yellow-400',
             },
@@ -107,17 +108,17 @@ function AdminDashboard() {
       </div>
 
       {/* Revenue Chart */}
-      {isLoadingWeekly ? (
+      {isLoadingDaily ? (
         <ChartSkeleton />
       ) : (
-        <RevenueChart title="Revenue within 7 Weeks" series={revenueSeries} categories={revenueCategories} />
+        <RevenueChart title="Revenue within 7 Days" series={revenueSeries} categories={revenueCategories} />
       )}
 
       {/* Low Stock Alert */}
       {isLoading ? (
         <ListCardSkeleton items={4} />
       ) : (
-        <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
+        <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
           <h3 className="mb-4 text-lg font-semibold">Low Stock Alerts</h3>
           <ul className="space-y-3">
             {['Hot Sauce', 'BBQ Sauce', 'Garlic Mayo'].map((item, idx) => (
@@ -134,43 +135,43 @@ function AdminDashboard() {
       {isLoading ? (
         <TableSkeleton columns={4} rows={3} />
       ) : (
-        <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
+        <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-4">
           <h3 className="mb-4 text-lg font-semibold">Recent Orders</h3>
           <Table striped hoverable>
             <TableHead>
               <TableHeadCell>Order ID</TableHeadCell>
               <TableHeadCell>Customer</TableHeadCell>
+              <TableHeadCell>Date</TableHeadCell>
               <TableHeadCell>Status</TableHeadCell>
               <TableHeadCell>Total</TableHeadCell>
             </TableHead>
-            <TableBody className="text-content divide-y">
-              {[
-                {
-                  id: '#1234',
-                  customer: 'John Doe',
-                  status: 'Pending',
-                  total: '$50',
-                },
-                {
-                  id: '#1235',
-                  customer: 'Jane Smith',
-                  status: 'Completed',
-                  total: '$75',
-                },
-                {
-                  id: '#1236',
-                  customer: 'Mike Ross',
-                  status: 'Shipped',
-                  total: '$120',
-                },
-              ].map((order, idx) => (
-                <TableRow key={idx} className="bg-white dark:bg-gray-700">
-                  <TableCell className="font-medium">{order.id}</TableCell>
-                  <TableCell>{order.customer}</TableCell>
-                  <TableCell>{order.status}</TableCell>
-                  <TableCell>{order.total}</TableCell>
+            <TableBody className="divide-y text-content">
+              {items?.recentOrders?.length > 0 ? (
+                items.recentOrders.map((order, idx) => (
+                  <TableRow key={idx} className="bg-white dark:bg-gray-700">
+                    <TableCell className="font-medium">#{order.id}</TableCell>
+                    <TableCell>{order.customer_name}</TableCell>
+                    <TableCell>{order.order_date}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        order.status === 'delivered' ? 'bg-green-100 text-green-800' :
+                        order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                        order.status === 'shipping' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      </span>
+                    </TableCell>
+                    <TableCell>₱{order.total_amount}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="py-4 text-center">
+                    No recent orders
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </Card>
@@ -180,12 +181,19 @@ function AdminDashboard() {
       {isLoading ? (
         <ListCardSkeleton items={4} />
       ) : (
-        <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
+        <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
           <h3 className="mb-4 text-lg font-semibold">Quick Actions</h3>
           <div className="flex flex-col gap-3">
+            
+            <Link to="/Admin/AddProduct">
             <Button color="gray">Add Product</Button>
+            </Link>
+            <Link to="/Admin/InventoryManagement">
             <Button color="gray">View Inventory</Button>
+            </Link>
+            <Link to="/Admin/Orders">
             <Button color="gray">Manage Orders</Button>
+            </Link>
           </div>
         </Card>
       )}

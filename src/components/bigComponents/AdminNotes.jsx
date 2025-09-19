@@ -127,10 +127,10 @@ const StatusInfoCard = ({ currentStatus }) => {
           {statusTitles[currentStatus.status] || 'Order Processing'}
         </span>
       </div>
-      <p className="text-muted-foreground mt-3 text-sm">
+      <p className="mt-3 text-sm text-muted-foreground">
         {details.description}
       </p>
-      <p className="text-muted-foreground mt-2 text-sm font-medium">
+      <p className="mt-2 text-sm font-medium text-muted-foreground">
         {details.action}
       </p>
     </div>
@@ -152,7 +152,7 @@ export default function AdminNotes({ order }) {
     return (
       <Card>
         <CardContent className="py-8 text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
+          <div className="w-8 h-8 mx-auto border-b-2 border-blue-600 rounded-full animate-spin"></div>
           <p className="mt-2 text-sm text-gray-500">Loading timeline...</p>
         </CardContent>
       </Card>
@@ -209,7 +209,12 @@ export default function AdminNotes({ order }) {
                       <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-36 group-data-[orientation=vertical]/timeline:sm:text-right">
                         {dayjs(entry.status_date).format('MMM D, YYYY h:mm A')}
                       </TimelineDate>
-                      <TimelineTitle className="sm:-mt-0.5">
+                      <TimelineTitle
+                        className={cn(
+                          "sm:-mt-0.5",
+                          isCurrent ? "font-semibold" : "text-muted-foreground"
+                        )}
+                      >
                         {isAdminNote
                           ? 'Admin Note'
                           : statusTitles[entry.status] || 'System Note'}
@@ -226,10 +231,13 @@ export default function AdminNotes({ order }) {
                       </TimelineIndicator>
                     </TimelineHeader>
                     <TimelineContent>
-                      <p className="text-sm">
+                      <p className={cn(
+                        "text-sm",
+                        !isCurrent && "text-muted-foreground"
+                      )}>
                         {entry.notes || statusMessages[entry.status]}
                         {isAdminNote && (
-                          <span className="text-muted-foreground mt-1 block">
+                          <span className="block mt-1 text-muted-foreground">
                             by {entry.admin_name || 'Admin'}
                           </span>
                         )}

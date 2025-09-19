@@ -16,7 +16,29 @@ import {
   Layers,
   ShoppingCart,
   ChevronDown,
+  AlertTriangle
 } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+const useLowStockCheck = () => {
+  return useQuery({
+    queryKey: ['lowStockCheck'],
+    queryFn: async () => {
+      try {
+        console.log('Fetching low stock status...');
+        const res = await axios.get('/api/products/low-stock-check');
+        console.log('Low stock response:', res.data);
+        return res.data.data.hasLowStock || false;
+      } catch (error) {
+        console.error('Error checking low stock:', error);
+        return false;
+      }
+    },
+    refetchInterval: 30000,
+    staleTime: 30000,
+  });
+};
 
 const managementItems = [
   { path: '/Admin/AccountManagement', name: 'User Management', icon: User },
@@ -39,6 +61,7 @@ function Sidebar() {
   const location = useLocation();
   const [isManagementOpen, setIsManagementOpen] = useState(true);
   const [isActivitiesOpen, setIsActivitiesOpen] = useState(true);
+  const {data: hasLowStock = false} = useLowStockCheck();
 
   const getNavItemClass = (path) => {
     const isActive = location.pathname === path;
@@ -57,7 +80,7 @@ function Sidebar() {
         <img
           src={DBlogo}
           alt="Alas Delis and Spices Logo"
-          className="h-10 object-contain"
+          className="object-contain h-10"
         />
       </div>
 
@@ -72,7 +95,7 @@ function Sidebar() {
                   className="mx-2"
                   color={getIconColor('/Admin/DashBoard')}
                 />
-                <span className="ml-2 flex-1 text-left whitespace-nowrap">
+                <span className="flex-1 ml-2 text-left whitespace-nowrap">
                   Dashboard
                 </span>
               </div>
@@ -87,7 +110,7 @@ function Sidebar() {
                   className="mx-2"
                   color={getIconColor('/Admin/WalkInOrdering')}
                 />
-                <span className="ml-2 flex-1 text-left whitespace-nowrap">
+                <span className="flex-1 ml-2 text-left whitespace-nowrap">
                   Walk In Ordering
                 </span>
               </div>
@@ -98,11 +121,11 @@ function Sidebar() {
           <li>
             <button
               type="button"
-              className="hover:bg-secondary/50 group flex w-full items-center rounded-lg p-3 font-normal text-white"
+              className="flex items-center w-full p-3 font-normal text-white rounded-lg hover:bg-secondary/50 group"
               onClick={() => setIsManagementOpen(!isManagementOpen)}
             >
-              <Layers className="mx-2 size-5 text-white" />
-              <span className="ml-2 flex-1 text-left whitespace-nowrap">
+              <Layers className="mx-2 text-white size-5" />
+              <span className="flex-1 ml-2 text-left whitespace-nowrap">
                 Management
               </span>
               <ChevronDown
@@ -113,7 +136,7 @@ function Sidebar() {
             <div
               className={`overflow-hidden ${isManagementOpen ? '' : 'hidden'}`}
             >
-              <ul className="space-y-2 pl-4">
+              <ul className="pl-4 space-y-2">
                 {managementItems.map((item) => (
                   <li key={item.path}>
                     <Link to={item.path}>
@@ -122,9 +145,12 @@ function Sidebar() {
                           className="mx-2 size-5"
                           color={getIconColor(item.path)}
                         />
-                        <span className="ml-2 flex-1 text-left whitespace-nowrap">
+                        <span className="flex-1 ml-2 text-left whitespace-nowrap">
                           {item.name}
                         </span>
+                         {item.path === '/Admin/InventoryManagement' && hasLowStock && (
+                          <AlertTriangle className="w-10 h-10 ml-2 text-yellow-500" />
+                        )}
                       </div>
                     </Link>
                   </li>
@@ -141,7 +167,7 @@ function Sidebar() {
                   className="mx-2"
                   color={getIconColor('/Admin/SalesPage')}
                 />
-                <span className="ml-2 flex-1 text-left whitespace-nowrap">
+                <span className="flex-1 ml-2 text-left whitespace-nowrap">
                   Sales Summary
                 </span>
               </div>
@@ -156,7 +182,7 @@ function Sidebar() {
               onClick={() => setIsActivitiesOpen(!isActivitiesOpen)}
             >
               <Layers className="mx-2 text-white" />
-              <span className="ml-2 flex-1 text-left whitespace-nowrap">
+              <span className="flex-1 ml-2 text-left whitespace-nowrap">
                 Activities
               </span>
               <ChevronDown
@@ -167,7 +193,7 @@ function Sidebar() {
             <div
               className={`overflow-hidden ${isActivitiesOpen ? '' : 'hidden'}`}
             >
-              <ul className="space-y-1 py-1 pl-4">
+              <ul className="py-1 pl-4 space-y-1">
                 {activitiesItems.map((item) => (
                   <li key={item.path}>
                     <Link to={item.path}>
@@ -176,7 +202,7 @@ function Sidebar() {
                           className="mx-2"
                           color={getIconColor(item.path)}
                         />
-                        <span className="ml-2 flex-1 text-left whitespace-nowrap">
+                        <span className="flex-1 ml-2 text-left whitespace-nowrap">
                           {item.name}
                         </span>
                       </div>
@@ -195,7 +221,7 @@ function Sidebar() {
               onClick={handleLogout}
             >
               <LogOut className="mx-2" />
-              <span className="ml-2 flex-1 text-left whitespace-nowrap">
+              <span className="flex-1 ml-2 text-left whitespace-nowrap">
                 Logout
               </span>
             </button>
