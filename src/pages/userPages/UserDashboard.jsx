@@ -9,7 +9,7 @@ function UserDashboard() {
 
   return (
     <div className="bg-neutral min-h-screen p-8">
-      <div className="mx-auto max-w-6xl pb-25">
+      <div className="mx-auto max-w-5xl pb-25">
         {/* Welcome */}
         <div className="mb-8">
           <h1 className="font-heading text-content text-3xl">
@@ -66,7 +66,7 @@ function UserDashboard() {
           </Card>
 
           {/* Orders */}
-          <Card className="h-28 transition hover:shadow-md">
+          <Card className="transition hover:shadow-md">
             <CardContent asChild className="flex h-full items-center justify-between p-6">
               <Link to="/UserOrderPage" className="flex w-full items-center justify-between">
                 <div>
@@ -79,7 +79,7 @@ function UserDashboard() {
           </Card>
 
           {/* Reviews */}
-          <Card className="h-28 transition hover:shadow-md">
+          <Card className="transition hover:shadow-md">
             <CardContent asChild className="flex h-full items-center justify-between p-6">
               <Link to="/users/reviews" className="flex w-full items-center justify-between">
                 <div>
@@ -92,7 +92,7 @@ function UserDashboard() {
           </Card>
 
           {/* Profile */}
-          <Card className="h-28 transition hover:shadow-md">
+          <Card className="transition hover:shadow-md">
             <CardContent asChild className="flex h-full items-center justify-between p-6">
               <Link to="/UserSettings" className="flex w-full items-center justify-between">
                 <div>
