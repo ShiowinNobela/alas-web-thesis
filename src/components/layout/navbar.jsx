@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useLocation, Link } from 'react-router-dom';
-import Logo from '/logo-alas1.jpg';
+import Logo from '/alaslogo.jpg';
 import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '../filters/ThemeToggle';
@@ -46,6 +46,14 @@ function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          {storedUser && (
+            <>
+              <Link to="/user/dashboard" className={getNavItemClass('/user/dashboard')}>
+                Dashboard
+              </Link>
+            </>
+          )}
 
           {storedUser ? (
             <UserDropdown />
