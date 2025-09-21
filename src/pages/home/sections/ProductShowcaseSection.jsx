@@ -49,7 +49,8 @@ const products = [
   },
   {
     name: 'Powder Extreme',
-    image: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351170/powders_lziet3.jpg',
+    image:
+      'https://res.cloudinary.com/drq2wzvmo/image/upload/v1758445632/471779028_1099994044833938_4378818071091498091_n_nzu1r6.jpg',
     heatLevel: 'Extreme',
     size: '100ml',
     description: 'For true heat seekers - use sparingly!',

@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import TextInput from '@/components/bigComponents/TextInput';
 import PromptLink from '@/components/bigComponents/PromptLink';
-import Logo from '/logo-alas1.jpg';
+import Logo from '/alaslogo.jpg';
 import useUserStore from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -66,7 +66,7 @@ function LoginPage() {
     if (user.role_name === 'admin' || user.role_name === 'staff') {
       navigate('/Admin/DashBoard');
     } else {
-      navigate('/ProductListPage');
+      navigate('/user/dashboard');
     }
   }, [isAuthenticated, user, navigate]);
 

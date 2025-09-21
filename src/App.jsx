@@ -6,8 +6,9 @@ import { Suspense, lazy } from 'react';
 
 // Layouts
 import MainLayout from './pages/layouts/MainLayout.jsx';
-import AdminLayout from './pages/layouts/AdminLayout.jsx';
-import ProductListLayout from './pages/layouts/ProductListLayout';
+const AdminLayout = lazy(() => import('./pages/layouts/AdminLayout.jsx'));
+const ProductListLayout = lazy(() => import('./pages/layouts/ProductListLayout.jsx'));
+import LoadingFallback from './pages/layouts/LoadingFallback';
 
 // Utilities
 import ScrollToTop from './utils/ScrollToTop';
@@ -16,7 +17,8 @@ import PrivateRoute from './components/layout/PrivateRoute';
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
 import LoginPage from './pages/userPages/LoginPage.jsx';
-import ProductPage from './pages/userPages/ProductListPage.jsx';
+const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
+const ProductPage = lazy(() => import('./pages/userPages/ProductListPage.jsx'));
 const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
 const AboutUs = lazy(() => import('./pages/userPages/AboutUs.jsx'));
 const RegPage = lazy(() => import('./pages/userPages/RegistrationPage.jsx'));
@@ -52,7 +54,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
+      <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/LoginPage" element={<LoginPage />}></Route>
@@ -66,6 +68,7 @@ function App() {
 
             {/* Protected user routes */}
             <Route element={<PrivateRoute />}>
+              <Route path="/user/dashboard" element={<UserDashboard />} />
               <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
               <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
               <Route path="/UserOrderPage" element={<UserOrderPage />} />
