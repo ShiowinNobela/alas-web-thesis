@@ -1,15 +1,4 @@
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  Phone,
-  MapPin,
-  Flame,
-  Truck,
-  Shield,
-  RotateCcw,
-  Star,
-} from 'lucide-react';
+import { Facebook, Instagram, Twitter, Phone, MapPin, Flame, Truck, Shield, RotateCcw, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -22,18 +11,16 @@ function Footer() {
           {/* Company Info with Unique Branding */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-content font-heading mb-2 text-2xl font-bold">
-                Alas Delis & Spices
-              </h3>
+              <h3 className="text-content font-heading mb-2 text-2xl font-bold">Alas Delis & Spices</h3>
               <div className="mb-4 flex items-center space-x-1">
                 <Flame className="h-4 w-4 text-red-500" />
                 <Flame className="h-4 w-4 text-orange-500" />
                 <Flame className="h-4 w-4 text-yellow-500" />
-                <span className="text-lighter ml-2 text-xs">Est. 2020</span>
+                <span className="text-lighter ml-2 text-xs">Est. May 2020</span>
               </div>
               <p className="text-lighter text-sm leading-relaxed">
-                Handcrafted sauces that bring the heat and flavor to every meal.
-                From garden-fresh ingredients to your table.
+                Handcrafted sauces that bring the heat and flavor to every meal. From garden-fresh ingredients to your
+                table.
               </p>
             </div>
 
@@ -50,15 +37,11 @@ function Footer() {
 
             {/* Unique Heat Level Guide */}
             <div className="rounded-lg border border-orange-200 bg-gradient-to-r from-yellow-50 to-red-50 p-4">
-              <h4 className="font-heading mb-2 text-sm font-semibold text-black">
-                Heat Level Guide
-              </h4>
+              <h4 className="font-heading mb-2 text-sm font-semibold text-black">Heat Level Guide</h4>
               <div className="space-y-1">
                 <div className="flex items-center text-xs">
                   <Flame className="mr-1 h-3 w-3 text-yellow-500" />
-                  <span className="text-lighter">
-                    Mild - Perfect for beginners
-                  </span>
+                  <span className="text-lighter">Mild - Perfect for beginners</span>
                 </div>
                 <div className="flex items-center text-xs">
                   <Flame className="mr-1 h-3 w-3 text-orange-500" />
@@ -79,42 +62,28 @@ function Footer() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
             {/* Shop */}
             <div>
-              <h4 className="text-content font-heading mb-4 text-lg font-semibold">
-                Our Sauces
-              </h4>
+              <h4 className="text-content font-heading mb-4 text-lg font-semibold">Our Sauces</h4>
               <ul className="space-y-3">
                 <li>
-                  <a
-                    href="#"
-                    className="text-lighter flex items-center text-sm transition-colors hover:text-red-600"
-                  >
+                  <a href="#" className="text-lighter flex items-center text-sm transition-colors hover:text-red-600">
                     <Flame className="mr-2 h-3 w-3 text-yellow-500" />
                     Hot Sauces
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="text-lighter flex items-center text-sm transition-colors hover:text-red-600"
-                  >
+                  <a href="#" className="text-lighter flex items-center text-sm transition-colors hover:text-red-600">
                     <Star className="mr-2 h-3 w-3 text-orange-500" />
                     BBQ Sauces
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="text-lighter flex items-center text-sm transition-colors hover:text-red-600"
-                  >
+                  <a href="#" className="text-lighter flex items-center text-sm transition-colors hover:text-red-600">
                     <Flame className="mr-2 h-3 w-3 text-red-500" />
                     Specialty Blends
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="text-lighter text-sm transition-colors hover:text-red-600"
-                  >
+                  <a href="#" className="text-lighter text-sm transition-colors hover:text-red-600">
                     Gift Sets
                   </a>
                 </li>
@@ -123,47 +92,30 @@ function Footer() {
 
             {/* Support */}
             <div>
-              <h4 className="text-content font-heading mb-4 text-lg font-semibold">
-                Help & Info
-              </h4>
+              <h4 className="text-content font-heading mb-4 text-lg font-semibold">Help & Info</h4>
               <ul className="space-y-3">
                 <li>
-                  <Link
-                    to="/AboutUs"
-                    className="text-lighter text-sm transition-colors hover:text-red-600"
-                  >
+                  <Link to="/AboutUs" className="text-lighter text-sm transition-colors hover:text-red-600">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/ContactUs"
-                    className="text-lighter text-sm transition-colors hover:text-red-600"
-                  >
+                  <Link to="/ContactUs" className="text-lighter text-sm transition-colors hover:text-red-600">
                     Contact
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="#"
-                    className="text-lighter text-sm transition-colors hover:text-red-600"
-                  >
+                  <Link to="#" className="text-lighter text-sm transition-colors hover:text-red-600">
                     Shipping
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="#"
-                    className="text-lighter text-sm transition-colors hover:text-red-600"
-                  >
+                  <Link to="#" className="text-lighter text-sm transition-colors hover:text-red-600">
                     Returns
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    to="/Faqs"
-                    className="text-lighter text-sm transition-colors hover:text-red-600"
-                  >
+                  <Link to="/Faqs" className="text-lighter text-sm transition-colors hover:text-red-600">
                     FAQ
                   </Link>
                 </li>
@@ -175,9 +127,7 @@ function Footer() {
           <div className="space-y-6">
             {/* Social Media */}
             <div>
-              <h4 className="text-content font-heading mb-4 text-lg font-semibold">
-                Follow the Heat
-              </h4>
+              <h4 className="text-content font-heading mb-4 text-lg font-semibold">Follow the Heat</h4>
               <div className="flex space-x-3">
                 <Button
                   variant="outline"
@@ -201,16 +151,12 @@ function Footer() {
                   <Twitter className="h-4 w-4" />
                 </Button>
               </div>
-              <p className="text-lighter mt-2 text-xs">
-                Share your spicy creations with #SpiceAndFire
-              </p>
+              <p className="text-lighter mt-2 text-xs">Share your spicy creations with #SpiceAndFire</p>
             </div>
 
             {/* Unique Features */}
             <div className="rounded-lg bg-gray-50 p-4">
-              <h5 className="font-heading mb-3 text-sm font-semibold text-black">
-                Why Choose Us?
-              </h5>
+              <h5 className="font-heading mb-3 text-sm font-semibold text-black">Why Choose Us?</h5>
               <div className="space-y-2">
                 <div className="text-lighter flex items-center text-xs">
                   <Shield className="mr-2 h-4 w-4 text-green-500" />
@@ -229,12 +175,9 @@ function Footer() {
 
             {/* Fun Sauce Fact */}
             <div className="rounded-lg border-l-4 border-red-500 bg-gradient-to-r from-red-50 to-orange-50 p-4">
-              <h5 className="font-heading mb-1 text-sm font-semibold text-black">
-                Spicy Fact
-              </h5>
+              <h5 className="font-heading mb-1 text-sm font-semibold text-black">Spicy Fact</h5>
               <p className="text-lighter text-xs">
-                The Carolina Reaper is currently the world's hottest pepper at
-                2.2 million Scoville units! 🌶️
+                The Carolina Reaper is currently the world's hottest pepper at 2.2 million Scoville units! 🌶️
               </p>
             </div>
           </div>
@@ -252,16 +195,10 @@ function Footer() {
                 © 2024 <span>Spice & Fire Co.</span> All rights reserved.
               </p>
               <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="text-lighter text-xs transition-colors hover:text-red-600"
-                >
+                <a href="#" className="text-lighter text-xs transition-colors hover:text-red-600">
                   Privacy
                 </a>
-                <a
-                  href="#"
-                  className="text-lighter text-xs transition-colors hover:text-red-600"
-                >
+                <a href="#" className="text-lighter text-xs transition-colors hover:text-red-600">
                   Terms
                 </a>
               </div>

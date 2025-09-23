@@ -7,7 +7,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import PromptLink from '@/components/bigComponents/PromptLink';
 import PasswordInput from '@/components/bigComponents/PasswordInput';
-import Logo from '/logo-alas1.jpg';
 
 function RegistrationPage() {
   const [values, setValues] = useState({
@@ -64,8 +63,7 @@ function RegistrationPage() {
 
     axios
       .post('/api/users/register/', values)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         setErrors({
           username: '',
           email: '',
@@ -75,8 +73,6 @@ function RegistrationPage() {
         Navigate('/LoginPage');
       })
       .catch((err) => {
-        console.error(err);
-
         const res = err.response;
 
         if (!res) {
@@ -102,7 +98,11 @@ function RegistrationPage() {
         <Card className="text-content w-full max-w-md p-4 sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
-              <img src={Logo} alt="Alas Delis Logo" className="mx-auto h-20 w-20 shrink-0 object-contain" />
+              <img
+                src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
+                alt="Alas Delis Logo"
+                className="mx-auto h-20 w-20 shrink-0 object-contain"
+              />
               <h1 className="font-lg font-heading text-center text-3xl leading-tight font-bold tracking-tight">
                 CREATE ACCOUNT
               </h1>
@@ -181,11 +181,11 @@ function RegistrationPage() {
 
               <p className="text-center text-xs text-gray-400">
                 By clicking Register, you agree to our{' '}
-                <a href="#" className="underline hover:text-[#d47849]">
+                <a href="/terms-of-service" className="underline hover:text-[#d47849]">
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href="#" className="underline hover:text-[#d47849]">
+                <a href="/privacy-policy" className="underline hover:text-[#d47849]">
                   Privacy Policy
                 </a>
                 .

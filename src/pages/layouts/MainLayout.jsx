@@ -1,17 +1,21 @@
 import Footer from '@/components/layout/footer';
 import Navbar from '@/components/layout/navbar';
+import { Suspense } from 'react';
 import { Outlet } from 'react-router';
 import { Toaster } from 'sonner';
+import LoadingFallback from './LoadingFallback';
 
 function MainLayout() {
   return (
     <div className="grid min-h-screen w-full grid-rows-[auto_1fr_auto]">
       <Navbar />
       <main className="bg overflow-y-auto">
-        <Outlet />
+        <Suspense fallback={<LoadingFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
-      <Toaster position="bottom-center" richColors visibleToasts={1} />
+      <Toaster richColors visibleToasts={1} />
     </div>
   );
 }

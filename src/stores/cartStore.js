@@ -51,15 +51,14 @@ const useCartStore = create((set, get) => {
         items: [...currentItems, newItem],
         cart_total: get().cart_total + product.price * quantity,
       });
+      showCartToast(product.name);
 
       try {
         await axios.post('/api/cart/me', {
           productId: product.id,
           quantity,
         });
-        showCartToast(product.name);
-      } catch (err) {
-        // rollback
+      } catch {
         toast.error('Failed to add item to cart');
         set({
           items: currentItems,
