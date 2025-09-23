@@ -46,6 +46,8 @@ function LoginPage() {
         toast.error('No response from server!');
       } else if (res.status === 401) {
         toast.error('Invalid credentials!');
+      } else if (res.status === 429) {
+        toast.error('Too many login attempts. Please try again later.');
       } else {
         const msg = res.data?.message || 'Unexpected error';
         toast.error(msg);

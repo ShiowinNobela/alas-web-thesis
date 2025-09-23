@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import Footer from '@/components/layout/footer';
 import useUserStore from '@/stores/userStore';
 import { lazy, Suspense } from 'react';
+import LoadingFallback from './LoadingFallback';
 
 function ProductListLayout() {
   const user = useUserStore((state) => state.user);
@@ -15,12 +16,12 @@ function ProductListLayout() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      {/* Main content area without overflow constraints */}
       <div className="flex flex-1">
-        {/* Main content container */}
         <div className={`flex flex-1 flex-col ${isLoggedIn ? 'lg:mr-72' : ''}`}>
           <main>
-            <Outlet />
+            <Suspense fallback={<LoadingFallback />}>
+              <Outlet />
+            </Suspense>
           </main>
 
           <Footer />
@@ -35,7 +36,6 @@ function ProductListLayout() {
         )}
       </div>
 
-      {/* Toast notifications */}
       <Toaster position="top-center" offset={90} richColors visibleToasts={1} />
     </div>
   );

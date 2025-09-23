@@ -5,14 +5,14 @@ import { Route, Routes } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
 // Layouts
-const MainLayout = lazy(() => import('./pages/layouts/MainLayout.jsx'));
+import MainLayout from './pages/layouts/MainLayout.jsx';
 const AdminLayout = lazy(() => import('./pages/layouts/AdminLayout.jsx'));
 const ProductListLayout = lazy(() => import('./pages/layouts/ProductListLayout.jsx'));
 import LoadingFallback from './pages/layouts/LoadingFallback';
 
 // Utilities
 import ScrollToTop from './utils/ScrollToTop';
-import PrivateRoute from './components/layout/PrivateRoute';
+import RoleBasedRoute from './components/layout/RoleBasedRoute';
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
@@ -60,30 +60,22 @@ function App() {
             <Route path="/" element={<LandPage />}></Route>
             <Route path="/LoginPage" element={<LoginPage />}></Route>
             <Route path="/RegPage" element={<RegPage />}></Route>
-
             <Route path="/ProductDetailsPage/:id" element={<ProductDetailsPage />}></Route>
-            <Route
-              path="/ContactUs"
-              element={
-                <Suspense fallback={<LoadingFallback />} key="contact">
-                  <ContactUs />
-                </Suspense>
-              }
-            />
+            <Route path="/ContactUs" element={<ContactUs />} />
             <Route path="/Faqs" element={<Faqs />}></Route>
             <Route
               path="/AboutUs"
               element={
                 <Suspense fallback={<LoadingFallback />} key="about">
                   <AboutUs />
-                </Suspense>
+                </Suspense> // Specific fallback for AboutUs for testing if this is better
               }
             />
 
             <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
 
             {/* Protected user routes */}
-            <Route element={<PrivateRoute />}>
+            <Route element={<RoleBasedRoute allowedRoles={['customer']} />}>
               <Route path="/user/dashboard" element={<UserDashboard />} />
               <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
               <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
@@ -98,7 +90,7 @@ function App() {
             <Route path="/ProductListPage" element={<ProductPage />}></Route>
           </Route>
 
-          <Route element={<PrivateRoute />}>
+          <Route element={<RoleBasedRoute allowedRoles={['admin', 'staff']} />}>
             <Route path="/Admin" element={<AdminLayout />}>
               <Route path="DashBoard" element={<AdminDashboard />} />
               <Route path="AddProduct" element={<AddProd />} />
