@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
 // Layouts
-import MainLayout from './pages/layouts/MainLayout.jsx';
+const MainLayout = lazy(() => import('./pages/layouts/MainLayout.jsx'));
 const AdminLayout = lazy(() => import('./pages/layouts/AdminLayout.jsx'));
 const ProductListLayout = lazy(() => import('./pages/layouts/ProductListLayout.jsx'));
 import LoadingFallback from './pages/layouts/LoadingFallback';
@@ -16,7 +16,7 @@ import PrivateRoute from './components/layout/PrivateRoute';
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
-import LoginPage from './pages/userPages/LoginPage.jsx';
+const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
 const ProductPage = lazy(() => import('./pages/userPages/ProductListPage.jsx'));
 const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
@@ -57,13 +57,29 @@ function App() {
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route element={<MainLayout />}>
+            <Route path="/" element={<LandPage />}></Route>
             <Route path="/LoginPage" element={<LoginPage />}></Route>
             <Route path="/RegPage" element={<RegPage />}></Route>
-            <Route path="/" element={<LandPage />}></Route>
+
             <Route path="/ProductDetailsPage/:id" element={<ProductDetailsPage />}></Route>
-            <Route path="/ContactUs" element={<ContactUs />}></Route>
+            <Route
+              path="/ContactUs"
+              element={
+                <Suspense fallback={<LoadingFallback />} key="contact">
+                  <ContactUs />
+                </Suspense>
+              }
+            />
             <Route path="/Faqs" element={<Faqs />}></Route>
-            <Route path="/AboutUs" element={<AboutUs />}></Route>
+            <Route
+              path="/AboutUs"
+              element={
+                <Suspense fallback={<LoadingFallback />} key="about">
+                  <AboutUs />
+                </Suspense>
+              }
+            />
+
             <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
 
             {/* Protected user routes */}

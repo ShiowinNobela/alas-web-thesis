@@ -6,7 +6,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import TextInput from '@/components/bigComponents/TextInput';
 import PromptLink from '@/components/bigComponents/PromptLink';
-import Logo from '/alaslogo.jpg';
 import useUserStore from '@/stores/userStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -76,7 +75,11 @@ function LoginPage() {
       <Card className="text-content w-full max-w-md p-4 sm:p-8">
         <div className="space-y-6">
           <div className="space-y-1">
-            <img src={Logo} alt="Alas Delis Logo" className="mx-auto h-20 w-20 object-contain" />
+            <img
+              src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
+              alt="Alas Delis Logo"
+              className="mx-auto h-20 w-20 object-contain"
+            />
             <h1 className="text-content font-heading text-center text-3xl font-bold">SIGN IN</h1>
             <p className="text-center text-sm text-gray-500">Welcome to Alas Delis and Spices.</p>
           </div>

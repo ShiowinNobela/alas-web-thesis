@@ -2,16 +2,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  Flame,
-  Heart,
-  Zap,
-  Star,
-} from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Heart, Zap, Star } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 
 // Animation variants
@@ -48,25 +39,9 @@ const cardHoverVariants = {
   },
 };
 
-const flameVariants = {
-  bounce: {
-    y: [0, -10, 0],
-    transition: {
-      duration: 1,
-      repeat: Infinity,
-      repeatType: 'loop',
-    },
-  },
-};
-
 function ContactUs() {
   return (
-    <motion.section
-      className="bg-neutral min-h-screen"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
+    <motion.section className="bg-neutral min-h-screen" initial="hidden" animate="visible" variants={containerVariants}>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute top-25 left-15 h-20 w-20 animate-pulse rounded-full bg-gradient-to-br from-yellow-200 to-orange-300 opacity-20"
@@ -92,30 +67,15 @@ function ContactUs() {
       <main className="relative mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
         <motion.div className="mb-12 text-center" variants={itemVariants}>
           <div className="mb-4 flex items-center justify-center">
-            <motion.div variants={flameVariants} animate="bounce">
-              <Flame className="mr-2 h-8 w-8 text-red-500" />
-            </motion.div>
-            <h1 className="text-content font-heading text-5xl font-semibold">
-              Let's Talk Spice!
-            </h1>
-            <motion.div
-              variants={flameVariants}
-              animate="bounce"
-              transition={{ delay: 0.2 }}
-            >
-              <Flame className="ml-2 h-8 w-8 text-orange-500" />
-            </motion.div>
+            <h1 className="text-content font-heading text-5xl font-semibold">Let's Talk Spice!</h1>
           </div>
           <p className="text-lighter mx-auto max-w-3xl text-lg">
-            Got burning questions? Need a custom blend that'll knock your socks
-            off? We're here to help you find your perfect heat level! 🌶️
+            Got burning questions? Need a custom blend that'll knock your socks off? We're here to help you find your
+            perfect heat level! 🌶️
           </p>
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 gap-16 lg:grid-cols-2 xl:gap-20"
-          variants={containerVariants}
-        >
+        <motion.div className="grid grid-cols-1 gap-16 lg:grid-cols-2 xl:gap-20" variants={containerVariants}>
           {/* Contact Form */}
           <motion.div variants={itemVariants} whileHover="hover">
             <motion.div variants={cardHoverVariants}>
@@ -141,19 +101,13 @@ function ContactUs() {
                 <CardContent className="space-y-4 p-6">
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
-                      <label
-                        htmlFor="firstName"
-                        className="text-lighter mb-1 block text-sm font-medium"
-                      >
+                      <label htmlFor="firstName" className="text-lighter mb-1 block text-sm font-medium">
                         First Name <span className="text-red-500">*</span>
                       </label>
                       <Input id="firstName" placeholder="Your first name" />
                     </div>
                     <div>
-                      <label
-                        htmlFor="lastName"
-                        className="text-lighter mb-1 block text-sm font-medium"
-                      >
+                      <label htmlFor="lastName" className="text-lighter mb-1 block text-sm font-medium">
                         Last Name <span className="text-red-500">*</span>
                       </label>
                       <Input id="lastName" placeholder="Your last name" />
@@ -161,37 +115,21 @@ function ContactUs() {
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="text-lighter mb-1 block text-sm font-medium"
-                    >
+                    <label htmlFor="email" className="text-lighter mb-1 block text-sm font-medium">
                       Email <span className="text-red-500">*</span>
                     </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                    />
+                    <Input id="email" type="email" placeholder="your@email.com" />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="subject"
-                      className="text-lighter mb-1 block text-sm font-medium"
-                    >
+                    <label htmlFor="subject" className="text-lighter mb-1 block text-sm font-medium">
                       What's cooking?
                     </label>
-                    <Input
-                      id="subject"
-                      placeholder="Custom blend? Wholesale? Just saying hi?"
-                    />
+                    <Input id="subject" placeholder="Custom blend? Wholesale? Just saying hi?" />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="message"
-                      className="text-lighter mb-1 block text-sm font-medium"
-                    >
+                    <label htmlFor="message" className="text-lighter mb-1 block text-sm font-medium">
                       Spill the beans! <span className="text-red-500">*</span>
                     </label>
                     <Textarea
@@ -201,10 +139,7 @@ function ContactUs() {
                     />
                   </div>
 
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
+                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
                     <Button size="lg" className="w-full">
                       Send the Heat!
                     </Button>
@@ -233,49 +168,28 @@ function ContactUs() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <motion.div
-                      className="bg-card/70 flex items-start space-x-3 rounded-lg p-3"
-                      whileHover={{ x: 5 }}
-                    >
+                    <motion.div className="bg-card/70 flex items-start space-x-3 rounded-lg p-3" whileHover={{ x: 5 }}>
                       <MapPin className="mt-0.5 h-5 w-5 text-red-500" />
                       <div>
-                        <p className="text-content font-bold">
-                          Alas Delis and Spices
-                        </p>
-                        <p className="text-content text-sm">
-                          Old Balara, Tandang Sora Avenue
-                        </p>
-                        <p className="text-content text-sm">
-                          Quezon City, Philippines
-                        </p>
+                        <p className="text-content font-bold">Alas Delis and Spices</p>
+                        <p className="text-content text-sm">Old Balara, Tandang Sora Avenue</p>
+                        <p className="text-content text-sm">Quezon City, Philippines</p>
                       </div>
                     </motion.div>
 
-                    <motion.div
-                      className="bg-card/70 flex items-center space-x-3 rounded-lg p-3"
-                      whileHover={{ x: 5 }}
-                    >
+                    <motion.div className="bg-card/70 flex items-center space-x-3 rounded-lg p-3" whileHover={{ x: 5 }}>
                       <Phone className="h-5 w-5 text-green-500" />
                       <div>
                         <p className="text-content font-bold">0995 285 8665</p>
-                        <p className="text-content text-sm">
-                          📞 Call for custom orders & bulk pricing
-                        </p>
+                        <p className="text-content text-sm">📞 Call for custom orders & bulk pricing</p>
                       </div>
                     </motion.div>
 
-                    <motion.div
-                      className="bg-card/70 flex items-center space-x-3 rounded-lg p-3"
-                      whileHover={{ x: 5 }}
-                    >
+                    <motion.div className="bg-card/70 flex items-center space-x-3 rounded-lg p-3" whileHover={{ x: 5 }}>
                       <Mail className="h-5 w-5 text-blue-500" />
                       <div>
-                        <p className="text-content font-bold">
-                          kraffle02@gmail.com
-                        </p>
-                        <p className="text-content text-sm">
-                          ⚡ Lightning-fast replies (usually within 2 hours!)
-                        </p>
+                        <p className="text-content font-bold">kraffle02@gmail.com</p>
+                        <p className="text-content text-sm">⚡ Lightning-fast replies (usually within 2 hours!)</p>
                       </div>
                     </motion.div>
                   </CardContent>
@@ -305,32 +219,22 @@ function ContactUs() {
                         className="flex items-center justify-between rounded bg-white/60 p-2"
                         whileHover={{ scale: 1.01 }}
                       >
-                        <span className="text-lighter font-medium">
-                          Monday - Friday
-                        </span>
-                        <span className="font-bold text-green-600">
-                          9:00 AM - 7:00 PM
-                        </span>
+                        <span className="text-lighter font-medium">Monday - Friday</span>
+                        <span className="font-bold text-green-600">9:00 AM - 7:00 PM</span>
                       </motion.div>
                       <motion.div
                         className="flex items-center justify-between rounded bg-white/60 p-2"
                         whileHover={{ scale: 1.01 }}
                       >
-                        <span className="text-lighter font-medium">
-                          Saturday
-                        </span>
-                        <span className="font-bold text-blue-600">
-                          10:00 AM - 6:00 PM
-                        </span>
+                        <span className="text-lighter font-medium">Saturday</span>
+                        <span className="font-bold text-blue-600">10:00 AM - 6:00 PM</span>
                       </motion.div>
                       <motion.div
                         className="flex items-center justify-between rounded bg-white/60 p-2"
                         whileHover={{ scale: 1.01 }}
                       >
                         <span className="text-lighter font-medium">Sunday</span>
-                        <span className="font-bold text-purple-600">
-                          12:00 PM - 5:00 PM
-                        </span>
+                        <span className="font-bold text-purple-600">12:00 PM - 5:00 PM</span>
                       </motion.div>
                     </div>
                   </CardContent>
@@ -357,13 +261,10 @@ function ContactUs() {
                   >
                     <Heart className="mr-2 h-4 w-4 text-red-500" />
                   </motion.div>
-                  <h4 className="text-sm font-bold text-black">
-                    Made with Love
-                  </h4>
+                  <h4 className="text-sm font-bold text-black">Made with Love</h4>
                 </div>
                 <p className="text-lighter text-xs">
-                  Every bottle is crafted by hand with passion and the finest
-                  ingredients!
+                  Every bottle is crafted by hand with passion and the finest ingredients!
                 </p>
               </motion.div>
 
@@ -384,13 +285,10 @@ function ContactUs() {
                   >
                     <Star className="mr-2 h-4 w-4 text-yellow-500" />
                   </motion.div>
-                  <h4 className="text-sm font-bold text-black">
-                    Artisanal Blends
-                  </h4>
+                  <h4 className="text-sm font-bold text-black">Artisanal Blends</h4>
                 </div>
                 <p className="text-lighter text-xs">
-                  Can't find your perfect heat? We'll create a custom sauce just
-                  for you!
+                  Can't find your perfect heat? We'll create a custom sauce just for you!
                 </p>
               </motion.div>
             </div>
@@ -416,16 +314,12 @@ function ContactUs() {
               >
                 🌶️
               </motion.div>
-              <h3 className="text-content mb-2 text-lg font-bold">
-                🔥 Hot Tip of the Day!
-              </h3>
+              <h3 className="text-content mb-2 text-lg font-bold">🔥 Hot Tip of the Day!</h3>
               <p className="text-lighter text-sm font-medium">
-                New to spicy food? Start with our "Gentle Fire" blend - it's got
-                all the flavor with just a whisper of heat!
+                New to spicy food? Start with our "Gentle Fire" blend - it's got all the flavor with just a whisper of
+                heat!
               </p>
-              <p className="text-lighter mt-2 text-xs italic">
-                Pro tip: Keep milk handy for your first taste test! 🥛
-              </p>
+              <p className="text-lighter mt-2 text-xs italic">Pro tip: Keep milk handy for your first taste test! 🥛</p>
             </motion.div>
           </motion.div>
         </motion.div>

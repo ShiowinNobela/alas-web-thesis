@@ -186,6 +186,7 @@ function CheckOutPage() {
             </Card>
 
             <CartSummaryCard />
+
             <Button
               onClick={handleConfirmOrder}
               size="lg"

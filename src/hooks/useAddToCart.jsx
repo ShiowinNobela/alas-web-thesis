@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCartStore from '@/stores/cartStore';
 import useUserStore from '@/stores/userStore';
+import { toast } from 'sonner';
 
 export function useAddToCart() {
   const navigate = useNavigate();
@@ -14,7 +15,12 @@ export function useAddToCart() {
 
   const handleAdd = () => {
     if (!isLoggedIn) {
-      navigate('/LoginPage');
+      toast.warning('You need to log in first', {
+        action: {
+          label: 'Log in',
+          onClick: () => navigate('/LoginPage'),
+        },
+      });
       return;
     }
     setOpen(true);

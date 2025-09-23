@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useLocation, Link } from 'react-router-dom';
-import Logo from '/alaslogo.jpg';
+import Logo from '/logo-alas1.jpg';
 import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '../filters/ThemeToggle';
@@ -34,7 +34,14 @@ function Navbar() {
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-4">
         <div className="flex flex-row items-center justify-center gap-4">
           <Link to="/" onClick={closeMobileMenu}>
-            <img className="h-11 w-auto cursor-pointer" src={Logo} alt="Logo" />
+            <img
+              className="h-11 w-auto cursor-pointer"
+              src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
+              alt="Logo"
+              onError={(e) => {
+                e.currentTarget.src = Logo;
+              }}
+            />
           </Link>
           <h1 className="font-heading text-content hidden text-lg lg:block">Alas Delis and Spices</h1>
         </div>
