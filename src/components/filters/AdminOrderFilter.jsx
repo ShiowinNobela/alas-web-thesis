@@ -1,41 +1,24 @@
-// src/components/Filters/AdminOrderFilters.jsx
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Datepicker, TextInput, Button } from 'flowbite-react';
 import { HiOutlineSearch } from 'react-icons/hi';
 import dayjs from 'dayjs';
 import StatusFilterDropdown from '@/components/filters/StatusFilterDropdown';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import OrderReportPDF from '@/components/ReportFormats/OrderReportPDF';
 
-const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
+const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders, isLoading }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [startDateKey, setStartDateKey] = useState(0);
-  const [endDateKey, setEndDateKey] = useState(0);
 
-  // Get filter values from URL or use defaults
   const status = searchParams.get('status') || '';
   const startDate = searchParams.get('startDate') || null;
   const endDate = searchParams.get('endDate') || null;
 
-  useEffect(() => {
-    if (!startDate) {
-      setStartDateKey((prev) => prev + 1);
-    }
-  }, [startDate]);
-
-  useEffect(() => {
-    if (!endDate) {
-      setEndDateKey((prev) => prev + 1);
-    }
-  }, [endDate]);
-
   const handleStatusChange = useCallback(
     (newStatus) => {
       const params = new URLSearchParams(searchParams);
-      if (newStatus) {
-        params.set('status', newStatus);
-      } else {
-        params.delete('status');
-      }
+      if (newStatus) params.set('status', newStatus);
+      else params.delete('status');
       setSearchParams(params);
     },
     [searchParams, setSearchParams]
@@ -46,15 +29,8 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
       const params = new URLSearchParams(searchParams);
       if (date) {
         params.set('startDate', dayjs(date).format('YYYY-MM-DD'));
-        // If end date is not set, automatically set it to today
-        if (!params.get('endDate')) {
-          params.set('endDate', dayjs().format('YYYY-MM-DD'));
-          // Force re-render of end date picker by updating its key
-          setEndDateKey((prev) => prev + 1);
-        }
-      } else {
-        params.delete('startDate');
-      }
+        if (!params.get('endDate')) params.set('endDate', dayjs().format('YYYY-MM-DD'));
+      } else params.delete('startDate');
       setSearchParams(params);
     },
     [searchParams, setSearchParams]
@@ -63,11 +39,8 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
   const handleEndDateChange = useCallback(
     (date) => {
       const params = new URLSearchParams(searchParams);
-      if (date) {
-        params.set('endDate', dayjs(date).format('YYYY-MM-DD'));
-      } else {
-        params.delete('endDate');
-      }
+      if (date) params.set('endDate', dayjs(date).format('YYYY-MM-DD'));
+      else params.delete('endDate');
       setSearchParams(params);
     },
     [searchParams, setSearchParams]
@@ -80,24 +53,23 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
   }, [setSearchParams, setSearchId, onRefresh]);
 
   return (
-    <div className="flex flex-wrap items-center justify-between w-full gap-3 px-2">
-      <div className="flex w-full items-center gap-2 sm:w-[30%]">
+    <div className="flex w-full flex-wrap items-center gap-3 px-2">
+      {/* Search */}
+      <div className="flex min-w-[200px] flex-[0_0_20%] items-center gap-2">
         <TextInput
           placeholder="Search order by ID..."
           value={searchId}
           icon={HiOutlineSearch}
           onChange={(e) => setSearchId(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') onSearch();
-          }}
+          onKeyDown={(e) => e.key === 'Enter' && onSearch()}
           color="gray"
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-end gap-3">
-        <div className="w-[22%]">
+      {/* Filters row */}
+      <div className="flex flex-1 items-center justify-end gap-2">
+        <div className="min-w-[190px] flex-[0_0_18%]">
           <Datepicker
-            key={`start-${startDateKey}`}
             placeholder="Start date"
             value={startDate ? new Date(startDate) : null}
             onChange={handleStartDateChange}
@@ -105,10 +77,9 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
             color="gray"
           />
         </div>
-        <h3>TO</h3>
-        <div className="w-[22%]">
+        <h3 className="whitespace-nowrap">TO</h3>
+        <div className="min-w-[190px] flex-[0_0_18%]">
           <Datepicker
-            key={`end-${endDateKey}`}
             placeholder="End date"
             value={endDate ? new Date(endDate) : null}
             onChange={handleEndDateChange}
@@ -123,6 +94,21 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
         <Button color="gray" onClick={handleResetFilters}>
           Reset All
         </Button>
+
+        <PDFDownloadLink
+          document={<OrderReportPDF orders={orders} startDate={startDate} endDate={endDate} />}
+          fileName={`orders-${startDate || 'all'}-to-${endDate || 'all'}.pdf`}
+        >
+          {({ loading }) =>
+            loading ? (
+              <Button className="rounded bg-gray-300 px-3 py-2 text-sm text-gray-700">Preparing...</Button>
+            ) : (
+              <Button disabled={isLoading} color="gray">
+                Download PDF
+              </Button>
+            )
+          }
+        </PDFDownloadLink>
       </div>
     </div>
   );

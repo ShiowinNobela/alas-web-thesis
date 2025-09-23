@@ -4,25 +4,29 @@ import Sidebar from '@/components/layout/AdminSidebar';
 import AdminNavbar from '@/components/layout/AdminNavbar';
 import AdminFooter from '@/components/layout/AdminFooter';
 import { Toaster } from 'sonner';
+import { Suspense } from 'react';
+import LoadingFallback from './LoadingFallback';
 
 const AdminLayout = () => {
   return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="flex flex-1 flex-col overflow-hidden shadow-md">
-        <AdminNavbar />
-        <div className="bg-admin flex flex-1 flex-col overflow-auto">
-          <main className="flex-1">
-            <Outlet />
-          </main>
+    <div className="grid min-h-screen w-full grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto]">
+      <aside className="sticky top-0 row-span-3 h-screen">
+        <Sidebar />
+      </aside>
 
-          {/* Footer */}
-          <footer className="text-muted-foreground border-t px-4 py-3 text-sm">
-            <AdminFooter />
-          </footer>
-          <Toaster richColors visibleToasts={1} />
-        </div>
-      </div>
+      <AdminNavbar />
+
+      <main className="bg-admin overflow-y-auto">
+        <Suspense fallback={<LoadingFallback />}>
+          <Outlet />
+        </Suspense>
+      </main>
+
+      <footer className="text-muted-foreground border-t px-4 py-3 text-sm">
+        <AdminFooter />
+      </footer>
+
+      <Toaster richColors visibleToasts={1} />
     </div>
   );
 };

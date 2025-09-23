@@ -9,7 +9,7 @@ function MainLayout() {
   return (
     <div className="grid min-h-screen w-full grid-rows-[auto_1fr_auto]">
       <Navbar />
-      <main className="bg overflow-y-auto">
+      <main className="min-h-screen overflow-y-auto">
         <Suspense fallback={<LoadingFallback />}>
           <Outlet />
         </Suspense>
