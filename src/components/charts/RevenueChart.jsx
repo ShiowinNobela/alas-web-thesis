@@ -33,9 +33,16 @@ const RevenueChart = ({
   };
 
   return (
-    <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
-      <h3 className="mb-4 text-lg font-semibold">{title}</h3>
-      <Chart options={options} series={series} type="line" height={180} />
+    <Card className="transition-shadow duration-300 shadow-sm rounded-2xl ring-1 lg:col-span-4 hover:shadow-md">
+      <h3 className="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-100">{title}</h3>
+      <div className="pt-2">
+        <Chart 
+          options={options} 
+          series={series} 
+          type="line" 
+          height={180}
+        />
+      </div>
     </Card>
   );
 };

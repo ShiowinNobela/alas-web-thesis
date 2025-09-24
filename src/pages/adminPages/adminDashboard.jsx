@@ -82,13 +82,13 @@ function AdminDashboard() {
             {
               title: "Total Items Sold",
               value: items?.totalItemsSold || 0,
-              icon: 'customer',
+              icon: 'packageGreen',
               color: 'text-yellow-400',
             },
             {
-              title: 'EMPTY FOR NOW',
-              value: 0,
-              icon: 'lowStock',
+              title: 'Total Customers',
+              value: items?.totalCustomers || 0,
+              icon: 'customer',
               color: 'text-red-600',
             },
           ].map((item, idx) => (
