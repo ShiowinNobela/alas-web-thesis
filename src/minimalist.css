@@ -194,12 +194,12 @@ html {
 
 /* Light mode product gradient */
 .product-gradient {
-  @apply bg-[#FFF3D6];
+  @apply bg-neutral;
 }
 
 /* Second stage gradient (darker continuation) */
 .testimonial-gradient {
-  @apply bg-gray-100;
+  @apply bg-[#FEFADC];
 }
 
 /* Dark mode gradients */
