@@ -9,19 +9,63 @@
     <meta name="author" content="Alas Delis and Spices" />
     <meta name="theme-color" content="#fffcf9" />
 
+    <!-- SEO: robots meta -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://alashotsauce.com/" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZBD2161D07"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-ZBD2161D07');
+    </script>
+
+    <!-- Open Graph -->
     <meta property="og:title" content="Alas Delis and Spices" />
     <meta property="og:description" content="We serve artisanal sauces made with love and spice." />
-    <meta property="og:image" content="/logo-alas1.jpg" />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://your-site-url.com" />
+    <meta property="og:url" content="https://alashotsauce.com" />
 
+    <!-- Twitter Card -->
+    <!-- <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Alas Delis and Spices" />
+    <meta name="twitter:description" content="We serve artisanal sauces made with love and spice." />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
+    /> -->
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "name": "Alas Delis and Spices",
+        "url": "https://alashotsauce.com",
+        "logo": "https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg",
+        "sameAs": ["https://www.facebook.com/yourpage", "https://www.instagram.com/yourpage"]
+      }
+    </script>
+
+    <!-- Preconnect / Preload -->
     <link rel="preconnect" href="https://flux-backend-1-5yv1.onrender.com" crossorigin />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
 
-    <title>Alas Delis and Spices</title>
-
-    <link rel="preload" href="/fonts/ChangaOne-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Jost-Medium.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- <link rel="preload" href="/fonts/ChangaOne-Regular.woff2" as="font" type="font/woff2" crossorigin /> -->
     <link rel="preload" href="/fonts/Rubik-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <title>Alas Delis and Spices</title>
   </head>
   <body>
     <div id="root"></div>

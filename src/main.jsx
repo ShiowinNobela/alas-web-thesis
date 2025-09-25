@@ -9,6 +9,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './lib/axios-config.js';
 import CartProvider from './provider/CartProvider';
+import ErrorBoundary from './components/errorUI/ErrorBoundary';
 
 const queryClient = new QueryClient();
 
@@ -19,7 +20,9 @@ createRoot(document.getElementById('root')).render(
         <ThemeProvider>
           <AuthProvider>
             <CartProvider>
-              <App />
+              <ErrorBoundary>
+                <App />
+              </ErrorBoundary>
             </CartProvider>
           </AuthProvider>
         </ThemeProvider>

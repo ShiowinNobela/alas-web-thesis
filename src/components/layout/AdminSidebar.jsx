@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { handleLogout } from '@/utils/logout';
-import DBlogo from '@/components/images/logo-alas1.jpg';
 import { useState } from 'react';
 import {
   LayoutDashboard,
@@ -53,7 +52,11 @@ function Sidebar() {
     <div className="h-screen w-[280px] flex-shrink-0 border-r-2 border-[#122661] bg-[#121b2c] px-2">
       {/* Logo Section */}
       <div className="flex items-center p-3">
-        <img src={DBlogo} alt="Alas Delis and Spices Logo" className="h-10 object-contain" />
+        <img
+          src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
+          alt="Alas Delis and Spices Logo"
+          className="h-10 object-contain"
+        />
       </div>
 
       {/* Navigation Starts here */}

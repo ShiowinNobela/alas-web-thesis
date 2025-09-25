@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /users/verify-email
+Disallow: /LoginPage
+Disallow: /RegPage
+Disallow: /user/dashboard
+Disallow: /users/orders
+Disallow: /users/review
+
+Sitemap: https://alashotsauce.com/sitemap.xml

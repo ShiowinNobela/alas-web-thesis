@@ -1,14 +1,13 @@
 import React from 'react';
-import { AlertTriangle } from 'lucide-react';
-import { Button } from 'flowbite-react';
+import { Button } from '../ui/button';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       hasError: false,
       error: null,
-      errorInfo: null 
+      errorInfo: null,
     };
   }
 
@@ -19,10 +18,10 @@ class ErrorBoundary extends React.Component {
   componentDidCatch(error, errorInfo) {
     this.setState({
       error: error,
-      errorInfo: errorInfo
+      errorInfo: errorInfo,
     });
     console.error('Error caught by boundary:', error, errorInfo);
-    
+
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
@@ -32,36 +31,31 @@ class ErrorBoundary extends React.Component {
     this.setState({
       hasError: false,
       error: null,
-      errorInfo: null
+      errorInfo: null,
     });
-    
+
     if (this.props.onReset) {
       this.props.onReset();
     }
-  }
+  };
 
   render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
-        return typeof this.props.fallback === 'function' 
-          ? this.props.fallback({ 
-              error: this.state.error, 
-              errorInfo: this.state.errorInfo, 
-              resetError: this.resetError 
+        return typeof this.props.fallback === 'function'
+          ? this.props.fallback({
+              error: this.state.error,
+              errorInfo: this.state.errorInfo,
+              resetError: this.resetError,
             })
           : this.props.fallback;
       }
 
       return (
-        <div className="flex flex-col items-center justify-center p-6 text-red-600 bg-white rounded-lg shadow-sm ring-1 min-h-[300px]">
-          <AlertTriangle className="w-12 h-12 mb-4" />
+        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-lg bg-white p-6 text-red-600 shadow-sm ring-1">
           <p className="mb-2 font-medium">Something went wrong</p>
-          <p className="mb-4 text-sm text-center">
-            {this.state.error && this.state.error.toString()}
-          </p>
-          <Button onClick={this.resetError} color="failure">
-            Try Again
-          </Button>
+          <p className="mb-4 text-center text-sm">{this.state.error && this.state.error.toString()}</p>
+          <Button onClick={this.resetError}>Try Again</Button>
         </div>
       );
     }
