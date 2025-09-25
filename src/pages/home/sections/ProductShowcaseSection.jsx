@@ -60,7 +60,7 @@ const products = [
 
 export default function ProductsShowcaseSection() {
   return (
-    <section className="bg-gradient-to-b from-amber-50 to-yellow-100 py-12 md:py-16">
+    <section className="product-gradient py-12 md:py-25">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -69,10 +69,6 @@ export default function ProductsShowcaseSection() {
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-1.5 text-amber-800">
-            <FlameIcon className="h-5 w-5" />
-            <span className="text-sm font-medium">Spicy & Flavorful</span>
-          </div>
           <h2 className="font-heading text-content mb-4 text-4xl font-bold md:text-5xl">
             Spice Up Your Life, <span className="text-primary">Like Never Before</span>
           </h2>
@@ -93,20 +89,20 @@ export default function ProductsShowcaseSection() {
               key={index}
               variants={item}
               whileHover={hoverEffect}
-              className="group bg-card relative overflow-hidden rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl"
+              className="group bg-card relative overflow-hidden rounded-xl shadow-md transition-all duration-300 hover:shadow-xl"
             >
               {index === 1 && (
-                <div className="bg-primary absolute top-3 right-3 z-10 rounded-full px-2 py-1 text-xs font-bold text-white">
+                <div className="bg-primary absolute top-3 right-3 z-10 rounded-xl px-2 py-1 text-xs font-bold text-white">
                   Bestseller
                 </div>
               )}
               {index === 2 && (
-                <div className="bg-primary absolute top-3 right-3 z-10 rounded-full px-2 py-1 text-xs font-bold text-white">
+                <div className="bg-primary absolute top-3 right-3 z-10 rounded-xl px-2 py-1 text-xs font-bold text-white">
                   New
                 </div>
               )}
 
-              <div className="relative h-56 w-full overflow-hidden">
+              <div className="relative h-48 w-full overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.name}

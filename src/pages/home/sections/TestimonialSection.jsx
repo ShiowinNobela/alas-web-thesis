@@ -46,7 +46,7 @@ const TestimonialSection = () => {
   };
 
   return (
-    <section className="bg-gradient-to-br from-orange-100 via-amber-100 to-amber-200 py-16 md:py-24">
+    <section className="testimonial-gradient py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -81,8 +81,6 @@ const TestimonialSection = () => {
               whileHover={{ y: -10 }}
               className="group bg-card relative overflow-hidden rounded-xl shadow-lg"
             >
-              <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-orange-300/30"></div>
-
               <div className="relative z-10 p-6">
                 <div className="mb-6 flex items-center gap-4">
                   <div className="border-primary h-14 w-14 overflow-hidden rounded-full border-2">
@@ -127,7 +125,7 @@ const TestimonialSection = () => {
         >
           <ShowcaseButton
             icon={<MessageCircleIcon className="h-5 w-5" />}
-            className="bg-amber-600 text-white hover:bg-amber-600"
+            className="bg-primary hover:bg-primary/90 text-white"
           >
             Leave a Review
           </ShowcaseButton>

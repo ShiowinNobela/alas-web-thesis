@@ -83,7 +83,7 @@ function LoginPage() {
               className="mx-auto h-20 w-20 object-contain"
             />
             <h1 className="text-content font-heading text-center text-3xl font-bold">SIGN IN</h1>
-            <p className="text-center text-sm text-gray-500">Welcome to Alas Delis and Spices.</p>
+            <p className="text-lighter text-center text-sm">Welcome to Alas Delis and Spices.</p>
           </div>
 
           <form className="space-y-4" onSubmit={handleLogin}>
@@ -129,7 +129,7 @@ function LoginPage() {
 
             <PromptLink promptText="Don’t have an account yet?" linkText="Create an account" to="/RegPage" />
 
-            <p className="text-center text-xs text-gray-400">
+            <p className="text-lighter text-center text-xs">
               By clicking continue, you agree to our{' '}
               <a href="/terms-of-service" className="hover:text-primary underline">
                 Terms of Service
