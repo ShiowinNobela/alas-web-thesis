@@ -22,7 +22,7 @@ const AdminLayout = () => {
         </Suspense>
       </main>
 
-      <footer className="text-muted-foreground border-t px-4 py-3 text-sm">
+      <footer className="text-muted-foreground border-t text-sm">
         <AdminFooter />
       </footer>
 
