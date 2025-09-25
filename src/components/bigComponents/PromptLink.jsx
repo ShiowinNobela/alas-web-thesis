@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const PromptLink = ({ promptText, linkText, to }) => (
-  <p className="text-center text-sm font-light text-gray-500">
+  <p className="text-lighter text-center text-sm font-light">
     {promptText}{' '}
     <Link
       to={to}

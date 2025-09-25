@@ -1,5 +1,3 @@
-import './App.css';
-
 // React & Router
 import { Route, Routes } from 'react-router-dom';
 import { Suspense, lazy } from 'react';

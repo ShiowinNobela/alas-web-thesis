@@ -34,7 +34,7 @@ const StorySection = () => {
                 x.set(0);
                 y.set(0);
               }}
-              className="relative h-full overflow-hidden rounded-2xl shadow-2xl"
+              className="relative h-full overflow-hidden rounded-xl shadow-2xl"
             >
               <img
                 src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351167/BGSos_fjwqb0.jpg"

@@ -153,9 +153,9 @@ function ContactUs() {
           <motion.div className="space-y-6" variants={itemVariants}>
             <motion.div variants={itemVariants} whileHover="hover">
               <motion.div variants={cardHoverVariants}>
-                <Card className="border-0 bg-gradient-to-br from-yellow-50 to-orange-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
+                <Card className="testimonial-gradient border-0 shadow-xl transition-all duration-300 hover:shadow-2xl">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-xl text-black">
+                    <CardTitle className="text-content flex items-center text-xl">
                       <motion.div
                         animate={{
                           x: [-2, 2, -2],
@@ -201,7 +201,7 @@ function ContactUs() {
               <motion.div variants={cardHoverVariants}>
                 <Card className="border-0 bg-gradient-to-br from-green-50 to-blue-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
                   <CardHeader>
-                    <CardTitle className="flex items-center text-xl text-black">
+                    <CardTitle className="text-content flex items-center text-xl">
                       <motion.div
                         animate={{
                           rotate: [0, 10, -10, 0],
@@ -261,7 +261,7 @@ function ContactUs() {
                   >
                     <Heart className="mr-2 h-4 w-4 text-red-500" />
                   </motion.div>
-                  <h4 className="text-sm font-bold text-black">Made with Love</h4>
+                  <h4 className="text-content text-sm font-bold">Made with Love</h4>
                 </div>
                 <p className="text-lighter text-xs">
                   Every bottle is crafted by hand with passion and the finest ingredients!
@@ -285,7 +285,7 @@ function ContactUs() {
                   >
                     <Star className="mr-2 h-4 w-4 text-yellow-500" />
                   </motion.div>
-                  <h4 className="text-sm font-bold text-black">Artisanal Blends</h4>
+                  <h4 className="text-content text-sm font-bold">Artisanal Blends</h4>
                 </div>
                 <p className="text-lighter text-xs">
                   Can't find your perfect heat? We'll create a custom sauce just for you!

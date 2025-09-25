@@ -1,4 +1,46 @@
-import { motion } from 'framer-motion';
+// import { Button } from '@/components/ui/button';
+// import { Link } from 'react-router-dom';
+// import useUserStore from '@/stores/userStore';
+
+// const HeroSection = () => {
+//   const user = useUserStore((state) => state.user);
+
+//   return (
+//     <section className="bg-neutral relative">
+//       <div className="container mx-auto flex max-w-5xl flex-col items-center justify-between gap-10 px-6 py-20 md:flex-row">
+//         {/* Text Content */}
+//         <div className="flex-1 text-center md:text-left">
+//           <h1 className="font-heading text-foreground mb-4 text-4xl font-bold sm:text-5xl md:text-6xl">
+//             Artisanal Hot Sauce, <br /> Flavor with Heat
+//           </h1>
+
+//           <p className="text-muted-foreground mb-8 max-w-xl text-lg md:text-xl">
+//             Flavor comes first, heat comes second. Explore powders, pickles, oils, and sauces — everything spicy,
+//             crafted for bold taste.
+//           </p>
+
+//           <Link to={user ? '/ProductListPage' : '/LoginPage'}>
+//             <Button variant="CTA" size="lg" className="px-8 font-medium">
+//               Order Now
+//             </Button>
+//           </Link>
+//         </div>
+
+//         {/* Image Side */}
+//         <div className="flex flex-1 justify-center">
+//           <img
+//             src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758790358/hero_psicad.jpg"
+//             alt="Spicy hot sauce bottle"
+//             className="max-h-[400px] w-auto rounded-lg shadow-lg"
+//           />
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default HeroSection;
+
 import { Button } from '@/components/ui/button';
 import { FireExtinguisherIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -6,22 +48,6 @@ import useUserStore from '@/stores/userStore';
 
 const HeroSection = () => {
   const user = useUserStore((state) => state.user);
-
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
 
   return (
     <section className="relative overflow-hidden">
@@ -31,56 +57,32 @@ const HeroSection = () => {
           backgroundImage: `url(${'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351380/herogif_rs4vtw.gif'})`,
         }}
       >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.3 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 bg-black/30"
-        />
+        <div className="absolute inset-0 bg-black/30" />
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="relative z-10 container mx-auto px-4"
-        >
+        <div className="relative z-10 container mx-auto px-4">
           <div className="mx-auto max-w-2xl text-center">
-            <motion.h1
-              variants={item}
-              className="font-heading mb-6 text-5xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-6xl"
-            >
+            <h1 className="font-heading mb-6 text-5xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-6xl">
               Artisanal Hot Sauce and Some Spicy Stuff
-            </motion.h1>
+            </h1>
 
-            <motion.p variants={item} className="mb-8 text-lg text-white opacity-90 md:text-xl">
+            <p className="mb-8 text-lg text-white opacity-90 md:text-xl">
               We pride ourselves on different flavor profiles, not just heat. Anything that's spicy as a whole, we have
               it. From powders, to pickles, to oils, to sauces, name it.
-            </motion.p>
+            </p>
 
-            <motion.div variants={item} className="flex flex-col justify-center gap-4 px-8 sm:flex-row">
+            <div className="flex flex-col justify-center gap-4 px-8 sm:flex-row">
               <Link to={user ? '/ProductListPage' : '/LoginPage'}>
                 <Button variant="CTA" size="lg" className="px-8 font-medium text-white">
                   Order Now
                 </Button>
               </Link>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ y: 0 }}
-          animate={{
-            y: [0, -20, 0],
-            transition: {
-              duration: 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            },
-          }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
           <FireExtinguisherIcon className="size-10 text-amber-100" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

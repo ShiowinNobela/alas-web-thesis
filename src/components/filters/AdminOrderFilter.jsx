@@ -1,60 +1,58 @@
-import { useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Datepicker, TextInput, Button } from 'flowbite-react';
+import { TextInput, Button } from 'flowbite-react';
 import { HiOutlineSearch } from 'react-icons/hi';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import dayjs from 'dayjs';
 import StatusFilterDropdown from '@/components/filters/StatusFilterDropdown';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import OrderReportPDF from '@/components/ReportFormats/OrderReportPDF';
+import { DateRangeSelector } from '../bigComponents/DateRangeSelector';
+import { CalendarDate } from '@internationalized/date';
+
+const parseCalendarDate = (dateString) => {
+  if (!dateString) return null;
+  const d = dayjs(dateString);
+  if (!d.isValid()) return null;
+  return new CalendarDate(d.year(), d.month() + 1, d.date()); // month +1 because CalendarDate is 1-based
+};
 
 const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders, isLoading }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const status = searchParams.get('status') || '';
-  const startDate = searchParams.get('startDate') || null;
-  const endDate = searchParams.get('endDate') || null;
+  const [status, setStatus] = useState(searchParams.get('status') || '');
+  const [dateRange, setDateRange] = useState({
+    start: searchParams.get('startDate') || '',
+    end: searchParams.get('endDate') || '',
+  });
 
-  const handleStatusChange = useCallback(
-    (newStatus) => {
-      const params = new URLSearchParams(searchParams);
-      if (newStatus) params.set('status', newStatus);
-      else params.delete('status');
-      setSearchParams(params);
-    },
-    [searchParams, setSearchParams]
-  );
-
-  const handleStartDateChange = useCallback(
-    (date) => {
-      const params = new URLSearchParams(searchParams);
-      if (date) {
-        params.set('startDate', dayjs(date).format('YYYY-MM-DD'));
-        if (!params.get('endDate')) params.set('endDate', dayjs().format('YYYY-MM-DD'));
-      } else params.delete('startDate');
-      setSearchParams(params);
-    },
-    [searchParams, setSearchParams]
-  );
-
-  const handleEndDateChange = useCallback(
-    (date) => {
-      const params = new URLSearchParams(searchParams);
-      if (date) params.set('endDate', dayjs(date).format('YYYY-MM-DD'));
-      else params.delete('endDate');
-      setSearchParams(params);
-    },
-    [searchParams, setSearchParams]
-  );
+  // Update query params whenever filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (status) params.set('status', status);
+    if (dateRange.start) params.set('startDate', dateRange.start);
+    if (dateRange.end) params.set('endDate', dateRange.end);
+    setSearchParams(params);
+  }, [status, dateRange, setSearchParams]);
 
   const handleResetFilters = useCallback(() => {
-    setSearchParams({});
+    setStatus('');
+    setDateRange({ start: '', end: '' });
     setSearchId('');
+    setSearchParams({});
     onRefresh();
   }, [setSearchParams, setSearchId, onRefresh]);
 
+  const parsedDateRange =
+    dateRange.start && dateRange.end
+      ? {
+          start: parseCalendarDate(dateRange.start),
+          end: parseCalendarDate(dateRange.end),
+        }
+      : null;
+
   return (
     <div className="flex w-full flex-wrap items-center gap-3 px-2">
-      {/* Search */}
+      {/* Search by ID */}
       <div className="flex min-w-[200px] flex-[0_0_20%] items-center gap-2">
         <TextInput
           placeholder="Search order by ID..."
@@ -66,38 +64,33 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders,
         />
       </div>
 
-      {/* Filters row */}
       <div className="flex flex-1 items-center justify-end gap-2">
-        <div className="min-w-[190px] flex-[0_0_18%]">
-          <Datepicker
-            placeholder="Start date"
-            value={startDate ? new Date(startDate) : null}
-            onChange={handleStartDateChange}
-            maxDate={new Date()}
-            color="gray"
-          />
-        </div>
-        <h3 className="whitespace-nowrap">TO</h3>
-        <div className="min-w-[190px] flex-[0_0_18%]">
-          <Datepicker
-            placeholder="End date"
-            value={endDate ? new Date(endDate) : null}
-            onChange={handleEndDateChange}
-            minDate={startDate ? new Date(startDate) : null}
-            maxDate={new Date()}
-            color="gray"
+        {/* Date Range Selector */}
+        <div>
+          <DateRangeSelector
+            value={parsedDateRange}
+            onChange={(range) =>
+              setDateRange({
+                start: range?.start?.toString() || '',
+                end: range?.end?.toString() || '',
+              })
+            }
+            placeholder="All Time"
           />
         </div>
 
-        <StatusFilterDropdown selected={status} onChange={handleStatusChange} />
+        {/* Status Filter */}
+        <StatusFilterDropdown selected={status} onChange={setStatus} />
 
+        {/* Reset Filters */}
         <Button color="gray" onClick={handleResetFilters}>
           Reset All
         </Button>
 
+        {/* PDF Download */}
         <PDFDownloadLink
-          document={<OrderReportPDF orders={orders} startDate={startDate} endDate={endDate} />}
-          fileName={`orders-${startDate || 'all'}-to-${endDate || 'all'}.pdf`}
+          document={<OrderReportPDF orders={orders} startDate={dateRange.start} endDate={dateRange.end} />}
+          fileName={`orders-${dateRange.start || 'all'}-to-${dateRange.end || 'all'}.pdf`}
         >
           {({ loading }) =>
             loading ? (
