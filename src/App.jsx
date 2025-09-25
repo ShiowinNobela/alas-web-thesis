@@ -37,7 +37,7 @@ const AddProd = lazy(() => import('./pages/adminPages/AddProduct.jsx'));
 const EditProd = lazy(() => import('./pages/adminPages/EditProduct.jsx'));
 const ProdManagement = lazy(() => import('./pages/adminPages/ProductManagement.jsx'));
 const AccManagement = lazy(() => import('./pages/adminPages/AccountManagement.jsx'));
-const Orders = lazy(() => import('./pages/adminPages/Orders.jsx'));
+const AdminOrderList = lazy(() => import('./pages/adminPages/AdminOrderList.jsx'));
 const PopUpInfoPage = lazy(() => import('./pages/adminPages/PopUpInfoPage.jsx'));
 const ViewOrder = lazy(() => import('./pages/adminPages/ViewOrder.jsx'));
 const InventoryManagement = lazy(() => import('./pages/adminPages/InventoryManagement.jsx'));
@@ -95,7 +95,7 @@ function App() {
               <Route path="EditProduct/:id" element={<EditProd />} />
               <Route path="ProductManagement" element={<ProdManagement />} />
               <Route path="AccountManagement" element={<AccManagement />} />
-              <Route path="Orders" element={<Orders />} />
+              <Route path="Orders" element={<AdminOrderList />} />
               <Route path="AdminOrderDetails/:id" element={<AdminOrderDetails />} />
               <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
               <Route path="ViewOrder/:id" element={<ViewOrder />} />

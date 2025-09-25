@@ -8,11 +8,11 @@ function UserDashboard() {
   const user = useUserStore((state) => state.user);
 
   return (
-    <div className="bg-neutral min-h-screen p-8">
+    <div className="bg-neutral min-h-screen p-10">
       <div className="mx-auto max-w-5xl pb-25">
         {/* Welcome */}
         <div className="mb-8">
-          <h1 className="font-heading text-content text-3xl">
+          <h1 className="font-heading text-content text-3xl font-semibold">
             Hello, <span className="text-primary">{user?.username}</span>
           </h1>
           <p className="text-lighter">Where do you want to go today?</p>

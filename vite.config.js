@@ -31,13 +31,13 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Create vendor bundles
-          react: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['flowbite-react', 'framer-motion'],
-          state: ['zustand'],
-          utils: ['axios'],
-        },
+        // manualChunks: {
+        //   // Create vendor bundles
+        //   react: ['react', 'react-dom', 'react-router-dom'],
+        //   ui: ['flowbite-react', 'framer-motion'],
+        //   state: ['zustand'],
+        //   utils: ['axios'],
+        // },
       },
     },
   },

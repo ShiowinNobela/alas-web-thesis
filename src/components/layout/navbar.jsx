@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useLocation, Link } from 'react-router-dom';
-import Logo from '/logo-alas1.jpg';
 import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '../filters/ThemeToggle';
@@ -39,7 +38,7 @@ function Navbar() {
               src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
               alt="Logo"
               onError={(e) => {
-                e.currentTarget.src = Logo;
+                e.currentTarget.src = 'https://8upload.com/display/68d52d9e15810/logo-alas1.jpg.php';
               }}
             />
           </Link>
@@ -92,7 +91,11 @@ function Navbar() {
         >
           <div className="border-content flex items-center justify-between divide-y-2 px-5 py-4">
             <Link to="/" onClick={closeMobileMenu}>
-              <img className="h-12 w-auto" src={Logo} alt="Logo" />
+              <img
+                className="h-12 w-auto"
+                src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
+                alt="Logo"
+              />
             </Link>
           </div>
 

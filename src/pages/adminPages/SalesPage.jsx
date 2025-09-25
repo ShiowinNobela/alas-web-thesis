@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
 import ErrorState from '@/components/States/ErrorState';
-import SalesMetrics from '@/components/sales/SalesMetrics';
-import SalesBreakdown from '@/components/sales/SalesBreakdown';
-import ProductPerformance from '@/components/sales/ProductPerformance';
-import PeriodToggle from '@/components/sales/PeriodToggle';
+import SalesMetrics from '@/components/sale/SalesMetrics';
+import SalesBreakdown from '@/components/sale/SalesBreakdown';
+import ProductPerformance from '@/components/sale/ProductPerformance';
+import PeriodToggle from '@/components/sale/PeriodToggle';
 import { useSalesData } from '@/hooks/useSalesData';
 
 function SalesPage() {
