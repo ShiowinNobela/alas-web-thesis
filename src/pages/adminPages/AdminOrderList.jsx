@@ -8,7 +8,7 @@ import {
   fetchOrderById,
   fetchOrderHistory as fetchOrderHistoryApi,
   updateOrderStatus as updateOrderStatusApi,
-} from '@/api/orderService';
+} from '@/api/orders';
 import OrderHistoryModal from '@/components/modals/orderHistoryModal';
 import StatusUpdateModal from '@/components/modals/statusUpdateModal';
 const OrderSummary = lazy(() => import('@/components/bigComponents/OrderSummary'));

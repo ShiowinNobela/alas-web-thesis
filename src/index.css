@@ -42,7 +42,7 @@ html {
 @theme {
   --font-*: initial;
   --font-sans: Rubik, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-heading: ChangaOne, 'Arial Black', 'Segoe UI', sans-serif;
+  --font-heading: Jost, Georgia, 'Times New Roman', Times, serif;
   --font-other: Jost, Georgia, 'Times New Roman', Times, serif;
 
   --color-brand: #ef2917;
@@ -63,7 +63,7 @@ html {
   --lighter: #888888;
   --primary: oklch(0.769 0.188 70.08);
   --content: #251605;
-  --neutral: #fffcf9;
+  --neutral: #fff8e7;
   --admin: #f3ede8;
 
   --card: oklch(1 0 0);
@@ -73,7 +73,6 @@ html {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-
   --primary-foreground: oklch(0.985 0 0);
   --secondary: #f0f0f0;
   --secondary-foreground: oklch(0.205 0 0);
@@ -99,11 +98,13 @@ html {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --radius: 0.625rem;
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+
+  --radius: 0.125rem; /* ~2px */
+  --radius-sm: calc(var(--radius) - 1px); /* ~1px */
+  --radius-md: calc(var(--radius)); /* ~2px */
+  --radius-lg: calc(var(--radius) + 2px); /* ~4px */
+  --radius-xl: calc(var(--radius) + 4px); /* ~6px */
+
   --spacing: 0.25rem;
   --tracking-normal: 0em;
   --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);

@@ -38,6 +38,7 @@ function CheckOutPage() {
     mutationFn: (orderData) => axios.post('/api/orders', orderData),
     onSuccess: () => {
       toast.success('Order placed successfully!');
+      useCartStore.setState({ items: [], cart_total: 0 });
       setGetInfo({
         payment_method: '',
         address: user?.address || '',
