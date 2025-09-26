@@ -4,7 +4,7 @@ import { Tooltip } from 'flowbite-react';
 import dayjs from 'dayjs';
 import OrderInfoModal from '../modals/OrderInfoModal';
 import { useQuery } from '@tanstack/react-query';
-import { fetchOrderSummary, fetchLast30OrderSummary } from '@/api/orderService';
+import { fetchOrderSummary, fetchLast30OrderSummary } from '@/api/orders';
 import { memo } from 'react';
 import { Skeleton } from '../ui/skeleton';
 

@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { fetchOrderById } from '@/api/orderService';
+import { fetchOrderById } from '@/api/orders';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import {
   ArrowLeft,
@@ -20,14 +20,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { Card, Badge, Button } from 'flowbite-react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeadCell,
-  TableRow,
-} from 'flowbite-react';
+import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from 'flowbite-react';
 import { toast } from 'sonner';
 
 function AdminOrderDetails() {
@@ -85,15 +78,8 @@ function AdminOrderDetails() {
     return (
       <Card className="mx-auto mt-6 max-w-5xl p-6 text-center ring-1">
         <h1 className="text-lg font-bold text-red-600">Error Loading Order</h1>
-        <p className="text-lighter mt-2 text-sm">
-          {error?.response?.data?.message || 'Failed to load order details'}
-        </p>
-        <Button
-          onClick={() => navigate('/admin/orders')}
-          size="sm"
-          color="blue"
-          className="mt-4"
-        >
+        <p className="text-lighter mt-2 text-sm">{error?.response?.data?.message || 'Failed to load order details'}</p>
+        <Button onClick={() => navigate('/admin/orders')} size="sm" color="blue" className="mt-4">
           Back to Orders
         </Button>
       </Card>
@@ -119,25 +105,15 @@ function AdminOrderDetails() {
           <div className="flex flex-col gap-4 md:flex-row md:items-start">
             <div className="flex w-full flex-1 flex-col gap-2">
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold">
-                  Order #{order.order_number || order.id}
-                </h1>
-                <Button
-                  size="xs"
-                  color="light"
-                  onClick={() =>
-                    handleCopy(order.order_number || order.id, 'Order ID')
-                  }
-                >
+                <h1 className="text-xl font-bold">Order #{order.order_number || order.id}</h1>
+                <Button size="xs" color="light" onClick={() => handleCopy(order.order_number || order.id, 'Order ID')}>
                   <Copy size={12} />
                 </Button>
               </div>
 
               <p className="text-lighter mt-2 flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4" />
-                {order.order_date
-                  ? format(new Date(order.order_date), 'MMM d, yyyy h:mm a')
-                  : 'Date not available'}
+                {order.order_date ? format(new Date(order.order_date), 'MMM d, yyyy h:mm a') : 'Date not available'}
               </p>
 
               {order.reference_number && (
@@ -147,9 +123,7 @@ function AdminOrderDetails() {
                   <Button
                     size="xs"
                     color="light"
-                    onClick={() =>
-                      handleCopy(order.reference_number, 'Reference number')
-                    }
+                    onClick={() => handleCopy(order.reference_number, 'Reference number')}
                   >
                     <Copy size={12} />
                   </Button>
@@ -163,10 +137,7 @@ function AdminOrderDetails() {
         <Card className="flex flex-col gap-4 ring-1 md:col-span-4">
           <div className="flex items-center gap-2">
             {getStatusIcon(order.status)}
-            <Badge
-              size="lg"
-              className={`px-4 py-2 text-base font-semibold ${getStatusStyle(order.status)}`}
-            >
+            <Badge size="lg" className={`px-4 py-2 text-base font-semibold ${getStatusStyle(order.status)}`}>
               {order.status.toUpperCase()}
             </Badge>
           </div>
@@ -197,11 +168,7 @@ function AdminOrderDetails() {
               <div className="flex items-center gap-1">
                 <p className="mt-1">{order.username || 'N/A'}</p>
                 {order.username && (
-                  <Button
-                    size="xs"
-                    color="light"
-                    onClick={() => handleCopy(order.username, 'Username')}
-                  >
+                  <Button size="xs" color="light" onClick={() => handleCopy(order.username, 'Username')}>
                     <Copy size={12} />
                   </Button>
                 )}
@@ -212,13 +179,7 @@ function AdminOrderDetails() {
               <div className="flex items-center gap-1">
                 <p className="mt-1">{order.account_name || 'N/A'}</p>
                 {order.account_name && (
-                  <Button
-                    size="xs"
-                    color="light"
-                    onClick={() =>
-                      handleCopy(order.account_name, 'Account name')
-                    }
-                  >
+                  <Button size="xs" color="light" onClick={() => handleCopy(order.account_name, 'Account name')}>
                     <Copy size={12} />
                   </Button>
                 )}
@@ -228,11 +189,7 @@ function AdminOrderDetails() {
               <Mail className="h-4 w-4 text-gray-400" />
               <span>{order.email || 'N/A'}</span>
               {order.email && (
-                <Button
-                  size="xs"
-                  color="light"
-                  onClick={() => handleCopy(order.email, 'Email')}
-                >
+                <Button size="xs" color="light" onClick={() => handleCopy(order.email, 'Email')}>
                   <Copy size={12} />
                 </Button>
               )}
@@ -241,13 +198,7 @@ function AdminOrderDetails() {
               <Phone className="h-4 w-4 text-gray-400" />
               <span>{order.contact_number || 'N/A'}</span>
               {order.contact_number && (
-                <Button
-                  size="xs"
-                  color="light"
-                  onClick={() =>
-                    handleCopy(order.contact_number, 'Contact number')
-                  }
-                >
+                <Button size="xs" color="light" onClick={() => handleCopy(order.contact_number, 'Contact number')}>
                   <Copy size={12} />
                 </Button>
               )}
@@ -266,19 +217,12 @@ function AdminOrderDetails() {
             <div>
               <p className="text-lighter font-medium">Shipping Address</p>
               <div className="flex items-start gap-1">
-                <p className="mt-1 flex-1">
-                  {order.shipping_address || order.address || 'N/A'}
-                </p>
+                <p className="mt-1 flex-1">{order.shipping_address || order.address || 'N/A'}</p>
                 {(order.shipping_address || order.address) && (
                   <Button
                     size="xs"
                     color="light"
-                    onClick={() =>
-                      handleCopy(
-                        order.shipping_address || order.address,
-                        'Address'
-                      )
-                    }
+                    onClick={() => handleCopy(order.shipping_address || order.address, 'Address')}
                   >
                     <Copy size={12} />
                   </Button>
@@ -287,9 +231,7 @@ function AdminOrderDetails() {
             </div>
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-gray-400" />
-              <span>
-                {getPaymentMethodLabel(order.payment_method) || 'N/A'}
-              </span>
+              <span>{getPaymentMethodLabel(order.payment_method) || 'N/A'}</span>
             </div>
             {order.payment_status && (
               <div className="mt-2">
@@ -313,13 +255,7 @@ function AdminOrderDetails() {
                 <p className="text-lighter font-medium">Tracking Number</p>
                 <div className="flex items-center gap-1">
                   <p className="mt-1">{order.tracking_number}</p>
-                  <Button
-                    size="xs"
-                    color="light"
-                    onClick={() =>
-                      handleCopy(order.tracking_number, 'Tracking number')
-                    }
-                  >
+                  <Button size="xs" color="light" onClick={() => handleCopy(order.tracking_number, 'Tracking number')}>
                     <Copy size={12} />
                   </Button>
                 </div>
@@ -337,9 +273,7 @@ function AdminOrderDetails() {
             {order.subtotal && (
               <div className="flex justify-between py-1">
                 <span className="text-lighter">Subtotal:</span>
-                <span className="font-medium">
-                  ₱{parseFloat(order.subtotal).toFixed(2)}
-                </span>
+                <span className="font-medium">₱{parseFloat(order.subtotal).toFixed(2)}</span>
               </div>
             )}
 
@@ -356,26 +290,20 @@ function AdminOrderDetails() {
             {order.shipping_fee && (
               <div className="flex justify-between py-1">
                 <span className="text-lighter">Shipping Fee:</span>
-                <span className="font-medium">
-                  ₱{parseFloat(order.shipping_fee).toFixed(2)}
-                </span>
+                <span className="font-medium">₱{parseFloat(order.shipping_fee).toFixed(2)}</span>
               </div>
             )}
 
             {order.tax && (
               <div className="flex justify-between border-b border-gray-100 py-1 pb-3">
                 <span className="text-lighter">Tax:</span>
-                <span className="font-medium">
-                  ₱{parseFloat(order.tax).toFixed(2)}
-                </span>
+                <span className="font-medium">₱{parseFloat(order.tax).toFixed(2)}</span>
               </div>
             )}
 
             <div className="flex justify-between pt-2 text-base font-bold">
               <span>Total:</span>
-              <span className="text-blue-600">
-                ₱{parseFloat(order.total || order.total_amount || 0).toFixed(2)}
-              </span>
+              <span className="text-blue-600">₱{parseFloat(order.total || order.total_amount || 0).toFixed(2)}</span>
             </div>
           </div>
         </Card>
@@ -391,9 +319,7 @@ function AdminOrderDetails() {
 
           {order.coupon_code && (
             <div className="mt-4">
-              <div className="text-lighter mb-2 text-sm font-medium">
-                Coupon Applied
-              </div>
+              <div className="text-lighter mb-2 text-sm font-medium">Coupon Applied</div>
               <Badge color="green" className="inline-flex items-center">
                 {order.coupon_code}
               </Badge>
@@ -408,28 +334,16 @@ function AdminOrderDetails() {
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Package className="h-5 w-5 text-purple-500" /> Order Items
           </h2>
-          <span className="text-lighter text-sm">
-            {order.items?.length || 0} item(s)
-          </span>
+          <span className="text-lighter text-sm">{order.items?.length || 0} item(s)</span>
         </div>
         {order.items && order.items.length > 0 ? (
           <Table striped className="min-w-full">
             <TableHead>
-              <TableHeadCell className="py-3 text-sm font-semibold">
-                Product
-              </TableHeadCell>
-              <TableHeadCell className="py-3 text-sm font-semibold">
-                Product ID
-              </TableHeadCell>
-              <TableHeadCell className="py-3 text-sm font-semibold">
-                Qty
-              </TableHeadCell>
-              <TableHeadCell className="py-3 text-sm font-semibold">
-                Unit Price
-              </TableHeadCell>
-              <TableHeadCell className="py-3 text-right text-sm font-semibold">
-                Total
-              </TableHeadCell>
+              <TableHeadCell className="py-3 text-sm font-semibold">Product</TableHeadCell>
+              <TableHeadCell className="py-3 text-sm font-semibold">Product ID</TableHeadCell>
+              <TableHeadCell className="py-3 text-sm font-semibold">Qty</TableHeadCell>
+              <TableHeadCell className="py-3 text-sm font-semibold">Unit Price</TableHeadCell>
+              <TableHeadCell className="py-3 text-right text-sm font-semibold">Total</TableHeadCell>
             </TableHead>
             <TableBody className="text-content">
               {order.items.map((item, index) => (
@@ -443,35 +357,21 @@ function AdminOrderDetails() {
                           className="h-10 w-10 rounded-lg border border-gray-200 object-cover"
                         />
                       )}
-                      <span className="text-sm font-medium">
-                        {item.product_name || 'N/A'}
-                      </span>
+                      <span className="text-sm font-medium">{item.product_name || 'N/A'}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="py-3 text-sm">
-                    {item.product_id || 'N/A'}
-                  </TableCell>
-                  <TableCell className="py-3 text-sm">
-                    {item.quantity}
-                  </TableCell>
-                  <TableCell className="py-3 text-sm">
-                    ₱{parseFloat(item.unit_price || 0).toFixed(2)}
-                  </TableCell>
+                  <TableCell className="py-3 text-sm">{item.product_id || 'N/A'}</TableCell>
+                  <TableCell className="py-3 text-sm">{item.quantity}</TableCell>
+                  <TableCell className="py-3 text-sm">₱{parseFloat(item.unit_price || 0).toFixed(2)}</TableCell>
                   <TableCell className="py-3 text-right text-sm font-semibold">
-                    ₱
-                    {(
-                      parseFloat(item.unit_price || 0) *
-                      parseInt(item.quantity || 0)
-                    ).toFixed(2)}
+                    ₱{(parseFloat(item.unit_price || 0) * parseInt(item.quantity || 0)).toFixed(2)}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         ) : (
-          <p className="text-lighter rounded-lg bg-gray-50 py-4 text-center text-sm">
-            No items found in this order
-          </p>
+          <p className="text-lighter rounded-lg bg-gray-50 py-4 text-center text-sm">No items found in this order</p>
         )}
       </Card>
     </div>

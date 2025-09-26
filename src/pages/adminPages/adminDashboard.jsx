@@ -6,7 +6,7 @@ import ChartSkeleton from '@/components/skeletons/ChartSkeleton';
 import ListCardSkeleton from '@/components/skeletons/ListCardSkeleton';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import ErrorState from '@/components/States/ErrorState';
-import { useQuery} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
@@ -20,34 +20,34 @@ function AdminDashboard() {
   } = useQuery({
     queryKey: ['dashboard'],
     queryFn: async () => {
-      const { data } = await axios.get('/api/dashboard/metrics');
+      const { data } = await axios.get('/api/reports/dashboard');
       return data.data || [];
     },
   });
 
   const { data: dailySales, isLoading: isLoadingDaily } = useQuery({
-  queryKey: ['dailySales'],
-  queryFn: async () => {
-    const { data } = await axios.get('/api/reports/daily-sales?days=7');
-    return data.data;
-  },
-});
+    queryKey: ['dailySales'],
+    queryFn: async () => {
+      const { data } = await axios.get('/api/reports/daily-sales?days=7');
+      return data.data;
+    },
+  });
 
   //Edit the Chart here for future changes.
   let revenueCategories = [];
   let revenueSeries = [];
   if (dailySales?.days?.length) {
-    revenueCategories = dailySales.days.map(day => dayjs(day.date).format('MMM D'));
+    revenueCategories = dailySales.days.map((day) => dayjs(day.date).format('MMM D'));
     revenueSeries = [
       {
         name: 'Revenue',
-        data: dailySales.days.map(day => day.daily_sales),
+        data: dailySales.days.map((day) => day.daily_sales),
       },
     ];
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 p-4 bg-admin lg:grid-cols-6">
+    <div className="bg-admin grid grid-cols-1 gap-6 p-4 lg:grid-cols-6">
       {/* Cardss */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6">
         {isLoading ? (
@@ -62,25 +62,25 @@ function AdminDashboard() {
         ) : items ? (
           [
             {
-              title: "Total Sales ",
-              value: items?.totalSales|| 0,
+              title: 'Total Sales ',
+              value: items?.totalSales || 0,
               icon: 'sales',
               color: 'text-green-600',
             },
             {
-              title: "Total Online Orders",
+              title: 'Total Online Orders',
               value: items?.totalOnlineOrders || 0,
               icon: 'orders',
               color: 'text-blue-600',
             },
             {
-              title: "Total Walk-in Orders",
+              title: 'Total Walk-in Orders',
               value: items?.totalWalkInOrders || 0,
               icon: 'walkInOrders',
               color: 'text-yellow-600',
             },
             {
-              title: "Total Items Sold",
+              title: 'Total Items Sold',
               value: items?.totalItemsSold || 0,
               icon: 'packageGreen',
               color: 'text-yellow-400',
@@ -118,7 +118,7 @@ function AdminDashboard() {
       {isLoading ? (
         <ListCardSkeleton items={4} />
       ) : (
-        <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
+        <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
           <h3 className="mb-4 text-lg font-semibold">Low Stock Alerts</h3>
           <ul className="space-y-3">
             {['Hot Sauce', 'BBQ Sauce', 'Garlic Mayo'].map((item, idx) => (
@@ -135,7 +135,7 @@ function AdminDashboard() {
       {isLoading ? (
         <TableSkeleton columns={4} rows={3} />
       ) : (
-        <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-4">
+        <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
           <h3 className="mb-4 text-lg font-semibold">Recent Orders</h3>
           <Table striped hoverable>
             <TableHead>
@@ -145,7 +145,7 @@ function AdminDashboard() {
               <TableHeadCell>Status</TableHeadCell>
               <TableHeadCell>Total</TableHeadCell>
             </TableHead>
-            <TableBody className="divide-y text-content">
+            <TableBody className="text-content divide-y">
               {items?.recentOrders?.length > 0 ? (
                 items.recentOrders.map((order, idx) => (
                   <TableRow key={idx} className="bg-white dark:bg-gray-700">
@@ -153,12 +153,17 @@ function AdminDashboard() {
                     <TableCell>{order.customer_name}</TableCell>
                     <TableCell>{order.order_date}</TableCell>
                     <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                        order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                        order.status === 'shipping' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span
+                        className={`rounded-full px-2 py-1 text-xs ${
+                          order.status === 'delivered'
+                            ? 'bg-green-100 text-green-800'
+                            : order.status === 'processing'
+                              ? 'bg-blue-100 text-blue-800'
+                              : order.status === 'shipping'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-gray-100 text-gray-800'
+                        }`}
+                      >
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                       </span>
                     </TableCell>
@@ -181,18 +186,17 @@ function AdminDashboard() {
       {isLoading ? (
         <ListCardSkeleton items={4} />
       ) : (
-        <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
+        <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
           <h3 className="mb-4 text-lg font-semibold">Quick Actions</h3>
           <div className="flex flex-col gap-3">
-            
             <Link to="/Admin/AddProduct">
-            <Button color="gray">Add Product</Button>
+              <Button color="gray">Add Product</Button>
             </Link>
             <Link to="/Admin/InventoryManagement">
-            <Button color="gray">View Inventory</Button>
+              <Button color="gray">View Inventory</Button>
             </Link>
             <Link to="/Admin/Orders">
-            <Button color="gray">Manage Orders</Button>
+              <Button color="gray">Manage Orders</Button>
             </Link>
           </div>
         </Card>
