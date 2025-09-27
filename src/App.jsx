@@ -11,6 +11,7 @@ import LoadingFallback from './pages/layouts/LoadingFallback';
 // Utilities
 import ScrollToTop from './utils/ScrollToTop';
 import RoleBasedRoute from './components/layout/RoleBasedRoute';
+import { Toaster } from 'sonner';
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
@@ -52,6 +53,14 @@ function App() {
   return (
     <>
       <ScrollToTop />
+      <Toaster
+        toastOptions={{
+          classNames: { toast: '!rounded-lg', title: '!text-gray-800' },
+        }}
+        richColors
+        visibleToasts={1}
+        closeButton
+      />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route element={<MainLayout />}>

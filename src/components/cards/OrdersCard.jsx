@@ -79,8 +79,9 @@ export default function OrdersTable({ orders, onCancelOrder }) {
               transition={{ delay: index * 0.05 }}
               layout
             >
-              <Card className="hover:ring-primary relative overflow-hidden p-0 hover:ring-1">
-                {/* Main container: side by side on desktop, stacked on mobile */}
+              <Card className="hover:ring-primary border-primary relative overflow-hidden border-l-5 p-0 hover:ring-1">
+                <PackageSearch className="text-primary/7 absolute top-2 left-2 size-32" strokeWidth={1} />
+                {/* New Design I */}
                 <div className="flex flex-col sm:flex-row">
                   {/* Left Content (Order Info) */}
                   <div className="flex-1 p-4 sm:p-6">
@@ -187,7 +188,6 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                       </Button>
                     </motion.div>
 
-                    {/* Separator line */}
                     <div className="my-1 border-t border-gray-200"></div>
 
                     {order?.status === 'pending' ? (

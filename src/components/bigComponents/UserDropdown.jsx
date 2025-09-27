@@ -8,10 +8,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import useUserStore from '@/stores/userStore';
 import { handleLogout } from '@/utils/logout';
+import { toast } from 'sonner';
 
 export default function UserDropdown() {
   const user = useUserStore((state) => state.user);
   const location = useLocation();
+
+  const onLogout = async () => {
+    toast.info('Logged out successfully');
+    await handleLogout();
+  };
 
   const isActive = (path) => (location.pathname === path ? 'text-primary bg-primary/5' : 'text-content');
 
@@ -65,7 +71,7 @@ export default function UserDropdown() {
 
         {/* Logout */}
         <div className="border-t">
-          <DropdownMenuItem onClick={handleLogout} className="text-brand flex items-center">
+          <DropdownMenuItem onClick={onLogout} className="text-brand flex items-center">
             <LogOut className="mr-2 h-4 w-4" /> Logout
           </DropdownMenuItem>
         </div>

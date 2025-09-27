@@ -8,7 +8,6 @@ import AddUserModal from '@/components/modals/AddUserModal';
 import AdminUsersTable from '@/components/tables/AdminUsersTable';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import ErrorState from '@/components/States/ErrorState';
-import { Toaster } from 'sonner';
 
 const fetchUser = async () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
@@ -111,7 +110,6 @@ function AccountManagement() {
 
   return (
     <>
-      <Toaster richColors />
       <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
         <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1 dark:text-white">
           <div className="flex flex-row justify-between p-5">

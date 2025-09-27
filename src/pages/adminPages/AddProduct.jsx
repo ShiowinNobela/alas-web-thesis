@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 import BackButton from '@/components/bigComponents/BackButton.jsx';
 import RHFTextInput from '@/components/rhform/RHFTextInput';
 import RHFTextarea from '@/components/rhform/RHFTextArea';
@@ -11,7 +11,6 @@ import { Button } from 'flowbite-react';
 function AddProduct() {
   const { control, handleSubmit, reset, setValue, watch } = useForm();
 
-  // React Query mutation
   const mutation = useMutation({
     mutationFn: (newProduct) => axios.post('/api/products/', newProduct).then((res) => res.data),
     onSuccess: () => {
@@ -60,7 +59,6 @@ function AddProduct() {
             onSubmit={handleSubmit(onSubmit)}
             className="mx-auto grid w-full max-w-full grid-cols-1 gap-8 md:grid-cols-2"
           >
-            {/* Left side: form inputs */}
             <div className="flex flex-col gap-7 rounded-xl">
               <RHFTextInput
                 name="id"
@@ -125,7 +123,6 @@ function AddProduct() {
               </Button>
             </div>
 
-            {/* Right side: image preview */}
             <div className="flex h-full flex-col items-center justify-center rounded-xl p-8 ring-1">
               {watch('image') ? (
                 <img
@@ -142,8 +139,6 @@ function AddProduct() {
           </form>
         </main>
       </div>
-
-      <Toaster richColors />
     </>
   );
 }

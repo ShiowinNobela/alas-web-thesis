@@ -1,7 +1,7 @@
 import { useState, useCallback, lazy, Suspense } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
 
 import {
   fetchOrders,
@@ -144,7 +144,6 @@ function AdminViewOrderPage() {
 
   return (
     <>
-      <Toaster richColors />
       <div className="bg-admin flex min-h-screen flex-col overflow-x-auto">
         <main className="flex w-full flex-col gap-4 p-4">
           <Suspense fallback={<div className="p-4">Loading summary...</div>}>
