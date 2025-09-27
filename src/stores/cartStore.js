@@ -110,6 +110,7 @@ const useCartStore = create((set, get) => {
         items: currentItems.filter((i) => i.product_id !== productId),
         cart_total: get().cart_total - priceDiff,
       });
+      toast.info('Item removed from cart');
 
       try {
         await axios.delete('/api/cart/me', { data: { productId } });

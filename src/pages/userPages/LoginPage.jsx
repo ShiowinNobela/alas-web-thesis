@@ -29,7 +29,7 @@ function LoginPage() {
     setErrors(newErrors);
 
     if (newErrors.username || newErrors.password) {
-      toast.error('Please fill in all required fields!');
+      toast.warning('Please fill in all required fields!');
       return;
     }
 
@@ -37,7 +37,7 @@ function LoginPage() {
       setLoading(true);
 
       await axios.post('/api/users/login/', { username, password }, { withCredentials: true });
-
+      toast.success('Login successful!');
       await fetchUser();
     } catch (err) {
       const res = err.response;

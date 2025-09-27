@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 
 function ViewOrder() {
   const [detailsCart, setOrderDetails] = useState(null);
@@ -10,14 +10,7 @@ function ViewOrder() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
-  const statusFlow = [
-    'pending',
-    'processing',
-    'shipping',
-    'delivered',
-    'cancelled',
-    'refunded',
-  ];
+  const statusFlow = ['pending', 'processing', 'shipping', 'delivered', 'cancelled', 'refunded'];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,9 +63,7 @@ function ViewOrder() {
       console.error(err);
       const errorMessage =
         err.response?.data?.message ||
-        (err.response?.status === 400
-          ? 'Invalid status update'
-          : 'Failed to update status');
+        (err.response?.status === 400 ? 'Invalid status update' : 'Failed to update status');
       toast.error(errorMessage);
     }
   };
@@ -110,7 +101,6 @@ function ViewOrder() {
 
   return (
     <div className="h-full w-screen">
-      <Toaster richColors />
       <div className="flex h-screen w-screen flex-col items-center bg-[#E2E0E1] pl-[256px]">
         <h1 className="py-5 text-4xl font-semibold">Order Details</h1>
         <div className="w-4xl rounded-lg border-1 bg-white p-5 shadow-md">
@@ -120,19 +110,13 @@ function ViewOrder() {
           </div>
 
           <div className="mb-5">
-            <h1 className="pb-1.5 text-2xl font-semibold">
-              Customer Information
-            </h1>
+            <h1 className="pb-1.5 text-2xl font-semibold">Customer Information</h1>
             <p className="mb-1">Username: {detailsUser?.username || 'N/A'}</p>
             <p className="mb-1">Email: {detailsUser?.email || 'N/A'}</p>
-            <p className="mb-1">
-              Contact Number: {detailsUser?.contact_number || 'N/A'}
-            </p>
+            <p className="mb-1">Contact Number: {detailsUser?.contact_number || 'N/A'}</p>
             <p className="mb-1">Address: {detailsUser?.address || 'N/A'}</p>
             <p className="mb-1">Payment Method: {detailsCart.payment_method}</p>
-            <p className="mb-1">
-              Date: {new Date(detailsCart.order_date).toLocaleDateString()}
-            </p>
+            <p className="mb-1">Date: {new Date(detailsCart.order_date).toLocaleDateString()}</p>
 
             <div className="flex justify-between">
               <div>
@@ -161,9 +145,7 @@ function ViewOrder() {
                 <button
                   className="mb-5 ml-2 cursor-pointer rounded-md border bg-blue-500 p-2 text-white hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
                   onClick={updateStatus}
-                  disabled={
-                    selectedStatus === detailsCart.status || !selectedStatus
-                  }
+                  disabled={selectedStatus === detailsCart.status || !selectedStatus}
                 >
                   Update Status
                 </button>
@@ -188,12 +170,8 @@ function ViewOrder() {
                     <tr key={item.product_id}>
                       <td className="border p-2">{item.product_id}</td>
                       <td className="border p-2">{item.quantity}</td>
-                      <td className="border p-2">
-                        ₱{item.unit_price.toFixed(2)}
-                      </td>
-                      <td className="border p-2">
-                        ₱{item.subtotal.toFixed(2)}
-                      </td>
+                      <td className="border p-2">₱{item.unit_price.toFixed(2)}</td>
+                      <td className="border p-2">₱{item.subtotal.toFixed(2)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -203,15 +181,9 @@ function ViewOrder() {
 
               <div>
                 <h1 className="pt-5 text-2xl font-semibold">Order Summary</h1>
-                <p className="mb-1">
-                  Sub Total Amount: ₱{detailsCart.total_amount?.toFixed(2)}
-                </p>
-                <p className="mb-1">
-                  Discount Amount: ₱{detailsCart.discount_amount?.toFixed(2)}
-                </p>
-                <p className="mb-1 font-bold">
-                  Final Amount: ₱{detailsCart.total_amount?.toFixed(2)}
-                </p>
+                <p className="mb-1">Sub Total Amount: ₱{detailsCart.total_amount?.toFixed(2)}</p>
+                <p className="mb-1">Discount Amount: ₱{detailsCart.discount_amount?.toFixed(2)}</p>
+                <p className="mb-1 font-bold">Final Amount: ₱{detailsCart.total_amount?.toFixed(2)}</p>
               </div>
             </div>
           </div>

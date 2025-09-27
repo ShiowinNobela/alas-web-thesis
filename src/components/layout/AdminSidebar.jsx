@@ -16,6 +16,7 @@ import {
   ShoppingCart,
   ChevronDown,
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const managementItems = [
   { path: '/Admin/AccountManagement', name: 'User Management', icon: User },
@@ -39,9 +40,14 @@ function Sidebar() {
   const [isManagementOpen, setIsManagementOpen] = useState(true);
   const [isActivitiesOpen, setIsActivitiesOpen] = useState(true);
 
+  const onLogout = async () => {
+    toast.info('Logged out successfully');
+    await handleLogout();
+  };
+
   const getNavItemClass = (path) => {
     const isActive = location.pathname === path;
-    return `flex items-center p-2 font-normal rounded-lg ${
+    return `flex items-center p-2 font-normal rounded-lg text-sm ${
       isActive ? 'bg-secondary text-black' : 'text-white hover:bg-secondary/50'
     } group cursor-pointer`;
   };
@@ -49,7 +55,7 @@ function Sidebar() {
   const getIconColor = (path) => (location.pathname === path ? 'black' : 'white');
 
   return (
-    <div className="h-screen w-[280px] flex-shrink-0 border-r-2 border-[#122661] bg-[#121b2c] px-2">
+    <div className="h-screen w-[250px] flex-shrink-0 border-r-2 border-[#122661] bg-[#121b2c] px-2">
       {/* Logo Section */}
       <div className="flex items-center p-3">
         <img
@@ -153,7 +159,7 @@ function Sidebar() {
             <button
               type="button"
               className="hover:bg-primary group flex w-full cursor-pointer items-center rounded-lg p-1.5 font-normal text-white"
-              onClick={handleLogout}
+              onClick={onLogout}
             >
               <LogOut className="mx-2" />
               <span className="ml-2 flex-1 text-left whitespace-nowrap">Logout</span>

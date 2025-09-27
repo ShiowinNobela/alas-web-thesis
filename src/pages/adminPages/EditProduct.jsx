@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 import BackButton from '@/components/bigComponents/BackButton.jsx';
 import RHFTextInput from '@/components/rhform/RHFTextInput';
 import RHFTextarea from '@/components/rhform/RHFTextArea';
@@ -46,7 +46,6 @@ function UpdateProduct() {
     }
   }, [product, reset]);
 
-  // Mutation for updating product
   const mutation = useMutation({
     mutationFn: (updatedProduct) => axios.put(`/api/products/${productId}`, updatedProduct).then((res) => res.data),
     onSuccess: () => {
@@ -71,7 +70,6 @@ function UpdateProduct() {
     <>
       <div className="bg-admin flex flex-col overflow-x-auto p-4">
         <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border p-6 shadow ring-1">
-          {/* Header */}
           <div className="mb-6 flex w-full items-center gap-3">
             <BackButton label="" className="py-6 ring-1" />
 
@@ -90,7 +88,6 @@ function UpdateProduct() {
               onSubmit={handleSubmit(onSubmit)}
               className="mx-auto grid w-full max-w-full grid-cols-1 items-stretch gap-8 md:grid-cols-2"
             >
-              {/* Left side: form fields */}
               <div className="flex flex-col gap-7">
                 <RHFFileUpload
                   name="image"
@@ -138,7 +135,6 @@ function UpdateProduct() {
                 </Button>
               </div>
 
-              {/* Right side: image preview */}
               <div className="flex h-full flex-col items-center justify-center rounded-xl p-8 ring-1">
                 {watch('image') ? (
                   <img
@@ -156,8 +152,6 @@ function UpdateProduct() {
           ) : null}
         </main>
       </div>
-
-      <Toaster richColors />
     </>
   );
 }

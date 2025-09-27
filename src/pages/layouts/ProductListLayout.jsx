@@ -1,6 +1,5 @@
 import Navbar from '@/components/layout/navbar';
 import { Outlet } from 'react-router';
-import { Toaster } from 'sonner';
 import Footer from '@/components/layout/footer';
 import useUserStore from '@/stores/userStore';
 import { lazy, Suspense } from 'react';
@@ -35,8 +34,6 @@ function ProductListLayout() {
           </aside>
         )}
       </div>
-
-      <Toaster position="top-center" offset={90} richColors visibleToasts={1} />
     </div>
   );
 }
