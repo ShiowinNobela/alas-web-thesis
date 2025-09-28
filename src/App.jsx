@@ -33,7 +33,7 @@ const VerifyEmailPage = lazy(() => import('./pages/userPages/VerifyEmailPage.jsx
 const ReviewPage = lazy(() => import('./pages/userPages/ReviewPage.jsx'));
 
 // Admin Pages
-const AdminDashboard = lazy(() => import('./pages/adminPages/AdminDashboard.jsx'));
+const AdminDashboard = lazy(() => import('./pages/adminPages/AdminsDashboard.jsx'));
 const AddProd = lazy(() => import('./pages/adminPages/AddProduct.jsx'));
 const EditProd = lazy(() => import('./pages/adminPages/EditProduct.jsx'));
 const ProdManagement = lazy(() => import('./pages/adminPages/ProductManagement.jsx'));
