@@ -32,12 +32,12 @@ function Cart() {
       </div>
 
       {!cartEmpty && (
-        <div className="bg-neutral flex items-center justify-center gap-3 border-b px-2 py-2">
-          <Truck size={12} className="text-lighter" />
-          <span className="text-lighter text-xs">Free shipping</span>
+        <div className="text-content bg-admin flex items-center justify-center gap-3 border-b p-2">
+          <Truck size={12} />
+          <span className="text-xs">Free shipping</span>
           <div className="h-3 w-px bg-gray-300"></div>
-          <ShieldCheck size={12} className="text-lighter" />
-          <span className="text-lighter text-xs">Secure</span>
+          <ShieldCheck size={12} className="" />
+          <span className="text-xs">Secure</span>
         </div>
       )}
 
@@ -84,25 +84,44 @@ function Cart() {
                     </div>
                     <button
                       onClick={() => removeItem(item.product_id)}
-                      className="flex-shrink-0 p-0.5 text-gray-400 transition-colors hover:text-red-500"
+                      disabled={item.pendingAction === 'add'}
+                      className={`flex-shrink-0 p-0.5 transition-colors ${
+                        item.pendingAction === 'add'
+                          ? 'cursor-not-allowed text-gray-300'
+                          : 'text-lighter hover:text-red-500'
+                      }`}
                     >
-                      <Delete size={14} />
+                      <Delete size={20} />
                     </button>
                   </div>
                   <div className="mt-2 flex items-center justify-between">
                     <div className="flex items-center gap-1 rounded-full border border-gray-300 px-2 py-0.5">
                       <button
                         onClick={() => handleAdjust(item.product_id, item.quantity, false, item.stock_quantity)}
-                        className="flex h-5 w-5 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+                        disabled={item.pendingAction === 'add'}
+                        className={`flex h-5 w-5 items-center justify-center rounded-full transition-colors ${
+                          item.pendingAction === 'add'
+                            ? 'cursor-not-allowed bg-gray-100 text-gray-300'
+                            : 'hover:bg-gray-100'
+                        }`}
                       >
-                        <Minus size={10} />
+                        <Minus size={10} className="text-primary" />
                       </button>
-                      <span className="w-4 text-center text-xs font-medium">{item.quantity}</span>
+
+                      <span className="w-4 text-center text-xs font-medium">
+                        {item.pendingAction === 'add' ? '…' : item.quantity}
+                      </span>
+
                       <button
                         onClick={() => handleAdjust(item.product_id, item.quantity, true, item.stock_quantity)}
-                        className="flex h-5 w-5 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+                        disabled={item.pendingAction === 'add'}
+                        className={`flex h-5 w-5 items-center justify-center rounded-full transition-colors ${
+                          item.pendingAction === 'add'
+                            ? 'cursor-not-allowed bg-gray-100 text-gray-300'
+                            : 'hover:bg-gray-100'
+                        }`}
                       >
-                        <Plus size={10} />
+                        <Plus size={10} className="text-primary" />
                       </button>
                     </div>
 

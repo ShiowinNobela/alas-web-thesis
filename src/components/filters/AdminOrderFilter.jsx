@@ -2,12 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { TextInput, Button } from 'flowbite-react';
 import { HiOutlineSearch } from 'react-icons/hi';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import dayjs from 'dayjs';
 import StatusFilterDropdown from '@/components/filters/StatusFilterDropdown';
-import OrderReportPDF from '@/components/ReportFormats/OrderReportPDF';
 import { DateRangeSelector } from '../bigComponents/DateRangeSelector';
 import { CalendarDate } from '@internationalized/date';
+// import OrderReportPDF from '@/components/ReportFormats/OrderReportPDF';
+// import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const parseCalendarDate = (dateString) => {
   if (!dateString) return null;
@@ -88,7 +88,7 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders,
         </Button>
 
         {/* PDF Download */}
-        <PDFDownloadLink
+        {/* <PDFDownloadLink
           document={<OrderReportPDF orders={orders} startDate={dateRange.start} endDate={dateRange.end} />}
           fileName={`orders-${dateRange.start || 'all'}-to-${dateRange.end || 'all'}.pdf`}
         >
@@ -101,7 +101,7 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders,
               </Button>
             )
           }
-        </PDFDownloadLink>
+        </PDFDownloadLink> */}
       </div>
     </div>
   );

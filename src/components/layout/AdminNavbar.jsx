@@ -1,4 +1,4 @@
-import { Bell, Settings, User, Database, HelpCircle, LogOut } from 'lucide-react';
+import { Bell, User, HelpCircle, LogOut } from 'lucide-react';
 import useUserStore from '@/stores/userStore';
 import { Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from 'flowbite-react';
 import { Button } from '@/components/ui/button';
@@ -38,24 +38,10 @@ function AdminNavbar() {
   const currentPageName = getCurrentPageName();
 
   return (
-    <nav className="bg-card border-content flex h-14 items-center justify-between border-b px-4">
+    <nav className="bg-card border-content flex items-center justify-between border-b p-4">
       {/* Page title */}
       <div className="flex items-center gap-4">
-        <h1 className="text-xl font-bold">{currentPageName}</h1>
-      </div>
-
-      {/* Middle: status */}
-      <div className="flex items-center gap-4">
-        <div className="text-muted-foreground hidden items-center gap-3 text-sm md:flex">
-          <div className="flex items-center gap-1">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
-            <span>Online</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Database className="h-3 w-3" />
-            <span>DB: 45ms</span>
-          </div>
-        </div>
+        <h1 className="font-heading text-xl font-semibold">{currentPageName}</h1>
       </div>
 
       {/* Actions */}
@@ -66,47 +52,24 @@ function AdminNavbar() {
           <HelpCircle className="h-4 w-4" />
         </Button>
 
-        {/* Notifications */}
-        <Dropdown label={<Bell className="h-4 w-4" />} inline placement="bottom-end">
-          <DropdownHeader className="flex items-center justify-between">
-            <span className="text-sm font-medium">Notifications</span>
-          </DropdownHeader>
-          <DropdownItem>
-            <div>
-              <p className="text-sm font-medium">New user registered</p>
-              <p className="text-lighter text-xs">john.doe@example.com</p>
-              <p className="text-lighter mt-1 text-xs">2 minutes ago</p>
-            </div>
-          </DropdownItem>
-          <DropdownItem>
-            <div>
-              <p className="text-sm font-medium">Server maintenance</p>
-              <p className="text-lighter text-xs">2:00 AM - 4:00 AM</p>
-              <p className="text-lighter mt-1 text-xs">1 hour ago</p>
-            </div>
-          </DropdownItem>
-          <DropdownDivider />
-          <DropdownItem>
-            <div className="text-lighter text-center text-sm">View all</div>
-          </DropdownItem>
-        </Dropdown>
-
-        <Button variant="ghost" size="sm" title="Settings">
-          <Settings className="h-4 w-4" />
+        <Button variant="ghost" size="sm" title="Help & Support">
+          <Bell className="h-4 w-4" />
         </Button>
 
         {/* User dropdown */}
         <Dropdown
           label={
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
-              <User className="h-4 w-4" />
-            </div>
+            <>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300">
+                <User className="h-4 w-4" />
+              </div>
+              <span className="text-content ml-2 text-sm font-medium">{user.username}</span>
+            </>
           }
           inline
           placement="bottom-end"
         >
           <DropdownHeader>
-            <span className="block text-sm font-medium">{user?.username || 'Guest'}</span>
             <span className="text-lighter block truncate text-sm">{user?.email || 'Not signed in'}</span>
           </DropdownHeader>
           <DropdownItem>Profile</DropdownItem>

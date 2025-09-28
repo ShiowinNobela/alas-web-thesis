@@ -15,23 +15,29 @@ function InventoryTable({ products, onEdit, onToggle }) {
   return (
     <div className="overflow-x-auto">
       <Table hoverable striped>
-        <TableHead className="uppercase">
+        <TableHead>
           <TableRow>
-            <TableHeadCell>ID</TableHeadCell>
-            <TableHeadCell>Name</TableHeadCell>
-            <TableHeadCell>Category</TableHeadCell>
-            <TableHeadCell>Stock</TableHeadCell>
-            <TableHeadCell>Price</TableHeadCell>
-            <TableHeadCell>Status</TableHeadCell>
-            <TableHeadCell>Last Updated</TableHeadCell>
-            <TableHeadCell>Actions</TableHeadCell>
+            <TableHeadCell className="table-header">ID</TableHeadCell>
+            <TableHeadCell className="table-header">Name</TableHeadCell>
+            <TableHeadCell className="table-header">Category</TableHeadCell>
+            <TableHeadCell className="table-header">Stock</TableHeadCell>
+            <TableHeadCell className="table-header">Price</TableHeadCell>
+            <TableHeadCell className="table-header">Status</TableHeadCell>
+            <TableHeadCell className="table-header">Last Updated</TableHeadCell>
+            <TableHeadCell className="table-header">Actions</TableHeadCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-content">
           {products.map((product) => (
             <TableRow key={product.id} className="transition duration-150 ease-in-out hover:bg-gray-50">
               <TableCell className="font-medium">{product.id}</TableCell>
-              <TableCell>{product.name}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <img src={product.image} alt={product.name} className="size-8 object-cover" />
+                  <span className="font-medium text-gray-900">{product.name}</span>
+                </div>
+              </TableCell>
+
               <TableCell>
                 <Badge color="gray" className="w-fit">
                   {product.category}
@@ -39,14 +45,14 @@ function InventoryTable({ products, onEdit, onToggle }) {
               </TableCell>
               <TableCell>
                 {product.stock_quantity <= 10 ? (
-                  <Badge color="failure" icon={AlertTriangle}>
+                  <Badge color="failure" icon={AlertTriangle} className="animate-pulse">
                     {product.stock_quantity} (Low)
                   </Badge>
                 ) : (
                   product.stock_quantity
                 )}
               </TableCell>
-              <TableCell>₱{parseFloat(product.price).toFixed(2)}</TableCell>
+              <TableCell className="text-emerald-500">₱{parseFloat(product.price).toFixed(2)}</TableCell>
               <TableCell>
                 <Badge
                   color={product.is_active ? 'success' : 'failure'}

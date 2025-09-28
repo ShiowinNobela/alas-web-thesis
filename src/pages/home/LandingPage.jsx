@@ -1,4 +1,3 @@
-import BentoGrid from '@/pages/home/sections/BentoGridSection';
 import ProductsShowcaseSection from './sections/ProductShowcaseSection';
 import StorySection from './sections/StorySection';
 import HeroSection from './sections/HeroSection';
@@ -17,8 +16,6 @@ const LandingPage = () => {
       <StorySection />
 
       <TestimonialSection />
-
-      <BentoGrid />
     </>
   );
 };

@@ -11,12 +11,12 @@ const RoleBadge = ({ role }) => {
     },
     staff: {
       icon: Briefcase,
-      color: 'blue',
+      color: 'purple',
       text: 'Staff',
     },
     customer: {
       icon: ShoppingCart,
-      color: 'yellow',
+      color: 'teal',
       text: 'Customer',
     },
     default: {
@@ -28,15 +28,10 @@ const RoleBadge = ({ role }) => {
 
   const normalizedRole = role?.toLowerCase().trim();
 
-  const { icon, color, text } =
-    roleConfig[normalizedRole] || roleConfig.default;
+  const { icon, color, text } = roleConfig[normalizedRole] || roleConfig.default;
 
   return (
-    <Badge
-      color={color}
-      icon={icon}
-      className="flex items-center justify-center gap-1 px-3"
-    >
+    <Badge color={color} icon={icon} className="flex items-center justify-center gap-1 px-3">
       {text}
     </Badge>
   );

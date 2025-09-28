@@ -1,6 +1,6 @@
-import Navbar from '@/components/layout/navbar';
+import Navbar from '@/components/layout/UserNavbar';
 import { Outlet } from 'react-router';
-import Footer from '@/components/layout/footer';
+import Footer from '@/components/layout/UserFooter';
 import useUserStore from '@/stores/userStore';
 import { lazy, Suspense } from 'react';
 import LoadingFallback from './LoadingFallback';

@@ -1,5 +1,5 @@
-import Footer from '@/components/layout/footer';
-import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/UserFooter';
+import Navbar from '@/components/layout/UserNavbar';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router';
 import LoadingFallback from './LoadingFallback';

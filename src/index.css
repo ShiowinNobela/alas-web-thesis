@@ -1,6 +1,7 @@
 @config "../tailwind.config.js";
 @import 'tailwindcss';
 @import 'tw-animate-css';
+
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 
@@ -64,7 +65,7 @@ html {
   --primary: oklch(0.769 0.188 70.08);
   --content: #251605;
   --neutral: #fff8e7;
-  --admin: #f3ede8;
+  --admin: #fcfffc;
 
   --card: oklch(1 0 0);
 
@@ -99,11 +100,11 @@ html {
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  --radius: 0.125rem; /* ~2px */
-  --radius-sm: calc(var(--radius) - 1px); /* ~1px */
-  --radius-md: calc(var(--radius)); /* ~2px */
-  --radius-lg: calc(var(--radius) + 2px); /* ~4px */
-  --radius-xl: calc(var(--radius) + 4px); /* ~6px */
+  --radius: 0.325rem;
+  --radius-sm: calc(var(--radius) - 1px);
+  --radius-md: calc(var(--radius));
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
 
   --spacing: 0.25rem;
   --tracking-normal: 0em;
@@ -117,7 +118,6 @@ html {
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
-/* Dark Mode */
 .dark {
   --lighter: oklch(0.78 0.015 270);
   --content: oklch(0.88 0.03 70);
@@ -151,7 +151,6 @@ html {
   --muted-foreground: oklch(0.75 0 0);
 }
 
-/* Theme Mapping */
 @theme inline {
   --color-lighter: var(--lighter);
   --color-content: var(--content);
@@ -192,7 +191,6 @@ html {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* Light mode gradient */
 .product-gradient {
   @apply bg-gradient-to-b from-amber-50 to-yellow-100;
 }
@@ -201,13 +199,16 @@ html {
   @apply bg-gradient-to-br from-orange-100 to-amber-200;
 }
 
-/* Dark mode gradient */
 .dark .product-gradient {
   @apply bg-gradient-to-b from-[#1C1A16] to-[#32241A];
 }
 
 .dark .testimonial-gradient {
   @apply bg-gradient-to-b from-[#1C1A16] to-[#32241A];
+}
+
+.table-header {
+  @apply bg-gray-700 text-white dark:bg-zinc-900;
 }
 
 /* Base Styles */

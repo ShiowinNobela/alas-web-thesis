@@ -13,18 +13,12 @@ import {
   Tooltip,
   Badge,
 } from 'flowbite-react';
-import {
-  HiCheckCircle,
-  HiDotsVertical,
-  HiOutlineClock,
-  HiTruck,
-  HiCheck,
-  HiX,
-} from 'react-icons/hi';
+import { HiCheckCircle, HiDotsVertical, HiOutlineClock, HiTruck, HiCheck, HiX } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import PropTypes from 'prop-types';
+import PaymentMethodIcon from '../bigComponents/PaymentMethodsIcon';
 
 export default function AdminOrdersTable({
   orders,
@@ -55,50 +49,14 @@ export default function AdminOrdersTable({
     };
   };
 
-  // Payment method display components
-  const paymentMethodDisplay = (method) => {
-    const methods = {
-      GCash: {
-        logo: '../src/components/images/gcash-logo.png',
-        name: 'GCash',
-      },
-      Maya: {
-        logo: '../src/components/images/maya-icon.png',
-        name: 'Maya',
-      },
-      bank_transfer: {
-        logo: null,
-        name: 'Bank Transfer',
-      },
-    };
-
-    const currentMethod = methods[method] || { name: method };
-
-    return (
-      <div className="flex flex-col items-center justify-center text-center text-xs">
-        {currentMethod.logo && (
-          <img
-            src={currentMethod.logo}
-            alt={currentMethod.name}
-            className="mb-1 h-6"
-          />
-        )}
-        <span>{currentMethod.name}</span>
-      </div>
-    );
-  };
-
   return (
     <div className="relative overflow-x-auto shadow-md ring-1 sm:rounded-lg">
       <Table hoverable striped>
         <TableHead>
-          <TableHeadCell>Order Info</TableHeadCell>
-          <TableHeadCell>Items</TableHeadCell>
-          <TableHeadCell>
-            <button
-              className="flex cursor-pointer items-center hover:underline"
-              onClick={() => handleSort('date')}
-            >
+          <TableHeadCell className="table-header">Order Information</TableHeadCell>
+          <TableHeadCell className="table-header">Items</TableHeadCell>
+          <TableHeadCell className="table-header">
+            <button className="flex cursor-pointer items-center hover:underline" onClick={() => handleSort('date')}>
               DATE
               <svg
                 className="ms-1.5 h-3 w-3"
@@ -115,11 +73,8 @@ export default function AdminOrdersTable({
               </svg>
             </button>
           </TableHeadCell>
-          <TableHeadCell>
-            <button
-              className="flex cursor-pointer items-center hover:underline"
-              onClick={() => handleSort('total')}
-            >
+          <TableHeadCell className="table-header">
+            <button className="flex cursor-pointer items-center hover:underline" onClick={() => handleSort('total')}>
               TOTAL
               <svg
                 className="ms-1.5 h-3 w-3"
@@ -128,8 +83,7 @@ export default function AdminOrdersTable({
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                {sortConfig.key === 'total' &&
-                sortConfig.direction === 'asc' ? (
+                {sortConfig.key === 'total' && sortConfig.direction === 'asc' ? (
                   <path d="M7 14l5-5 5 5H7z" />
                 ) : (
                   <path d="M7 10l5 5 5-5H7z" />
@@ -137,16 +91,12 @@ export default function AdminOrdersTable({
               </svg>
             </button>
           </TableHeadCell>
-          <TableHeadCell>
-            <div className="leading-tight">
-              Payment
-              <br />
-              Method
-            </div>
+          <TableHeadCell className="table-header">
+            <div className="leading-tight">Payment Method</div>
           </TableHeadCell>
-          <TableHeadCell>Status</TableHeadCell>
-          <TableHeadCell>Action</TableHeadCell>
-          <TableHeadCell></TableHeadCell>
+          <TableHeadCell className="table-header">Status</TableHeadCell>
+          <TableHeadCell className="table-header">Action</TableHeadCell>
+          <TableHeadCell className="table-header"></TableHeadCell>
         </TableHead>
 
         <TableBody className="text-content">
@@ -174,7 +124,6 @@ export default function AdminOrdersTable({
                     <div className="flex items-center">
                       <div>
                         <p className="font-primary text-sm">{order.username}</p>
-                        <p className="text-lighter text-xs">{order.email}</p>
                         <Badge color="indigo" className="mt-1 w-fit">
                           #{order.id}
                         </Badge>
@@ -202,109 +151,63 @@ export default function AdminOrdersTable({
                   </TableCell>
 
                   <TableCell className="min-w-[140px]">
-                    <div className="text-sm font-medium">
-                      {formattedDate.date}
-                    </div>
-                    <div className="text-lighter text-xs">
-                      {formattedDate.time}
-                    </div>
+                    <div className="text-sm font-medium">{formattedDate.date}</div>
+                    <div className="text-lighter text-xs">{formattedDate.time}</div>
                   </TableCell>
 
-                  <TableCell className="font-medium">
-                    ₱ {parseFloat(order.total_amount).toLocaleString()}
-                  </TableCell>
+                  <TableCell className="font-medium">₱ {parseFloat(order.total_amount).toLocaleString()}</TableCell>
 
                   <TableCell className=" ">
-                    {paymentMethodDisplay(order.payment_method)}
+                    <PaymentMethodIcon method={order?.payment_method || 'unknown'} />
                   </TableCell>
 
                   <TableCell>
                     <div className="flex w-fit flex-col items-start space-y-1">
-                      <div
-                        className={`${getStatusStyle(order.status)} flex items-center text-xs`}
-                      >
-                        {statusIcons[order.status] && (
-                          <span className="mr-1">
-                            {statusIcons[order.status]}
-                          </span>
-                        )}
-                        {order.status.charAt(0).toUpperCase() +
-                          order.status.slice(1)}
+                      <div className={`${getStatusStyle(order.status)} flex items-center text-xs`}>
+                        {statusIcons[order.status] && <span className="mr-1">{statusIcons[order.status]}</span>}
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                       </div>
 
-                      {order.cancel_requested === 1 &&
-                        order.status !== 'cancelled' && (
-                          <div className="w-fit rounded-sm bg-red-200 px-2 py-0.5 text-xs font-semibold text-red-800">
-                            Cancel Requested
-                          </div>
-                        )}
+                      {order.cancel_requested === 1 && order.status !== 'cancelled' && (
+                        <div className="w-fit rounded-sm bg-red-200 px-2 py-0.5 text-xs font-semibold text-red-800">
+                          Cancel Requested
+                        </div>
+                      )}
                     </div>
                   </TableCell>
 
                   <TableCell>
-                    {order.status === 'pending' &&
-                    order.cancel_requested === 0 ? (
+                    {order.status === 'pending' && order.cancel_requested === 0 ? (
                       <button
-                        onClick={() =>
-                          onStatusUpdateClick(
-                            order.id,
-                            'processing',
-                            'Process Order',
-                            'Process Order'
-                          )
-                        }
+                        onClick={() => onStatusUpdateClick(order.id, 'processing', 'Process Order', 'Process Order')}
                         className="flex items-center gap-2 text-sm font-medium text-amber-600 hover:underline"
                       >
                         Process Order
                       </button>
-                    ) : order.status === 'pending' &&
-                      order.cancel_requested === 1 ? (
+                    ) : order.status === 'pending' && order.cancel_requested === 1 ? (
                       <Tooltip
                         content="Order can't be processed. Customer has requested to cancel this order"
                         placement="bottom-end"
                       >
                         <button
-                          onClick={() =>
-                            onStatusUpdateClick(
-                              order.id,
-                              '',
-                              'Cancel Order',
-                              'Cancel Order'
-                            )
-                          }
+                          onClick={() => onStatusUpdateClick(order.id, '', 'Cancel Order', 'Cancel Order')}
                           className="flex items-center gap-2 text-sm font-medium text-red-600 hover:underline"
                         >
                           Cancel Order
                         </button>
                       </Tooltip>
                     ) : order.status === 'cancelled' ? (
-                      <span className="text-sm text-gray-500 italic">
-                        Order Cancelled
-                      </span>
+                      <span className="text-sm text-gray-500 italic">Order Cancelled</span>
                     ) : order.status === 'processing' ? (
                       <button
-                        onClick={() =>
-                          onStatusUpdateClick(
-                            order.id,
-                            'shipping',
-                            'Ship Order',
-                            'Ship Order'
-                          )
-                        }
+                        onClick={() => onStatusUpdateClick(order.id, 'shipping', 'Ship Order', 'Ship Order')}
                         className="flex items-center gap-2 text-sm font-medium text-green-600 hover:underline"
                       >
                         Ship Order
                       </button>
                     ) : order.status === 'shipping' ? (
                       <button
-                        onClick={() =>
-                          onStatusUpdateClick(
-                            order.id,
-                            'delivered',
-                            'Mark Order as Delivered',
-                            'Confirm'
-                          )
-                        }
+                        onClick={() => onStatusUpdateClick(order.id, 'delivered', 'Mark Order as Delivered', 'Confirm')}
                         className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline"
                       >
                         Mark Delivered
@@ -331,22 +234,12 @@ export default function AdminOrdersTable({
                         <div className="font-semibold">Order #{order.id}</div>
                       </DropdownHeader>
                       <DropdownDivider />
-                      <DropdownItem
-                        onClick={() =>
-                          navigate(`/Admin/AdminOrderDetails/${order.id}`)
-                        }
-                      >
+                      <DropdownItem onClick={() => navigate(`/Admin/AdminOrderDetails/${order.id}`)}>
                         View Order Details
                       </DropdownItem>
-                      <DropdownItem onClick={() => onViewHistory(order.id)}>
-                        View History
-                      </DropdownItem>
+                      <DropdownItem onClick={() => onViewHistory(order.id)}>View History</DropdownItem>
                       <DropdownDivider />
-                      <DropdownItem
-                        onClick={() =>
-                          navigator.clipboard.writeText(order.id.toString())
-                        }
-                      >
+                      <DropdownItem onClick={() => navigator.clipboard.writeText(order.id.toString())}>
                         Copy Order ID
                       </DropdownItem>
                     </Dropdown>
@@ -384,14 +277,12 @@ AdminOrdersTable.propTypes = {
       order_date: PropTypes.string.isRequired,
       items: PropTypes.arrayOf(
         PropTypes.shape({
-          item_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-            .isRequired,
+          item_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
           product_name: PropTypes.string.isRequired,
           quantity: PropTypes.number.isRequired,
         })
       ).isRequired,
-      total_amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      total_amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       payment_method: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired,
       cancel_requested: PropTypes.number.isRequired,
