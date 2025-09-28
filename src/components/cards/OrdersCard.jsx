@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Card } from '../ui/card';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
-import PaymentMethodIcon from '@/components/bigComponents/paymentMethodIcon';
+import PaymentMethodIcon from '@/components/bigComponents/PaymentMethodsIcon';
 
 export default function OrdersTable({ orders, onCancelOrder }) {
   const navigate = useNavigate();

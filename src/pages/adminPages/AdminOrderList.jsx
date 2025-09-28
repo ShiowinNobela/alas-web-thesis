@@ -1,4 +1,4 @@
-import { useState, useCallback, lazy, Suspense } from 'react';
+import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -11,11 +11,11 @@ import {
 } from '@/api/orders';
 import OrderHistoryModal from '@/components/modals/orderHistoryModal';
 import StatusUpdateModal from '@/components/modals/statusUpdateModal';
-const OrderSummary = lazy(() => import('@/components/bigComponents/OrderSummary'));
 import AdminOrderFilters from '@/components/filters/AdminOrderFilter';
 import AdminOrdersTable from '@/components/tables/AdminOrdersTable';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import OrderSummary from '@/components/bigComponents/OrderSummary';
 
 function AdminViewOrderPage() {
   const queryClient = useQueryClient();
@@ -146,9 +146,7 @@ function AdminViewOrderPage() {
     <>
       <div className="bg-admin flex min-h-screen flex-col overflow-x-auto">
         <main className="flex w-full flex-col gap-4 p-4">
-          <Suspense fallback={<div className="p-4">Loading summary...</div>}>
-            <OrderSummary startDate={startDate} endDate={endDate} onRefresh={handleRefresh} />
-          </Suspense>
+          <OrderSummary startDate={startDate} endDate={endDate} onRefresh={handleRefresh} />
 
           <AdminOrderFilters
             onRefresh={handleRefresh}

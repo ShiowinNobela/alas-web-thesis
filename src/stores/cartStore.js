@@ -44,6 +44,7 @@ const useCartStore = create((set, get) => {
         price: parseFloat(product.price),
         quantity,
         stock_quantity: product.stock_quantity,
+        pendingAction: 'add',
       };
 
       // Optimistic update
@@ -54,9 +55,9 @@ const useCartStore = create((set, get) => {
       showCartToast(product.name);
 
       try {
-        await axios.post('/api/cart/me', {
-          productId: product.id,
-          quantity,
+        await axios.post('/api/cart/me', { productId: product.id, quantity });
+        set({
+          items: get().items.map((i) => (i.product_id === product.id ? { ...i, pendingAction: null } : i)),
         });
       } catch {
         toast.error('Failed to add item to cart');
@@ -101,7 +102,7 @@ const useCartStore = create((set, get) => {
     removeItem: async (productId) => {
       const currentItems = get().items;
       const item = currentItems.find((i) => i.product_id === productId);
-      if (!item) {
+      if (!item || item.pendingAction) {
         return;
       }
 

@@ -65,27 +65,42 @@ function Footer() {
               <h4 className="text-content font-heading mb-4 text-lg font-semibold">Our Sauces</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-lighter flex items-center text-sm transition-colors hover:text-red-600">
+                  <Link
+                    to="/hot-sauces"
+                    className="text-lighter flex items-center text-sm transition-colors hover:text-red-600"
+                  >
                     <Flame className="mr-2 h-3 w-3 text-yellow-500" />
                     Hot Sauces
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-lighter flex items-center text-sm transition-colors hover:text-red-600">
+                  <button
+                    type="button"
+                    className="text-lighter flex cursor-pointer items-center border-none bg-transparent p-0 text-sm transition-colors hover:text-red-600"
+                    aria-label="BBQ Sauces (coming soon)"
+                  >
                     <Star className="mr-2 h-3 w-3 text-orange-500" />
                     BBQ Sauces
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="text-lighter flex items-center text-sm transition-colors hover:text-red-600">
+                  <button
+                    type="button"
+                    className="text-lighter flex cursor-pointer items-center border-none bg-transparent p-0 text-sm transition-colors hover:text-red-600"
+                    aria-label="Specialty Blends (coming soon)"
+                  >
                     <Flame className="mr-2 h-3 w-3 text-red-500" />
                     Specialty Blends
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a href="#" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <button
+                    type="button"
+                    className="text-lighter cursor-pointer border-none bg-transparent p-0 text-sm transition-colors hover:text-red-600"
+                    aria-label="Gift Sets (coming soon)"
+                  >
                     Gift Sets
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -184,8 +199,6 @@ function Footer() {
         </div>
       </div>
 
-      {/* <Separator /> */}
-
       {/* Bottom Footer */}
       <div className="bg-card">
         <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
@@ -195,16 +208,15 @@ function Footer() {
                 © 2024 <span>Spice & Fire Co.</span> All rights reserved.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-lighter text-xs transition-colors hover:text-red-600">
+                <a href="/privacy" className="text-lighter text-xs transition-colors hover:text-red-600">
                   Privacy
                 </a>
-                <a href="#" className="text-lighter text-xs transition-colors hover:text-red-600">
+                <a href="/terms" className="text-lighter text-xs transition-colors hover:text-red-600">
                   Terms
                 </a>
               </div>
             </div>
 
-            {/* Made with Love */}
             <div className="text-lighter flex items-center text-xs">
               <span>Made with</span>
               <Flame className="mx-1 h-3 w-3 text-red-500" />

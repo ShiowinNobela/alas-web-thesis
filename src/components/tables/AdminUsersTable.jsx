@@ -12,12 +12,12 @@ function AdminUsersTable({ users, isLoading, isError, onToggleStatus }) {
       <Table hoverable striped>
         <TableHead className="uppercase">
           <TableRow>
-            <TableHeadCell>Username</TableHeadCell>
-            <TableHeadCell>Role</TableHeadCell>
-            <TableHeadCell className="hidden lg:table-cell">Address</TableHeadCell>
-            <TableHeadCell className="hidden lg:table-cell">Contact</TableHeadCell>
-            <TableHeadCell>Status</TableHeadCell>
-            <TableHeadCell>Actions</TableHeadCell>
+            <TableHeadCell className="table-header">Username</TableHeadCell>
+            <TableHeadCell className="table-header">Role</TableHeadCell>
+            <TableHeadCell className="table-header hidden lg:table-cell">Address</TableHeadCell>
+            <TableHeadCell className="table-header hidden lg:table-cell">Contact</TableHeadCell>
+            <TableHeadCell className="table-header">Status</TableHeadCell>
+            <TableHeadCell className="table-header">Actions</TableHeadCell>
           </TableRow>
         </TableHead>
         <TableBody className="text-content">

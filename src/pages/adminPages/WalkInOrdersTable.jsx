@@ -77,19 +77,27 @@ function WalkInOrders() {
             Add a Walk-In Order?
           </Button>
         </Card>
-        <SummaryCard iconKey="orders" iconColor="text-blue-600" title="Total Walk-In Orders" value={totalOrders} />
+        <SummaryCard
+          iconKey="orders"
+          iconColor="text-fuchsia-600"
+          title="Total Walk-In Orders"
+          value={totalOrders}
+          className="bg-fuchsia-100 dark:bg-fuchsia-900/50"
+        />
         <SummaryCard
           iconKey="sales"
           iconColor="text-green-600"
           title="Total Walk-In Sales"
           value={formatCurrency(totalAmount)}
+          className="bg-green-100 dark:bg-green-900/50"
         />
 
         <SummaryCard
           iconKey="discount"
-          iconColor="text-green-600"
+          iconColor="text-lime-600"
           title="Total Walk-In Discounts"
           value={formatCurrency(totalDiscount)}
+          className="bg-lime-100 dark:bg-lime-900/50"
         />
       </div>
 
@@ -120,14 +128,13 @@ function WalkInOrders() {
           <Table hoverable striped className="ring-1">
             <TableHead>
               <TableRow>
-                <TableHeadCell>Order ID</TableHeadCell>
-                <TableHeadCell>Customer Name</TableHeadCell>
-                <TableHeadCell>Email</TableHeadCell>
-                <TableHeadCell>Date</TableHeadCell>
-                <TableHeadCell>Total Amount</TableHeadCell>
-                <TableHeadCell>Discount</TableHeadCell>
-                <TableHeadCell>Notes</TableHeadCell>
-                <TableHeadCell>Actions</TableHeadCell>
+                <TableHeadCell className="table-header">Order ID</TableHeadCell>
+                <TableHeadCell className="table-header">Customer Name</TableHeadCell>
+                <TableHeadCell className="table-header">Email</TableHeadCell>
+                <TableHeadCell className="table-header">Date</TableHeadCell>
+                <TableHeadCell className="table-header">Total Amount</TableHeadCell>
+                <TableHeadCell className="table-header">Discount</TableHeadCell>
+                <TableHeadCell className="table-header">Notes</TableHeadCell>
               </TableRow>
             </TableHead>
             <TableBody className="text-content">
@@ -144,17 +151,6 @@ function WalkInOrders() {
                   <TableCell>₱ {parseFloat(order.total_amount).toLocaleString()}</TableCell>
                   <TableCell>₱ {parseFloat(order.discount_amount).toLocaleString()}</TableCell>
                   <TableCell>{order.notes}</TableCell>
-                  <TableCell className="flex justify-center gap-2">
-                    <Button
-                      color="gray"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openEditModal(order);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

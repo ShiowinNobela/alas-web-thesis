@@ -7,27 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchOrderSummary, fetchLast30OrderSummary } from '@/api/orders';
 import { memo } from 'react';
 import { Skeleton } from '../ui/skeleton';
-
-const getStatusColor = (status) => {
-  switch (status) {
-    case 'pending':
-      return 'bg-orange-200 text-orange-800';
-    case 'processing':
-      return 'bg-yellow-200 text-yellow-800';
-    case 'shipping':
-      return 'bg-green-200 text-green-800';
-    case 'delivered':
-      return 'bg-blue-200 text-blue-800';
-    case 'returned':
-      return 'bg-pink-200 text-pink-800';
-    case 'refunded':
-      return 'bg-violet-200 text-violet-800';
-    case 'cancelled':
-      return 'bg-red-200 text-red-800';
-    default:
-      return 'bg-gray-200 text-gray-800';
-  }
-};
+import { getStatusStyle } from '@/utils/statusBadgeStyle';
 
 // ✅ Memoized cards component
 const OrderCards = memo(function OrderCards({ data }) {
@@ -36,7 +16,7 @@ const OrderCards = memo(function OrderCards({ data }) {
       {data.map(({ status, totalOrders }) => (
         <div
           key={status}
-          className={`flex flex-col items-center justify-center ${getStatusColor(
+          className={`flex flex-col items-center justify-center ${getStatusStyle(
             status
           )} flex-1 rounded-xl p-2 shadow transition-transform duration-400 ease-in-out hover:scale-105 hover:shadow-lg`}
           title={status.charAt(0).toUpperCase() + status.slice(1).replaceAll('_', ' ')}
@@ -44,7 +24,7 @@ const OrderCards = memo(function OrderCards({ data }) {
           <span className="mb-1 truncate text-center text-sm font-semibold">
             {status.charAt(0).toUpperCase() + status.slice(1).replaceAll('_', ' ')}
           </span>
-          <span className="text-3xl font-extrabold">{totalOrders}</span>
+          <span className="text-xl font-semibold">{totalOrders}</span>
           <span className="text-xs">{totalOrders === 1 ? 'order' : 'orders'}</span>
         </div>
       ))}
@@ -106,12 +86,12 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
 
   return (
     <div className="bg-card flex w-full flex-row space-x-4 rounded-xl p-4 ring-1">
-      <div className="w-1/7 flex-none cursor-pointer rounded-lg p-4 transition">
+      <div className="flex-none cursor-pointer rounded-lg p-4 transition">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-bold">Order List Management</h2>
-            <p className="text-lighter text-sm">Manage orders here</p>
-            <p className="text-xs text-gray-500">{timeRange}</p>
+          <div className="text-content">
+            <h2 className="font-bold">Order List Management</h2>
+            <p className="text-sm">Manage your orders here</p>
+            <p className="text-lighter text-xs">{timeRange}</p>
           </div>
         </div>
       </div>

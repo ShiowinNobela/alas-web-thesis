@@ -38,9 +38,27 @@ function InventoryManagement() {
       <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1">
         {/* Summary Cards */}
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
-          <SummaryCard iconKey="lowStock" iconColor="text-yellow-500" title="Low Stock Items" value={lowStockItems} />
-          <SummaryCard iconKey="packageBlue" iconColor="text-blue-500" title="Total Products" value={totalProducts} />
-          <SummaryCard iconKey="packageGreen" iconColor="text-green-500" title="Total Stock" value={totalStock} />
+          <SummaryCard
+            iconKey="lowStock"
+            iconColor="text-red-500"
+            title="Low Stock Items"
+            value={lowStockItems}
+            className="bg-red-100 dark:bg-red-900/50"
+          />
+          <SummaryCard
+            iconKey="packageBlue"
+            iconColor="text-yellow-500"
+            title="Total Products"
+            value={totalProducts}
+            className="bg-amber-100 dark:bg-amber-900/50"
+          />
+          <SummaryCard
+            iconKey="packageGreen"
+            iconColor="text-orange-500"
+            title="Total Stock"
+            value={totalStock}
+            className="bg-orange-100 dark:bg-orange-900/50"
+          />
         </div>
 
         {/* Action Bar */}
