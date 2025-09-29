@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useUserStore from '@/stores/userStore';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import Confetti from 'react-confetti';
 import { motion } from 'framer-motion';
 
 function AfterCheckOutPage() {
+  const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const { id } = useParams();
   const [order, setOrder] = useState(null);
@@ -26,7 +27,17 @@ function AfterCheckOutPage() {
     const fetchOrder = async () => {
       try {
         const response = await axios.get(`/api/orders/${id}`);
-        setOrder(response.data.data);
+        const fetchedOrder = response.data.data;
+
+        const orderDate = new Date(fetchedOrder.order_date);
+        const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+
+        if (orderDate.getTime() < tenMinutesAgo) {
+          navigate('/*', { replace: true });
+          return;
+        }
+
+        setOrder(fetchedOrder);
       } catch {
         setError('Failed to fetch order.');
       } finally {
@@ -35,7 +46,7 @@ function AfterCheckOutPage() {
     };
 
     fetchOrder();
-  }, [id]);
+  }, [id, navigate]);
 
   if (loading) return <div className="h-screen bg-amber-100"></div>;
   if (error) return <p className="mt-10 text-center text-red-500">{error}</p>;

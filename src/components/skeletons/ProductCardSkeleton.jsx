@@ -3,28 +3,25 @@ import { Card } from '@/components/ui/card';
 
 function ProductCardSkeleton() {
   return (
-    <Card className="group z-10 flex flex-col gap-4 border-0 bg-white p-4">
-      {/* Image placeholder */}
-      <div className="relative overflow-hidden rounded-md p-2">
-        <Skeleton className="h-35 w-full rounded-md" />
+    <Card className="flex flex-row items-start gap-4 rounded-lg p-4 shadow-sm">
+      <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-md">
+        <Skeleton className="h-full w-full" />
       </div>
 
-      {/* Info placeholders */}
-      <div className="mt-2 flex-1 space-y-2 text-left">
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
+      <div className="flex flex-1 flex-col gap-3">
+        <Skeleton className="h-5 w-2/3" />
+        <Skeleton className="h-4 w-5/6" />
         <Skeleton className="h-4 w-1/2" />
-        <Skeleton className="h-4 w-1/3" />
-      </div>
 
-      {/* Button placeholder */}
-      <Skeleton className="mt-2 h-8 w-full rounded-md" />
+        <div className="flex gap-4">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-4 w-24" />
+        </div>
 
-      {/* Price + Add to Cart */}
-      <div className="mt-2 flex items-center justify-between">
-        <Skeleton className="h-5 w-16" />
-        <Skeleton className="h-8 w-24 rounded-md" />
+        <div className="mt-auto flex items-center justify-between">
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-8 w-24 rounded-md" />
+        </div>
       </div>
     </Card>
   );

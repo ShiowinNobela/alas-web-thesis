@@ -17,7 +17,7 @@ function Cart() {
   const cartEmpty = items.length === 0;
 
   return (
-    <div className="bg-card flex h-[calc(100dvh-64px)] flex-col">
+    <div className="bg-card flex h-full flex-col">
       <div className="bg-card sticky top-0 z-10 p-4 shadow-sm">
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center gap-2">
@@ -134,7 +134,7 @@ function Cart() {
       </main>
 
       {!cartEmpty && (
-        <div className="bg-card sticky bottom-0 border-t p-5 pb-8 shadow-lg">
+        <div className="bg-card sticky bottom-0 border-t p-5 pb-8">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-content text-sm">Subtotal:</span>
             <span className="text-primary text-base font-bold">₱{subtotal}</span>

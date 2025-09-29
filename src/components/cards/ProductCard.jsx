@@ -13,64 +13,51 @@ function ProductCard({ product }) {
   return (
     <>
       <Card
-        className="group z-10 flex flex-col gap-2 rounded-sm p-4 shadow-md transition-transform hover:ring-amber-500 sm:rounded-xl sm:hover:scale-[1.02] sm:hover:ring-2"
+        className="group flex flex-row gap-4 rounded-lg p-4 shadow-md transition-transform hover:ring-amber-500 sm:hover:scale-[1.02] sm:hover:ring-2"
         onClick={() => {
           navigate(`/ProductDetailsPage/${product.id}`);
         }}
       >
-        <div className="relative mb-3 overflow-hidden rounded-md">
-          {/* Product Image */}
-          <div className="relative flex h-42 w-full items-center justify-center overflow-hidden rounded-md bg-white pt-2">
-            <div className="absolute inset-0 z-10 bg-gradient-to-br from-red-200/12 via-orange-200/12 to-yellow-200/12 mix-blend-multiply transition-opacity"></div>
-
-            <img
-              src={product.image}
-              alt={product.name}
-              className="relative z-0 h-full w-full object-contain transition-transform duration-500 group-hover:scale-105 group-hover:rotate-4"
-            />
-          </div>
+        <div className="relative flex w-40 flex-shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105 group-hover:rotate-2"
+          />
+          <div className="absolute inset-0 z-10 bg-gradient-to-br from-red-200/10 via-orange-200/10 to-yellow-200/10 mix-blend-multiply"></div>
         </div>
 
-        {/* Product Info - Left Aligned */}
-        <div className="text-content flex-1 text-left">
-          <h3 className="font-heading mb-1 line-clamp-1 tracking-wide">{product.name}</h3>
-          <p className="text-lighter mb-2 line-clamp-2 min-h-[2rem] text-sm">{product.description}</p>
-          {/* Hotness Rating (static for now) */}
-          <div className="mb-2 flex items-center">
-            {[...Array(5)].map((_, i) => (
-              <span key={i}>
-                <Flame className="text-primary size-3" />
-              </span>
-            ))}
-            <p className="ml-2 flex justify-center text-xs">Extreme</p>
+        <div className="flex flex-1 flex-col justify-between text-left">
+          <div>
+            <h3 className="font-heading mb-1 line-clamp-1 text-lg font-semibold tracking-wide">{product.name}</h3>
+            <p className="text-lighter mb-2 line-clamp-2 text-sm">{product.description}</p>
+
+            <div className="mb-2 flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <Flame key={i} className="text-primary size-3" />
+              ))}
+              <p className="ml-2 text-xs">Extreme</p>
+            </div>
           </div>
-          <p className="text-sm text-green-600">Stock: {product.stock_quantity}</p>
-          <p className="text-sm text-sky-600">Reserved: {product.reserved_quantity}</p>
-        </div>
 
-        <div className="hidden sm:block">
-          <Button
-            variant="outline"
-            className="mt-2 w-full text-xs"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/ProductDetailsPage/${product.id}`);
-            }}
-          >
-            View Details
-          </Button>
+          <div className="flex flex-row gap-4">
+            <p className="text-sm text-green-600">Stock: {product.stock_quantity - product.reserved_quantity}</p>
+            <p className="text-sm text-sky-600">Reserved: {product.reserved_quantity}</p>
+          </div>
 
-          <div className="font-heading mt-4 flex items-center justify-between">
-            <p className="text-sm font-semibold">₱ {parseFloat(product.price).toFixed(2)}</p>
+          <div className="mt-2 flex items-center justify-between">
+            <p className="font-heading text-base font-semibold text-green-700">
+              ₱ {parseFloat(product.price).toFixed(2)}
+            </p>
             <Button
-              className="flex items-center justify-center gap-2"
+              className="flex items-center gap-2"
               onClick={(e) => {
                 e.stopPropagation();
                 handleAdd();
               }}
             >
               <ShoppingCart className="size-4" />
-              <span className="font-heading text-sm tracking-wide">Add to Cart</span>
+              <span className="font-heading text-sm">Add</span>
             </Button>
           </div>
         </div>
