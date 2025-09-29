@@ -15,6 +15,7 @@ import { Toaster } from 'sonner';
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
+import AfterCheckOutPage from './pages/userPages/AfterCheckOutPage.jsx';
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
 const ProductPage = lazy(() => import('./pages/userPages/ProductListPage.jsx'));
@@ -86,6 +87,7 @@ function App() {
               <Route path="/user/dashboard" element={<UserDashboard />} />
               <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
               <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
+              <Route path="/user/after-checkout/:id" element={<AfterCheckOutPage />} />
               <Route path="/UserOrderPage" element={<UserOrderPage />} />
               <Route path="/UserSettings" element={<UserSettings />} />
               <Route path="/users/orders/:id" element={<UserViewOrderDetails />} />
