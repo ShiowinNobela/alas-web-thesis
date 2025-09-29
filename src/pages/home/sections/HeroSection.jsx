@@ -16,9 +16,9 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/30" />
 
         <div className="relative z-10 container mx-auto px-4">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="font-heading mb-6 text-5xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-6xl">
-              Artisanal Hot Sauce and Some Spicy Stuff
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="font-heading mb-6 text-5xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-7xl">
+              Artisanal <span className="text-primary">Hot</span> Sauce and Some Spicy Stuff
             </h1>
 
             <p className="mb-8 text-lg text-white opacity-90 md:text-xl">

@@ -45,6 +45,7 @@ function ProductCard({ product }) {
             <p className="ml-2 flex justify-center text-xs">Extreme</p>
           </div>
           <p className="text-sm text-green-600">Stock: {product.stock_quantity}</p>
+          <p className="text-sm text-sky-600">Reserved: {product.reserved_quantity}</p>
         </div>
 
         <div className="hidden sm:block">
@@ -68,7 +69,7 @@ function ProductCard({ product }) {
                 handleAdd();
               }}
             >
-              <ShoppingCart className="size-5" />
+              <ShoppingCart className="size-4" />
               <span className="font-heading text-sm tracking-wide">Add to Cart</span>
             </Button>
           </div>
@@ -95,6 +96,7 @@ ProductCard.propTypes = {
     image: PropTypes.string,
     price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     stock_quantity: PropTypes.number.isRequired,
+    reserved_quantity: PropTypes.number.isRequired,
     category: PropTypes.string,
     rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
