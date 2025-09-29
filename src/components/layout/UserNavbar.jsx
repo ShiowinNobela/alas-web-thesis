@@ -5,6 +5,9 @@ import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '../filters/ThemeToggle';
 import { handleLogout } from '@/utils/logout';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import Cart from '../bigComponents/Cart';
+import { ShoppingCart } from 'lucide-react';
 
 const navItemStyle =
   'px-2 py-2 border-b-2 border-transparent hover:border-primary hover:text-primary transition-all cursor-pointer';
@@ -46,7 +49,7 @@ function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="text-content font-heading hidden items-center gap-5 tracking-wide md:flex lg:gap-4 xl:gap-8">
+        <nav className="text-content font-heading hidden items-center gap-5 tracking-wide md:flex md:gap-2 lg:gap-4 xl:gap-8">
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className={getNavItemClass(link.to)}>
               {link.label}
@@ -72,18 +75,32 @@ function Navbar() {
           <ThemeToggle />
 
           <Link to={storedUser ? '/ProductListPage' : '/LoginPage'} onClick={closeMobileMenu}>
-            <Button variant="CTA">Order Now</Button>
+            <Button variant="CTA" className="text-xs lg:text-sm">
+              Order Now
+            </Button>
           </Link>
         </nav>
 
         {/* Hamburger Icon */}
         <div className="flex items-center gap-3 md:hidden">
+          {storedUser && (
+            <Drawer direction="right">
+              <DrawerTrigger>
+                <Button variant="ghost">
+                  <ShoppingCart />
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent>
+                <Cart />
+              </DrawerContent>
+            </Drawer>
+          )}
           <ThemeToggle />
           <Button onClick={toggleMobileMenu} aria-label="Toggle Menu" variant="CTA">
             {mobileMenuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
           </Button>
         </div>
-        {/* Mobile Menu */}
+
         <div
           className={`bg-card text-content fixed top-0 left-0 z-40 h-screen w-2/3 max-w-xs transform ${
             mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
@@ -105,6 +122,7 @@ function Navbar() {
                 {link.label}
               </Link>
             ))}
+
             {storedUser ? (
               <>
                 <Link to="/UserOrderPage" onClick={closeMobileMenu} className="py-3 transition">

@@ -17,17 +17,17 @@ function Cart() {
   const cartEmpty = items.length === 0;
 
   return (
-    <div className="bg-card flex h-[calc(100dvh-64px)] flex-col">
+    <div className="bg-card flex h-full flex-col">
       <div className="bg-card sticky top-0 z-10 p-4 shadow-sm">
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center gap-2">
             <ShoppingCart className="text-primary" size={18} />
-            <h1 className="text-content font-bold">Cart</h1>
+            <h1 className="text-content font-heading">Cart</h1>
             {!cartEmpty && (
               <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs dark:text-black">{items.length}</span>
             )}
           </div>
-          {!cartEmpty && <p className="text-primary text-sm font-semibold">₱{subtotal}</p>}
+          {!cartEmpty && <p className="text-brand font-heading text-sm">₱{subtotal}</p>}
         </div>
       </div>
 
@@ -45,7 +45,7 @@ function Cart() {
         {isLoading ? (
           <div className="flex h-full flex-col items-center justify-center">
             <div className="mb-2 animate-pulse">
-              <ShoppingBag size={30} className="text-gray-300" />
+              <ShoppingBag size={30} className="text-lighter" />
             </div>
             <p className="text-lighter text-xs">Loading cart...</p>
           </div>
@@ -66,29 +66,26 @@ function Cart() {
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
-              <article
-                key={item.product_id}
-                className="bg-card flex gap-2 rounded-lg border border-gray-200 p-2 shadow-sm"
-              >
+              <article key={item.product_id} className="bg-card border-border flex gap-2 rounded-xl border-2 p-3">
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="h-14 w-14 flex-shrink-0 rounded-md border border-gray-100 object-cover"
+                  className="border-border size-24 flex-shrink-0 rounded-md border object-cover"
                 />
 
-                <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex min-w-0 flex-1 flex-col justify-between">
                   <div className="flex items-start justify-between">
                     <div className="min-w-0 flex-1 pr-1">
-                      <h3 className="text-content line-clamp-2 text-xs leading-tight font-medium">{item.name}</h3>
-                      <p className="text-primary mt-0.5 text-xs font-semibold">₱{parseFloat(item.price).toFixed(2)}</p>
+                      <h3 className="text-content font-heading line-clamp-2 text-sm">{item.name}</h3>
+                      <p className="text-content font-heading mt-0.5 text-xs">₱{parseFloat(item.price).toFixed(2)}</p>
                     </div>
                     <button
                       onClick={() => removeItem(item.product_id)}
                       disabled={item.pendingAction === 'add'}
                       className={`flex-shrink-0 p-0.5 transition-colors ${
                         item.pendingAction === 'add'
-                          ? 'cursor-not-allowed text-gray-300'
-                          : 'text-lighter hover:text-red-500'
+                          ? 'text-lighter cursor-not-allowed'
+                          : 'text-lighter hover:text-brand'
                       }`}
                     >
                       <Delete size={20} />
@@ -101,7 +98,7 @@ function Cart() {
                         disabled={item.pendingAction === 'add'}
                         className={`flex h-5 w-5 items-center justify-center rounded-full transition-colors ${
                           item.pendingAction === 'add'
-                            ? 'cursor-not-allowed bg-gray-100 text-gray-300'
+                            ? 'text-lighter cursor-not-allowed bg-gray-100'
                             : 'hover:bg-gray-100'
                         }`}
                       >
@@ -117,7 +114,7 @@ function Cart() {
                         disabled={item.pendingAction === 'add'}
                         className={`flex h-5 w-5 items-center justify-center rounded-full transition-colors ${
                           item.pendingAction === 'add'
-                            ? 'cursor-not-allowed bg-gray-100 text-gray-300'
+                            ? 'text-lighter cursor-not-allowed bg-gray-100'
                             : 'hover:bg-gray-100'
                         }`}
                       >
@@ -126,7 +123,7 @@ function Cart() {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-content text-xs font-semibold">₱{(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-primary text-xs font-semibold">₱{(item.price * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
@@ -137,7 +134,7 @@ function Cart() {
       </main>
 
       {!cartEmpty && (
-        <div className="bg-card sticky bottom-0 border-t p-5 pb-8 shadow-lg">
+        <div className="bg-card sticky bottom-0 border-t p-5 pb-8">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-content text-sm">Subtotal:</span>
             <span className="text-primary text-base font-bold">₱{subtotal}</span>

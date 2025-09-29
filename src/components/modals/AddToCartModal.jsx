@@ -10,7 +10,7 @@ function AddToCartModal({ open, setOpen, product, quantity, setQuantity, onConfi
   const existingItem = items.find((i) => i.product_id === product.id);
   const alreadyInCart = existingItem ? existingItem.quantity : 0;
 
-  const maxAddable = Math.max(product.stock_quantity - alreadyInCart, 0);
+  const maxAddable = Math.max(product.stock_quantity - product.reserved_quantity - alreadyInCart, 0);
 
   const handleQuantityChange = (e) => {
     const { value } = e.target;
@@ -46,7 +46,9 @@ function AddToCartModal({ open, setOpen, product, quantity, setQuantity, onConfi
               <h3 className="font-medium">{product.name}</h3>
               <p className="text-primary text-lg font-semibold">₱{parseFloat(product.price).toFixed(2)}</p>
               <p className="text-muted-foreground text-sm">
-                {product.stock_quantity > 0 ? `${product.stock_quantity} available` : 'Out of stock'}
+                {product.stock_quantity - product.reserved_quantity > 0
+                  ? `${product.stock_quantity - product.reserved_quantity} available`
+                  : 'Out of stock'}
               </p>
             </div>
           </div>
@@ -69,7 +71,9 @@ function AddToCartModal({ open, setOpen, product, quantity, setQuantity, onConfi
               />
               <div className="flex-1 text-right">
                 <p className="text-muted-foreground text-sm">
-                  {product.stock_quantity > 0 ? `${product.stock_quantity} available` : 'Out of stock'}
+                  {product.stock_quantity - product.reserved_quantity > 0
+                    ? `${product.stock_quantity - product.reserved_quantity} available`
+                    : 'Out of stock'}
                 </p>
 
                 {alreadyInCart > 0 && (

@@ -36,7 +36,8 @@ function CheckOutPage() {
 
   const placeOrderMutation = useMutation({
     mutationFn: (orderData) => axios.post('/api/orders', orderData),
-    onSuccess: () => {
+    onSuccess: (response) => {
+      const { orderId } = response.data.data;
       toast.success('Order placed successfully!');
       useCartStore.setState({ items: [], cart_total: 0 });
       setGetInfo({
@@ -51,7 +52,7 @@ function CheckOutPage() {
       });
       setFormErrors({});
       setIsModalOpen(false);
-      navigate('/UserOrderPage');
+      navigate(`/user/after-checkout/${orderId}`);
     },
     onError: (err) => {
       setIsModalOpen(false);
