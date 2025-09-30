@@ -2,8 +2,10 @@ import { Button } from 'flowbite-react';
 
 const PeriodToggle = ({ activePeriod, onPeriodChange }) => {
   const periods = [
+    { key: 'daily', label: 'Daily' },
     { key: 'weekly', label: 'Weekly' },
     { key: 'monthly', label: 'Monthly' },
+    { key: 'yearly', label: 'Yearly' },
   ];
 
   return (

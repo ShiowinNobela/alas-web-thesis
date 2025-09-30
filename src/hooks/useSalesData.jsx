@@ -2,44 +2,36 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const SALES_KEYS = {
+  daily : ['sales', 'daily'],
   weekly: ['sales', 'weekly'],
   monthly: ['sales', 'monthly'],
+  yearly: ['sales', 'yearly'],
 };
 
-const fetchWeeklySales = async () => {
-  const { data } = await axios.get('/api/sales/weekly');
+const fetchSalesData = async (period) => {
+  const { data } = await axios.get(`/api/sales/${period}`);
   return data;
 };
 
-const fetchMonthlySales = async () => {
-  const { data } = await axios.get('/api/sales/monthly');
-  return data; 
-};
-
-export const useSalesData = (activePeriod = 'weekly') => {
-  const weeklyQuery = useQuery({
-    queryKey: SALES_KEYS.weekly,
-    queryFn: fetchWeeklySales,
+export const useSalesData = (activePeriod = 'daily') => {
+  const query = useQuery({
+    queryKey: SALES_KEYS[activePeriod],
+    queryFn: () => fetchSalesData(activePeriod),
   });
-
-  const monthlyQuery = useQuery({
-    queryKey: SALES_KEYS.monthly,
-    queryFn: fetchMonthlySales,
-  });
-
-  const currentPeriodProducts = activePeriod === 'weekly' 
-    ? weeklyQuery.data?.products 
-    : monthlyQuery.data?.products;
 
   return {
-    weekly: weeklyQuery.data?.weekly,
-    monthly: monthlyQuery.data?.monthly,
-    products: currentPeriodProducts,
-    isLoading: weeklyQuery.isLoading || monthlyQuery.isLoading,
-    isError: weeklyQuery.isError || monthlyQuery.isError,
-    refetch: () => {
-      weeklyQuery.refetch();
-      monthlyQuery.refetch();
-    },
+    // Data for active period
+    daily: activePeriod === 'daily' ? query.data?.daily : null,
+    weekly: activePeriod === 'weekly' ? query.data?.weekly : null,
+    monthly: activePeriod === 'monthly' ? query.data?.monthly : null,
+    yearly: activePeriod === 'yearly' ? query.data?.yearly : null,
+    
+    // Products for active period
+    products: query.data?.products,
+    
+    // Loading and error states
+    isLoading: query.isLoading,
+    isError: query.isError,
+    refetch: query.refetch,
   };
 };

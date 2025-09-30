@@ -8,17 +8,37 @@ import PeriodToggle from '@/components/sale/PeriodToggle';
 import { useSalesData } from '@/hooks/useSalesData';
 
 function SalesPage() {
-  const [activePeriod, setActivePeriod] = useState('weekly');
-  const { weekly, monthly, products, isLoading, isError, refetch } = useSalesData(activePeriod);
+  const [activePeriod, setActivePeriod] = useState('daily');
+  const { daily, weekly, monthly, yearly, products, isLoading, isError, refetch } = useSalesData(activePeriod);
 
   if (isError) {
     return <ErrorState error={isError} onRetry={refetch} title="Failed to load sales data" retryText="Retry Request" />;
   }
 
-  const renderContent = () => {
-    const currentData = activePeriod === 'weekly' ? weekly?.current : monthly?.current;
-    const previousData = activePeriod === 'weekly' ? weekly?.previous : monthly?.previous;
+  const getCurrentData = () => {
+    switch (activePeriod) {
+      case 'daily' : return daily?.current;
+      case 'weekly' : return weekly?.current;
+      case 'monthly' : return monthly?.current;
+      case 'yearly' : return yearly?.current;
+      default: return weekly?.current;
+    }
+  };
 
+  const getPreviousData = () => {
+    switch (activePeriod) {
+      case 'daily' : return daily?.previous;
+      case 'weekly' : return weekly?.previous;
+      case 'monthly' : return monthly?.previous;
+      case 'yearly' : return yearly?.previous;
+      default: return weekly?.previous;
+    }
+  };
+
+  const renderContent = () => {
+    const currentData = getCurrentData();
+    const previousData = getPreviousData();
+  
     return (
       <>
         <SalesMetrics
@@ -41,7 +61,7 @@ function SalesPage() {
 
   return (
     <ErrorBoundary>
-      <div className="bg-admin min-h-screen p-6">
+      <div className="min-h-screen p-6 bg-admin">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Sales Analytics</h1>
         </div>
@@ -49,16 +69,12 @@ function SalesPage() {
         <PeriodToggle
           activePeriod={activePeriod}
           onPeriodChange={setActivePeriod}
-          options={[
-            { value: 'weekly', label: 'Weekly' },
-            { value: 'monthly', label: 'Monthly' },
-          ]}
         />
 
         {renderContent()}
       </div>
     </ErrorBoundary>
   );
-}
+};
 
 export default SalesPage;
