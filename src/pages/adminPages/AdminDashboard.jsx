@@ -38,7 +38,7 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="bg-admin grid grid-cols-1 gap-6 p-4 lg:grid-cols-6">
+    <div className="grid grid-cols-1 gap-6 p-4 bg-admin lg:grid-cols-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6">
         {isLoading
           ? [...Array(5)].map((_, idx) => <CardSkeleton key={idx} />)
@@ -46,21 +46,21 @@ function AdminDashboard() {
             [
               {
                 title: 'Total Sales ',
-                value: items?.totalSales || 0,
+                value: items?.totalSales.toLocaleString() || 0,
                 icon: 'sales',
                 color: 'text-green-600',
                 className: 'bg-green-100 dark:bg-green-900/50',
               },
               {
                 title: 'Total Online Orders',
-                value: items?.totalOnlineOrders || 0,
+                value: items?.totalOnlineOrders.toLocaleString() || 0,
                 icon: 'orders',
                 color: 'text-blue-600',
                 className: 'bg-blue-100 dark:bg-blue-900/50',
               },
               {
                 title: 'Total Walk-in Orders',
-                value: items?.totalWalkInOrders || 0,
+                value: items?.totalWalkInOrders.toLocaleString() || 0,
                 icon: 'walkInOrders',
                 color: 'text-fuchsia-600',
                 className: 'bg-fuchsia-100 dark:bg-fuchsia-900/50',
@@ -91,11 +91,11 @@ function AdminDashboard() {
             ))}
       </div>
 
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
+      <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-4">
         <p>Empty for now, top products soon...</p>
       </Card>
 
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
+      <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
         <h3 className="mb-4 text-lg font-semibold">Low Stock Alerts</h3>
         <ul className="space-y-3">
           {['Hot Sauce', 'BBQ Sauce', 'Garlic Mayo'].map((item, idx) => (
@@ -113,7 +113,7 @@ function AdminDashboard() {
         <RevenueChart title="Revenue within 7 Days" series={revenueSeries} categories={revenueCategories} />
       )}
 
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
+      <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
         <h3 className="mb-4 text-lg font-semibold">Quick Actions</h3>
         <div className="flex flex-col gap-3">
           <Link to="/Admin/AddProduct">

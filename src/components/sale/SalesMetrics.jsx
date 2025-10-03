@@ -4,23 +4,23 @@ import { getStatusStyle } from '@/utils/statusBadgeStyle';
 
 const SalesMetricCard = ({ title, value, subtitle, icon: Icon, color, status, loading }) => (
   <Card
-    className={`flex h-full flex-col border-l-4 transition-all hover:-translate-y-1 hover:shadow-md ${color} border-opacity-50 dark:bg-gray-800`}
+    className={`flex h-full flex-col border-l-4 transition-all ${color} border-opacity-50 dark:bg-gray-800`}
   >
-    <div className="flex flex-1 items-start justify-between">
-      <div className="flex flex-1 flex-col justify-between">
+    <div className="flex items-start justify-between flex-1">
+      <div className="flex flex-col justify-between flex-1">
         <div>
           <h2 className="mb-1 text-lg font-bold text-gray-900 dark:text-gray-100">{title}</h2>
           {subtitle && <p className="mb-2 text-sm text-gray-600 dark:text-gray-400">{subtitle}</p>}
           {loading ? (
-            <div className="h-8 animate-pulse rounded bg-gray-200 dark:bg-gray-700"></div>
+            <div className="h-8 bg-gray-200 rounded animate-pulse dark:bg-gray-700"></div>
           ) : (
             <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
           )}
         </div>
         {status && (
-          <div className="mt-2 flex items-center space-x-2">
-            {status.positive && <CheckCircle className="h-4 w-4 text-green-500 dark:text-green-400" />}
-            {!status.positive && <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />}
+          <div className="flex items-center mt-2 space-x-2">
+            {status.positive && <CheckCircle className="w-4 h-4 text-green-500 dark:text-green-400" />}
+            {!status.positive && <XCircle className="w-4 h-4 text-red-500 dark:text-red-400" />}
             <span className={`text-xs ${status.className} ${getStatusStyle(status.type)} dark:text-gray-300`}>
               {status.label}
             </span>
@@ -98,7 +98,7 @@ const SalesMetrics = ({ currentData, previousData, period, isLoading }) => {
   return (
     <div className="mb-6">
       <h2 className="mb-4 text-xl font-bold text-gray-900 capitalize dark:text-white">{period} Sales Overview</h2>
-      <div className="grid auto-rows-fr grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-4 auto-rows-fr md:grid-cols-2 lg:grid-cols-5">
         {metrics.map((metric, index) => (
           <SalesMetricCard key={index} {...metric} loading={isLoading} />
         ))}
