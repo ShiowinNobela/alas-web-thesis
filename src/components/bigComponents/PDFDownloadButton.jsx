@@ -3,11 +3,13 @@ import { Download, Loader2 } from 'lucide-react';
 import dayjs from 'dayjs';
 import { usePDFDownload } from '@/hooks/usePDFDownload';
 
-const PDFDownloadButton = ({ activePeriod, startDate, endDate, onComplete  }) => {
+const PDFDownloadButton = ({ activePeriod, startDate, endDate, onComplete, disabled = false, allowCustom = true }) => {
 
   const { downloadPDF, isDownloading, error, reset } = usePDFDownload();
 
   const handleDownload = async () => {
+    if (disabled) return;
+    
     reset();
 
     let start, end;
@@ -15,6 +17,11 @@ const PDFDownloadButton = ({ activePeriod, startDate, endDate, onComplete  }) =>
 
     // If custom it will require dates
     if (activePeriod === 'custom') {
+      if (!allowCustom) {
+        alert('Custom date range is not allowed for this report');
+        return;
+      }
+
       if (startDate && endDate) {
         start = startDate;
         end = endDate;
@@ -71,7 +78,7 @@ const PDFDownloadButton = ({ activePeriod, startDate, endDate, onComplete  }) =>
     <div>
     <Button
         onClick={handleDownload}
-        disabled={isDownloading}
+        disabled={isDownloading || disabled}
         className="flex items-center space-x-2 bg:gray hover:bg-gray-600 disabled:bg-gray-400"
       >
         {isDownloading ? (

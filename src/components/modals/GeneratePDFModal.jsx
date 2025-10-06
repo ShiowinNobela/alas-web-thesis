@@ -108,14 +108,8 @@ return (
             activePeriod="custom"
             startDate={dateRange.startDate}
             endDate={dateRange.endDate}
-            allowCustom={false}
             onComplete={onClose}
             disabled={!isCustomValid}
-            className={`w-full ${
-            isCustomValid 
-                ? "bg-gray-900 hover:bg-gray-800 text-white" 
-                : "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-            }`}
           />
         </div>
 
