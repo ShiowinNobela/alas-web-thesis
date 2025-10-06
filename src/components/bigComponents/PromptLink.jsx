@@ -6,7 +6,7 @@ const PromptLink = ({ promptText, linkText, to }) => (
     {promptText}{' '}
     <Link
       to={to}
-      className="border-primary text-primary hover:bg-primary/10 focus:ring-primary/30 font-heading mt-2 block w-full rounded-lg border px-5 py-2 text-center text-sm font-medium uppercase transition-all focus:ring-4 focus:outline-none"
+      className="border-primary text-primary hover:bg-primary/10 focus:ring-primary/30 font-heading mt-2 block w-full rounded-2xl border px-5 py-2 text-center text-sm font-medium uppercase transition-all focus:ring-4 focus:outline-none"
     >
       {linkText}
     </Link>

@@ -3,8 +3,8 @@ import { Card } from '@/components/ui/card';
 
 function ProductCardSkeleton() {
   return (
-    <Card className="flex flex-row items-start gap-4 rounded-lg p-4 shadow-sm">
-      <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-md">
+    <Card className="flex flex-row items-start gap-4 rounded-xl p-4 shadow-sm">
+      <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-xl">
         <Skeleton className="h-full w-full" />
       </div>
 
@@ -20,7 +20,7 @@ function ProductCardSkeleton() {
 
         <div className="mt-auto flex items-center justify-between">
           <Skeleton className="h-5 w-16" />
-          <Skeleton className="h-8 w-24 rounded-md" />
+          <Skeleton className="h-8 w-24 rounded-xl" />
         </div>
       </div>
     </Card>

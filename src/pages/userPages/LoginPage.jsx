@@ -33,11 +33,13 @@ function LoginPage() {
       return;
     }
 
+    const toastId = toast.loading('Signing in...');
+
     try {
       setLoading(true);
 
       await axios.post('/api/users/login/', { username, password }, { withCredentials: true });
-      toast.success('Login successful!');
+      toast.success('Login successful!', { id: toastId });
       await fetchUser();
     } catch (err) {
       const res = err.response;

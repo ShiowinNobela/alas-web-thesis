@@ -27,7 +27,7 @@ function ProductListLayout() {
         </div>
 
         {isLoggedIn && Cart && (
-          <aside className="bg-card fixed top-[64px] right-0 hidden h-[calc(100vh-64px)] w-76 overflow-y-auto border-l shadow-lg lg:block">
+          <aside className="bg-card fixed top-[64px] right-0 hidden h-[calc(100vh-64px)] w-72 overflow-y-auto border-l shadow-lg lg:block">
             <Suspense fallback={null}>
               <Cart />
             </Suspense>

@@ -25,7 +25,6 @@ function CartSummaryCard() {
           Go Back to Menu
         </button>
       </CardHeader>
-
       <CardContent className="mt-4 space-y-3">
         {isLoading ? (
           <p className="text-sm text-gray-500">Loading cart...</p>
@@ -33,8 +32,8 @@ function CartSummaryCard() {
           <p className="text-sm text-gray-500">Your cart is empty. Add items to proceed</p>
         ) : (
           items.map((item) => (
-            <article key={item.product_id} className="flex items-center gap-3 rounded-lg border p-3">
-              <img src={item.image} alt={item.name} className="size-24 flex-shrink-0 rounded-md border object-cover" />
+            <article key={item.product_id} className="flex items-center gap-3 rounded-2xl border p-3">
+              <img src={item.image} alt={item.name} className="size-24 flex-shrink-0 rounded-2xl border object-cover" />
 
               <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex items-start justify-between">
@@ -77,7 +76,6 @@ function CartSummaryCard() {
           ))
         )}
       </CardContent>
-
       {/* Totals */}
       <div className="border-t px-8 pt-6 text-right">
         <p className="text-sm">

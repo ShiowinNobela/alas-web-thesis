@@ -39,7 +39,7 @@ function AddToCartModal({ open, setOpen, product, quantity, setQuantity, onConfi
         <div className="grid gap-4 py-4">
           {/* Product Image and Basic Info */}
           <div className="flex items-start gap-4">
-            <div className="size-30 flex-shrink-0 overflow-hidden rounded-md border">
+            <div className="size-30 flex-shrink-0 overflow-hidden rounded-2xl border">
               <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
             </div>
             <div className="flex-1">

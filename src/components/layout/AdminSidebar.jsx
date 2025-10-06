@@ -38,13 +38,13 @@ function Sidebar() {
 
   const getNavItemClass = (path) => {
     const isActive = location.pathname === path;
-    return `flex items-center p-2 rounded-lg text-sm ${
+    return `flex items-center p-2 rounded-2xl text-sm ${
       isActive ? 'text-primary hover:bg-gray-700' : 'text-white hover:bg-gray-700'
     } group cursor-pointer`;
   };
 
   return (
-    <div className="border-lighter flex h-screen w-[250px] flex-col justify-between border-r bg-gray-900">
+    <div className="border-lighter flex h-screen w-[250px] flex-col justify-between border-r bg-gray-800">
       {/* Top Section */}
       <div>
         {/* Logo */}
@@ -78,7 +78,7 @@ function Sidebar() {
       <div className="p-3">
         <button
           type="button"
-          className="hover:bg-primary group flex w-full cursor-pointer items-center rounded-lg p-2 font-normal text-white"
+          className="hover:bg-primary group flex w-full cursor-pointer items-center rounded-2xl p-2 font-normal text-white"
           onClick={onLogout}
         >
           <LogOut className="mx-2 size-5" />

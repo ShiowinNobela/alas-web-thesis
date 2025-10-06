@@ -17,18 +17,18 @@ const HeroSection = () => {
 
         <div className="relative z-10 container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="font-heading mb-6 text-5xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-7xl">
-              Artisanal <span className="text-primary">Hot</span> Sauce and Some Spicy Stuff
+            <h1 className="font-heading mb-6 text-4xl font-bold text-white drop-shadow-lg sm:text-5xl md:text-7xl">
+              Artisanal Hot Sauce and Some Spicy Stuff
             </h1>
 
-            <p className="mb-8 text-lg text-white opacity-90 md:text-xl">
+            <p className="mb-8 text-lg text-white opacity-90 md:text-lg">
               We pride ourselves on different flavor profiles, not just heat. Anything that's spicy as a whole, we have
               it. From powders, to pickles, to oils, to sauces, name it.
             </p>
 
             <div className="flex flex-col justify-center gap-4 px-8 sm:flex-row">
               <Link to={user ? '/ProductListPage' : '/LoginPage'}>
-                <Button variant="CTA" size="lg" className="px-8 font-medium text-white">
+                <Button variant="CTA" size="lg" className="px-8 text-white">
                   Order Now
                 </Button>
               </Link>

@@ -46,7 +46,7 @@ html {
   --font-heading: Jost, Georgia, 'Times New Roman', Times, serif;
   --font-other: Jost, Georgia, 'Times New Roman', Times, serif;
 
-  --color-brand: #ef2917;
+  --color-brand: #a50104;
   --color-red: #ef4444;
   --color-info: #2364aa;
 
@@ -62,9 +62,9 @@ html {
 /* Theme Variables */
 :root {
   --lighter: #888888;
-  --primary: oklch(0.769 0.188 70.08);
+  --primary: #d63230;
   --content: #251605;
-  --neutral: #fff8e7;
+  --neutral: #f4f4f8;
   --admin: #fcfffc;
 
   --card: oklch(1 0 0);
@@ -99,12 +99,6 @@ html {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-
-  --radius: 0.125rem;
-  --radius-sm: calc(var(--radius) - 1px);
-  --radius-md: calc(var(--radius));
-  --radius-lg: calc(var(--radius) + 2px);
-  --radius-xl: calc(var(--radius) + 4px);
 
   --spacing: 0.25rem;
   --tracking-normal: 0em;
@@ -192,7 +186,7 @@ html {
 }
 
 .product-gradient {
-  @apply bg-gradient-to-b from-amber-50 to-yellow-100;
+  @apply bg-gradient-to-b from-red-100 to-red-200;
 }
 
 .testimonial-gradient {

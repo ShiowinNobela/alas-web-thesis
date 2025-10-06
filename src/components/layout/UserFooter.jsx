@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
-    <footer className="bg-card border-t border-gray-200">
+    <footer className="bg-card">
       {/* Main Footer Content */}
       <div className="text-content mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
@@ -36,7 +36,7 @@ function Footer() {
             </div>
 
             {/* Unique Heat Level Guide */}
-            <div className="rounded-lg border border-orange-200 bg-gradient-to-r from-yellow-50 to-red-50 p-4">
+            <div className="rounded-2xl border border-orange-200 bg-gradient-to-r from-yellow-50 to-red-50 p-4">
               <h4 className="font-heading mb-2 text-sm font-semibold text-black">Heat Level Guide</h4>
               <div className="space-y-1">
                 <div className="flex items-center text-xs">
@@ -170,7 +170,7 @@ function Footer() {
             </div>
 
             {/* Unique Features */}
-            <div className="rounded-lg bg-gray-50 p-4">
+            <div className="rounded-2xl bg-gray-50 p-4">
               <h5 className="font-heading mb-3 text-sm font-semibold text-black">Why Choose Us?</h5>
               <div className="space-y-2">
                 <div className="text-lighter flex items-center text-xs">
@@ -189,7 +189,7 @@ function Footer() {
             </div>
 
             {/* Fun Sauce Fact */}
-            <div className="rounded-lg border-l-4 border-red-500 bg-gradient-to-r from-red-50 to-orange-50 p-4">
+            <div className="rounded-2xl border-l-4 border-red-500 bg-gradient-to-r from-red-50 to-orange-50 p-4">
               <h5 className="font-heading mb-1 text-sm font-semibold text-black">Spicy Fact</h5>
               <p className="text-lighter text-xs">
                 The Carolina Reaper is currently the world's hottest pepper at 2.2 million Scoville units! 🌶️

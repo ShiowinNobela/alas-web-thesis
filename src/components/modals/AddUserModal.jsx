@@ -40,8 +40,8 @@ function AddUserModal({ show, onClose }) {
 
   return (
     <Modal show={show} size="md" onClose={handleClose} dismissible popup>
-      <ModalHeader className="bg-card rounded-t-xl" />
-      <ModalBody className="bg-card rounded-b-xl">
+      <ModalHeader className="bg-card rounded-t-2xl" />
+      <ModalBody className="bg-card rounded-b-2xl">
         <form onSubmit={handleAddUser} className="space-y-7">
           <h3 className="text-content text-center text-xl font-semibold">Create New Account</h3>
 
