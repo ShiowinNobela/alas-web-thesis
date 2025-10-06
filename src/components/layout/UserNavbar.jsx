@@ -32,7 +32,7 @@ function Navbar() {
   ];
 
   return (
-    <header className="bg-card sticky top-0 z-50 w-full border-b-2 drop-shadow-md">
+    <header className="bg-card sticky top-0 z-50 w-full shadow">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-4">
         <div className="flex flex-row items-center justify-center gap-4">
           <Link to="/" onClick={closeMobileMenu}>

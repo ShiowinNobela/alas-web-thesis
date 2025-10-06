@@ -25,7 +25,7 @@ export default function SummaryCard({
   const IconComponent = iconsMap[iconKey] || ShoppingCart;
 
   return (
-    <Card className={`rounded-xl p-0 shadow-sm ring-1 ${paddingClass} ${className}`}>
+    <Card className={`rounded-2xl p-0 shadow-sm ring-1 ${paddingClass} ${className}`}>
       <div className="flex items-center gap-3">
         <IconComponent className={`h-6 w-6 ${iconColor}`} />
         <div>

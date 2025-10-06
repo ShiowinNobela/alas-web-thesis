@@ -14,7 +14,7 @@ const StorySection = () => {
   const rotateY = useTransform(springX, [-100, 100], [-5, 5]);
 
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className="bg-card py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
           {/* Image Column */}
@@ -60,7 +60,7 @@ const StorySection = () => {
                 type: 'spring',
                 bounce: 0.4,
               }}
-              className="absolute -right-10 bottom-0 z-10 w-40 overflow-hidden rounded-xl border-4 border-amber-400 bg-white shadow-[0_10px_20px_rgba(0,0,0,0.3)] md:-right-12 md:bottom-2 md:w-48 lg:-right-14 lg:bottom-4 lg:w-56"
+              className="border-primary absolute -right-10 bottom-0 z-10 w-40 overflow-hidden rounded-xl border-4 bg-white shadow-[0_10px_20px_rgba(0,0,0,0.3)] md:-right-12 md:bottom-2 md:w-48 lg:-right-14 lg:bottom-4 lg:w-56"
             >
               <img
                 src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351169/lp2_q6mjhd.jpg"
@@ -100,7 +100,7 @@ const StorySection = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="font-heading mb-6 text-3xl font-bold text-gray-900 md:text-4xl"
+              className="font-heading text-content mb-6 text-3xl font-bold md:text-4xl"
             >
               Crafting Delicate Heat With{' '}
               <motion.span
@@ -117,7 +117,7 @@ const StorySection = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mb-8 space-y-4 text-gray-600"
+              className="text-lighter mb-8 space-y-4"
             >
               <p>
                 Our journey into the spice world came as a surprise, from curiosity, to independent research, up to

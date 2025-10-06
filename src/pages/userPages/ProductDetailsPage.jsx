@@ -50,14 +50,14 @@ function ProductDetailsPage() {
               <img
                 src={product.image}
                 alt={product.name || 'Product image'}
-                className="h-64 w-full rounded object-cover object-center lg:h-auto"
+                className="h-64 w-full rounded-2xl object-cover object-center lg:h-auto"
               />
             </div>
 
             {/* Product details */}
             <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:py-6 lg:pl-10">
-              <h2 className="text-lighter text-sm tracking-widest">{product.category}</h2>
-              <h1 className="font-heading text-content mb-1 text-3xl">{product.name}</h1>
+              <h2 className="text-lighter text-sm">{product.category}</h2>
+              <h1 className="font-heading text-content mb-1 text-3xl font-bold">{product.name}</h1>
               <div className="mb-4 flex">
                 <span className="flex items-center">
                   <Star className="size-5 fill-yellow-400 text-black" />

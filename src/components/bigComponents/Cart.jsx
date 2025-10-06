@@ -66,11 +66,11 @@ function Cart() {
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
-              <article key={item.product_id} className="bg-card border-border flex gap-2 rounded-xl border-2 p-3">
+              <article key={item.product_id} className="bg-card border-border flex gap-2 rounded-2xl border-2 p-3">
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="border-border size-24 flex-shrink-0 rounded-md border object-cover"
+                  className="border-border size-24 flex-shrink-0 rounded-2xl border object-cover"
                 />
 
                 <div className="flex min-w-0 flex-1 flex-col justify-between">
@@ -143,7 +143,7 @@ function Cart() {
             <Button
               variant="CTA"
               size="sm"
-              className="flex w-full items-center justify-center gap-1 rounded-lg py-2 text-xs font-bold text-white"
+              className="flex w-full items-center justify-center gap-1 rounded-2xl py-2 text-xs font-bold text-white"
             >
               Checkout
               <ArrowRight size={14} />

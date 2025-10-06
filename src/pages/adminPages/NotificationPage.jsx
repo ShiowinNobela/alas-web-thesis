@@ -2,12 +2,11 @@ import RoleBadge from '@/components/bigComponents/RoleBadge';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { Card, Spinner, Alert, Badge } from 'flowbite-react';
+import { Card, Alert, Badge } from 'flowbite-react';
 import { Bell, User, Clock, FileText, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
-import EmptyState from '@/components/States/EmptyState';
 
 const fetchLogs = async () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
@@ -52,7 +51,6 @@ function NotificationPage() {
     data: logs = [],
     isLoading,
     isError,
-    refetch,
   } = useQuery({
     queryKey: ['adminLogs'],
     queryFn: fetchLogs,
@@ -95,13 +93,6 @@ function NotificationPage() {
               <h3 className="text-md mt-2 font-medium">No activity logs found</h3>
               <p className="text-lighter text-sm">There are no activity logs to display at this time.</p>
             </Card>
-          ) : isError ? (
-            <ErrorState
-              error={isOrdersError}
-              onRetry={refetchOrders}
-              title="Failed to load Notifications"
-              retryText="Retry Request"
-            />
           ) : (
             <div className="space-y-4">
               {logs.map((log) => (

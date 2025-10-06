@@ -40,7 +40,7 @@ function InventoryUpdateModal({ isOpen, product, onClose, updateStockPrice }) {
         {product && (
           <div className="mb-6 flex gap-4">
             {/* Left: Image */}
-            <img src={product.image} alt={product.name} className="h-28 w-28 rounded-lg object-cover shadow-md" />
+            <img src={product.image} alt={product.name} className="h-28 w-28 rounded-2xl object-cover shadow-md" />
 
             {/* Right: Info */}
             <div>

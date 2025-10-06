@@ -1,6 +1,6 @@
 import ShowcaseButton from '@/components/bigComponents/ShowcaseButton';
 import { motion } from 'framer-motion';
-import { StarIcon, QuoteIcon, MessageCircleIcon, FlameIcon } from 'lucide-react';
+import { StarIcon, QuoteIcon, MessageCircleIcon } from 'lucide-react';
 
 const TestimonialSection = () => {
   const testimonials = [
@@ -46,7 +46,7 @@ const TestimonialSection = () => {
   };
 
   return (
-    <section className="testimonial-gradient py-16 md:py-24">
+    <section className="bg-neutral py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -55,14 +55,10 @@ const TestimonialSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-orange-200 px-4 py-1.5 text-orange-900">
-            <FlameIcon className="h-5 w-5" />
-            <span className="text-sm font-medium">Customer Love</span>
-          </div>
-          <h2 className="font-heading text-content mb-4 text-3xl font-bold md:text-4xl">
+          <h2 className="font-heading text-content mb-4 text-left text-3xl font-bold md:text-5xl">
             What Our <span className="text-orange-600">Spice Lovers</span> Say
           </h2>
-          <p className="text-lighter mx-auto max-w-2xl">
+          <p className="text-lighter max-w-2xl text-left">
             Don't just take our word for it - hear from those who've experienced the ALAS difference
           </p>
         </motion.div>
@@ -79,7 +75,7 @@ const TestimonialSection = () => {
               key={index}
               variants={item}
               whileHover={{ y: -10 }}
-              className="group bg-card relative overflow-hidden rounded-xl shadow-lg"
+              className="group bg-card relative overflow-hidden rounded-2xl shadow-lg"
             >
               <div className="relative z-10 p-6">
                 <div className="mb-6 flex items-center gap-4">

@@ -18,7 +18,7 @@ const OrderCards = memo(function OrderCards({ data }) {
           key={status}
           className={`flex flex-col items-center justify-center ${getStatusStyle(
             status
-          )} flex-1 rounded-xl p-2 shadow transition-transform duration-400 ease-in-out hover:scale-105 hover:shadow-lg`}
+          )} flex-1 rounded-2xl p-2 shadow transition-transform duration-400 ease-in-out hover:scale-105 hover:shadow-lg`}
           title={status.charAt(0).toUpperCase() + status.slice(1).replaceAll('_', ' ')}
         >
           <span className="mb-1 truncate text-center text-sm font-semibold">
@@ -85,7 +85,7 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
   }
 
   return (
-    <div className="bg-card flex w-full flex-row space-x-4 rounded-xl p-4 ring-1">
+    <div className="bg-card flex w-full flex-row space-x-4 rounded-2xl p-4 ring-1">
       <div className="flex-none cursor-pointer rounded-lg p-4 transition">
         <div className="flex items-center justify-between">
           <div className="text-content">
@@ -97,7 +97,7 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
       </div>
 
       {isLoading ? (
-        <Skeleton className="flex flex-1 items-center justify-center rounded-xl p-2"></Skeleton>
+        <Skeleton className="flex flex-1 items-center justify-center rounded-2xl p-2"></Skeleton>
       ) : hasData ? (
         <OrderCards data={activeData} />
       ) : (

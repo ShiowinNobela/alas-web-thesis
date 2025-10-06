@@ -45,8 +45,8 @@ function Faqs() {
                 <motion.button
                   key={index}
                   onClick={() => setActiveTab(index)}
-                  className={`text-content rounded-xl p-4 text-left font-medium ${
-                    activeTab === index ? 'bg-primary dark:text-black' : 'hover:bg-amber-100'
+                  className={`text-content rounded-2xl p-4 text-left font-medium ${
+                    activeTab === index ? 'bg-primary text-white' : 'hover:bg-primary/50'
                   }`}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
@@ -68,13 +68,13 @@ function Faqs() {
               {questions[activeTab].questions.map((question, qIndex) => (
                 <motion.div
                   key={qIndex}
-                  className="bg-card cursor-pointer rounded-xl border"
+                  className="bg-card cursor-pointer rounded-2xl border"
                   whileHover={cardHover}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => toggleQuestion(activeTab, qIndex)}
                   layout
                 >
-                  <article className="flex items-center justify-between rounded-xl p-4">
+                  <article className="flex items-center justify-between rounded-2xl p-4">
                     <h3 className="font-medium">{question.question}</h3>
                     <div className="text-primary">{show[activeTab][qIndex] ? <Minus /> : <Plus />}</div>
                   </article>

@@ -56,7 +56,7 @@ function App() {
       <ScrollToTop />
       <Toaster
         toastOptions={{
-          classNames: { toast: '!rounded-lg', title: '!text-gray-800' },
+          classNames: { toast: '!rounded-2xl', title: '!text-gray-800' },
         }}
         richColors
         visibleToasts={1}

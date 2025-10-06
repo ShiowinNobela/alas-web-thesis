@@ -22,7 +22,7 @@ export default function ShowcaseButton({
       <Button
         asChild
         className={cn(
-          `group font-heading inline-flex w-fit items-center gap-2 rounded-lg px-5 py-3 font-medium transition-all`,
+          `group font-heading inline-flex w-fit items-center gap-2 rounded-2xl px-5 py-3 font-medium transition-all`,
           bgColor,
           textColor,
           className

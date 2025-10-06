@@ -79,7 +79,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
               transition={{ delay: index * 0.05 }}
               layout
             >
-              <Card className="hover:ring-primary border-primary relative overflow-hidden border-l-5 p-0 hover:ring-1">
+              <Card className="hover:ring-primary border-primary relative overflow-hidden border-l-2 p-0 hover:ring-1">
                 <PackageSearch className="text-primary/7 absolute top-2 left-2 size-32" strokeWidth={1} />
                 {/* New Design I */}
                 <div className="flex flex-col sm:flex-row">
@@ -94,7 +94,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                         </h2>
                         <motion.span
                           whileHover={{ scale: 1.05 }}
-                          className={`inline-flex w-fit items-center rounded-sm bg-gray-100 px-3 py-1 text-xs font-semibold shadow-sm ${getStatusStyle(order?.status || 'unknown')}`}
+                          className={`inline-flex w-fit items-center rounded-2xl bg-gray-100 px-3 py-1 text-xs font-semibold shadow-sm ${getStatusStyle(order?.status || 'unknown')}`}
                         >
                           {order?.status || 'Unknown'}
                         </motion.span>
@@ -126,7 +126,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
                                 custom={i}
                                 whileHover={{ y: -2 }}
                               >
-                                <Card className="text-content flex flex-row gap-3 rounded-lg border p-3 shadow-sm transition-shadow hover:shadow-md">
+                                <Card className="text-content flex flex-row gap-3 rounded-2xl border p-3 shadow-sm transition-shadow hover:shadow-md">
                                   <motion.div
                                     className="size-10 flex-shrink-0 overflow-hidden rounded bg-orange-200 sm:size-12"
                                     whileHover={{ scale: 1.05 }}
