@@ -1,10 +1,32 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import useCartStore from '@/stores/cartStore';
 import { Button } from '../ui/button';
-import { Delete, MilkOff, Minus, Plus, ShoppingCart, ShoppingBag, ArrowRight, Truck, ShieldCheck } from 'lucide-react';
+import { Input } from '../ui/input';
+import { Delete, MilkOff, Minus, Plus, ShoppingCart, ShoppingBag, ArrowRight } from 'lucide-react';
+import CouponCard from '../cards/CouponCard';
+import { AnimatePresence } from 'framer-motion';
 
 function Cart() {
-  const { items, cart_total, isLoading, adjustQuantity, removeItem } = useCartStore();
+  const {
+    items,
+    fetchCart,
+    cart_total,
+    final_total,
+    discount,
+    coupon_code,
+    isLoading,
+    adjustQuantity,
+    removeItem,
+    applyCoupon,
+    removeCoupon,
+  } = useCartStore();
+
+  const [couponInput, setCouponInput] = useState('');
+
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
 
   const handleAdjust = (productId, currentQty, isIncrement, stock) => {
     const newQty = isIncrement ? currentQty + 1 : currentQty - 1;
@@ -13,12 +35,20 @@ function Cart() {
     }
   };
 
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    await applyCoupon(couponInput.trim());
+    setCouponInput('');
+  };
+
   const subtotal = cart_total.toFixed(2);
+  const finalTotal = final_total.toFixed(2);
   const cartEmpty = items.length === 0;
 
   return (
-    <div className="flex flex-col h-full bg-card">
-      <div className="sticky top-0 z-10 p-4 shadow-sm bg-card">
+    <div className="bg-card flex h-full flex-col">
+      {/* Header */}
+      <div className="bg-card sticky top-0 z-10 p-4 shadow-sm">
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center gap-2">
             <ShoppingCart className="text-primary" size={18} />
@@ -27,56 +57,41 @@ function Cart() {
               <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs dark:text-black">{items.length}</span>
             )}
           </div>
-          {!cartEmpty && <p className="text-sm text-brand dark:text-brand-dark font-heading">₱{subtotal}</p>}
+          {!cartEmpty && <p className="text-brand font-heading text-sm">₱{subtotal}</p>}
         </div>
       </div>
 
-      {!cartEmpty && (
-        <div className="flex items-center justify-center gap-3 p-2 border-b text-content bg-admin">
-          <Truck size={12} />
-          <span className="text-xs">Free shipping</span>
-          <div className="w-px h-3 bg-gray-300"></div>
-          <ShieldCheck size={12} className="" />
-          <span className="text-xs">Secure</span>
-        </div>
-      )}
-
-      <main className="flex-1 p-3 overflow-y-auto">
+      {/* Main cart */}
+      <main className="flex-1 overflow-y-auto p-3">
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex h-full flex-col items-center justify-center">
             <div className="mb-2 animate-pulse">
               <ShoppingBag size={30} className="text-lighter" />
             </div>
-            <p className="text-xs text-lighter">Loading cart...</p>
+            <p className="text-lighter text-xs">Loading cart...</p>
           </div>
         ) : cartEmpty ? (
-          <div className="flex flex-col items-center justify-center h-full p-3 text-center">
-            <div className="p-3 mb-3 bg-gray-100 rounded-full">
+          <div className="flex h-full flex-col items-center justify-center p-3 text-center">
+            <div className="mb-3 rounded-full bg-gray-100 p-3">
               <MilkOff size={30} className="text-gray-400" />
             </div>
-            <h2 className="mb-1 text-sm font-semibold text-content">Cart is empty</h2>
-            <p className="max-w-xs mb-4 text-xs text-lighter">Add items to your cart</p>
-            {/* <Link to="/products">
-              <Button className="gap-1 text-xs rounded-full" size="sm">
-                <ShoppingBag size={14} />
-                Shop Now
-              </Button>
-            </Link> */}
+            <h2 className="text-content mb-1 text-sm font-semibold">Cart is empty</h2>
+            <p className="text-lighter mb-4 max-w-xs text-xs">Add items to your cart</p>
           </div>
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
-              <article key={item.product_id} className="flex gap-2 p-3 border-2 bg-card border-border rounded-2xl">
+              <article key={item.product_id} className="bg-card border-primary/50 flex gap-2 rounded-2xl border p-2">
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="flex-shrink-0 object-cover border border-border size-24 rounded-2xl"
+                  className="border-border size-20 flex-shrink-0 rounded-2xl border object-cover"
                 />
 
-                <div className="flex flex-col justify-between flex-1 min-w-0">
+                <div className="flex min-w-0 flex-1 flex-col justify-between">
                   <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0 pr-1">
-                      <h3 className="text-sm text-content font-heading line-clamp-2">{item.name}</h3>
+                    <div className="min-w-0 flex-1 pr-1">
+                      <h3 className="text-content font-heading line-clamp-2 text-sm">{item.name}</h3>
                       <p className="text-content font-heading mt-0.5 text-xs">₱{parseFloat(item.price).toFixed(2)}</p>
                     </div>
                     <button
@@ -88,10 +103,11 @@ function Cart() {
                           : 'text-lighter hover:text-brand'
                       }`}
                     >
-                      <Delete size={20} />
+                      <Delete size={20} className="text-amber-500" />
                     </button>
                   </div>
-                  <div className="flex items-center justify-between mt-2">
+
+                  <div className="mt-2 flex items-center justify-between">
                     <div className="flex items-center gap-1 rounded-full border border-gray-300 px-2 py-0.5">
                       <button
                         onClick={() => handleAdjust(item.product_id, item.quantity, false, item.stock_quantity)}
@@ -105,7 +121,7 @@ function Cart() {
                         <Minus size={10} className="text-primary" />
                       </button>
 
-                      <span className="w-4 text-xs font-medium text-center">
+                      <span className="w-4 text-center text-xs font-medium">
                         {item.pendingAction === 'add' ? '…' : item.quantity}
                       </span>
 
@@ -123,7 +139,7 @@ function Cart() {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-xs font-semibold text-primary">₱{(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-primary text-xs font-semibold">₱{(item.price * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
@@ -133,17 +149,53 @@ function Cart() {
         )}
       </main>
 
+      {/* Bottom summary */}
       {!cartEmpty && (
-        <div className="sticky bottom-0 p-5 pb-8 border-t bg-card">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-content ">Subtotal:</span>
-            <span className="text-base font-bold text-primary dark:text-brand-dark">₱{subtotal}</span>
+        <div className="bg-card sticky bottom-0 space-y-3 border-t p-5 pb-8">
+          {/* Coupon section */}
+          <div className="flex items-center gap-2">
+            <AnimatePresence>
+              {coupon_code ? (
+                <CouponCard key={coupon_code} code={coupon_code} discount={discount} onRemove={removeCoupon} />
+              ) : (
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Enter coupon code"
+                    value={couponInput}
+                    onChange={(e) => setCouponInput(e.target.value)}
+                    className="flex-1 text-xs"
+                  />
+                  <Button size="sm" variant="outline" onClick={handleApplyCoupon}>
+                    Apply
+                  </Button>
+                </div>
+              )}
+            </AnimatePresence>
           </div>
+
+          {/* Totals */}
+          <div className="flex flex-col gap-1 text-sm">
+            <div className="flex justify-between text-gray-600">
+              <span>Subtotal</span>
+              <span>₱{subtotal}</span>
+            </div>
+
+            <div className={`flex justify-between ${discount > 0 ? 'text-green-600' : 'text-lighter'}`}>
+              <span>Discount</span>
+              <span>-₱{discount.toFixed(2)}</span>
+            </div>
+
+            <div className="text-primary flex justify-between font-semibold">
+              <span>Total</span>
+              <span>₱{finalTotal}</span>
+            </div>
+          </div>
+
           <Link to="/CheckoutPage" className="block">
             <Button
               variant="CTA"
               size="sm"
-              className="flex items-center justify-center w-full gap-1 py-2 text-xs font-bold text-white rounded-2xl"
+              className="flex w-full items-center justify-center gap-1 rounded-2xl py-2 text-xs font-bold text-white"
             >
               Checkout
               <ArrowRight size={14} />

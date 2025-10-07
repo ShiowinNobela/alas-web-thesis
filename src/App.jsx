@@ -15,10 +15,9 @@ import { Toaster } from 'sonner';
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
-import AfterCheckOutPage from './pages/userPages/AfterCheckOutPage.jsx';
+import ProductPage from './pages/userPages/ProductListPage.jsx';
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
-const ProductPage = lazy(() => import('./pages/userPages/ProductListPage.jsx'));
 const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
 const AboutUs = lazy(() => import('./pages/userPages/AboutUs.jsx'));
 const RegPage = lazy(() => import('./pages/userPages/RegistrationPage.jsx'));
@@ -27,6 +26,7 @@ const UserSettings = lazy(() => import('./pages/userPages/UserSettings.jsx'));
 const GiveReview = lazy(() => import('./pages/userPages/GiveReview.jsx'));
 const Faqs = lazy(() => import('./pages/userPages/Faqs.jsx'));
 const UserOrderPage = lazy(() => import('./pages/userPages/UserOrderPage.jsx'));
+const AfterCheckOutPage = lazy(() => import('./pages/userPages/AfterCheckOutPage.jsx'));
 const UserViewOrderDetails = lazy(() => import('./pages/userPages/UserViewOrderDetails.jsx'));
 const NotFoundPage = lazy(() => import('./pages/userPages/NotFoundPage.jsx'));
 const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
@@ -49,6 +49,7 @@ const WalkInOrderTable = lazy(() => import('./pages/adminPages/WalkInOrdersTable
 const AdminOrderDetails = lazy(() => import('./pages/adminPages/AdminOrderDetails.jsx'));
 const NotificationPage = lazy(() => import('./pages/adminPages/NotificationPage.jsx'));
 const Notifs = lazy(() => import('./pages/adminPages/Notifs.jsx'));
+const PromotionManagement = lazy(() => import('./pages/adminPages/PromotionManagement.jsx'));
 
 function App() {
   return (
@@ -71,15 +72,7 @@ function App() {
             <Route path="/ProductDetailsPage/:id" element={<ProductDetailsPage />}></Route>
             <Route path="/ContactUs" element={<ContactUs />} />
             <Route path="/Faqs" element={<Faqs />}></Route>
-            <Route
-              path="/AboutUs"
-              element={
-                <Suspense fallback={<LoadingFallback />} key="about">
-                  <AboutUs />
-                </Suspense> // Specific fallback for AboutUs for testing if this is better
-              }
-            />
-
+            <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
 
             {/* Protected user routes */}
@@ -116,6 +109,7 @@ function App() {
               <Route path="SalesPage" element={<SalesPage />} />
               <Route path="NotificationPage" element={<NotificationPage />} />
               <Route path="Notifs" element={<Notifs />} />
+              <Route path="promotion/management" element={<PromotionManagement />} />
             </Route>
           </Route>
 

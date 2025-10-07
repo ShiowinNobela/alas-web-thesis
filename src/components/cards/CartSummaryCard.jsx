@@ -5,7 +5,7 @@ import useCartStore from '@/stores/cartStore';
 
 function CartSummaryCard() {
   const navigate = useNavigate();
-  const { items, cart_total, isLoading, adjustQuantity, removeItem } = useCartStore();
+  const { items, cart_total, final_total, discount, isLoading, adjustQuantity, removeItem } = useCartStore();
 
   const handleAdjust = (productId, currentQty, isIncrement, stock) => {
     const newQty = isIncrement ? currentQty + 1 : currentQty - 1;
@@ -76,12 +76,21 @@ function CartSummaryCard() {
           ))
         )}
       </CardContent>
+
       {/* Totals */}
-      <div className="border-t px-8 pt-6 text-right">
-        <p className="text-sm">
-          Subtotal: <span className="font-medium">₱{cart_total?.toFixed(2) || 0}</span>
-        </p>
-        <p className="text-lg font-bold">Total: ₱{cart_total?.toFixed(2) || 0}</p>
+      <div className="flex flex-col gap-1 border-t px-8 pt-6 text-right text-sm">
+        <div className="flex justify-end gap-2 text-gray-600">
+          <span>Subtotal</span>
+          <span>₱{cart_total?.toFixed(2) || 0}</span>
+        </div>
+        <div className={`flex justify-end gap-2 ${discount > 0 ? 'text-emerald-500' : 'text-lighter'}`}>
+          <span>Discount</span>
+          <span>- ₱{discount?.toFixed(2) || 0}</span>
+        </div>
+        <div className="text-primary flex justify-end gap-2 font-semibold">
+          <span>Total</span>
+          <span>₱{final_total.toFixed(2) || 0}</span>
+        </div>
       </div>
     </Card>
   );
