@@ -33,8 +33,8 @@ function InventoryTable({ products, onEdit, onToggle }) {
               <TableCell className="font-medium">{product.id}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <img src={product.image} alt={product.name} className="size-8 object-cover" />
-                  <span className="font-medium text-gray-900">{product.name}</span>
+                  <img src={product.image} alt={product.name} className="object-cover size-8" />
+                  <span className="font-medium">{product.name}</span>
                 </div>
               </TableCell>
 
@@ -65,7 +65,7 @@ function InventoryTable({ products, onEdit, onToggle }) {
               <TableCell className="text-sm">{new Date(product.updated_at).toLocaleString()}</TableCell>
               <TableCell className="flex items-center gap-2">
                 <Button outline color="gray" size="sm" onClick={() => onEdit(product)}>
-                  <Edit className="h-4 w-4" />
+                  <Edit className="w-4 h-4" />
                 </Button>
                 <ToggleSwitch
                   checked={product.is_active}

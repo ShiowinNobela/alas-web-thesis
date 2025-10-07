@@ -202,7 +202,7 @@ html {
 }
 
 .table-header {
-  @apply bg-gray-700 text-white dark:bg-zinc-900;
+  @apply text-white bg-gray-700 dark:bg-zinc-900;
 }
 
 /* Base Styles */

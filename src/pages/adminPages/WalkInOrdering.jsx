@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Toaster, toast } from 'sonner';
-import { FaPlus, FaMinus } from 'react-icons/fa';
+import { toast } from 'sonner';
+import { FaPlus, FaMinus, FaShoppingCart, FaSearch } from 'react-icons/fa';
 import { TiDeleteOutline } from 'react-icons/ti';
 import WalkInPopUp from '../../components/WalkInPopUp.jsx';
 
@@ -12,6 +12,8 @@ function WalkInOrdering() {
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [discount_amount, setDiscount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = Math.max(0, subtotal - Number(discount_amount) || 0);
   const [userInput, setUserInput] = useState({
@@ -28,6 +30,10 @@ function WalkInOrdering() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const filteredProducts = data.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,196 +82,270 @@ function WalkInOrdering() {
     );
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+    toast.info('Cart cleared');
+  };
+
   return (
     <>
-      <div className="flex h-full flex-col items-center justify-center overflow-x-auto bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 p-6">
-        <div className="flex min-h-full w-full flex-col overflow-auto p-5">
-          <div className="mx-auto flex w-full max-w-[1400px] flex-row overflow-hidden rounded-2xl shadow-2xl drop-shadow-2xl">
-            {/* form */}
-            <div className="flex-grow border-r bg-white p-10">
-              <form className="w-full" onSubmit={handleSubmit}>
-                {/* customer info */}
-                <div className="mb-5 grid md:grid-cols-2 md:gap-6">
-                  <div className="group relative z-0 w-full">
-                    <input
-                      type="text"
-                      name="Customer_Name"
-                      required
-                      value={userInput.customer_name}
-                      onChange={(e) =>
-                        setUserInput({
-                          ...userInput,
-                          customer_name: e.target.value,
-                        })
-                      }
-                      id="floating_customer_name"
-                      placeholder=" "
-                      className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm focus:border-blue-600 focus:ring-0 focus:outline-none"
-                    />
-                    <label
-                      htmlFor="floating_customer_name"
-                      className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600"
-                    >
-                      Customer Name
-                    </label>
-                  </div>
+      <div className="min-h-screen p-4 bg-gradient-to-br from-gray-50 via-orange-50 to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-6 lg:flex-row">
+            {/* Left Section - Customer Info & Products */}
+            <div className="flex-1 p-6 bg-white shadow-lg dark:bg-gray-800 rounded-2xl">
+              {/* Header */}
+              <div className="mb-6">
+                <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Walk-in Order</h1>
+              </div>
 
-                  <div className="group relative z-0 w-full">
-                    <input
-                      type="text"
-                      name="customer_email"
-                      required
-                      value={userInput.customer_email}
-                      onChange={(e) =>
-                        setUserInput({
-                          ...userInput,
-                          customer_email: e.target.value,
-                        })
-                      }
-                      id="floating_customer_email"
-                      placeholder=" "
-                      className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm focus:border-blue-600 focus:ring-0 focus:outline-none"
-                    />
-                    <label
-                      htmlFor="floating_customer_email"
-                      className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600"
-                    >
-                      Email
-                    </label>
+              {/* Customer Info */}
+              <form onSubmit={handleSubmit}>
+                <div className="mb-8">
+                  <h2 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">Customer Information</h2>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                      <label htmlFor="customer_name" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Customer Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="customer_name"
+                        required
+                        value={userInput.customer_name}
+                        onChange={(e) => setUserInput({ ...userInput, customer_name: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="Enter customer name"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="customer_email" className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        id="customer_email"
+                        required
+                        value={userInput.customer_email}
+                        onChange={(e) => setUserInput({ ...userInput, customer_email: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="Enter email address"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* product list */}
-                <div className="flex flex-col items-center justify-center">
-                  <div className="my-5 grid max-h-[350px] w-full grid-cols-4 gap-4 overflow-y-auto p-3">
-                    {data.map((d) => (
-                      <div
-                        key={d.id}
-                        className="flex cursor-pointer flex-col items-center justify-center rounded border p-3 shadow-sm"
-                        onClick={() => {
-                          setOpen(true);
-                          setSelectedProduct(d);
-                        }}
-                      >
-                        <img src={d.image} alt="/" className="mb-2 h-[100px] w-[100px] object-contain" />
-                        <h1 className="text-center font-semibold">{d.name}</h1>
-                        <p className="text-gray-700">₱ {d.price}</p>
+                {/* Products Section */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Available Products</h2>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">{filteredProducts.length} products</span>
+                  </div>
 
-                        <WalkInPopUp open={open && selectedProduct?.id === d.id} onClose={() => setOpen(false)}>
-                          <div className="p-3">
-                            <h1 className="mb-2">{d.name}</h1>
-                            <input
-                              type="number"
-                              min={1}
-                              value={quantity}
-                              onChange={(e) => setQuantity(Number(e.target.value))}
-                              className="w-full rounded border px-2 py-1"
+                  {/* Search Bar */}
+                  <div className="relative mb-4">
+                    <FaSearch className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search products..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    />
+                  </div>
+                  
+                  {/* Products Grid with Fixed Height */}
+                  <div className="pr-2 overflow-y-auto h-96">
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                      {filteredProducts.map((d) => (
+                        <div
+                          key={d.id}
+                          className="p-3 transition-all duration-200 bg-white border border-transparent cursor-pointer group dark:bg-gray-700 rounded-xl hover:shadow-lg hover:border-orange-300 dark:hover:border-orange-400"
+                          onClick={() => {
+                            setOpen(true);
+                            setSelectedProduct(d);
+                          }}
+                        >
+                          <div className="flex items-center justify-center p-2 mb-3 overflow-hidden border border-gray-200 rounded-lg aspect-square bg-gray-50 dark:bg-gray-600 dark:border-gray-500">
+                            <img 
+                              src={d.image} 
+                              alt={d.name}
+                              className="object-contain w-full h-full transition-transform duration-200 group-hover:scale-105" 
                             />
                           </div>
-                          <div className="mt-4 flex justify-center gap-4">
-                            <button
-                              type="button"
-                              onClick={handleAddToCart}
-                              className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                            >
-                              Add to Cart
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setOpen(false)}
-                              className="rounded-lg bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </WalkInPopUp>
-                      </div>
-                    ))}
+                          <h3 className="mb-1 text-sm font-semibold text-gray-800 dark:text-white line-clamp-2">
+                            {d.name}
+                          </h3>
+                          <p className="font-bold text-orange-600 dark:text-orange-400">₱{d.price}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* checkout button */}
+                {/* Checkout Button */}
                 <button
                   type="submit"
-                  className="mt-5 w-full rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none sm:w-auto"
+                  disabled={cartItems.length === 0}
+                  className="flex items-center justify-center w-full gap-2 px-6 py-3 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  Checkout
+                  <FaShoppingCart />
+                  Checkout Order
                 </button>
               </form>
             </div>
 
-            {/* cart */}
-            <div className="flex h-full w-[350px] flex-col bg-white">
-              <div className="flex h-full flex-col p-5">
-                <div className="mb-4 flex flex-col items-center justify-center">
-                  <h1 className="mb-4 text-2xl font-semibold">Cart</h1>
+            {/* Right Section - Cart */}
+            <div className="w-full p-6 bg-white shadow-lg lg:w-96 dark:bg-gray-800 rounded-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <FaShoppingCart className="text-xl text-blue-600 dark:text-blue-400" />
+                  <h2 className="text-xl font-bold text-gray-800 dark:text-white">Order Summary</h2>
                 </div>
+                {cartItems.length > 0 && (
+                  <button
+                    onClick={clearCart}
+                    className="text-sm text-red-500 transition-colors hover:text-red-700 dark:hover:text-red-400"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
 
-                <div className="flex flex-1 flex-col">
-                  <div className="flex-1 overflow-y-auto">
-                    {cartItems.length === 0 ? (
-                      <p className="text-center text-gray-500">No items in cart</p>
-                    ) : (
-                      cartItems.map((item) => (
-                        <div key={item.id} className="mb-2 flex items-center justify-between">
-                          <div className="flex w-2/3 flex-col">
-                            <h2 className="mb-2 text-center text-lg font-semibold">{item.name}</h2>
-                            <div className="grid grid-cols-3 items-center gap-2">
-                              <FaPlus
-                                className="mx-auto cursor-pointer hover:text-orange-600"
-                                onClick={() => handleChangeCartQuantity(item.id, 1)}
-                              />
-                              <FaMinus
-                                className="mx-auto cursor-pointer hover:text-orange-600"
-                                onClick={() => handleChangeCartQuantity(item.id, -1)}
-                              />
-                              <p className="text-center font-bold">
-                                ₱ {item.price} x {item.quantity}
-                              </p>
-                            </div>
-                          </div>
-                          <TiDeleteOutline
-                            className="h-5 w-5 cursor-pointer text-red-600"
-                            onClick={() => handleRemoveFromCart(item.id)}
-                          />
-                        </div>
-                      ))
-                    )}
+              {/* Cart Items */}
+              <div className="pr-2 space-y-4 overflow-y-auto max-h-96">
+                {cartItems.length === 0 ? (
+                  <div className="py-8 text-center">
+                    <FaShoppingCart className="mx-auto mb-3 text-4xl text-gray-300 dark:text-gray-600" />
+                    <p className="text-gray-500 dark:text-gray-400">No items in cart</p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500">Select products to add to order</p>
                   </div>
-
-                  {/* total */}
-                  <div className="mt-auto border-t pt-4">
-                    <div className="text-md mb-2 flex justify-between font-semibold">
-                      <p>Subtotal:</p>
-                      <p>₱ {subtotal}</p>
-                    </div>
-                    <div className="text-md mb-2 flex items-center justify-between font-semibold">
-                      <p>Discount:</p>
-                      <div className="flex flex-row items-center gap-2">
-                        <p>₱</p>
-                        <input
-                          type="number"
-                          className="h-10 w-20 border-b border-gray-400 px-2 focus:border-orange-500 focus:outline-none"
-                          value={discount_amount}
-                          min={0}
-                          max={subtotal}
-                          onChange={(e) => setDiscount(e.target.value)}
-                        />
+                ) : (
+                  cartItems.map((item) => (
+                    <div key={item.id} className="p-3 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <h3 className="text-sm font-semibold text-gray-800 dark:text-white line-clamp-2">
+                            {item.name}
+                          </h3>
+                          <p className="font-bold text-orange-600 dark:text-orange-400">₱{item.price}</p>
+                        </div>
+                        <button
+                          onClick={() => handleRemoveFromCart(item.id)}
+                          className="p-1 text-red-500 transition-colors hover:text-red-700 dark:hover:text-red-400"
+                        >
+                          <TiDeleteOutline className="text-xl" />
+                        </button>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleChangeCartQuantity(item.id, -1)}
+                            className="flex items-center justify-center w-6 h-6 transition-colors bg-gray-200 rounded-full dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500"
+                          >
+                            <FaMinus className="text-xs" />
+                          </button>
+                          <span className="font-semibold text-center text-gray-800 dark:text-white min-w-8">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() => handleChangeCartQuantity(item.id, 1)}
+                            className="flex items-center justify-center w-6 h-6 transition-colors bg-gray-200 rounded-full dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500"
+                          >
+                            <FaPlus className="text-xs" />
+                          </button>
+                        </div>
+                        <span className="font-bold text-gray-800 dark:text-white">
+                          ₱{(item.price * item.quantity).toLocaleString()}
+                        </span>
                       </div>
                     </div>
+                  ))
+                )}
+              </div>
 
-                    <div className="flex justify-between text-xl font-extrabold uppercase">
-                      <p>Total:</p>
-                      <p>₱ {total}</p>
+              {/* Cart Totals */}
+              {cartItems.length > 0 && (
+                <div className="pt-4 mt-4 space-y-3 border-t border-gray-200 dark:border-gray-600">
+                  <div className="flex items-center justify-between text-gray-600 dark:text-gray-300">
+                    <span>Subtotal:</span>
+                    <span className="font-semibold">₱{subtotal.toLocaleString()}</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600 dark:text-gray-300">Discount:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-500 dark:text-gray-400">₱</span>
+                      <input
+                        type="number"
+                        className="w-20 px-1 py-1 text-right border-b border-gray-300 [appearance:textfield] dark:border-gray-600 focus:border-orange-500 focus:outline-none dark:bg-transparent dark:text-white"
+                        value={discount_amount}
+                        min={0}
+                        max={subtotal}
+                        onChange={(e) => setDiscount(e.target.value)}
+                      />
                     </div>
                   </div>
+                    
+                  <div className="flex items-center justify-between pt-3 text-lg font-bold text-gray-800 border-t border-gray-200 dark:text-white dark:border-gray-600">
+                    <span>Total:</span>
+                    <span className="text-orange-600 dark:text-orange-400">₱{total.toLocaleString()}</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
-
-          <Toaster richColors />
         </div>
+
+        {/* Product Popup */}
+        <WalkInPopUp open={open} onClose={() => setOpen(false)}>
+          <div className="p-6 bg-white rounded-lg w-xs dark:bg-gray-800">
+            <h2 className="mb-4 text-xl font-bold text-gray-800 dark:text-white">{selectedProduct?.name}</h2>
+            <div className="flex items-center gap-4 mb-6">
+              <img 
+                src={selectedProduct?.image} 
+                alt={selectedProduct?.name}
+                className="object-contain w-20 h-20 p-2 rounded-lg bg-gray-50 dark:bg-gray-600"
+              />
+              <div>
+                <p className="text-lg font-bold text-orange-600 dark:text-orange-400">₱{selectedProduct?.price}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Select quantity</p>
+              </div>
+            </div>
+            
+            <div className="mb-6">
+              <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                Quantity
+              </label>
+              <input
+                type="number"
+                min={1}
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white [appearance:textfield]"
+              />
+            </div>
+            
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="flex-1 px-4 py-3 font-semibold text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700"
+              >
+                Add to Cart
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="flex-1 px-4 py-3 font-semibold text-gray-700 transition-colors duration-200 bg-gray-300 rounded-lg hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-gray-300"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </WalkInPopUp>
+
       </div>
     </>
   );

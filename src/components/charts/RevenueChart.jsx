@@ -28,8 +28,9 @@ const RevenueChart = ({
     },
     tooltip: {
       y: { formatter: (value) => `₱ ${value}` },
+      style: { background:'000000' },
     },
-    theme: { mode: 'light' },
+    theme: { mode: 'dark' },
   };
 
   return (

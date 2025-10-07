@@ -33,11 +33,11 @@ export default function AdminOrdersTable({
 
   // Status icons mapping
   const statusIcons = {
-    pending: <HiOutlineClock className="mr-1 h-4 w-4" />,
-    processing: <HiOutlineClock className="mr-1 h-4 w-4" />,
-    shipping: <HiTruck className="mr-1 h-4 w-4" />,
-    delivered: <HiCheck className="mr-1 h-4 w-4" />,
-    cancelled: <HiX className="mr-1 h-4 w-4" />,
+    pending: <HiOutlineClock className="w-4 h-4 mr-1" />,
+    processing: <HiOutlineClock className="w-4 h-4 mr-1" />,
+    shipping: <HiTruck className="w-4 h-4 mr-1" />,
+    delivered: <HiCheck className="w-4 h-4 mr-1" />,
+    cancelled: <HiX className="w-4 h-4 mr-1" />,
   };
 
   // Format date consistently
@@ -56,7 +56,7 @@ export default function AdminOrdersTable({
           <TableHeadCell className="table-header">Order Information</TableHeadCell>
           <TableHeadCell className="table-header">Items</TableHeadCell>
           <TableHeadCell className="table-header">
-            <button className="flex cursor-pointer items-center hover:underline" onClick={() => handleSort('date')}>
+            <button className="flex items-center cursor-pointer hover:underline" onClick={() => handleSort('date')}>
               DATE
               <svg
                 className="ms-1.5 h-3 w-3"
@@ -74,7 +74,7 @@ export default function AdminOrdersTable({
             </button>
           </TableHeadCell>
           <TableHeadCell className="table-header">
-            <button className="flex cursor-pointer items-center hover:underline" onClick={() => handleSort('total')}>
+            <button className="flex items-center cursor-pointer hover:underline" onClick={() => handleSort('total')}>
               TOTAL
               <svg
                 className="ms-1.5 h-3 w-3"
@@ -104,7 +104,7 @@ export default function AdminOrdersTable({
             <TableRow>
               <TableCell colSpan={9} className="px-2 py-8 text-center">
                 <div className="flex justify-center">
-                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+                  <div className="w-8 h-8 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
                 </div>
               </TableCell>
             </TableRow>
@@ -123,7 +123,7 @@ export default function AdminOrdersTable({
                   <TableCell>
                     <div className="flex items-center">
                       <div>
-                        <p className="font-primary text-sm">{order.username}</p>
+                        <p className="text-sm font-primary">{order.username}</p>
                         <Badge color="indigo" className="mt-1 w-fit">
                           #{order.id}
                         </Badge>
@@ -143,7 +143,7 @@ export default function AdminOrdersTable({
                         </div>
                       ))}
                       {order.items.length > 3 && (
-                        <div className="text-lighter text-xs whitespace-nowrap">
+                        <div className="text-xs text-lighter whitespace-nowrap">
                           +{order.items.length - 2} more items
                         </div>
                       )}
@@ -152,17 +152,17 @@ export default function AdminOrdersTable({
 
                   <TableCell className="min-w-[140px]">
                     <div className="text-sm font-medium">{formattedDate.date}</div>
-                    <div className="text-lighter text-xs">{formattedDate.time}</div>
+                    <div className="text-xs text-lighter">{formattedDate.time}</div>
                   </TableCell>
 
                   <TableCell className="font-medium">₱ {parseFloat(order.total_amount).toLocaleString()}</TableCell>
 
-                  <TableCell className=" ">
+                  <TableCell className="">
                     <PaymentMethodIcon method={order?.payment_method || 'unknown'} />
                   </TableCell>
 
                   <TableCell>
-                    <div className="flex w-fit flex-col items-start space-y-1">
+                    <div className="flex flex-col items-start space-y-1 w-fit">
                       <div className={`${getStatusStyle(order.status)} flex items-center text-xs`}>
                         {statusIcons[order.status] && <span className="mr-1">{statusIcons[order.status]}</span>}
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
@@ -197,7 +197,7 @@ export default function AdminOrdersTable({
                         </button>
                       </Tooltip>
                     ) : order.status === 'cancelled' ? (
-                      <span className="text-sm text-gray-500 italic">Order Cancelled</span>
+                      <span className="text-sm italic text-gray-500">Order Cancelled</span>
                     ) : order.status === 'processing' ? (
                       <button
                         onClick={() => onStatusUpdateClick(order.id, 'shipping', 'Ship Order', 'Ship Order')}
@@ -213,8 +213,8 @@ export default function AdminOrdersTable({
                         Mark Delivered
                       </button>
                     ) : order.status === 'delivered' ? (
-                      <div className="flex items-center text-sm text-green-800">
-                        <HiCheckCircle className="mr-1 h-5 w-5" />
+                      <div className="flex items-center text-sm text-emerald-500">
+                        <HiCheckCircle className="w-5 h-5 mr-1" />
                         Delivered
                       </div>
                     ) : null}
@@ -250,10 +250,10 @@ export default function AdminOrdersTable({
           )}
         </TableBody>
 
-        <tfoot className="bg-black text-sm text-white">
+        <tfoot className="text-sm text-white bg-black">
           <tr>
             <td colSpan={9} className="px-6 py-6">
-              <ul className="list-inside list-disc space-y-1">
+              <ul className="space-y-1 list-disc list-inside">
                 <li>Click on a column header to sort orders.</li>
                 <li>Use the search bar to find specific order IDs.</li>
                 <li>Filter by order date range using the date pickers.</li>
