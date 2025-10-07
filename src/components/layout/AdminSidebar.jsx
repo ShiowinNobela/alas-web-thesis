@@ -12,6 +12,7 @@ import {
   Activity,
   Bell,
   ShoppingCart,
+  Ticket,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -26,6 +27,7 @@ const sidebarItems = [
   { path: '/Admin/SalesPage', name: 'Sales Summary', icon: CreditCard },
   { path: '/Admin/NotificationPage', name: 'Activity Log', icon: Activity },
   { path: '/Admin/Notifs', name: 'Notifications', icon: Bell },
+  { path: '/Admin/promotion/management', name: 'Promotion Management', icon: Ticket },
 ];
 
 function Sidebar() {
@@ -39,7 +41,7 @@ function Sidebar() {
   const getNavItemClass = (path) => {
     const isActive = location.pathname === path;
     return `flex items-center p-2 rounded-2xl text-sm ${
-      isActive ? 'text-primary hover:bg-gray-700' : 'text-white hover:bg-gray-700'
+      isActive ? 'text-red-400 hover:bg-gray-700' : 'text-white hover:bg-gray-700'
     } group cursor-pointer`;
   };
 

@@ -18,7 +18,7 @@ function ProductCard({ product }) {
           navigate(`/ProductDetailsPage/${product.id}`);
         }}
       >
-        <div className="flex w-45 flex-shrink-0 items-center justify-center overflow-hidden">
+        <div className="flex w-40 flex-shrink-0 items-center justify-center overflow-hidden">
           <img src={product.image} alt={product.name} className="h-full w-full object-contain" />
         </div>
 
