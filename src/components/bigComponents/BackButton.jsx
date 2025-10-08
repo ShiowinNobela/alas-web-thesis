@@ -10,7 +10,7 @@ function BackButton({ className = '', label = 'Go Back' }) {
     <Button
       variant="ghost"
       onClick={() => navigate(-1)}
-      className={`group hover:text-content text-lighter inline-flex items-center gap-2 transition-colors ${className}`}
+      className={`group inline-flex items-center gap-2 text-yellow-400 transition-colors hover:text-yellow-500 ${className}`}
     >
       <ArrowLeftIcon size={20} className="transition-transform duration-200 group-hover:-translate-x-1" />
       {label}
