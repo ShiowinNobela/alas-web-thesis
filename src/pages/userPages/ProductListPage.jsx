@@ -59,7 +59,7 @@ function ProductPage() {
       <div className="flex pb-40">
         <div className="relative h-full flex-1">
           {/* Header */}
-          <div className="flex items-center justify-between py-10 pr-4 pl-6 md:px-20">
+          <div className="flex items-center justify-between py-8 pr-4 pl-6 md:px-20">
             <div>
               <h1 className="font-heading text-content text-3xl font-semibold md:text-4xl">Alas Menu and Spices</h1>
               <p className="text-lighter my-2">From mild to wild - find your perfect heat level</p>
@@ -73,7 +73,7 @@ function ProductPage() {
                 placeholder="Search products..."
                 value={globalFilter ?? ''}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="border-primary w-xs rounded-2xl border-2 py-5"
+                className="border-primary w-xs rounded-2xl bg-red-100 py-6"
               />
             </div>
           </div>

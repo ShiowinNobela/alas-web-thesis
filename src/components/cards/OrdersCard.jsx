@@ -10,7 +10,7 @@ import { Card } from '../ui/card';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import PaymentMethodIcon from '@/components/bigComponents/PaymentMethodsIcon';
 
-export default function OrdersTable({ orders, onCancelOrder }) {
+export default function OrdersCard({ orders, onCancelOrder }) {
   const navigate = useNavigate();
   const [expandedOrderIds, setExpandedOrderIds] = useState([]);
 
@@ -242,7 +242,7 @@ export default function OrdersTable({ orders, onCancelOrder }) {
   );
 }
 
-OrdersTable.propTypes = {
+OrdersCard.propTypes = {
   orders: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,

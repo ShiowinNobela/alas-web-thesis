@@ -1,5 +1,5 @@
 export const getStatusStyle = (status) => {
-  const baseStyle = 'px-2 py-1.5 rounded-xl text-sm font-heading capitalize';
+  const baseStyle = 'px-2 py-1.5 rounded-2xl text-sm font-heading capitalize';
 
   const colorMap = {
     pending: 'bg-orange-200 text-orange-900',

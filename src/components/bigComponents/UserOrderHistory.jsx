@@ -2,16 +2,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import axios from 'axios';
-import {
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  Truck,
-  Package,
-  MessageSquare,
-  User,
-  XCircle,
-} from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, Truck, Package, MessageSquare, User, XCircle } from 'lucide-react';
 import {
   Timeline,
   TimelineContent,
@@ -84,8 +75,7 @@ const StatusInfoCard = ({ currentStatus }) => {
       case 'delivered':
         return {
           description: 'Your order has been successfully delivered.',
-          action:
-            'Please check your items and contact us if there are any issues',
+          action: 'Please check your items and contact us if there are any issues',
         };
       case 'cancelled':
         return {
@@ -123,21 +113,15 @@ const StatusInfoCard = ({ currentStatus }) => {
         >
           <IconComponent size={16} />
         </div>
-        <span className="font-medium">
-          {statusTitles[currentStatus.status] || 'Order Processing'}
-        </span>
+        <span className="font-medium">{statusTitles[currentStatus.status] || 'Order Processing'}</span>
       </div>
-      <p className="mt-3 text-sm text-muted-foreground">
-        {details.description}
-      </p>
-      <p className="mt-2 text-sm font-medium text-muted-foreground">
-        {details.action}
-      </p>
+      <p className="text-muted-foreground mt-3 text-sm">{details.description}</p>
+      <p className="text-muted-foreground mt-2 text-sm font-medium">{details.action}</p>
     </div>
   );
 };
 
-export default function AdminNotes({ order }) {
+export default function UserOrderHistory({ order }) {
   const {
     data: orderHistory = [],
     isLoading,
@@ -152,7 +136,7 @@ export default function AdminNotes({ order }) {
     return (
       <Card>
         <CardContent className="py-8 text-center">
-          <div className="w-8 h-8 mx-auto border-b-2 border-blue-600 rounded-full animate-spin"></div>
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600"></div>
           <p className="mt-2 text-sm text-gray-500">Loading timeline...</p>
         </CardContent>
       </Card>
@@ -170,16 +154,13 @@ export default function AdminNotes({ order }) {
   }
 
   // Sort history with most recent first
-  const sortedHistory = [...orderHistory].sort(
-    (a, b) => new Date(b.status_date) - new Date(a.status_date)
-  );
-
+  const sortedHistory = [...orderHistory].sort((a, b) => new Date(b.status_date) - new Date(a.status_date));
   const currentStatus = sortedHistory[0];
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2 text-lg">
-        <CardTitle>Order Timeline</CardTitle>
+        <CardTitle className="font-bold">Order Timeline</CardTitle>
       </CardHeader>
 
       <CardContent className="px-10">
@@ -191,9 +172,7 @@ export default function AdminNotes({ order }) {
           <div className="flex flex-col sm:flex-row">
             <Timeline className="flex-1">
               {sortedHistory.map((entry, index) => {
-                const Icon =
-                  statusIcons[entry.status] ||
-                  (entry.admin_id ? User : MessageSquare);
+                const Icon = statusIcons[entry.status] || (entry.admin_id ? User : MessageSquare);
                 const isCurrent = index === 0;
                 const isAdminNote = entry.admin_id;
 
@@ -210,36 +189,24 @@ export default function AdminNotes({ order }) {
                         {dayjs(entry.status_date).format('MMM D, YYYY h:mm A')}
                       </TimelineDate>
                       <TimelineTitle
-                        className={cn(
-                          "sm:-mt-0.5",
-                          isCurrent ? "font-semibold" : "text-muted-foreground"
-                        )}
+                        className={cn('sm:-mt-0.5', isCurrent ? 'font-semibold' : 'text-muted-foreground')}
                       >
-                        {isAdminNote
-                          ? 'Admin Note'
-                          : statusTitles[entry.status] || 'System Note'}
+                        {isAdminNote ? 'Admin Note' : statusTitles[entry.status] || 'System Note'}
                       </TimelineTitle>
                       <TimelineIndicator
                         className={cn(
                           'flex size-6 items-center justify-center border-none',
-                          isCurrent
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-muted'
+                          isCurrent ? 'bg-primary text-primary-foreground' : 'bg-muted'
                         )}
                       >
                         <Icon size={14} />
                       </TimelineIndicator>
                     </TimelineHeader>
                     <TimelineContent>
-                      <p className={cn(
-                        "text-sm",
-                        !isCurrent && "text-muted-foreground"
-                      )}>
+                      <p className={cn('text-sm', !isCurrent && 'text-muted-foreground')}>
                         {entry.notes || statusMessages[entry.status]}
                         {isAdminNote && (
-                          <span className="block mt-1 text-muted-foreground">
-                            by {entry.admin_name || 'Admin'}
-                          </span>
+                          <span className="text-muted-foreground mt-1 block">by {entry.admin_name || 'Admin'}</span>
                         )}
                       </p>
                     </TimelineContent>
@@ -261,6 +228,6 @@ StatusInfoCard.propTypes = {
   }),
 };
 
-AdminNotes.propTypes = {
+UserOrderHistory.propTypes = {
   order: PropTypes.object.isRequired,
 };

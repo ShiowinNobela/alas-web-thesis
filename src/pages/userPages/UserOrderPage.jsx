@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import OrdersTable from '@/components/cards/OrdersCard';
 import { useSearchParams } from 'react-router-dom';
 import OrderFiltersPanel from '@/components/filters/orderFilterSidebar';
 import { toast } from 'sonner';
@@ -13,6 +12,7 @@ import CancelOrderModal from '@/components/modals/CanceLOrderModal';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
 import ErrorState from '@/components/States/ErrorState';
+import OrdersCard from '@/components/cards/OrdersCard';
 
 function UserViewOrderPage() {
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -128,7 +128,7 @@ function UserViewOrderPage() {
                   />
                 ) : (
                   <div className="space-y-4">
-                    <OrdersTable
+                    <OrdersCard
                       orders={orders || []}
                       onCancelOrder={(id) => {
                         setCancelingOrderId(id);

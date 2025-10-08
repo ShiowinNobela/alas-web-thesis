@@ -10,7 +10,7 @@ function PromotionManagement() {
   const { control, handleSubmit, reset } = useForm();
 
   const mutation = useMutation({
-    mutationFn: (newCoupon) => axios.post('http://localhost:3000/api/coupons', newCoupon).then((res) => res.data),
+    mutationFn: (newCoupon) => axios.post('/api/coupons', newCoupon).then((res) => res.data),
     onSuccess: () => {
       toast.success('Coupon created successfully!');
       reset({
