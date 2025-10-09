@@ -13,20 +13,21 @@ function ProductCard({ product }) {
   return (
     <>
       <Card
-        className="group hover:ring-primary border-primary flex cursor-pointer flex-row gap-4 border-l-3 p-4 transition-transform sm:hover:scale-[1.02] sm:hover:ring-2"
+        className="group hover:ring-primary border-primary flex cursor-pointer flex-col border-l-3 p-4 transition-transform sm:hover:scale-[1.02] sm:hover:ring-2"
         onClick={() => {
           navigate(`/ProductDetailsPage/${product.id}`);
         }}
       >
-        <div className="flex w-40 flex-shrink-0 items-center justify-center overflow-hidden">
-          <img src={product.image} alt={product.name} className="h-full w-full object-contain" />
+        <div className="mb-4 flex w-full items-center justify-center overflow-hidden">
+          <img src={product.image} alt={product.name} className="h-42 w-full object-contain duration-200" />
         </div>
 
+        {/* 📄 Product details below */}
         <div className="flex flex-1 flex-col justify-between text-left">
           <div>
-            <h3 className="font-heading text-content line-clamp-1 text-xl font-bold">{product.name}</h3>
+            <h3 className="font-heading text-content line-clamp-1 text-lg font-bold">{product.name}</h3>
             <p className="text-lighter mb-2 text-sm capitalize">{product.category}</p>
-            <p className="text-lighter mb-2 line-clamp-2 text-sm">{product.description}</p>
+            <p className="text-lighter mb-2 line-clamp-2 text-xs">{product.description}</p>
 
             <div className="mb-2 flex items-center">
               {[...Array(5)].map((_, i) => (
@@ -34,16 +35,20 @@ function ProductCard({ product }) {
               ))}
               <p className="ml-2 text-xs">Super Hawt</p>
             </div>
-            <div className="flex flex-row gap-4">
-              <p className="text-sm text-green-600">Stock: {product.stock_quantity - product.reserved_quantity}</p>
-              <p className="text-sm text-sky-600">Reserved: {product.reserved_quantity}</p>
+
+            <div className="flex flex-row justify-between text-sm">
+              <p className="text-green-600">Stock: {product.stock_quantity - product.reserved_quantity}</p>
+              <p className="text-sky-600">Reserved: {product.reserved_quantity}</p>
             </div>
-            <p className="font-heading pt-2 font-bold text-emerald-500">₱ {parseFloat(product.price).toFixed(2)}</p>
+
+            <p className="font-heading text-primary pt-2 text-lg font-bold">
+              ₱ {parseFloat(product?.price).toFixed(2)}
+            </p>
           </div>
 
-          <div className="mt-2 flex items-center justify-between">
+          <div className="mt-4">
             <Button
-              className="flex w-full items-center gap-2"
+              className="flex w-full items-center justify-center gap-2"
               onClick={(e) => {
                 e.stopPropagation();
                 handleAdd();
