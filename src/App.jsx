@@ -32,6 +32,7 @@ const NotFoundPage = lazy(() => import('./pages/userPages/NotFoundPage.jsx'));
 const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
 const VerifyEmailPage = lazy(() => import('./pages/userPages/VerifyEmailPage.jsx'));
 const ReviewPage = lazy(() => import('./pages/userPages/ReviewPage.jsx'));
+const ForgotPasswordPage = lazy (() => import ('./pages/userPages/ForgotPasswordPage.jsx'))
 
 // Admin Pages
 const AdminDashboard = lazy(() => import('./pages/adminPages/AdminDashboard.jsx'));
@@ -74,6 +75,7 @@ function App() {
             <Route path="/Faqs" element={<Faqs />}></Route>
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
+            <Route path="/ForgotPassword" element={<ForgotPasswordPage />}></Route>
 
             {/* Protected user routes */}
             <Route element={<RoleBasedRoute allowedRoles={['customer']} />}>

@@ -74,18 +74,18 @@ function LoginPage() {
   }, [isAuthenticated, user, navigate]);
 
   return (
-    <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">{/* ...background effects... */}</div>
-      <Card className="text-content w-full max-w-md p-4 sm:p-8">
+    <section className="flex items-center justify-center min-h-screen px-4 py-8 bg-neutral pb-30">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">{/* ...background effects... */}</div>
+      <Card className="w-full max-w-md p-4 text-content sm:p-8">
         <div className="space-y-6">
           <div className="space-y-1">
             <img
               src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
               alt="Alas Delis Logo"
-              className="mx-auto h-20 w-20 object-contain"
+              className="object-contain w-20 h-20 mx-auto"
             />
-            <h1 className="text-content font-heading text-center text-3xl font-bold">SIGN IN</h1>
-            <p className="text-lighter text-center text-sm">Welcome to Alas Delis and Spices.</p>
+            <h1 className="text-3xl font-bold text-center text-content font-heading">SIGN IN</h1>
+            <p className="text-sm text-center text-lighter">Welcome to Alas Delis and Spices.</p>
           </div>
 
           <form className="space-y-4" onSubmit={handleLogin}>
@@ -111,13 +111,13 @@ function LoginPage() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" className="h-4 w-4 rounded border-gray-300" disabled={loading} />
+                <input type="checkbox" className="w-4 h-4 border-gray-300 rounded" disabled={loading} />
                 Remember me
               </label>
               <button
                 type="button"
-                className="text-primary cursor-pointer border-none bg-transparent p-0 text-sm font-medium hover:underline"
-                onClick={() => toast.info('Forgot password functionality coming soon!')}
+                className="p-0 text-sm font-medium bg-transparent border-none cursor-pointer text-primary hover:underline"
+                onClick={() => navigate('/ForgotPassword')}
                 disabled={loading}
                 aria-label="Forgot password"
               >
@@ -125,19 +125,19 @@ function LoginPage() {
               </button>
             </div>
 
-            <Button type="submit" className="font-heading w-full uppercase" disabled={loading}>
+            <Button type="submit" className="w-full uppercase font-heading" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign In'}
             </Button>
 
             <PromptLink promptText="Don’t have an account yet?" linkText="Create an account" to="/RegPage" />
 
-            <p className="text-lighter text-center text-xs">
+            <p className="text-xs text-center text-lighter">
               By clicking continue, you agree to our{' '}
-              <a href="/terms-of-service" className="hover:text-primary underline">
+              <a href="/terms-of-service" className="underline hover:text-primary">
                 Terms of Service
               </a>{' '}
               and{' '}
-              <a href="/privacy-policy" className="hover:text-primary underline">
+              <a href="/privacy-policy" className="underline hover:text-primary">
                 Privacy Policy
               </a>
               .
