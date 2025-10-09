@@ -31,21 +31,21 @@ function Faqs() {
   };
 
   return (
-    <section className="bg-neutral min-h-screen pb-50">
-      <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+    <section className="min-h-screen bg-neutral pb-50">
+      <div className="max-w-6xl px-4 mx-auto md:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center py-12 pb-10">
-          <h1 className="font-heading text-3xl font-semibold">Frequently Asked Questions</h1>
-          <p className="text-lighter text-lg">Find answers to common questions about our products and services</p>
+          <h1 className="text-3xl font-semibold font-heading">Frequently Asked Questions</h1>
+          <p className="text-lg text-lighter">Find answers to common questions about our products and services</p>
         </div>
 
-        <div className="flex flex-col gap-6 md:flex-row">
+        <div className="flex flex-col gap-4 md:gap-6 md:flex-row">
           <div className="md:w-1/4">
-            <div className="flex flex-col space-y-2">
+            <div className="flex pb-2 space-x-2 overflow-x-auto md:flex-col md:space-x-0 md:space-y-2">
               {questions.map((category, index) => (
                 <motion.button
                   key={index}
                   onClick={() => setActiveTab(index)}
-                  className={`text-content rounded-2xl p-4 text-left font-medium ${
+                  className={`text-content rounded-2xl p-3 md:p-4 text-left font-medium whitespace-nowrap flex-shrink-0 ${
                     activeTab === index ? 'bg-primary text-white' : 'hover:bg-primary/50'
                   }`}
                   whileHover={{ scale: 1.03 }}
@@ -68,20 +68,20 @@ function Faqs() {
               {questions[activeTab].questions.map((question, qIndex) => (
                 <motion.div
                   key={qIndex}
-                  className="bg-card cursor-pointer rounded-2xl border"
+                  className="border cursor-pointer bg-card rounded-2xl"
                   whileHover={cardHover}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => toggleQuestion(activeTab, qIndex)}
                   layout
                 >
-                  <article className="flex items-center justify-between rounded-2xl p-4">
+                  <article className="flex items-center justify-between p-4 rounded-2xl">
                     <h3 className="font-medium">{question.question}</h3>
                     <div className="text-primary">{show[activeTab][qIndex] ? <Minus /> : <Plus />}</div>
                   </article>
                   <AnimatePresence>
                     {show[activeTab][qIndex] && (
                       <motion.article
-                        className="border-primary overflow-hidden border-t-2 p-4"
+                        className="p-4 overflow-hidden border-t-2 border-primary"
                         initial="hidden"
                         animate="visible"
                         exit="exit"

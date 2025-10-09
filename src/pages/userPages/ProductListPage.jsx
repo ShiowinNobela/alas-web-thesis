@@ -55,33 +55,34 @@ function ProductPage() {
   const filteredProducts = table.getRowModel().rows.map((row) => row.original);
 
   return (
-    <div className="bg-neutral h-full">
-      <div className="flex pb-40">
-        <div className="relative h-full flex-1">
+    <div className="h-full bg-neutral">
+      <div className="flex pb-20 md:pb-40">
+        <div className="relative flex-1 h-full">
           {/* Header */}
-          <div className="flex items-center justify-between py-8 pr-4 pl-6 md:px-20">
+          <div className="flex flex-col justify-between gap-4 px-4 py-6 sm:flex-row sm:items-center sm:px-6 md:px-20">
             <div>
-              <h1 className="font-heading text-content text-3xl font-semibold md:text-4xl">Alas Menu and Spices</h1>
-              <p className="text-lighter my-2">From mild to wild - find your perfect heat level</p>
+              <h1 className="text-2xl font-semibold sm:text-3xl md:text-4xl font-heading text-content ">Alas Menu and Spices</h1>
+              <p className="my-2 text-sm text-lighter sm:text-base">From mild to wild - find your perfect heat level</p>
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="lg" className="py-7">
-                <Filter className="size-8" />
-              </Button>
+            <div className="flex flex-col items-center w-full gap-3 sm:flex-row sm:w-auto">
               <Input
                 type="text"
                 placeholder="Search products..."
                 value={globalFilter ?? ''}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="border-primary w-xs rounded-2xl bg-red-100 py-6"
+                className="w-full py-3 text-sm bg-red-100 border-primary sm:w-48 rounded-2xl"
               />
+              <Button variant="outline" size="lg" className="w-full py-3 sm:w-auto">
+                <Filter className="size-6" />
+                <span className='ml-2 sm:hidden'>Filter</span>
+              </Button>
             </div>
           </div>
 
           {/* Products Grid */}
-          <div className="pr-4 pb-20 pl-6 md:px-20">
+          <div className="px-4 pb-20 sm:px-6 md:px-20">
             {isLoading ? (
-              <div className={isLoggedIn ? 'grid grid-cols-2 gap-6' : 'grid grid-cols-3 gap-6'}>
+              <div className={isLoggedIn ? 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'}>
                 {[...Array(8)].map((_, i) => (
                   <ProductCardSkeleton key={i} />
                 ))}
@@ -91,7 +92,7 @@ function ProductPage() {
             ) : (
               <div
                 className={
-                  isLoggedIn ? 'grid grid-cols-2 md:gap-6' : 'grid grid-cols-1 md:grid-cols-2 md:gap-6 lg:grid-cols-3'
+                  isLoggedIn ? 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'
                 }
               >
                 {filteredProducts.map((product) => (
