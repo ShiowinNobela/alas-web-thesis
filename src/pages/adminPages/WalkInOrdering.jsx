@@ -213,7 +213,7 @@ function WalkInOrdering() {
               </div>
 
               {/* Cart Items */}
-              <div className="pr-2 space-y-4 overflow-y-auto max-h-96">
+              <div className="space-y-4 overflow-y-auto  max-h-96">
                 {cartItems.length === 0 ? (
                   <div className="py-8 text-center">
                     <FaShoppingCart className="mx-auto mb-3 text-4xl text-gray-300 dark:text-gray-600" />

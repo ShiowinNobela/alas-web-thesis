@@ -38,20 +38,20 @@ function InventoryUpdateModal({ isOpen, product, onClose, updateStockPrice }) {
     <Modal show={isOpen} size="md" onClose={onClose}>
       <ModalBody>
         {product && (
-          <div className="mb-6 flex gap-4">
+          <div className="flex gap-4 mb-6">
             {/* Left: Image */}
-            <img src={product.image} alt={product.name} className="h-28 w-28 rounded-2xl object-cover shadow-md" />
+            <img src={product.image} alt={product.name} className="object-cover shadow-md h-28 w-28 rounded-2xl" />
 
             {/* Right: Info */}
-            <div>
-              <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-              <p className="mt-1 text-sm text-gray-600">
+            <div className='text-content'>
+              <h2 className="text-lg font-semibold ">{product.name}</h2>
+              <p className="mt-1 text-sm">
                 <span className="font-medium">Current Stock:</span> {product.stock_quantity}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm">
                 <span className="font-medium">Reserved:</span> {product.reserved_quantity}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm">
                 <span className="font-medium">Available:</span> {product.stock_quantity - product.reserved_quantity}
               </p>
             </div>

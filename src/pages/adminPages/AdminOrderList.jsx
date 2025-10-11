@@ -144,8 +144,8 @@ function AdminViewOrderPage() {
 
   return (
     <>
-      <div className="bg-admin flex min-h-screen flex-col overflow-x-auto">
-        <main className="flex w-full flex-col gap-4 p-4">
+      <div className="flex flex-col min-h-screen overflow-x-auto bg-admin">
+        <main className="flex flex-col w-full gap-4 p-4">
           <OrderSummary startDate={startDate} endDate={endDate} onRefresh={handleRefresh} />
 
           <AdminOrderFilters
@@ -164,7 +164,7 @@ function AdminViewOrderPage() {
               <p>No orders found.</p>
               <button
                 onClick={handleRefresh}
-                className="mt-4 rounded-md bg-blue-100 px-4 py-2 text-sm text-blue-700 hover:bg-blue-200"
+                className="px-4 py-2 mt-4 text-sm text-blue-700 bg-blue-100 rounded-md hover:bg-blue-200"
               >
                 Clear Filters
               </button>
@@ -202,9 +202,6 @@ function AdminViewOrderPage() {
           }}
           onConfirm={() => handleStatusUpdate(updatingId, adminNote, updateStatus)}
           confirmButtonLabel={confirmButtonLabel}
-          showImageUpload={updateStatus === 'shipping' || updateStatus === 'delivered'}
-          uploadedImage={uploadedImage}
-          onImageUpload={setUploadedImage}
           isLoading={updateStatusMutation.isPending}
         />
       </div>

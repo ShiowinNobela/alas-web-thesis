@@ -54,7 +54,7 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="bg-admin grid grid-cols-1 gap-6 p-4 lg:grid-cols-6">
+    <div className="grid grid-cols-1 gap-6 p-4 bg-admin lg:grid-cols-6">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-5 lg:col-span-6">
         {isLoading
           ? [...Array(5)].map((_, idx) => <CardSkeleton key={idx} />)
@@ -107,10 +107,10 @@ function AdminDashboard() {
             ))}
       </div>
 
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
-        <div className="mb-4 flex items-center justify-between">
+      <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-4">
+        <div className="flex items-center justify-between mb-4">
           <h3 className="text-2xl font-semibold">Top Products</h3>
-          <TrendingUp className="h-6 w-6 text-blue-600" />
+          <TrendingUp className="w-6 h-6 text-blue-600" />
         </div>
 
         {items?.topProducts?.length > 0 ? (
@@ -118,7 +118,7 @@ function AdminDashboard() {
             {items.topProducts.map((p, index) => (
               <div
                 key={p.id}
-                className="flex items-center space-x-3 rounded-lg border border-gray-200 bg-white p-3 transition-shadow duration-200 hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+                className="flex items-center p-3 space-x-3 transition-shadow duration-200 bg-white border border-gray-200 rounded-lg hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
               >
                 {/* Rank Badge */}
                 <div
@@ -132,19 +132,19 @@ function AdminDashboard() {
                           : 'bg-blue-500'
                   }`}
                 >
-                  {index === 0 ? <Crown className="h-4 w-4" /> : index + 1}
+                  {index === 0 ? <Crown className="w-4 h-4" /> : index + 1}
                 </div>
 
                 {/* Product Image */}
-                <img src={p.image} alt={p.name} className="h-16 w-16 rounded-lg border border-gray-200 object-cover" />
+                <img src={p.image} alt={p.name} className="object-cover w-16 h-16 border border-gray-200 rounded-lg" />
 
                 {/* Product Info */}
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-lg font-semibold text-black dark:text-white">{p.name}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-lg font-semibold text-black truncate dark:text-white">{p.name}</p>
                   <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
                     <span>₱{p.price}</span>
                     <span className="flex items-center">
-                      <Star className="mr-1 h-4 w-4 text-yellow-500" />
+                      <Star className="w-4 h-4 mr-1 text-yellow-500" />
                       Sold: {p.total_sold}
                     </span>
                   </div>
@@ -169,7 +169,7 @@ function AdminDashboard() {
           </div>
         ) : (
           <div className="py-8 text-center text-gray-500">
-            <TrendingUp className="mx-auto mb-2 h-12 w-12 text-gray-300" />
+            <TrendingUp className="w-12 h-12 mx-auto mb-2 text-gray-300" />
             <p>No top products yet</p>
           </div>
         )}
@@ -182,15 +182,15 @@ function AdminDashboard() {
             : 'border-green-500 border-t-green-500 border-l-green-500'
         }`}
       >
-        <div className="mb-4 flex items-center space-x-2">
+        <div className="flex items-center mb-4 space-x-2">
           {items?.lowStock?.length > 0 ? (
             <>
-              <AlertTriangle className="h-5 w-5 text-red-500" />
+              <AlertTriangle className="w-5 h-5 text-red-500" />
               <h3 className="text-lg font-semibold text-red-700">Low Stock Alerts</h3>
             </>
           ) : (
             <>
-              <CheckCircle className="h-5 w-5 text-green-500" />
+              <CheckCircle className="w-5 h-5 text-green-500" />
               <h3 className="text-lg font-semibold text-green-700">Stock Status</h3>
             </>
           )}
@@ -214,7 +214,7 @@ function AdminDashboard() {
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">{item.name}</p>
-                      <div className="mt-1 flex items-center space-x-2">
+                      <div className="flex items-center mt-1 space-x-2">
                         <AlertCircle className={`h-4 w-4 ${isCritical ? 'text-red-500' : 'text-orange-500'}`} />
                         <span className={`text-sm font-bold ${isCritical ? 'text-red-600' : 'text-orange-600'}`}>
                           {isCritical ? 'CRITICAL' : 'LOW'} - Only {item.stock} left!
@@ -224,15 +224,15 @@ function AdminDashboard() {
 
                     <Link
                       to="/Admin/InventoryManagement"
-                      className="ml-2 flex-shrink-0 cursor-pointer p-1 text-gray-500 transition-colors hover:text-red-600"
+                      className="flex-shrink-0 p-1 ml-2 text-gray-500 transition-colors cursor-pointer hover:text-red-600"
                       title="Restock item"
                     >
-                      <ArrowRight className="h-6 w-6" />
+                      <ArrowRight className="w-6 h-6" />
                     </Link>
                   </div>
 
                   {/* Stock Level Bar */}
-                  <div className="mt-2 h-2 w-full rounded-full bg-gray-200">
+                  <div className="w-full h-2 mt-2 bg-gray-200 rounded-full">
                     <div
                       className={`h-2 rounded-full ${isCritical ? 'bg-red-500' : 'bg-orange-500'}`}
                       style={{
@@ -246,16 +246,16 @@ function AdminDashboard() {
 
             {/* Quick Action Button */}
             <Link to="/Admin/InventoryManagement">
-              <Button color="failure" className="mt-4 flex w-full cursor-pointer items-center justify-center space-x-2">
-                <AlertTriangle className="h-4 w-4" />
+              <Button color="failure" className="flex items-center justify-center w-full mt-4 space-x-2 cursor-pointer">
+                <AlertTriangle className="w-4 h-4" />
                 <span>Manage All Inventory</span>
               </Button>
             </Link>
           </div>
         ) : (
           <div className="py-6 text-center">
-            <div className="mb-3 flex justify-center">
-              <CheckCircle className="h-12 w-12 text-green-500" />
+            <div className="flex justify-center mb-3">
+              <CheckCircle className="w-12 h-12 text-green-500" />
             </div>
             <p className="font-medium text-green-700">All items are well stocked! Yippie!!!!</p>
           </div>
@@ -268,57 +268,57 @@ function AdminDashboard() {
         <RevenueChart title="Revenue within 7 Days" series={revenueSeries} categories={revenueCategories} />
       )}
 
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
-        <div className="mb-4 flex items-center space-x-2">
-          <Activity className="h-5 w-5 text-blue-600" />
+      <Card className="shadow-sm rounded-2xl ring-1 lg:col-span-2">
+        <div className="flex items-center mb-4 space-x-2">
+          <Activity className="w-5 h-5 text-blue-600" />
           <h3 className="text-lg font-semibold">Quick Actions</h3>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           {/* Product Management */}
           <Link to="/Admin/AddProduct">
-            <Button color="gray" className="flex h-16 w-full flex-col items-center justify-center p-2">
-              <Plus className="mb-1 h-5 w-5" />
+            <Button color="gray" className="flex flex-col items-center justify-center w-full h-16 p-2">
+              <Plus className="w-5 h-5 mb-1" />
               <span className="text-xs">Add Product</span>
             </Button>
           </Link>
 
           {/* Inventory Management */}
           <Link to="/Admin/InventoryManagement">
-            <Button color="gray" className="flex h-16 w-full flex-col items-center justify-center p-2">
-              <Archive className="mb-1 h-5 w-5" />
+            <Button color="gray" className="flex flex-col items-center justify-center w-full h-16 p-2">
+              <Archive className="w-5 h-5 mb-1" />
               <span className="text-xs">View Inventory</span>
             </Button>
           </Link>
 
           {/* Orders Management */}
           <Link to="/Admin/Orders">
-            <Button color="gray" className="flex h-16 w-full flex-col items-center justify-center p-2">
-              <Package className="mb-1 h-5 w-5" />
+            <Button color="gray" className="flex flex-col items-center justify-center w-full h-16 p-2">
+              <Package className="w-5 h-5 mb-1" />
               <span className="text-xs">Manage Orders</span>
             </Button>
           </Link>
 
           {/* Walk-in Ordering */}
           <Link to="/Admin/WalkInOrdering">
-            <Button color="gray" className="flex h-16 w-full flex-col items-center justify-center p-2">
-              <ShoppingCart className="mb-1 h-5 w-5" />
+            <Button color="gray" className="flex flex-col items-center justify-center w-full h-16 p-2">
+              <ShoppingCart className="w-5 h-5 mb-1" />
               <span className="text-xs">Walk-in Order</span>
             </Button>
           </Link>
 
           {/* User Management */}
           <Link to="/Admin/AccountManagement">
-            <Button color="gray" className="flex h-16 w-full flex-col items-center justify-center p-2">
-              <User className="mb-1 h-5 w-5" />
+            <Button color="gray" className="flex flex-col items-center justify-center w-full h-16 p-2">
+              <User className="w-5 h-5 mb-1" />
               <span className="text-xs">User Management</span>
             </Button>
           </Link>
 
           {/* Sales Summary */}
           <Link to="/Admin/SalesPage">
-            <Button color="gray" className="flex h-16 w-full flex-col items-center justify-center p-2">
-              <CreditCard className="mb-1 h-5 w-5" />
+            <Button color="gray" className="flex flex-col items-center justify-center w-full h-16 p-2">
+              <CreditCard className="w-5 h-5 mb-1" />
               <span className="text-xs">Sales Summary</span>
             </Button>
           </Link>

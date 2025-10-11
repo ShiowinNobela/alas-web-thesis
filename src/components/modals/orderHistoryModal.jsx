@@ -7,18 +7,18 @@ export default function OrderHistoryModal({ data, error, onClose }) {
       aria-hidden="true"
       className="fixed top-0 right-0 left-0 z-50 flex h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-x-hidden overflow-y-auto bg-black/50 p-4"
     >
-      <div className="relative max-h-full w-full max-w-2xl">
-        <div className="relative rounded-2xl bg-white shadow">
+      <div className="relative w-full max-w-2xl max-h-full">
+        <div className="relative bg-white shadow rounded-2xl">
           {/* Header */}
-          <div className="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-300">
+          <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-300">
             <h2 className="text-lg font-semibold text-gray-900">Order Status History</h2>
             <button
               onClick={onClose}
               type="button"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-transparent text-sm font-semibold text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+              className="inline-flex items-center justify-center w-8 h-8 text-sm font-semibold text-gray-400 bg-transparent rounded-2xl hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
             >
               <svg
-                className="h-3 w-3"
+                className="w-3 h-3"
                 aria-hidden="true"
                 fill="none"
                 viewBox="0 0 14 14"
@@ -43,9 +43,9 @@ export default function OrderHistoryModal({ data, error, onClose }) {
               <ul className="space-y-2">
                 {data.map((statusUpdate) => (
                   <li key={statusUpdate.history_id} className="mb-2">
-                    <strong>{statusUpdate.status}</strong> —{' '}
-                    <span className="text-gray-600">{new Date(statusUpdate.status_date).toLocaleString()}</span>
-                    {statusUpdate.notes && <span className="ml-1 text-black italic">: {statusUpdate.notes}</span>}
+                    <strong className="dark:text-black ">{statusUpdate.status}  — </strong>{' '}
+                    <span className="text-gray-600 ">{new Date(statusUpdate.status_date).toLocaleString()}</span>
+                    {statusUpdate.notes && <span className="ml-1 italic text-black">: {statusUpdate.notes}</span>}
                   </li>
                 ))}
               </ul>
@@ -53,7 +53,7 @@ export default function OrderHistoryModal({ data, error, onClose }) {
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end rounded-b border-t border-gray-200 p-4 dark:border-gray-300">
+          <div className="flex justify-end p-4 border-t border-gray-200 rounded-b dark:border-gray-300">
             <button
               onClick={onClose}
               type="button"
