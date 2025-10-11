@@ -45,11 +45,12 @@ function Navbar() {
               }}
             />
           </Link>
-          <h1 className="font-heading text-content hidden text-lg lg:block">Alas Delis and Spices</h1>
+          <h1 className="font-heading text-content hidden text-lg tracking-tight lg:block">Alas Delis and Spices</h1>
+          <ThemeToggle />
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="text-content font-heading hidden items-center gap-5 tracking-wide md:flex md:gap-2 lg:gap-4 xl:gap-8">
+        <nav className="font-semobold hidden items-center gap-5 text-sm md:flex md:gap-2 lg:gap-4 xl:gap-8">
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className={getNavItemClass(link.to)}>
               {link.label}
@@ -72,8 +73,6 @@ function Navbar() {
             </Link>
           )}
 
-          <ThemeToggle />
-
           <Link to={storedUser ? '/ProductListPage' : '/LoginPage'} onClick={closeMobileMenu}>
             <Button variant="CTA" className="text-xs lg:text-sm">
               Order Now
@@ -95,7 +94,7 @@ function Navbar() {
               </DrawerContent>
             </Drawer>
           )}
-          <ThemeToggle />
+
           <Button onClick={toggleMobileMenu} aria-label="Toggle Menu" variant="CTA">
             {mobileMenuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
           </Button>

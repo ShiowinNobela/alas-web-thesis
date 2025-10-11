@@ -13,7 +13,7 @@ function ProductCard({ product }) {
   return (
     <>
       <Card
-        className="group hover:ring-primary border-primary flex cursor-pointer flex-col border-l-3 p-4 transition-transform sm:hover:scale-[1.02] sm:hover:ring-2"
+        className="group hover:ring-primary flex cursor-pointer flex-col p-4 transition-transform sm:hover:scale-[1.02] sm:hover:ring-2"
         onClick={() => {
           navigate(`/ProductDetailsPage/${product.id}`);
         }}
