@@ -15,15 +15,9 @@ function ProductPage() {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const isLoggedIn = !!user;
-
   const [globalFilter, setGlobalFilter] = useState('');
 
-  const {
-    data: products = [],
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery({
+  const { data: products = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
       const res = await axios.get('/api/products');
@@ -38,7 +32,6 @@ function ProductPage() {
     }
   };
 
-  // TanStack Table setup, seems big but they said as it gets bigger this becomes more scalable
   const columnHelper = createColumnHelper();
   const columns = [columnHelper.accessor('name', { cell: (info) => info.getValue() })];
 
@@ -55,47 +48,57 @@ function ProductPage() {
   const filteredProducts = table.getRowModel().rows.map((row) => row.original);
 
   return (
-    <div className="bg-neutral h-full">
-      <div className="flex pb-40">
-        <div className="relative h-full flex-1">
+    <div className="min-h-screen bg-neutral">
+      <div className="flex flex-col pb-20">
+        <div className="relative flex-1">
           {/* Header */}
-          <div className="flex items-center justify-between py-8 pr-4 pl-6 md:px-20">
+          <div className="flex flex-col items-start justify-between gap-4 px-4 py-6 md:flex-row md:items-center md:gap-0 md:px-20">
             <div>
-              <h1 className="font-heading text-content text-3xl font-semibold md:text-4xl">
+              <h1 className="text-2xl font-semibold font-heading text-content md:text-4xl">
                 Alas Menu and Spices <span className="text-primary">( {products?.length} )</span>
               </h1>
-              <p className="text-lighter my-2">From mild to wild - find your perfect heat level</p>
+              <p className="mt-2 text-lighter">From mild to wild - find your perfect heat level</p>
             </div>
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="lg" className="py-7">
-                <Filter className="size-8" />
+
+            <div className="flex flex-row w-full gap-2 sm:items-center sm:w-auto">
+              <Button
+                variant="outline"
+                size="lg"
+                className="flex justify-center py-4 w-1/8 sm:py-7 sm:w-auto"
+              >
+                <Filter className="size-6 sm:size-8" />
               </Button>
               <Input
                 type="text"
                 placeholder="Search products..."
                 value={globalFilter ?? ''}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="border-primary w-xs rounded-2xl bg-red-100 py-6"
+                className="w-full py-4 bg-red-100 border-primary sm:w-64 rounded-2xl sm:py-6"
               />
             </div>
           </div>
 
-          {/* Products Grid */}
-          <div className="pr-4 pb-20 pl-6 md:px-20">
+          {/* Product Grid */}
+          <div className="px-4 pb-20 md:px-20">
             {isLoading ? (
-              <div className={isLoggedIn ? 'grid grid-cols-2 gap-6' : 'grid grid-cols-3 gap-6'}>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {[...Array(8)].map((_, i) => (
                   <ProductCardSkeleton key={i} />
                 ))}
               </div>
             ) : isError ? (
-              <ErrorState error={isError} onRetry={refetch} title="Failed to load Products" retryText="Retry Request" />
+              <ErrorState
+                error={isError}
+                onRetry={refetch}
+                title="Failed to load Products"
+                retryText="Retry Request"
+              />
             ) : (
               <div
                 className={
                   isLoggedIn
-                    ? 'grid grid-cols-1 md:grid-cols-2 md:gap-6 xl:grid-cols-4'
-                    : 'grid grid-cols-1 md:grid-cols-2 md:gap-6 lg:grid-cols-4'
+                    ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'
+                    : 'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'
                 }
               >
                 {filteredProducts.map((product) => (
@@ -111,3 +114,4 @@ function ProductPage() {
 }
 
 export default ProductPage;
+
