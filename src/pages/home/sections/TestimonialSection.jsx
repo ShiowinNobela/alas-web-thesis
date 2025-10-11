@@ -55,10 +55,10 @@ const TestimonialSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <h2 className="font-heading text-content mb-4 text-left text-3xl font-bold md:text-5xl">
+          <h2 className="font-heading text-content mb-4 text-center text-3xl font-bold md:text-5xl">
             What Our <span className="text-orange-600">Spice Lovers</span> Say
           </h2>
-          <p className="text-lighter max-w-2xl text-left">
+          <p className="text-lighter mx-auto max-w-2xl text-center">
             Don't just take our word for it - hear from those who've experienced the ALAS difference
           </p>
         </motion.div>
