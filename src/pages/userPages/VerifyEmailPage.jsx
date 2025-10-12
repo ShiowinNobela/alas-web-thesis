@@ -24,8 +24,7 @@ function VerifyEmailPage() {
           setVerificationStatus('success');
           setMessage(res.data.message || 'Email verified successfully!');
         })
-        .catch((err) => {
-          console.error(err);
+        .catch(() => {
           setVerificationStatus('error');
           setMessage('Verification failed. Token may be invalid or expired.');
         });

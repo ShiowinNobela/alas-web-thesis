@@ -52,9 +52,9 @@ class ErrorBoundary extends React.Component {
       }
 
       return (
-        <div className="flex min-h-[300px] flex-col items-center justify-center rounded-lg bg-white p-6 text-red-600 shadow-sm ring-1">
-          <p className="mb-2 font-medium">Something went wrong</p>
-          <p className="mb-4 text-center text-sm">{this.state.error && this.state.error.toString()}</p>
+        <div className="bg-neutral text-primary flex h-full flex-col items-center justify-center">
+          <p className="mb-2 text-lg font-bold">Something went wrong</p>
+          <p className="mb-4 text-center">{this.state.error && this.state.error.toString()}</p>
           <Button onClick={this.resetError}>Try Again</Button>
         </div>
       );
