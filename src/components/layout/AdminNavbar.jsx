@@ -29,7 +29,7 @@ function AdminNavbar() {
       WalkInOrdersTable: 'Walk-in Orders',
       WalkInOrdering: 'Walk-in Ordering',
       SalesPage: 'Sales',
-      NotificationPage: 'Notifications',
+      NotificationPage: 'Admin Activity Logs',
     };
 
     return pageNames[routeSegment] || routeSegment || 'Admin';

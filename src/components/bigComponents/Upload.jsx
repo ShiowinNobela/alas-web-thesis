@@ -46,8 +46,7 @@ function Upload({ onUploadSuccess }) {
 
       const url = res.data.data.url;
       if (url) onUploadSuccess(url);
-    } catch (err) {
-      console.error('Upload failed:', err);
+    } catch {
       toast.error('Image upload failed.');
     } finally {
       setIsUploading(false);

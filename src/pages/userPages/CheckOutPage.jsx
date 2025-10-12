@@ -77,7 +77,6 @@ function CheckOutPage() {
         setFormErrors(errors);
         toast.error('Please fill in all required fields');
       } else {
-        console.error(err);
         toast.error('An unexpected error occurred');
       }
     }
@@ -85,15 +84,15 @@ function CheckOutPage() {
 
   return (
     <ErrorBoundary>
-      <section className="min-h-screen py-8 bg-neutral">
-        <main className="relative max-w-2xl px-4 pb-24 mx-auto sm:px-6 lg:px-8">
+      <section className="bg-neutral min-h-screen py-8">
+        <main className="relative mx-auto max-w-2xl px-4 pb-24 sm:px-6 lg:px-8">
           <div className="absolute top-0 left-0 mt-4">
             <BackButton />
           </div>
 
-          <div className="flex flex-col items-center justify-center pb-8 mx-auto">
-            <h1 className="text-5xl text-content font-heading">Checkout</h1>
-            <p className="mt-2 text-lighter">Complete your order by filling the form below</p>
+          <div className="mx-auto flex flex-col items-center justify-center pb-8">
+            <h1 className="text-content font-heading text-5xl">Checkout</h1>
+            <p className="text-lighter mt-2">Complete your order by filling the form below</p>
           </div>
 
           <div className="space-y-7">
@@ -115,7 +114,7 @@ function CheckOutPage() {
                 placeholder="Your Phone Number"
               />
               <div className="mt-4">
-                <label htmlFor="checkout-address" className="block mb-1 text-sm font-medium text-lighter">
+                <label htmlFor="checkout-address" className="text-lighter mb-1 block text-sm font-medium">
                   Delivery Address *
                 </label>
                 <Textarea
@@ -134,7 +133,7 @@ function CheckOutPage() {
             <Card className="p-8">
               <CardTitle className="text-xl">Payment Information</CardTitle>
               <div className="mb-4">
-                <label htmlFor="checkout-payment-method" className="block mb-1 text-sm font-medium text-lighter">
+                <label htmlFor="checkout-payment-method" className="text-lighter mb-1 block text-sm font-medium">
                   Payment Method *
                 </label>
                 <select
@@ -148,9 +147,15 @@ function CheckOutPage() {
                   <option disabled value="">
                     -- select an option --
                   </option>
-                  <option value="GCash" className='text-black'>GCash</option>
-                  <option value="bank_transfer" className='text-black'>Bank Transfer</option>
-                  <option value="Maya" className='text-black'>Maya</option>
+                  <option value="GCash" className="text-black">
+                    GCash
+                  </option>
+                  <option value="bank_transfer" className="text-black">
+                    Bank Transfer
+                  </option>
+                  <option value="Maya" className="text-black">
+                    Maya
+                  </option>
                 </select>
                 {formErrors.payment_method && <p className="mt-1 text-xs text-red-500">{formErrors.payment_method}</p>}
               </div>
@@ -174,7 +179,7 @@ function CheckOutPage() {
             <Card className="p-8">
               <CardTitle className="text-xl">Additional Information</CardTitle>
               <div>
-                <label htmlFor="checkout-order-notes" className="block mb-1 text-sm font-medium text-lighter">
+                <label htmlFor="checkout-order-notes" className="text-lighter mb-1 block text-sm font-medium">
                   Order Notes
                 </label>
                 <Textarea
@@ -198,7 +203,7 @@ function CheckOutPage() {
             >
               {placeOrderMutation.isLoading ? 'Placing Order...' : 'Confirm Order'}
             </Button>
-            <p className="flex items-center justify-center mx-auto text-xs">
+            <p className="mx-auto flex items-center justify-center text-xs">
               By Clicking Confirm you agree to our terms and conditions
             </p>
           </div>

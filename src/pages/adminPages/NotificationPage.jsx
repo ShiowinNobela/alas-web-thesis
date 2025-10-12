@@ -36,14 +36,26 @@ const formatData = (data) => {
 };
 
 const ACTION_TYPE_COLORS = {
-  CREATE: 'blue',
-  UPDATE: 'purple',
-  DELETE: 'red',
-  ACTIVATE_PRODUCT: 'green',
-  DEACTIVATE_PRODUCT: 'pink',
-  ACTIVATE_USER: 'green',
-  DEACTIVATE_USER: 'pink',
-  ADJUST_STOCK: 'yellow',
+  CREATE: 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-200 dark:text-blue-900 dark:hover:bg-blue-300',
+  UPDATE:
+    'bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-200 dark:text-purple-900 dark:hover:bg-purple-300',
+  DELETE: 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-200 dark:text-red-900 dark:hover:bg-red-300',
+  ACTIVATE:
+    'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-200 dark:text-green-900 dark:hover:bg-green-300',
+  DEACTIVATE: 'bg-pink-100 text-pink-800 hover:bg-pink-200 dark:bg-pink-200 dark:text-pink-900 dark:hover:bg-pink-300',
+  ADJUST_STOCK:
+    'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-200 dark:text-yellow-900 dark:hover:bg-yellow-300',
+  PROCESS:
+    'bg-yellow-200 text-yellow-700 hover:bg-yellow-300 dark:bg-yellow-300 dark:text-yellow-800 dark:hover:bg-yellow-400',
+  SHIP: 'bg-green-200 text-green-800 hover:bg-green-300 dark:bg-green-300 dark:text-green-900 dark:hover:bg-green-400',
+  DELIVER: 'bg-blue-200 text-blue-800 hover:bg-blue-300 dark:bg-blue-300 dark:text-blue-900 dark:hover:bg-blue-400',
+  CANCEL: 'bg-red-300 text-red-800 hover:bg-red-400 dark:bg-red-400 dark:text-red-900 dark:hover:bg-red-500',
+};
+
+const ENTITY_TYPE_COLORS = {
+  USER: 'teal',
+  PRODUCT: 'yellow',
+  ORDER: 'indigo',
 };
 
 function NotificationPage() {
@@ -105,12 +117,16 @@ function NotificationPage() {
                           className={`size-5 transition-transform ${expandedLogs[log.id] ? 'rotate-180' : ''}`}
                         />
                       </button>
-                      <Badge color={ACTION_TYPE_COLORS[log.action_type] || 'gray'} size="sm" className="font-normal">
+                      <Badge
+                        size="sm"
+                        className={`font-normal ${ACTION_TYPE_COLORS[log.action_type] || 'bg-gray-400 text-white'}`}
+                      >
                         {log.action_type || 'LOG'}
                       </Badge>
-                      {log.description && (
-                        <span className="text-lighter max-w-sm truncate text-sm">{log.description}</span>
-                      )}
+                      <Badge color={ENTITY_TYPE_COLORS[log.entity_type] || 'gray'} size="sm" className="font-normal">
+                        {log.entity_type}
+                      </Badge>
+                      {log.description && <span className="max-w-sm truncate text-sm">{log.description}</span>}
                     </div>
 
                     {/* User + role + timestamp */}
@@ -126,44 +142,29 @@ function NotificationPage() {
                       </div>
                     </div>
                   </div>
-
-                  {/* Expanded details */}
                   {expandedLogs[log.id] && (
-                    <div className="ml-2 space-y-2 border-l-2 pl-8 text-sm">
+                    <div className="ml-2 border-l-2 pl-6 text-sm">
                       {(log.before_data || log.after_data) && (
-                        <div className="space-y-1">
+                        <div className="grid grid-cols-2 gap-4">
+                          {/* BEFORE */}
                           {log.before_data && (
-                            <div className="flex items-start gap-2">
-                              <Badge color="failure" className="w-15 flex-shrink-0 items-center font-normal uppercase">
-                                Before
-                              </Badge>
-                              <div className="flex-1 overflow-hidden break-words text-red-800 dark:text-red-200">
+                            <div className="rounded-lg border border-red-300 bg-red-50 p-3 dark:border-red-800 dark:bg-red-950/40">
+                              <h4 className="mb-1 font-semibold text-red-700 dark:text-red-300">Before</h4>
+                              <div className="overflow-hidden break-words text-red-800 dark:text-red-200">
                                 {formatData(log.before_data)}
                               </div>
                             </div>
                           )}
+
+                          {/* AFTER */}
                           {log.after_data && (
-                            <div className="flex items-start gap-2">
-                              <Badge color="success" className="w-15 flex-shrink-0 items-center font-normal uppercase">
-                                After
-                              </Badge>
-                              <div className="flex-1 overflow-hidden break-words text-green-800 dark:text-green-200">
+                            <div className="rounded-lg border border-green-300 bg-green-50 p-3 dark:border-green-800 dark:bg-green-950/40">
+                              <h4 className="mb-1 font-semibold text-green-700 dark:text-green-300">After</h4>
+                              <div className="overflow-hidden break-words text-green-800 dark:text-green-200">
                                 {formatData(log.after_data)}
                               </div>
                             </div>
                           )}
-                        </div>
-                      )}
-
-                      {log.entity_type && (
-                        <div className="flex items-center gap-2">
-                          <Badge color="gray" size="xs">
-                            {log.entity_type}
-                          </Badge>
-                          <span className="font-mono">
-                            {log.entity_id}
-                            {log.entity_name ? ` (${log.entity_name})` : ''}
-                          </span>
                         </div>
                       )}
                     </div>

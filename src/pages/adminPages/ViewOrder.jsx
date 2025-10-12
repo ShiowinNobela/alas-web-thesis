@@ -33,8 +33,7 @@ function ViewOrder() {
         setOrderDetails(orderData);
         setUserDetails(userData);
         setSelectedStatus(orderData.status);
-      } catch (error) {
-        console.error('Error during data fetching:', error);
+      } catch {
         toast.error('Failed to load order details');
       } finally {
         setLoading(false);
@@ -60,7 +59,6 @@ function ViewOrder() {
       setOrderDetails(response.data.data);
       toast.success('Order status updated successfully!');
     } catch (err) {
-      console.error(err);
       const errorMessage =
         err.response?.data?.message ||
         (err.response?.status === 400 ? 'Invalid status update' : 'Failed to update status');
