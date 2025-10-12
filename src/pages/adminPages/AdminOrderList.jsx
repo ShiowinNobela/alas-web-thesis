@@ -7,7 +7,10 @@ import {
   fetchOrders,
   fetchOrderById,
   fetchOrderHistory as fetchOrderHistoryApi,
-  updateOrderStatus as updateOrderStatusApi,
+  moveToProcessingApi,
+  moveToShippingApi,
+  moveToDeliveredApi,
+  cancelOrderApi,
 } from '@/api/orders';
 import OrderHistoryModal from '@/components/modals/orderHistoryModal';
 import StatusUpdateModal from '@/components/modals/statusUpdateModal';
@@ -20,11 +23,10 @@ import OrderSummary from '@/components/bigComponents/OrderSummary';
 function AdminViewOrderPage() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
-
   const status = searchParams.get('status') || '';
   const startDate = searchParams.get('startDate') || null;
   const endDate = searchParams.get('endDate') || null;
-
+  const [cancelRequested, setCancelRequested] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [statusUpdateModal, setStatusUpdateModal] = useState(false);
@@ -35,7 +37,6 @@ function AdminViewOrderPage() {
   const [modalTitle, setModalTitle] = useState('');
   const [confirmButtonLabel, setConfirmButtonLabel] = useState('');
   const [searchId, setSearchId] = useState('');
-  const [uploadedImage, setUploadedImage] = useState('');
 
   const {
     data: orders = [],
@@ -52,8 +53,31 @@ function AdminViewOrderPage() {
   });
 
   const updateStatusMutation = useMutation({
-    mutationFn: ({ orderId, data }) => updateOrderStatusApi(orderId, data),
-    onSuccess: () => {
+    mutationFn: async ({ orderId, data }) => {
+      const { status, notes, cancelRequested } = data;
+
+      if (cancelRequested) {
+        return await cancelOrderApi(orderId, { notes });
+      }
+
+      switch (status) {
+        case 'processing':
+          return await moveToProcessingApi(orderId, { notes });
+        case 'shipping':
+          return await moveToShippingApi(orderId, { notes });
+        case 'delivered':
+          return await moveToDeliveredApi(orderId, { notes });
+        default:
+          throw new Error(`Unknown status: ${status}`);
+      }
+    },
+    onMutate: () => {
+      toast.loading('Updating order status...', { id: 'update-status-toast' });
+    },
+    onSuccess: (_data, variables) => {
+      const { data } = variables;
+      const { status, cancelRequested } = data;
+
       queryClient.invalidateQueries(['orders']);
       queryClient.invalidateQueries(['orderSummary']);
       queryClient.invalidateQueries(['last30OrderSummary']);
@@ -63,12 +87,28 @@ function AdminViewOrderPage() {
       setUpdateStatus('');
       setModalTitle('');
       setConfirmButtonLabel('');
-      setUploadedImage('');
-      toast.success('Order status updated successfully');
+
+      if (cancelRequested) {
+        toast.success('Order has been successfully cancelled.', { id: 'update-status-toast' });
+      } else {
+        switch (status) {
+          case 'processing':
+            toast.success('Order status updated: Now Processing.', { id: 'update-status-toast' });
+            break;
+          case 'shipping':
+            toast.success('Order status updated: Shipped.', { id: 'update-status-toast' });
+            break;
+          case 'delivered':
+            toast.success('Order status updated: Delivered.', { id: 'update-status-toast' });
+            break;
+          default:
+            toast.success('Order status updated.', { id: 'update-status-toast' });
+        }
+      }
     },
     onError: (error) => {
-      console.error('Status update failed:', error);
-      toast.error('Failed to update order status.');
+      const message = error?.response?.data?.message || 'Failed to update order status.';
+      toast.error(message, { id: 'update-status-toast' });
     },
   });
 
@@ -105,16 +145,23 @@ function AdminViewOrderPage() {
   const handleStatusUpdate = (orderId, note, status) => {
     updateStatusMutation.mutate({
       orderId,
-      data: { status, note, image: uploadedImage },
+      data: { status, notes: note, cancelRequested },
     });
   };
 
-  const handleStatusUpdateClick = (orderId, status, modalTitle, confirmButtonLabel) => {
+  const handleStatusUpdateClick = (orderId, status, modalTitle, confirmButtonLabel, cancelRequested = false) => {
     setStatusUpdateModal(true);
     setUpdatingId(orderId);
     setUpdateStatus(status);
-    setModalTitle(modalTitle);
-    setConfirmButtonLabel(confirmButtonLabel);
+    setCancelRequested(cancelRequested);
+
+    if (cancelRequested) {
+      setModalTitle('Confirm Cancellation');
+      setConfirmButtonLabel('Cancel Order');
+    } else {
+      setModalTitle(modalTitle);
+      setConfirmButtonLabel(confirmButtonLabel);
+    }
   };
 
   const handleRefresh = useCallback(() => {
@@ -194,11 +241,11 @@ function AdminViewOrderPage() {
         <StatusUpdateModal
           show={statusUpdateModal}
           title={modalTitle}
+          orderId={updatingId}
           textareaValue={adminNote}
           onTextareaChange={(e) => setAdminNote(e.target.value)}
           onCancel={() => {
             setStatusUpdateModal(false);
-            setUploadedImage('');
           }}
           onConfirm={() => handleStatusUpdate(updatingId, adminNote, updateStatus)}
           confirmButtonLabel={confirmButtonLabel}
