@@ -15,6 +15,9 @@ import {
   Ticket,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { socket } from '@/socket';
+import { useState, useEffect } from 'react';
+import { useDashboardData } from '@/pages/layouts/AdminLayout';
 
 const sidebarItems = [
   { path: '/Admin/DashBoard', name: 'Dashboard', icon: LayoutDashboard },
@@ -32,6 +35,36 @@ const sidebarItems = [
 
 function Sidebar() {
   const location = useLocation();
+  const [criticalInventory, setCriticalInventory] = useState(false);
+
+  const {data, isLoading} = useDashboardData();
+  const lowStock = data?.data?.lowStock || [];
+  const lowStockCount = lowStock.length;
+
+  useEffect(() => {
+    if(!isLoading) {
+      setCriticalInventory(lowStockCount > 0);
+    }
+  }, [lowStockCount, isLoading]);
+
+  useEffect(() => {
+    if (location.pathname === '/Admin/InventoryManagement') {
+    setCriticalInventory(false);
+  }
+  }, [location.pathname]);
+  
+  useEffect(() => {
+    const handleCritical = (payload) => {
+      console.log('Received inventory:critical', payload);
+      setCriticalInventory(true);
+      toast.warning(payload?.message || 'Low stock alert!');
+    };
+
+    socket.on('inventory:critical', handleCritical);
+    return () => {
+      socket.off('inventory:critical', handleCritical);
+    };
+  }, []);
 
   const onLogout = async () => {
     toast.info('Logged out successfully');
@@ -54,9 +87,9 @@ function Sidebar() {
           <img
             src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
             alt="Alas Delis and Spices Logo"
-            className="h-10 object-contain"
+            className="object-contain h-10"
           />
-          <h1 className="font-heading ml-4 text-2xl font-bold text-white">Alas Admin</h1>
+          <h1 className="ml-4 text-2xl font-bold text-white font-heading">Alas Admin</h1>
         </div>
 
         {/* Navigation */}
@@ -67,7 +100,13 @@ function Sidebar() {
                 <Link to={item.path}>
                   <div className={getNavItemClass(item.path)}>
                     <item.icon className="mx-2 size-5" />
-                    <span className="ml-2 flex-1 text-left text-sm whitespace-nowrap">{item.name}</span>
+                    <span className="relative flex-1 ml-2 text-sm text-left whitespace-nowrap">{item.name}
+                      {item.path === '/Admin/InventoryManagement' && criticalInventory && (
+                        <span className='absolute -right-3 top-0 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white'> 
+                         !
+                        </span>
+                      )}
+                    </span>
                   </div>
                 </Link>
               </li>
@@ -80,11 +119,11 @@ function Sidebar() {
       <div className="p-3">
         <button
           type="button"
-          className="hover:bg-primary group flex w-full cursor-pointer items-center rounded-2xl p-2 font-normal text-white"
+          className="flex items-center w-full p-2 font-normal text-white cursor-pointer hover:bg-primary group rounded-2xl"
           onClick={onLogout}
         >
           <LogOut className="mx-2 size-5" />
-          <span className="ml-2 flex-1 text-left text-sm whitespace-nowrap">Logout</span>
+          <span className="flex-1 ml-2 text-sm text-left whitespace-nowrap">Logout</span>
         </button>
       </div>
     </div>

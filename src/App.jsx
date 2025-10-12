@@ -33,6 +33,8 @@ const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
 const VerifyEmailPage = lazy(() => import('./pages/userPages/VerifyEmailPage.jsx'));
 const ReviewPage = lazy(() => import('./pages/userPages/ReviewPage.jsx'));
 const ForgotPasswordPage = lazy (() => import ('./pages/userPages/ForgotPasswordPage.jsx'))
+const TermsAndConditions = lazy (() => import ('./pages/userPages/TermsAndConditions.jsx'))
+const PrivacyPolicy = lazy (() => import ('./pages/userPages/PrivacyPolicy.jsx'))
 
 // Admin Pages
 const AdminDashboard = lazy(() => import('./pages/adminPages/AdminDashboard.jsx'));
@@ -76,6 +78,8 @@ function App() {
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
             <Route path="/ForgotPassword" element={<ForgotPasswordPage />}></Route>
+            <Route path="/TermsAndConditions" element={<TermsAndConditions/>}></Route>
+            <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>}></Route>
 
             {/* Protected user routes */}
             <Route element={<RoleBasedRoute allowedRoles={['customer']} />}>

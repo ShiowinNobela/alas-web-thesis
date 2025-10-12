@@ -40,7 +40,7 @@ function Faqs() {
 
         <div className="flex flex-col gap-4 md:gap-6 md:flex-row">
           <div className="md:w-1/4">
-            <div className="flex pb-2 space-x-2 overflow-x-auto md:flex-col md:space-x-0 md:space-y-2">
+            <div className="flex pb-2 space-x-2 overflow-x-auto md:overflow-x-none md:flex-col md:space-x-0 md:space-y-2">
               {questions.map((category, index) => (
                 <motion.button
                   key={index}
