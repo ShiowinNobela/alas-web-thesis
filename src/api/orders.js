@@ -46,6 +46,38 @@ export const updateOrderStatus = async (orderId, data) => {
   return response.data;
 };
 
+export const moveToProcessingApi = async (orderId, { notes }) => {
+  const response = await axios.patch(
+    `/api/adminOrder/move-to-processing/${orderId}`,
+    { notes },
+    { headers: getAuthHeader() }
+  );
+  return response.data;
+};
+
+export const moveToShippingApi = async (orderId, { notes }) => {
+  const response = await axios.patch(
+    `/api/adminOrder/move-to-shipping/${orderId}`,
+    { notes },
+    { headers: getAuthHeader() }
+  );
+  return response.data;
+};
+
+export const moveToDeliveredApi = async (orderId, { notes }) => {
+  const response = await axios.patch(
+    `/api/adminOrder/move-to-delivered/${orderId}`,
+    { notes },
+    { headers: getAuthHeader() }
+  );
+  return response.data;
+};
+
+export const cancelOrderApi = async (orderId, { notes }) => {
+  const response = await axios.patch(`/api/adminOrder/cancel/${orderId}`, { notes }, { headers: getAuthHeader() });
+  return response.data;
+};
+
 export const fetchOrderSummary = async (startDate, endDate) => {
   const start = startDate ? dayjs(startDate) : dayjs();
   const end = endDate ? dayjs(endDate) : dayjs();

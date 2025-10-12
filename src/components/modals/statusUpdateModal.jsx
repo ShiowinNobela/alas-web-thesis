@@ -1,7 +1,11 @@
 import PropTypes from 'prop-types';
+import { useQuery } from '@tanstack/react-query';
+import { fetchOrderById } from '@/api/orders';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner, Textarea } from 'flowbite-react';
 
 const StatusUpdateModal = ({
   show,
+  orderId,
   title,
   textareaValue,
   onTextareaChange,
@@ -9,47 +13,71 @@ const StatusUpdateModal = ({
   onConfirm,
   confirmButtonLabel,
 }) => {
-  if (!show) return null;
+  const { data: order, isLoading } = useQuery({
+    queryKey: ['order', orderId],
+    queryFn: () => fetchOrderById(orderId),
+    enabled: !!orderId,
+  });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-md mx-4 bg-white shadow-lg rounded-2xl">
-        <div className="p-6">
-          <h2 className="mb-4 text-xl font-semibold dark:text-black">{title}</h2>
-
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-medium text-gray-700">Admin Notes:</label>
-            <textarea
-              value={textareaValue}
-              onChange={onTextareaChange}
-              className="w-full p-3 border border-gray-300 dark:text-black rounded-2xl focus:border-transparent focus:ring-2 focus:ring-blue-500"
-              rows="4"
-              placeholder="Enter notes for this status update..."
-            />
+    <Modal show={show} size="md" onClose={onCancel}>
+      <ModalHeader>{title}</ModalHeader>
+      <ModalBody>
+        {/* Order details */}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-4">
+            <Spinner aria-label="Loading order details" />
+            <span className="ml-2 text-gray-500">Loading order details...</span>
           </div>
-
-
-          <div className="flex justify-end gap-3">
-            <button
-              onClick={onCancel}
-              className="px-4 py-2 text-gray-600 transition-colors border border-gray-300 rounded-2xl hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={onConfirm}
-              className="px-4 py-2 text-white transition-colors bg-blue-600 rounded-2xl hover:bg-blue-700"
-            >
-              {confirmButtonLabel}
-            </button>
+        ) : order ? (
+          <div className="mb-4 rounded border border-gray-200 bg-gray-50 p-3 text-sm">
+            <p>
+              <strong>Order ID:</strong> {order.id}
+            </p>
+            <p>
+              <strong>Customer:</strong> {order.customer_name}
+            </p>
+            <p>
+              <strong>Status:</strong> {order.status}
+            </p>
+            <p>
+              <strong>Total:</strong> ${order.total_amount}
+            </p>
           </div>
+        ) : (
+          <div className="mb-4 text-red-500">Order not found</div>
+        )}
+
+        {/* Admin notes */}
+        <div className="mb-4">
+          <label htmlFor="admin-notes-textarea" className="mb-2 block text-sm font-medium text-gray-700">
+            Admin Notes:
+          </label>
+          <Textarea
+            id="admin-notes-textarea"
+            value={textareaValue}
+            onChange={onTextareaChange}
+            placeholder="Enter notes for this status update..."
+            rows={4}
+          />
         </div>
-      </div>
-    </div>
+      </ModalBody>
+
+      <ModalFooter className="flex justify-end gap-2">
+        <Button color="red" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button color="gray" onClick={onConfirm}>
+          {confirmButtonLabel}
+        </Button>
+      </ModalFooter>
+    </Modal>
   );
 };
+
 StatusUpdateModal.propTypes = {
   show: PropTypes.bool.isRequired,
+  orderId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   textareaValue: PropTypes.string.isRequired,
   onTextareaChange: PropTypes.func.isRequired,
