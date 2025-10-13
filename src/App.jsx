@@ -16,6 +16,8 @@ import { Toaster } from 'sonner';
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
+import AdminPermissionsProvider from './provider/StaffPermissionProvider.jsx';
+import PermissionRoute from './pages/layouts/PermissionRoute.jsx';
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
 const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
@@ -32,9 +34,9 @@ const NotFoundPage = lazy(() => import('./pages/userPages/NotFoundPage.jsx'));
 const CheckOutPage = lazy(() => import('./pages/userPages/CheckOutPage.jsx'));
 const VerifyEmailPage = lazy(() => import('./pages/userPages/VerifyEmailPage.jsx'));
 const ReviewPage = lazy(() => import('./pages/userPages/ReviewPage.jsx'));
-const ForgotPasswordPage = lazy (() => import ('./pages/userPages/ForgotPasswordPage.jsx'))
-const TermsAndConditions = lazy (() => import ('./pages/userPages/TermsAndConditions.jsx'))
-const PrivacyPolicy = lazy (() => import ('./pages/userPages/PrivacyPolicy.jsx'))
+const ForgotPasswordPage = lazy(() => import('./pages/userPages/ForgotPasswordPage.jsx'));
+const TermsAndConditions = lazy(() => import('./pages/userPages/TermsAndConditions.jsx'));
+const PrivacyPolicy = lazy(() => import('./pages/userPages/PrivacyPolicy.jsx'));
 
 // Admin Pages
 const AdminDashboard = lazy(() => import('./pages/adminPages/AdminDashboard.jsx'));
@@ -78,8 +80,8 @@ function App() {
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
             <Route path="/ForgotPassword" element={<ForgotPasswordPage />}></Route>
-            <Route path="/TermsAndConditions" element={<TermsAndConditions/>}></Route>
-            <Route path="/PrivacyPolicy" element={<PrivacyPolicy/>}></Route>
+            <Route path="/TermsAndConditions" element={<TermsAndConditions />}></Route>
+            <Route path="/PrivacyPolicy" element={<PrivacyPolicy />}></Route>
 
             {/* Protected user routes */}
             <Route element={<RoleBasedRoute allowedRoles={['customer']} />}>
@@ -99,7 +101,14 @@ function App() {
           </Route>
 
           <Route element={<RoleBasedRoute allowedRoles={['admin', 'staff']} />}>
-            <Route path="/Admin" element={<AdminLayout />}>
+            <Route
+              path="/Admin"
+              element={
+                <AdminPermissionsProvider>
+                  <AdminLayout />
+                </AdminPermissionsProvider>
+              }
+            >
               <Route path="DashBoard" element={<AdminDashboard />} />
               <Route path="AddProduct" element={<AddProd />} />
               <Route path="EditProduct/:id" element={<EditProd />} />
@@ -110,7 +119,14 @@ function App() {
               <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
               <Route path="ViewOrder/:id" element={<ViewOrder />} />
               <Route path="InventoryManagement" element={<InventoryManagement />}></Route>
-              <Route path="WalkInOrdersTable" element={<WalkInOrderTable />} />
+              <Route
+                path="WalkInOrdersTable"
+                element={
+                  <PermissionRoute permission="view_walkin">
+                    <WalkInOrderTable />
+                  </PermissionRoute>
+                }
+              />
               <Route path="WalkInOrdering" element={<WalkInOrdering />} />
               <Route path="SalesPage" element={<SalesPage />} />
               <Route path="NotificationPage" element={<NotificationPage />} />
