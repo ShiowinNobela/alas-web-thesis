@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import axios from 'axios';
 export const usePDFDownload = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState(null);
@@ -9,16 +9,19 @@ export const usePDFDownload = () => {
     setError(null);
 
     try {
-      const response = await fetch(`/api/sales/pdf-report?startDate=${startDate}&endDate=${endDate}&reportType=${reportType}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      console.log(startDate, endDate, reportType);
+      const token = localStorage.getItem('token');
 
-      if (!response.ok) {
-        throw new Error('Failed to generate PDF');
-      }
+      const response = await axios.get('/api/sales/pdf-report', {
+        params: {
+          startDate,
+          endDate,
+          reportType,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob'
+      });
 
       const contentDisposition = response.headers.get('Content-Disposition');
       let filename = 'sales-report.pdf'; // fallback name edit this if a suggestion is given
