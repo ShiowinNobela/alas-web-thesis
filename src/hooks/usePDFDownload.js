@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+
 export const usePDFDownload = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState(null);
@@ -20,10 +21,12 @@ export const usePDFDownload = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        responseType: 'blob'
+        responseType: 'blob',
       });
 
-      const contentDisposition = response.headers.get('Content-Disposition');
+
+      const contentDisposition = 
+      response.headers['content-disposition'] ||  response.headers['Content-Disposition'] || response.headers['CONTENT-DISPOSITION'];
       let filename = 'sales-report.pdf'; // fallback name edit this if a suggestion is given
 
       if (contentDisposition) {
@@ -32,7 +35,7 @@ export const usePDFDownload = () => {
       }
 
       // Creates  blob and trigger download
-      const blob = await response.blob();
+      const blob = response.data;
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.style.display = 'none';
