@@ -14,8 +14,8 @@ const StorySection = () => {
   const rotateY = useTransform(springX, [-100, 100], [-5, 5]);
 
   return (
-    <section className="bg-card py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-16 bg-card md:py-24">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-2 md:gap-16 lg:gap-24">
           <div className="relative h-full min-h-[300px] sm:min-h-[400px]">
             <motion.div
@@ -38,7 +38,7 @@ const StorySection = () => {
               <img
                 src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351167/BGSos_fjwqb0.jpg"
                 alt="Our team crafting hot sauces"
-                className="h-full w-full object-cover"
+                className="object-cover w-full h-full"
                 loading="lazy"
               />
               <motion.div
@@ -59,16 +59,16 @@ const StorySection = () => {
                 type: 'spring',
                 bounce: 0.4,
               }}
-              className="border-primary absolute -right-10 bottom-0 z-10 w-40 overflow-hidden rounded-xl border-4 bg-white shadow-[0_10px_20px_rgba(0,0,0,0.3)] md:-right-12 md:bottom-2 md:w-48 lg:-right-14 lg:bottom-4 lg:w-56"
+              className="border-primary absolute sm:-right-10 -right-3 bottom-0 z-10 w-40 overflow-hidden rounded-xl border-4 bg-white shadow-[0_10px_20px_rgba(0,0,0,0.3)] md:-right-12 md:bottom-2 md:w-48 lg:-right-14 lg:bottom-4 lg:w-56"
             >
               <img
                 src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351169/lp2_q6mjhd.jpg"
                 alt="Award winning hot sauce"
-                className="h-full w-full object-cover"
+                className="object-cover w-full h-full"
                 loading="lazy"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-amber-500/10">
-                <AwardIcon className="h-8 w-8 text-amber-400 drop-shadow-lg" />
+                <AwardIcon className="w-8 h-8 text-amber-400 drop-shadow-lg" />
               </div>
             </motion.div>
           </div>
@@ -84,7 +84,7 @@ const StorySection = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="mb-4 inline-flex items-center gap-2 text-amber-700"
+              className="inline-flex items-center gap-2 mb-4 text-amber-700"
             >
               <motion.div
                 initial={{ width: 0 }}
@@ -99,7 +99,7 @@ const StorySection = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="font-heading text-content mb-6 text-3xl font-bold md:text-4xl"
+              className="mb-6 text-3xl font-bold font-heading text-content md:text-4xl"
             >
               Crafting Delicate Heat With{' '}
               <motion.span
@@ -116,7 +116,7 @@ const StorySection = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="text-lighter mb-8 space-y-4"
+              className="mb-8 space-y-4 text-lighter"
             >
               <p>
                 Our journey into the spice world came as a surprise, from curiosity, to independent research, up to
@@ -129,7 +129,7 @@ const StorySection = () => {
             </motion.div>
 
             <Link to="/AboutUs">
-              <ShowcaseButton icon={<ArrowRightIcon className="h-5 w-5" />} className="hover:bg-amber-600">
+              <ShowcaseButton icon={<ArrowRightIcon className="w-5 h-5" />} className="hover:bg-amber-600">
                 Read Our Full Story
               </ShowcaseButton>
             </Link>

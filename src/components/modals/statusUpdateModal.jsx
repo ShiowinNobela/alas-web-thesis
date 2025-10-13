@@ -30,7 +30,7 @@ const StatusUpdateModal = ({
             <span className="ml-2 text-gray-500">Loading order details...</span>
           </div>
         ) : order ? (
-          <div className="mb-4 rounded border border-gray-200 bg-gray-50 p-3 text-sm">
+          <div className="p-3 mb-4 text-sm border border-gray-200 rounded bg-gray-50 dark:bg-[#30333b]">
             <p>
               <strong>Order ID:</strong> {order.id}
             </p>
@@ -50,7 +50,7 @@ const StatusUpdateModal = ({
 
         {/* Admin notes */}
         <div className="mb-4">
-          <label htmlFor="admin-notes-textarea" className="mb-2 block text-sm font-medium text-gray-700">
+          <label htmlFor="admin-notes-textarea" className="block mb-2 text-sm font-medium text-gray-700">
             Admin Notes:
           </label>
           <Textarea
