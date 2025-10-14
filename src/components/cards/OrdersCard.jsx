@@ -80,7 +80,7 @@ export default function OrdersCard({ orders, onCancelOrder }) {
               layout
             >
               <Card className="hover:ring-primary border-primary relative overflow-hidden border-l-2 p-0 hover:ring-1">
-                <PackageSearch className="text-primary/7 absolute top-2 left-2 size-32" strokeWidth={1} />
+                {/* <PackageSearch className="text-primary/7 absolute top-2 left-2 size-32" strokeWidth={1} /> */}
                 {/* New Design I */}
                 <div className="flex flex-col sm:flex-row">
                   {/* Left Content (Order Info) */}
@@ -88,9 +88,11 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                     {/* --- Header --- */}
                     <div className="border-b border-gray-200 pb-3 sm:pb-4">
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
-                        <h2 className="text-lighter text-sm sm:text-base">
+                        <h2 className="text-content">
                           Order ID:{' '}
-                          <span className="text-content font-semibold tracking-tighter">#{order?.id || 'N/A'}</span>
+                          <span className="text-primary font-heading text-sm font-bold tracking-tighter">
+                            #{order?.id || 'N/A'}
+                          </span>
                         </h2>
                         <motion.span
                           whileHover={{ scale: 1.05 }}
@@ -116,7 +118,7 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                           layout
                           className="overflow-hidden"
                         >
-                          <div className="grid grid-cols-1 gap-2 py-3 sm:grid-cols-2 lg:grid-cols-3">
+                          <div className="grid grid-cols-1 gap-2 py-2 lg:grid-cols-2">
                             {order?.items?.map((item, i) => (
                               <motion.div
                                 key={item.item_id}
@@ -126,21 +128,18 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                                 custom={i}
                                 whileHover={{ y: -2 }}
                               >
-                                <Card className="text-content flex flex-row gap-3 rounded-2xl border p-3 shadow-sm transition-shadow hover:shadow-md">
-                                  <motion.div
-                                    className="size-10 flex-shrink-0 overflow-hidden rounded bg-orange-200 sm:size-12"
-                                    whileHover={{ scale: 1.05 }}
-                                  >
+                                <Card className="text-content flex flex-row gap-2 rounded-2xl p-3 shadow">
+                                  <motion.div className="h-15 rounded-2xl" whileHover={{ scale: 1.05 }}>
                                     <img
                                       src={item.image || 'https://via.placeholder.com/80x80?text=IMG'}
                                       alt={item.product_name}
-                                      className="h-full w-full object-cover"
+                                      className="h-full w-full object-contain"
                                     />
                                   </motion.div>
-                                  <div className="flex h-full min-w-0 flex-1 flex-col justify-between">
-                                    <p className="truncate text-xs font-semibold sm:text-sm">{item.product_name}</p>
+                                  <div className="flex h-full flex-1 flex-col justify-between gap-1">
+                                    <p className="font-heading font-bold sm:text-sm">{item.product_name}</p>
                                     <p className="text-lighter text-xs">
-                                      Qty: <span className="text-content font-medium">{item.quantity}</span>
+                                      Quantity: <span className="text-content font-medium">{item.quantity}</span>
                                     </p>
                                   </div>
                                 </Card>
@@ -156,7 +155,7 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-lighter text-sm sm:text-base">
                           Total:{' '}
-                          <span className="text-content text-lg font-semibold">
+                          <span className="font-heading font-bold text-emerald-600">
                             {new Intl.NumberFormat('en-PH', {
                               style: 'currency',
                               currency: 'PHP',
@@ -170,8 +169,6 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                             <span className="font-medium">{order?.items?.length || 0}</span>
                             <span>items</span>
                           </span>
-                          <span className="hidden font-bold sm:inline">·</span>
-                          <span className="hidden sm:inline">Expected: June 20, 1996</span>
                           <span className="hidden font-bold sm:inline">·</span>
                           <div className="flex items-center">
                             <PaymentMethodIcon method={order?.payment_method || 'unknown'} />
@@ -188,8 +185,6 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                       </Button>
                     </motion.div>
 
-                    <div className="my-1 border-t border-gray-200"></div>
-
                     {order?.status === 'pending' ? (
                       order?.cancel_requested === 1 ? (
                         <Tooltip>
@@ -204,7 +199,11 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                         </Tooltip>
                       ) : (
                         <motion.div whileHover={{ scale: 1.03 }}>
-                          <Button variant="destructive" onClick={() => onCancelOrder(order?.id)} className="w-full">
+                          <Button
+                            variant="destructive"
+                            onClick={() => onCancelOrder(order?.id)}
+                            className="w-full bg-amber-500"
+                          >
                             Cancel Order
                           </Button>
                         </motion.div>

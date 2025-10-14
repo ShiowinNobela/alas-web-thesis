@@ -1,6 +1,7 @@
-import { Facebook, Instagram, Twitter, Phone, MapPin, Flame, Truck, Shield, RotateCcw, Star } from 'lucide-react';
+import { Phone, MapPin, Flame, Truck, Shield, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { FaFacebook, FaInstagram } from 'react-icons/fa';
 
 function Footer() {
   return (
@@ -13,10 +14,7 @@ function Footer() {
             <div>
               <h3 className="text-content font-heading mb-2 text-2xl font-bold">Alas Delis & Spices</h3>
               <div className="mb-4 flex items-center space-x-1">
-                <Flame className="h-4 w-4 text-red-500" />
-                <Flame className="h-4 w-4 text-orange-500" />
-                <Flame className="h-4 w-4 text-yellow-500" />
-                <span className="text-lighter ml-2 text-xs">Est. May 2020</span>
+                <span className="text-lighter text-xs">Est. May 2020</span>
               </div>
               <p className="text-lighter text-sm leading-relaxed">
                 Handcrafted sauces that bring the heat and flavor to every meal. From garden-fresh ingredients to your
@@ -27,11 +25,11 @@ function Footer() {
             <div className="space-y-3">
               <div className="text-lighter flex items-center text-sm">
                 <MapPin className="mr-3 h-4 w-4 text-red-500" />
-                123 Flavor Street, Spice City, SC 12345
+                Old Balara, Tandang Sora Avenue, Quezon City
               </div>
               <div className="text-lighter flex items-center text-sm">
                 <Phone className="mr-3 h-4 w-4 text-red-500" />
-                (555) 123-SAUCE
+                0995 285 8665
               </div>
             </div>
 
@@ -62,45 +60,27 @@ function Footer() {
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
             {/* Shop */}
             <div>
-              <h4 className="text-content font-heading mb-4 text-lg font-semibold">Our Sauces</h4>
+              <h4 className="text-content font-heading mb-4 text-lg font-semibold">Other Shops</h4>
               <ul className="space-y-3">
                 <li>
-                  <Link
-                    to="/hot-sauces"
-                    className="text-lighter flex items-center text-sm transition-colors hover:text-red-600"
+                  <a
+                    href="https://shopee.ph/alashotsauce"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-lighter flex items-center text-sm hover:text-amber-600"
                   >
-                    <Flame className="mr-2 h-3 w-3 text-yellow-500" />
-                    Hot Sauces
-                  </Link>
+                    Shopee
+                  </a>
                 </li>
                 <li>
-                  <button
-                    type="button"
-                    className="text-lighter flex cursor-pointer items-center border-none bg-transparent p-0 text-sm transition-colors hover:text-red-600"
-                    aria-label="BBQ Sauces (coming soon)"
+                  <a
+                    href="https://www.lazada.com.ph/shop/alas-hot-sauce-by-alas-delis-and-spices"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-lighter flex items-center text-sm hover:text-pink-500"
                   >
-                    <Star className="mr-2 h-3 w-3 text-orange-500" />
-                    BBQ Sauces
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="text-lighter flex cursor-pointer items-center border-none bg-transparent p-0 text-sm transition-colors hover:text-red-600"
-                    aria-label="Specialty Blends (coming soon)"
-                  >
-                    <Flame className="mr-2 h-3 w-3 text-red-500" />
-                    Specialty Blends
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    className="text-lighter cursor-pointer border-none bg-transparent p-0 text-sm transition-colors hover:text-red-600"
-                    aria-label="Gift Sets (coming soon)"
-                  >
-                    Gift Sets
-                  </button>
+                    Lazada
+                  </a>
                 </li>
               </ul>
             </div>
@@ -120,18 +100,18 @@ function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="#" className="text-lighter text-sm transition-colors hover:text-red-600">
-                    Shipping
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="text-lighter text-sm transition-colors hover:text-red-600">
-                    Returns
-                  </Link>
-                </li>
-                <li>
                   <Link to="/Faqs" className="text-lighter text-sm transition-colors hover:text-red-600">
                     FAQ
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/TermsAndConditions" className="text-lighter text-sm transition-colors hover:text-red-600">
+                    Terms and Conditions
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/PrivacyPolicy" className="text-lighter text-sm transition-colors hover:text-red-600">
+                    Privacy Policy
                   </Link>
                 </li>
               </ul>
@@ -144,29 +124,27 @@ function Footer() {
             <div>
               <h4 className="text-content font-heading mb-4 text-lg font-semibold">Follow the Heat</h4>
               <div className="flex space-x-3">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-10 w-10 border-0 bg-gradient-to-br from-pink-500 to-purple-600 text-white transition-transform hover:scale-105"
-                >
-                  <Instagram className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-10 w-10 border-0 bg-blue-600 text-white transition-transform hover:scale-105"
-                >
-                  <Facebook className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-10 w-10 border-0 bg-blue-400 text-white transition-transform hover:scale-105"
-                >
-                  <Twitter className="h-4 w-4" />
-                </Button>
+                <a href="https://www.instagram.com/alasdelisandspices/" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-10 w-10 border-0 bg-gradient-to-br from-pink-500 to-purple-600 text-white transition-transform hover:scale-105"
+                  >
+                    <FaInstagram className="h-4 w-4" />
+                  </Button>
+                </a>
+
+                <a href="https://www.facebook.com/alas918/" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-10 w-10 border-0 bg-blue-600 text-white transition-transform hover:scale-105"
+                  >
+                    <FaFacebook className="h-4 w-4" />
+                  </Button>
+                </a>
               </div>
-              <p className="text-lighter mt-2 text-xs">Share your spicy creations with #SpiceAndFire</p>
+              <p className="text-lighter mt-4 text-xs">Share your spicy creations with #AlasHotSauce</p>
             </div>
 
             {/* Unique Features */}
@@ -179,7 +157,7 @@ function Footer() {
                 </div>
                 <div className="text-lighter dark:text-neutral flex items-center text-xs">
                   <Truck className="mr-2 h-4 w-4 text-blue-500" />
-                  Free shipping over $35
+                  Artisanal Blends
                 </div>
                 <div className="text-lighter dark:text-neutral flex items-center text-xs">
                   <RotateCcw className="mr-2 h-4 w-4 text-purple-500" />
@@ -205,22 +183,20 @@ function Footer() {
           <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
             <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-6">
               <p className="text-lighter text-sm">
-                © 2024 <span>Spice & Fire Co.</span> All rights reserved.
+                © 2020 <span>Alas Delis and Spices.</span> All rights reserved.
               </p>
               <div className="flex space-x-4">
-                <a href="/privacy" className="text-lighter text-xs transition-colors hover:text-red-600">
-                  Privacy
-                </a>
-                <a href="/terms" className="text-lighter text-xs transition-colors hover:text-red-600">
-                  Terms
-                </a>
+                <Link to="/TermsAndConditions" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  Terms and Conditions
+                </Link>
+                <Link to="/PrivacyPolicy" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  Privacy Policy
+                </Link>
               </div>
             </div>
 
             <div className="text-lighter flex items-center text-xs">
-              <span>Made with</span>
-              <Flame className="mx-1 h-3 w-3 text-red-500" />
-              <span>in Spice City</span>
+              <span>Made with HOT</span>
             </div>
           </div>
         </div>
