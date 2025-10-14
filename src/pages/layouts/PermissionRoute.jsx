@@ -4,7 +4,7 @@ import useUserStore from '@/stores/userStore';
 
 const PermissionRoute = ({ permission, children }) => {
   const permissions = usePermissionsStore((state) => state.permissions);
-  const userRole = useUserStore((state) => state.user.role);
+  const userRole = useUserStore((state) => state.user.role_name);
 
   if (userRole === 'admin') return children;
 

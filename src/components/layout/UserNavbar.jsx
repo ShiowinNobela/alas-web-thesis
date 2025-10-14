@@ -30,19 +30,19 @@ function Navbar() {
     { to: '/ContactUs', label: 'Contact' },
   ];
 
-   const legalLinks = [
+  const legalLinks = [
     { to: '/Faqs', label: 'FAQS' },
     { to: '/TermsAndConditions', label: 'Terms & Conditions' },
     { to: '/PrivacyPolicy', label: 'Privacy Policy' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full shadow bg-card">
+    <header className="bg-card sticky top-0 z-50 w-full shadow">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-8 py-4">
         <div className="flex flex-row items-center justify-center gap-4">
           <Link to="/" onClick={closeMobileMenu}>
             <img
-              className="w-auto cursor-pointer h-11"
+              className="h-11 w-auto cursor-pointer"
               src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
               alt="Logo"
               onError={(e) => {
@@ -50,30 +50,30 @@ function Navbar() {
               }}
             />
           </Link>
-          <h1 className="hidden text-lg tracking-tight font-heading text-content lg:block">Alas Delis and Spices</h1>
+          <h1 className="font-heading text-content hidden text-lg tracking-tight lg:block">Alas Delis and Spices</h1>
           <ThemeToggle />
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="items-center hidden gap-5 text-sm font-semobold md:flex md:gap-2 lg:gap-4 xl:gap-8">
+        <nav className="font-semobold hidden items-center gap-5 text-sm md:flex md:gap-2 lg:gap-4 xl:gap-8">
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className={getNavItemClass(link.to)}>
               {link.label}
             </Link>
           ))}
-          <div className="relative group">
+          <div className="group relative">
             <button className={`${navItemStyle} flex items-center gap-1`}>
               Policies
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div className="absolute left-0 z-50 invisible w-48 mt-2 transition-all duration-300 bg-white border rounded-lg shadow-lg opacity-0 top-full group-hover:opacity-100 group-hover:visible">
+            <div className="invisible absolute top-full left-0 z-50 mt-2 w-48 rounded-lg border bg-white opacity-0 shadow-lg transition-all duration-300 group-hover:visible group-hover:opacity-100">
               {legalLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="block px-4 py-3 text-sm text-gray-700 border-b hover:bg-gray-100 first:rounded-t-lg last:rounded-b-lg last:border-b-0"
+                  className="block border-b px-4 py-3 text-sm text-gray-700 first:rounded-t-lg last:rounded-b-lg last:border-b-0 hover:bg-gray-100"
                 >
                   {link.label}
                 </Link>
@@ -108,10 +108,8 @@ function Navbar() {
         <div className="flex items-center gap-3 md:hidden">
           {storedUser && (
             <Drawer direction="right">
-              <DrawerTrigger>
-                <Button variant="ghost">
-                  <ShoppingCart />
-                </Button>
+              <DrawerTrigger className="bg-primary rounded-sm p-2">
+                <ShoppingCart className="size-4 text-white" />
               </DrawerTrigger>
               <DrawerContent>
                 <Cart />
@@ -129,17 +127,17 @@ function Navbar() {
             mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out`}
         >
-          <div className="flex items-center justify-between px-5 py-4 divide-y-2 border-content">
+          <div className="border-content flex items-center justify-between divide-y-2 px-5 py-4">
             <Link to="/" onClick={closeMobileMenu}>
               <img
-                className="w-auto h-12"
+                className="h-12 w-auto"
                 src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
                 alt="Logo"
               />
             </Link>
           </div>
 
-          <nav className="flex flex-col flex-1 gap-1 px-5 py-4 text-lg uppercase divide-y border-primary">
+          <nav className="border-primary flex flex-1 flex-col gap-1 divide-y px-5 py-4 text-lg uppercase">
             {navLinks.map((link) => (
               <Link key={link.to} to={link.to} onClick={closeMobileMenu} className="py-3 transition">
                 {link.label}

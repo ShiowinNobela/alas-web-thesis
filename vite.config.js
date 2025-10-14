@@ -23,29 +23,18 @@ export default defineConfig({
         secure: false,
         ws: true,
       },
-      '/socket.io/' : {
+      '/socket.io/': {
         target: 'http://localhost:3000',
         changeOrigin: true,
         secure: false,
         ws: true,
-      }
+      },
     },
     historyApiFallback: true,
   },
   build: {
     assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
     outDir: 'dist',
-    rollupOptions: {
-      output: {
-        // manualChunks: {
-        //   // Create vendor bundles
-        //   react: ['react', 'react-dom', 'react-router-dom'],
-        //   ui: ['flowbite-react', 'framer-motion'],
-        //   state: ['zustand'],
-        //   utils: ['axios'],
-        // },
-      },
-    },
   },
 
   base: '/',
