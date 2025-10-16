@@ -148,7 +148,7 @@ function NotificationPage() {
                         <div className="grid grid-cols-2 gap-4">
                           {/* BEFORE */}
                           {log.before_data && (
-                            <div className="rounded-lg border border-red-300 bg-red-50 p-3 dark:border-red-800 dark:bg-red-950/40">
+                            <div className="ru rounded-lg border border-red-300 bg-red-50 p-3 dark:border-red-800 dark:bg-red-950/40">
                               <h4 className="mb-1 font-semibold text-red-700 dark:text-red-300">Before</h4>
                               <div className="overflow-hidden break-words text-red-800 dark:text-red-200">
                                 {formatData(log.before_data)}

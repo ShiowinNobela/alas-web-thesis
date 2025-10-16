@@ -4,20 +4,16 @@ const SalesBreakdown = ({ data, period, isLoading }) => {
   if (isLoading) {
     return (
       <Card className="mb-6">
-        <div className="h-48 bg-gray-200 rounded animate-pulse"></div>
+        <div className="h-48 animate-pulse rounded bg-gray-200"></div>
       </Card>
     );
   }
 
   const { onlineSales, walkInSales, totals } = data || {};
-  
-  const onlinePercentage = totals?.totalSales 
-    ? Math.round((onlineSales?.totalSales / totals.totalSales) * 100) 
-    : 0;
-  
-  const walkInPercentage = totals?.totalSales 
-    ? Math.round((walkInSales?.totalSales / totals.totalSales) * 100) 
-    : 0;
+
+  const onlinePercentage = totals?.totalSales ? Math.round((onlineSales?.totalSales / totals.totalSales) * 100) : 0;
+
+  const walkInPercentage = totals?.totalSales ? Math.round((walkInSales?.totalSales / totals.totalSales) * 100) : 0;
 
   const breakdownData = [
     {
@@ -39,7 +35,7 @@ const SalesBreakdown = ({ data, period, isLoading }) => {
   ];
 
   return (
-    <Card className="mb-6">
+    <Card className="ring-1">
       <h3 className="mb-4 text-lg font-bold capitalize">{period} Sales Breakdown</h3>
       <div className="space-y-4">
         {breakdownData.map((item, index) => (
@@ -50,11 +46,7 @@ const SalesBreakdown = ({ data, period, isLoading }) => {
                 ₱{item.amount.toLocaleString()} ({item.percentage}%)
               </span>
             </div>
-            <Progress 
-              progress={item.percentage} 
-              color={item.color}
-              size="lg"
-            />
+            <Progress progress={item.percentage} color={item.color} size="lg" />
             <div className="flex justify-between text-sm text-gray-500 dark:text-gray-100">
               <span>{item.orders} orders</span>
               <span>{item.items} items sold</span>
