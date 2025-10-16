@@ -25,15 +25,15 @@ function Navbar() {
 
   const navLinks = [
     { to: '/', label: 'Home' },
-    { to: '/ProductListPage', label: 'Menu' },
-    { to: '/AboutUs', label: 'About' },
-    { to: '/ContactUs', label: 'Contact' },
+    { to: '/menu', label: 'Menu' },
+    { to: '/about', label: 'About' },
+    { to: '/contact', label: 'Contact' },
   ];
 
   const legalLinks = [
-    { to: '/Faqs', label: 'FAQS' },
-    { to: '/TermsAndConditions', label: 'Terms & Conditions' },
-    { to: '/PrivacyPolicy', label: 'Privacy Policy' },
+    { to: '/faq', label: 'FAQS' },
+    { to: '/terms-and-conditions', label: 'Terms & Conditions' },
+    { to: '/privacy-policy', label: 'Privacy Policy' },
   ];
 
   return (
@@ -92,12 +92,12 @@ function Navbar() {
           {storedUser ? (
             <UserDropdown />
           ) : (
-            <Link to="/LoginPage" className={getNavItemClass('/LoginPage')}>
+            <Link to="/login" className={getNavItemClass('/login')}>
               Sign In
             </Link>
           )}
 
-          <Link to={storedUser ? '/ProductListPage' : '/LoginPage'} onClick={closeMobileMenu}>
+          <Link to={storedUser ? '/menu' : '/login'} onClick={closeMobileMenu}>
             <Button variant="CTA" className="text-xs lg:text-sm">
               Order Now
             </Button>
@@ -146,10 +146,10 @@ function Navbar() {
 
             {storedUser ? (
               <>
-                <Link to="/UserOrderPage" onClick={closeMobileMenu} className="py-3 transition">
+                <Link to="/user/orders" onClick={closeMobileMenu} className="py-3 transition">
                   My Orders
                 </Link>
-                <Link to="/UserSettings" onClick={closeMobileMenu} className="py-3 transition">
+                <Link to="/user/profile" onClick={closeMobileMenu} className="py-3 transition">
                   Profile
                 </Link>
                 <button onClick={handleLogout} className="py-3 text-left transition">
@@ -157,17 +157,12 @@ function Navbar() {
                 </button>
               </>
             ) : (
-              <Link to="/LoginPage" onClick={closeMobileMenu} className="py-3 transition">
+              <Link to="/login" onClick={closeMobileMenu} className="py-3 transition">
                 Sign In
               </Link>
             )}
 
-            <Button
-              variant="CTA"
-              to={storedUser ? '/ProductListPage' : '/LoginPage'}
-              onClick={closeMobileMenu}
-              className="mt-4"
-            >
+            <Button variant="CTA" to={storedUser ? '/menu' : '/login'} onClick={closeMobileMenu} className="mt-4">
               Order
             </Button>
           </nav>

@@ -18,6 +18,7 @@ import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
 import AdminPermissionsProvider from './provider/StaffPermissionProvider.jsx';
 import PermissionRoute from './pages/layouts/PermissionRoute.jsx';
+import UnauthorizedPage from './pages/userPages/UnauthorizedPage.jsx';
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
 const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
@@ -45,8 +46,6 @@ const EditProd = lazy(() => import('./pages/adminPages/EditProduct.jsx'));
 const ProdManagement = lazy(() => import('./pages/adminPages/ProductManagement.jsx'));
 const AccManagement = lazy(() => import('./pages/adminPages/AccountManagement.jsx'));
 const AdminOrderList = lazy(() => import('./pages/adminPages/AdminOrderList.jsx'));
-const PopUpInfoPage = lazy(() => import('./pages/adminPages/PopUpInfoPage.jsx'));
-const ViewOrder = lazy(() => import('./pages/adminPages/ViewOrder.jsx'));
 const InventoryManagement = lazy(() => import('./pages/adminPages/InventoryManagement.jsx'));
 const WalkInOrdering = lazy(() => import('./pages/adminPages/WalkInOrdering.jsx'));
 const SalesPage = lazy(() => import('./pages/adminPages/SalesPage.jsx'));
@@ -55,7 +54,7 @@ const AdminOrderDetails = lazy(() => import('./pages/adminPages/AdminOrderDetail
 const NotificationPage = lazy(() => import('./pages/adminPages/NotificationPage.jsx'));
 const Notifs = lazy(() => import('./pages/adminPages/Notifs.jsx'));
 const PromotionManagement = lazy(() => import('./pages/adminPages/PromotionManagement.jsx'));
-const ModerationPage = lazy (() => import('./pages/adminPages/ModerationPage.jsx'))
+const ModerationPage = lazy(() => import('./pages/adminPages/ModerationPage.jsx'));
 
 function App() {
   return (
@@ -73,70 +72,80 @@ function App() {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<LandPage />}></Route>
-            <Route path="/LoginPage" element={<LoginPage />}></Route>
-            <Route path="/RegPage" element={<RegPage />}></Route>
-            <Route path="/ProductDetailsPage/:id" element={<ProductDetailsPage />}></Route>
-            <Route path="/ContactUs" element={<ContactUs />} />
-            <Route path="/Faqs" element={<Faqs />}></Route>
-            <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/register" element={<RegPage />}></Route>
+            <Route path="/product/:id" element={<ProductDetailsPage />}></Route>
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/faq" element={<Faqs />}></Route>
             <Route path="/users/verify-email" element={<VerifyEmailPage />}></Route>
-            <Route path="/ForgotPassword" element={<ForgotPasswordPage />}></Route>
-            <Route path="/TermsAndConditions" element={<TermsAndConditions />}></Route>
-            <Route path="/PrivacyPolicy" element={<PrivacyPolicy />}></Route>
+            <Route path="/forgot-password" element={<ForgotPasswordPage />}></Route>
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />}></Route>
+            <Route path="/privacy-policy" element={<PrivacyPolicy />}></Route>
 
             {/* Protected user routes */}
             <Route element={<RoleBasedRoute allowedRoles={['customer']} />}>
               <Route path="/user/dashboard" element={<UserDashboard />} />
-              <Route path="/GiveReview/:id" element={<GiveReview />}></Route>
-              <Route path="/CheckOutPage" element={<CheckOutPage />}></Route>
+              <Route path="/user/review/:id" element={<GiveReview />}></Route>
+              <Route path="/user/checkout" element={<CheckOutPage />}></Route>
               <Route path="/user/after-checkout/:id" element={<AfterCheckOutPage />} />
-              <Route path="/UserOrderPage" element={<UserOrderPage />} />
-              <Route path="/UserSettings" element={<UserSettings />} />
+              <Route path="/user/orders" element={<UserOrderPage />} />
+              <Route path="/user/profile" element={<UserSettings />} />
               <Route path="/users/orders/:id" element={<UserViewOrderDetails />} />
               <Route path="/users/reviews" element={<ReviewPage />} />
             </Route>
           </Route>
 
           <Route element={<ProductListLayout />}>
-            <Route path="/ProductListPage" element={<ProductPage />}></Route>
+            <Route path="/menu" element={<ProductPage />}></Route>
           </Route>
 
           <Route element={<RoleBasedRoute allowedRoles={['admin', 'staff']} />}>
             <Route
-              path="/Admin"
+              path="/admin"
               element={
                 <AdminPermissionsProvider>
                   <AdminLayout />
                 </AdminPermissionsProvider>
               }
             >
-              <Route path="DashBoard" element={<AdminDashboard />} />
-              <Route path="AddProduct" element={<AddProd />} />
-              <Route path="EditProduct/:id" element={<EditProd />} />
-              <Route path="ProductManagement" element={<ProdManagement />} />
-              <Route path="AccountManagement" element={<AccManagement />} />
-              <Route path="Orders" element={<AdminOrderList />} />
-              <Route path="AdminOrderDetails/:id" element={<AdminOrderDetails />} />
-              <Route path="PopUpInfoPage" element={<PopUpInfoPage />} />
-              <Route path="ViewOrder/:id" element={<ViewOrder />} />
-              <Route path="InventoryManagement" element={<InventoryManagement />}></Route>
-              <Route
-                path="WalkInOrdersTable"
-                element={
-                  <PermissionRoute permission="view_walkin">
-                    <WalkInOrderTable />
-                  </PermissionRoute>
-                }
-              />
-              <Route path="WalkInOrdering" element={<WalkInOrdering />} />
-              <Route path="SalesPage" element={<SalesPage />} />
-              <Route path="NotificationPage" element={<NotificationPage />} />
-              <Route path="Notifs" element={<Notifs />} />
-              <Route path="ModerationPage" element={<ModerationPage/>} />
-              <Route path="promotion/management" element={<PromotionManagement />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route element={<PermissionRoute adminOnly />}>
+                <Route path="add-product" element={<AddProd />} />
+                <Route path="edit-product/:id" element={<EditProd />} />
+                <Route path="products" element={<ProdManagement />} />
+                <Route path="account-management" element={<AccManagement />} />
+                <Route path="logs" element={<NotificationPage />} />
+                <Route path="Notifs" element={<Notifs />} />
+                <Route path="sales" element={<SalesPage />} />
+              </Route>
+
+              <Route element={<PermissionRoute permission="manage_orders" />}>
+                <Route path="order" element={<AdminOrderList />} />
+                <Route path="order/:id" element={<AdminOrderDetails />} />
+              </Route>
+
+              <Route element={<PermissionRoute permission="view_inventory" />}>
+                <Route path="inventory" element={<InventoryManagement />}></Route>
+              </Route>
+
+              <Route element={<PermissionRoute permission="view_walkin" />}>
+                <Route path="walk-in-orders" element={<WalkInOrderTable />} />
+              </Route>
+
+              <Route element={<PermissionRoute permission="create_walkin" />}>
+                <Route path="create-walk-in" element={<WalkInOrdering />} />
+              </Route>
+
+              <Route element={<PermissionRoute permission="manage_promotions" />}>
+                <Route path="promotion/management" element={<PromotionManagement />} />
+              </Route>
+
+              <Route path="moderation" element={<ModerationPage />} />
             </Route>
           </Route>
 
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

@@ -235,7 +235,7 @@ export default function AdminOrdersTable({
                         <div className="font-semibold">Order #{order.id}</div>
                       </DropdownHeader>
                       <DropdownDivider />
-                      <DropdownItem onClick={() => navigate(`/Admin/AdminOrderDetails/${order.id}`)}>
+                      <DropdownItem onClick={() => navigate(`/admin/order/${order.id}`)}>
                         View Order Details
                       </DropdownItem>
                       <DropdownItem onClick={() => onViewHistory(order.id)}>View History</DropdownItem>

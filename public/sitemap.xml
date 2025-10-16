@@ -7,30 +7,23 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <url>
-    <loc>https://alashotsauce.com/UserOrderPage</loc>
-    <lastmod>2025-10-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
   
   <url>
-    <loc>https://alashotsauce.com/ContactUs</loc>
+    <loc>https://alashotsauce.com/contact</loc>
     <lastmod>2025-09-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://alashotsauce.com/Faqs</loc>
+    <loc>https://alashotsauce.com/faq</loc>
     <lastmod>2025-09-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://alashotsauce.com/AboutUs</loc>
+    <loc>https://alashotsauce.com/about</loc>
     <lastmod>2025-10-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

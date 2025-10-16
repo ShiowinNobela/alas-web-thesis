@@ -33,9 +33,7 @@ function GiveReview() {
     enabled: !!orderId,
   });
 
-  const productToReview = orderData?.items?.find(
-    (item) => String(item.product_id) === String(productIdParam)
-  );
+  const productToReview = orderData?.items?.find((item) => String(item.product_id) === String(productIdParam));
 
   const productName = productToReview?.product_name || '';
   const productImage = productToReview?.image || null;
@@ -52,7 +50,7 @@ function GiveReview() {
     mutationFn: (reviewData) => axios.post('/api/reviews', reviewData),
     onSuccess: () => {
       toast.success('Review submitted successfully!');
-      setTimeout(() => navigate('/ProductListPage'), 1000);
+      setTimeout(() => navigate('/menu'), 1000);
     },
     onError: (error) => {
       console.error('Review submission error:', error);
@@ -112,7 +110,7 @@ function GiveReview() {
 
   if (isLoadingOrder) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-yellow-50 to-orange-50">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-yellow-50 to-orange-50">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -121,7 +119,7 @@ function GiveReview() {
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            className="w-12 h-12 mb-4 border-4 border-orange-200 rounded-full border-t-orange-500"
+            className="mb-4 h-12 w-12 rounded-full border-4 border-orange-200 border-t-orange-500"
           />
           <p className="text-xl text-orange-800">Loading product information...</p>
         </motion.div>
@@ -131,15 +129,15 @@ function GiveReview() {
 
   return (
     <>
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
-          className="absolute w-16 h-16 rounded-full top-20 left-10 animate-pulse bg-gradient-to-br from-yellow-200 to-orange-300 opacity-20"
+          className="absolute top-20 left-10 h-16 w-16 animate-pulse rounded-full bg-gradient-to-br from-yellow-200 to-orange-300 opacity-20"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
         ></motion.div>
         <motion.div
-          className="absolute w-12 h-12 delay-1000 rounded-full bottom-40 right-15 animate-pulse bg-gradient-to-br from-red-200 to-pink-300 opacity-20"
+          className="absolute right-15 bottom-40 h-12 w-12 animate-pulse rounded-full bg-gradient-to-br from-red-200 to-pink-300 opacity-20 delay-1000"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
@@ -147,33 +145,30 @@ function GiveReview() {
       </div>
 
       <motion.section
-        className="flex justify-center min-h-full py-10 bg-gradient-to-b from-yellow-50 to-orange-50"
+        className="flex min-h-full justify-center bg-gradient-to-b from-yellow-50 to-orange-50 py-10"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
         <motion.div
-          className="flex flex-col items-center justify-center w-full max-w-4xl border border-orange-200 shadow-xl h-fit bg-white/70 rounded-xl shadow-black/10 md:rounded-2xl"
+          className="flex h-fit w-full max-w-4xl flex-col items-center justify-center rounded-xl border border-orange-200 bg-white/70 shadow-xl shadow-black/10 md:rounded-2xl"
           variants={itemVariants}
         >
-          <CardHeader className="w-full py-4 bg-gradient-to-r from-red-500 to-orange-500 rounded-t-xl md:rounded-t-2xl">
+          <CardHeader className="w-full rounded-t-xl bg-gradient-to-r from-red-500 to-orange-500 py-4 md:rounded-t-2xl">
             <div className="flex items-center">
-              <CardTitle className="text-2xl font-bold text-white">
-                Leave a Review
-              </CardTitle>
+              <CardTitle className="text-2xl font-bold text-white">Leave a Review</CardTitle>
             </div>
           </CardHeader>
 
           <CardContent className="w-full p-6">
             <motion.div className="flex flex-col items-center" variants={itemVariants}>
-
               {/* Product Part*/}
-              <div className="flex flex-col items-center mb-6 text-center">
+              <div className="mb-6 flex flex-col items-center text-center">
                 {productImage && (
                   <img
                     src={productImage}
                     alt={productName}
-                    className="object-cover w-24 h-24 mb-3 rounded-lg shadow-md"
+                    className="mb-3 h-24 w-24 rounded-lg object-cover shadow-md"
                   />
                 )}
                 <h2 className="text-lg text-gray-800">Reviewing</h2>
@@ -181,16 +176,16 @@ function GiveReview() {
               </div>
 
               {/* Ratings */}
-              <div className="flex flex-col w-full gap-6 mb-6 md:flex-row md:items-start">
+              <div className="mb-6 flex w-full flex-col gap-6 md:flex-row md:items-start">
                 <motion.div
-                  className="flex flex-col items-center p-4 rounded-lg bg-yellow-50 md:w-1/2"
+                  className="flex flex-col items-center rounded-lg bg-yellow-50 p-4 md:w-1/2"
                   variants={itemVariants}
                 >
-                  <div className="flex items-center justify-center w-16 h-16 mb-4 bg-orange-100 rounded-full">
-                    <Star className="w-8 h-8 text-orange-500" />
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-orange-100">
+                    <Star className="h-8 w-8 text-orange-500" />
                   </div>
                   <h3 className="mb-2 text-lg font-semibold">Rate Your Experience</h3>
-                  <div className="flex flex-row items-center justify-center mb-2">
+                  <div className="mb-2 flex flex-row items-center justify-center">
                     {[1, 2, 3, 4, 5].map((star) => {
                       const isActive = star <= review.rating;
                       return (
@@ -215,42 +210,34 @@ function GiveReview() {
                       );
                     })}
                   </div>
-                  <p className="text-sm text-gray-600 min-h-[1rem] text-center">
+                  <p className="min-h-[1rem] text-center text-sm text-gray-600">
                     {ratingLabels[review.rating] || 'Select a rating'}
                   </p>
                 </motion.div>
 
-
                 {/* Review Part */}
                 <motion.div
-                  className="flex flex-col items-center p-4 rounded-lg bg-orange-50 md:w-1/2"
+                  className="flex flex-col items-center rounded-lg bg-orange-50 p-4 md:w-1/2"
                   variants={itemVariants}
                 >
                   <h3 className="mb-4 text-lg font-semibold">Share Your Thoughts</h3>
                   <textarea
                     placeholder="Tell us what you liked or what could be improved…"
-                    className="w-full h-32 p-4 transition bg-white border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="h-32 w-full rounded-lg border border-orange-200 bg-white p-4 transition focus:border-transparent focus:ring-2 focus:ring-orange-500"
                     value={review.review_text}
                     maxLength={300}
-                    onChange={(e) =>
-                      setReview({ ...review, review_text: e.target.value })
-                    }
+                    onChange={(e) => setReview({ ...review, review_text: e.target.value })}
                   />
-                  <p className="self-end mt-1 text-xs text-gray-500">
-                    {review.review_text.length}/300
-                  </p>
+                  <p className="mt-1 self-end text-xs text-gray-500">{review.review_text.length}/300</p>
                 </motion.div>
               </div>
 
               {/* Buttons */}
-              <motion.div
-                className="flex flex-col w-full gap-4 md:flex-row md:justify-between"
-                variants={itemVariants}
-              >
+              <motion.div className="flex w-full flex-col gap-4 md:flex-row md:justify-between" variants={itemVariants}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-6 py-3 font-medium text-gray-700 transition-colors bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
+                  className="flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-6 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50"
                   onClick={() => navigate(-1)}
                   disabled={createReviewMutation.isPending}
                 >
@@ -261,13 +248,13 @@ function GiveReview() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center justify-center gap-2 px-6 py-3 font-medium text-white rounded-xl bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 px-6 py-3 font-medium text-white hover:from-red-600 hover:to-orange-600 disabled:cursor-not-allowed disabled:opacity-50"
                   onClick={handleReview}
                   disabled={createReviewMutation.isPending || !review.rating}
                 >
                   {createReviewMutation.isPending ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <Loader2 className="h-5 w-5 animate-spin" />
                       Submitting...
                     </>
                   ) : (

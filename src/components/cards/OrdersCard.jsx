@@ -96,7 +96,7 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                         </h2>
                         <motion.span
                           whileHover={{ scale: 1.05 }}
-                          className={`inline-flex w-fit items-center rounded-2xl bg-gray-100 px-3 py-1 text-xs font-semibold shadow-sm ${getStatusStyle(order?.status || 'unknown')}`}
+                          className={`inline-flex items-center rounded-2xl px-3 py-1 text-xs font-bold ${getStatusStyle(order?.status || 'unknown')}`}
                         >
                           {order?.status || 'Unknown'}
                         </motion.span>

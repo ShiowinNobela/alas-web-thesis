@@ -10,19 +10,17 @@ export const questions = [
         answer: (
           // sample link
           <p>
-            Simply browse the products on the website, add items to the cart,
-            and proceed to checkout. You can also{' '}
-            <Link to="/ProductListPage" className="text-blue-600 underline">
+            Simply browse the products on the website, add items to the cart, and proceed to checkout. You can also{' '}
+            <Link to="/menu" className="text-blue-600 underline">
               visit our Menu page
-            </Link>
-           {' '} to start shopping right away.
+            </Link>{' '}
+            to start shopping right away.
           </p>
         ),
       },
       {
         question: 'Will I receive a confirmation after placing an order?',
-        answer:
-          'Yes, a confirmation email will be sent once the order is successfully placed and verified.',
+        answer: 'Yes, a confirmation email will be sent once the order is successfully placed and verified.',
       },
       {
         question: 'Can I cancel or modify an order after placing it?',
@@ -33,23 +31,22 @@ export const questions = [
         question: 'How many product variants are available?',
         answer: (
           <p>
-            There are over 20 product variants available, depending on the season and crop availability. You can also check our {' '}
+            There are over 20 product variants available, depending on the season and crop availability. You can also
+            check our{' '}
             <Link to="/" className="text-blue-600 underline">
-              Seasonal Item Selection 
-            </Link>
-            {' '} Here to know which items are currently available and when will other items will be available.
+              Seasonal Item Selection
+            </Link>{' '}
+            Here to know which items are currently available and when will other items will be available.
           </p>
         ),
       },
       {
         question: 'Do you offer bulk orders for gifting or events?',
-        answer:
-          'Yes, bulk and customized orders can be arranged. Reach out through the contact page for more details.',
+        answer: 'Yes, bulk and customized orders can be arranged. Reach out through the contact page for more details.',
       },
       {
         question: 'Can I see the upcoming bazaar locations?',
-        answer:
-          'Yes, banners and notifications on the website will display upcoming events and stall locations.',
+        answer: 'Yes, banners and notifications on the website will display upcoming events and stall locations.',
       },
       {
         question: 'Do you offer subscriptions or recurring orders?',
@@ -70,7 +67,7 @@ export const questions = [
         question: 'What payment methods are accepted?',
         // sample list
         answer: (
-          <ul className="pl-5 list-disc">
+          <ul className="list-disc pl-5">
             <li>GCash</li>
             <li>Maya (QR code)</li>
             <li>Direct bank transfer</li>
@@ -89,7 +86,8 @@ export const questions = [
       },
       {
         question: 'Is my payment information secure?',
-        answer: 'Yes, your security is our top priority. We do our best to protect your personal and payment information during all transactions. We do not store your credit card details on our servers.',
+        answer:
+          'Yes, your security is our top priority. We do our best to protect your personal and payment information during all transactions. We do not store your credit card details on our servers.',
       },
     ],
   },
@@ -113,8 +111,7 @@ export const questions = [
       },
       {
         question: 'Can I choose my preferred courier for delivery?',
-        answer:
-          'Yes, a preferred courier can be selected at checkout, depending on availability in the area.',
+        answer: 'Yes, a preferred courier can be selected at checkout, depending on availability in the area.',
       },
       {
         question: 'How are shipping fees calculated?',
@@ -123,12 +120,10 @@ export const questions = [
       },
       {
         question: 'Do you offer free shipping?',
-        answer:
-          'Free shipping may be available for minimum purchase amounts or during promotional periods.',
+        answer: 'Free shipping may be available for minimum purchase amounts or during promotional periods.',
       },
       {
-        question:
-          'What should I do if my order hasn’t arrived on the expected delivery date?',
+        question: 'What should I do if my order hasn’t arrived on the expected delivery date?',
         answer:
           'Check the order tracking link provided in the confirmation email or message. If there’s no update or delay, contact support to get assistance and coordinate with the courier service if needed.',
       },
@@ -174,8 +169,7 @@ export const questions = [
       },
       {
         question: 'Can I order online and pick up at a bazaar?',
-        answer:
-          'Yes, just select the “Pick-up at Bazaar” option at checkout and choose the event location and date.',
+        answer: 'Yes, just select the “Pick-up at Bazaar” option at checkout and choose the event location and date.',
       },
       {
         question: 'Is it possible to reserve products for pick-up at an event?',
@@ -199,14 +193,18 @@ export const questions = [
     questions: [
       {
         question: 'How can I create an account?',
-        answer: ( 
-        <div>
-           <p> Click “Sign Up” on the website and enter the required information. A confirmation email will be sent to verify the registration. or click here {' '} 
-            <Link to="/RegPage" className="text-blue-600 underline">Sign Up</Link>
-           </p>
-           
-           </div>
-           )
+        answer: (
+          <div>
+            <p>
+              {' '}
+              Click “Sign Up” on the website and enter the required information. A confirmation email will be sent to
+              verify the registration. or click here{' '}
+              <Link to="/RegPage" className="text-blue-600 underline">
+                Sign Up
+              </Link>
+            </p>
+          </div>
+        ),
       },
       {
         question: 'What should I do if I forget my password?',
@@ -220,8 +218,7 @@ export const questions = [
     questions: [
       {
         question: 'Is there a reward program for frequent buyers?',
-        answer:
-          'Yes, frequent customers may qualify for rewards such as discounts or “buy five get one free” promos.',
+        answer: 'Yes, frequent customers may qualify for rewards such as discounts or “buy five get one free” promos.',
       },
       {
         question: 'How do I join the loyalty program?',
@@ -234,22 +231,19 @@ export const questions = [
         answer: (
           <div className="space-y-3">
             <p>
-              After receiving the order, customers can leave a review through
-              the <strong>order history</strong> page or on the product’s
-              listing page.
+              After receiving the order, customers can leave a review through the <strong>order history</strong> page or
+              on the product’s listing page.
             </p>
 
             <div className="flex items-center gap-2 text-green-600">
-              <Signature className="w-5 h-5" />
-              <span>
-                Verified purchase reviews are marked with a check icon.
-              </span>
+              <Signature className="h-5 w-5" />
+              <span>Verified purchase reviews are marked with a check icon.</span>
             </div>
 
             <img
               src="https://preview.redd.it/u7lozj3xywo91.jpg?width=1080&crop=smart&auto=webp&s=3031b3dd9263f0cc01ccf4c567d5fb73373da915"
               alt="Review screenshot"
-              className="border rounded"
+              className="rounded border"
             />
           </div>
         ),
@@ -266,7 +260,8 @@ export const questions = [
     questions: [
       {
         question: 'How fresh are your products? / What is your shelf life?',
-        answer: 'Our products are made in small batches weekly. We recommend consuming them within [X] days for optimal freshness. Each jar is labeled with a "Best Before" date.'
+        answer:
+          'Our products are made in small batches weekly. We recommend consuming them within [X] days for optimal freshness. Each jar is labeled with a "Best Before" date.',
       },
       {
         question: 'Are your ingredients locally sourced?',
@@ -282,24 +277,21 @@ export const questions = [
         question: "What's the best way to contact customer service?",
         answer: (
           <div>
-            <p>
-              For the fastest response, please message us on our official Facebook Page or Instagram account
-            </p>
+            <p>For the fastest response, please message us on our official Facebook Page or Instagram account</p>
             <a href="https://www.facebook.com/alas918" className="text-blue-600 underline">
               https://www.facebook.com/alas918
             </a>
             <p>
-              You can also email us at [email@address.com]. Our team typically responds within 24 hours on business days.
+              You can also email us at [email@address.com]. Our team typically responds within 24 hours on business
+              days.
             </p>
           </div>
-        )
+        ),
       },
       {
         question: 'What are your customer service hours',
-        answer:
-          'Our online support team is available from 8 AM - 10 PM, Monday to Sunday, excluding public holidays.',
+        answer: 'Our online support team is available from 8 AM - 10 PM, Monday to Sunday, excluding public holidays.',
       },
     ],
   },
-
 ];

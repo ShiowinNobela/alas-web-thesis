@@ -38,27 +38,23 @@ export default function UserDropdown() {
 
         {/* Navigation Links */}
         <DropdownMenuItem asChild>
-          <Link to="/UserSettings" className={`${isActive('/UserSettings')} flex items-center`}>
+          <Link to="/user/profile" className={`${isActive('/user/profile')} flex items-center`}>
             <UserPen className="mr-2 h-4 w-4" /> User Settings
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link
-            to="/UserOrderPage"
+            to="/user/orders"
             state={{ tab: 'orderList' }}
-            className={`${isActive('/UserOrderPage')} flex items-center`}
+            className={`${isActive('/user/orders')} flex items-center`}
           >
             <ShoppingBag className="mr-2 h-4 w-4" /> Order List
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link
-            to="/UserOrderPage"
-            state={{ tab: 'notif' }}
-            className={`${isActive('/UserOrderPage')} flex items-center`}
-          >
+          <Link to="/user/orders" state={{ tab: 'notif' }} className={`${isActive('/user/orders')} flex items-center`}>
             <Bell className="mr-2 h-4 w-4" /> Notifications
           </Link>
         </DropdownMenuItem>

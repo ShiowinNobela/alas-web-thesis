@@ -73,7 +73,7 @@ function WalkInOrders() {
       <div className="bg-card mb-4 grid grid-cols-1 gap-4 rounded-xl p-4 ring-1 md:grid-cols-4">
         <Card className="shadow-sm ring-1">
           <h2 className="text-xl font-semibold">Walk-In Orders</h2>
-          <Button onClick={() => navigate('/Admin/WalkInOrdering')} size="sm">
+          <Button onClick={() => navigate('/admin/create-walk-in')} size="sm">
             Add a Walk-In Order?
           </Button>
         </Card>
@@ -117,7 +117,7 @@ function WalkInOrders() {
         <div className="flex min-h-[200px] flex-col items-center justify-center rounded-lg bg-white p-6 text-gray-500 shadow-sm ring-1">
           <p className="text-lg font-medium">No walk-in orders yet</p>
           <p className="mt-1 text-sm">Create your first walk-in order to get started</p>
-          <Button onClick={() => navigate('/Admin/WalkInOrdering')} color="blue" className="mt-4">
+          <Button onClick={() => navigate('/admin/create-walk-in')} color="blue" className="mt-4">
             Create Order
           </Button>
         </div>

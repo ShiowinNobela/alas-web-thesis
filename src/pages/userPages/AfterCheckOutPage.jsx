@@ -106,18 +106,18 @@ function AfterCheckOutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          <Link to="/UserOrderPage">
+          <Link to="/user/orders">
             <Button size="lg" className="font-heading rounded-lg px-12 py-6 text-base">
               Go to your Orders
             </Button>
           </Link>
           <div className="flex flex-col items-center">
-            <Link to="/ProductListPage">
+            <Link to="/menu">
               <Button variant="link" className="text-lighter">
                 Go to Dashboard
               </Button>
             </Link>
-            <Link to="/ProductListPage">
+            <Link to="/menu">
               <Button variant="link" className="text-primary">
                 Back to Menu
               </Button>

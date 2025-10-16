@@ -61,7 +61,7 @@ function UserDashboard() {
       title: 'My Orders',
       desc: 'View your active and past orders',
       icon: <ListOrdered className="text-primary h-6 w-6" />,
-      link: '/UserOrderPage',
+      link: '/user/orders',
     },
     {
       title: 'Reviews',
@@ -73,7 +73,7 @@ function UserDashboard() {
       title: 'Profile',
       desc: 'Manage your account and settings',
       icon: <User className="text-primary h-6 w-6" />,
-      link: '/UserSettings',
+      link: '/user/profile',
     },
     {
       title: 'Wishlist',
@@ -95,7 +95,7 @@ function UserDashboard() {
             <p className="text-lighter max-w-xl">Ready to spice things up?</p>
           </div>
           <div className="flex justify-center gap-4">
-            <Link to="/ProductListPage">
+            <Link to="/menu">
               <motion.div
                 animate={{
                   x: [0, 5, -5, 8, 0],
@@ -143,10 +143,7 @@ function UserDashboard() {
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl md:text-base">Featured Sauces</h2>
-            <Link
-              to="/ProductListPage"
-              className="text-primary flex items-center gap-1 text-sm font-medium hover:underline"
-            >
+            <Link to="/menu" className="text-primary flex items-center gap-1 text-sm font-medium hover:underline">
               View all products
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -269,7 +266,7 @@ function UserDashboard() {
             <Card className="overflow-hidden transition hover:shadow-lg">
               <CardContent className="p-0">
                 <div className="bg-muted flex items-center justify-center p-8">
-                  <Link to="/ProductListPage" className="text-center">
+                  <Link to="/menu" className="text-center">
                     <Button variant="CTA" size="sm">
                       Explore All Sauces
                     </Button>
@@ -289,19 +286,19 @@ function UserDashboard() {
                 title: 'FAQ',
                 desc: 'Find quick answers',
                 icon: <HelpCircle className="h-5 w-5" />,
-                link: '/Faqs',
+                link: '/faq',
               },
               {
                 title: 'Contact',
                 desc: 'Get in touch',
                 icon: <Phone className="h-5 w-5" />,
-                link: '/ContactUs',
+                link: '/contact',
               },
               {
                 title: 'About',
                 desc: 'Our story',
                 icon: <Info className="h-5 w-5" />,
-                link: '/AboutUs',
+                link: '/about',
               },
             ].map((item) => (
               <Link key={item.title} to={item.link}>

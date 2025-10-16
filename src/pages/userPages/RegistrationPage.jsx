@@ -70,7 +70,7 @@ function RegistrationPage() {
           password: '',
           confirmPassword: '',
         });
-        Navigate('/LoginPage');
+        Navigate('/login');
       })
       .catch((err) => {
         const res = err.response;
@@ -177,7 +177,7 @@ function RegistrationPage() {
                 A verification email will be sent to confirm your account.
               </p>
 
-              <PromptLink promptText="Already have an account?" linkText="SIGN IN" to="/LoginPage" />
+              <PromptLink promptText="Already have an account?" linkText="SIGN IN" to="/login" />
 
               <p className="text-center text-xs text-gray-400">
                 By clicking Register, you agree to our{' '}

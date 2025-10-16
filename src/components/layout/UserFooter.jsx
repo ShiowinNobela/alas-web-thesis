@@ -90,27 +90,30 @@ function Footer() {
               <h4 className="text-content font-heading mb-4 text-lg font-semibold">Help & Info</h4>
               <ul className="space-y-3">
                 <li>
-                  <Link to="/AboutUs" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/about" className="text-lighter text-sm transition-colors hover:text-red-600">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/ContactUs" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/contact" className="text-lighter text-sm transition-colors hover:text-red-600">
                     Contact
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Faqs" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/faq" className="text-lighter text-sm transition-colors hover:text-red-600">
                     FAQ
                   </Link>
                 </li>
                 <li>
-                  <Link to="/TermsAndConditions" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link
+                    to="/terms-and-conditions"
+                    className="text-lighter text-sm transition-colors hover:text-red-600"
+                  >
                     Terms and Conditions
                   </Link>
                 </li>
                 <li>
-                  <Link to="/PrivacyPolicy" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/privacy-policy" className="text-lighter text-sm transition-colors hover:text-red-600">
                     Privacy Policy
                   </Link>
                 </li>
@@ -186,10 +189,10 @@ function Footer() {
                 © 2020 <span>Alas Delis and Spices.</span> All rights reserved.
               </p>
               <div className="flex space-x-4">
-                <Link to="/TermsAndConditions" className="text-lighter text-sm transition-colors hover:text-red-600">
+                <Link to="/terms-and-conditions" className="text-lighter text-sm transition-colors hover:text-red-600">
                   Terms and Conditions
                 </Link>
-                <Link to="/PrivacyPolicy" className="text-lighter text-sm transition-colors hover:text-red-600">
+                <Link to="/privacy-policy" className="text-lighter text-sm transition-colors hover:text-red-600">
                   Privacy Policy
                 </Link>
               </div>

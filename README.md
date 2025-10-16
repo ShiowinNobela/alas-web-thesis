@@ -109,7 +109,7 @@ import { Button } from 'flowbite-react';
     outline
     color="gray"
     onClick={() =>
-        navigate(`/Admin/AdminUserEdit/${user.id}`)
+        navigate(`/admin/adminUserEdit/${user.id}`)
     }
 >
 

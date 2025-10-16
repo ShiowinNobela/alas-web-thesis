@@ -1,22 +1,29 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import usePermissionsStore from '@/stores/permissionStore';
 import useUserStore from '@/stores/userStore';
 
-const PermissionRoute = ({ permission, children }) => {
+const PermissionRoute = ({ permission, adminOnly = false }) => {
   const permissions = usePermissionsStore((state) => state.permissions);
   const userRole = useUserStore((state) => state.user.role_name);
 
-  if (userRole === 'admin') return children;
+  // Admins bypass all checks
+  if (userRole === 'admin') return <Outlet />;
 
-  // If no permission is required, allow
-  if (!permission) return children;
-
-  // Staff: block if they lack the permission
-  if (!permissions.includes(permission)) {
-    return <Navigate to="/Admin/DashBoard" replace />;
+  // Block staff if page is admin-only
+  if (adminOnly && userRole !== 'admin') {
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  return children;
+  // If no specific permission required, allow
+  if (!permission) return <Outlet />;
+
+  // Block staff if they lack the required permission
+  if (!permissions.includes(permission)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  // Otherwise, allow
+  return <Outlet />;
 };
 
 export default PermissionRoute;

@@ -194,7 +194,7 @@ function Cart() {
             </div>
           </div>
 
-          <Link to="/CheckoutPage" className="block">
+          <Link to="/user/checkout" className="block">
             <Button
               variant="CTA"
               size="sm"

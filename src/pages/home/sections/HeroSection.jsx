@@ -27,7 +27,7 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-col justify-center gap-4 px-4 sm:flex-row sm:px-8">
-              <Link to={user ? '/ProductListPage' : '/LoginPage'}>
+              <Link to={user ? '/menu' : '/login'}>
                 <Button variant="CTA" size="lg" className="px-8 text-white">
                   Order Now
                 </Button>
@@ -65,7 +65,7 @@ export default HeroSection;
 //             crafted for bold taste.
 //           </p>
 
-//           <Link to={user ? '/ProductListPage' : '/LoginPage'}>
+//           <Link to={user ? '/menu' : '/login'}>
 //             <Button variant="CTA" size="lg" className="px-8 font-medium">
 //               Order Now
 //             </Button>

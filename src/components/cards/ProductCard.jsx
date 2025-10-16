@@ -15,7 +15,7 @@ function ProductCard({ product }) {
       <Card
         className="group hover:ring-primary flex cursor-pointer flex-col p-4 transition-transform sm:hover:scale-[1.02] sm:hover:ring-2"
         onClick={() => {
-          navigate(`/ProductDetailsPage/${product.id}`);
+          navigate(`/product/${product.id}`);
         }}
       >
         <div className="mb-4 flex w-full items-center justify-center overflow-hidden">

@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
 import usePermissionsStore from '@/stores/permissionStore';
-import { socket } from '@/socket'; // assuming you have this like in AdminLayout
+import { socket } from '@/socket';
+import useUserStore from '@/stores/userStore';
 import { toast } from 'sonner';
 
 const AdminPermissionsProvider = ({ children }) => {
+  const userRole = useUserStore((state) => state.user.role_name);
   const fetchPermissions = usePermissionsStore((state) => state.fetchPermissions);
 
   useEffect(() => {
+    if (userRole === 'admin') return;
+
     fetchPermissions();
 
     const handlePermissionUpdate = () => {
@@ -19,7 +23,7 @@ const AdminPermissionsProvider = ({ children }) => {
     return () => {
       socket.off('permissions:updated', handlePermissionUpdate);
     };
-  }, [fetchPermissions]);
+  }, [userRole, fetchPermissions]);
 
   return <>{children}</>;
 };

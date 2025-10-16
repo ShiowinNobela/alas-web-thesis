@@ -1,11 +1,29 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { AnimatePresence } from 'framer-motion';
 import { Delete, Minus, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import useCartStore from '@/stores/cartStore';
+import { useState } from 'react';
+import CouponCard from './CouponCard';
 
 function CartSummaryCard() {
   const navigate = useNavigate();
-  const { items, cart_total, final_total, discount, isLoading, adjustQuantity, removeItem } = useCartStore();
+  const {
+    items,
+    cart_total,
+    final_total,
+    discount,
+    coupon_code,
+    isLoading,
+    adjustQuantity,
+    removeItem,
+    applyCoupon,
+    removeCoupon,
+  } = useCartStore();
+
+  const [couponInput, setCouponInput] = useState('');
 
   const handleAdjust = (productId, currentQty, isIncrement, stock) => {
     const newQty = isIncrement ? currentQty + 1 : currentQty - 1;
@@ -14,17 +32,22 @@ function CartSummaryCard() {
     }
   };
 
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    await applyCoupon(couponInput.trim());
+    setCouponInput('');
+  };
+
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
         <CardTitle className="text-xl">Your Cart</CardTitle>
-        <button
-          className="border-content cursor-pointer text-sm hover:border-b"
-          onClick={() => navigate('/ProductListPage')}
-        >
+        <button className="border-content cursor-pointer text-sm hover:border-b" onClick={() => navigate('/menu')}>
           Go Back to Menu
         </button>
       </CardHeader>
+
+      {/* CART ITEMS */}
       <CardContent className="mt-4 space-y-3">
         {isLoading ? (
           <p className="text-sm text-gray-500">Loading cart...</p>
@@ -77,7 +100,32 @@ function CartSummaryCard() {
         )}
       </CardContent>
 
-      {/* Totals */}
+      {/* COUPON SECTION */}
+      <div className="w-full px-8">
+        <div className="flex justify-end">
+          <div className="w-full sm:w-1/2">
+            <AnimatePresence>
+              {coupon_code ? (
+                <CouponCard key={coupon_code} code={coupon_code} discount={discount} onRemove={removeCoupon} />
+              ) : (
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Input
+                    placeholder="Enter coupon code"
+                    value={couponInput}
+                    onChange={(e) => setCouponInput(e.target.value)}
+                    className="flex-1 text-xs"
+                  />
+                  <Button size="sm" variant="outline" onClick={handleApplyCoupon}>
+                    Apply
+                  </Button>
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      {/* TOTALS */}
       <div className="flex flex-col gap-1 border-t px-8 pt-6 text-right text-sm">
         <div className="flex justify-end gap-2 text-gray-600">
           <span>Subtotal</span>
