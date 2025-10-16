@@ -32,7 +32,7 @@ function ProductPage() {
 
   const handleAddToCart = () => {
     if (!isLoggedIn) {
-      navigate('/LoginPage');
+      navigate('/login');
       return;
     }
   };

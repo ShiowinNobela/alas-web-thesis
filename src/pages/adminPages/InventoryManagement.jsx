@@ -64,7 +64,7 @@ function InventoryManagement() {
         {/* Action Bar */}
         <div className="flex flex-row justify-between px-4 py-4">
           <h2 className="text-xl font-semibold">Product Inventory</h2>
-          <Link to="/Admin/AddProduct">
+          <Link to="/admin/add-product">
             <Button color="gray">
               <PackagePlus className="mr-2 h-5 w-5" />
               Add Product

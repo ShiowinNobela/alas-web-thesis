@@ -129,7 +129,7 @@ export default function UserViewOrderDetails() {
                   </div>
                   <div className="mr-2 flex flex-col gap-2">
                     <Button>Order Again</Button>
-                    <Link to={`/GiveReview/${order?.id}?product_id=${item.product_id}`}>
+                    <Link to={`/user/review/${order?.id}?product_id=${item.product_id}`}>
                       <Button variant="outline">Review Product</Button>
                     </Link>
                   </div>

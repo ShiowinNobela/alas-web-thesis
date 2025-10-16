@@ -210,7 +210,7 @@ function AdminDashboard() {
                     </div>
 
                     <Link
-                      to="/Admin/InventoryManagement"
+                      to="/admin/inventory"
                       className="ml-2 flex-shrink-0 cursor-pointer p-1 text-gray-500 transition-colors hover:text-red-600"
                       title="Restock item"
                     >
@@ -232,7 +232,7 @@ function AdminDashboard() {
             })}
 
             {/* Quick Action Button */}
-            <Link to="/Admin/InventoryManagement">
+            <Link to="/admin/inventory">
               <Button color="failure" className="mt-4 flex w-full cursor-pointer items-center justify-center space-x-2">
                 <AlertTriangle className="h-4 w-4" />
                 <span>Manage All Inventory</span>
@@ -263,7 +263,7 @@ function AdminDashboard() {
 
         <div className="grid grid-cols-2 gap-3">
           {/* Product Management */}
-          <Link to="/Admin/AddProduct">
+          <Link to="/admin/add-product">
             <Button color="gray" outline className="flex h-16 w-full flex-col items-center justify-center p-2">
               <Plus className="mb-1 h-5 w-5" />
               <span className="text-xs">Add Product</span>
@@ -271,7 +271,7 @@ function AdminDashboard() {
           </Link>
 
           {/* Inventory Management */}
-          <Link to="/Admin/InventoryManagement">
+          <Link to="/admin/inventory">
             <Button color="gray" outline className="flex h-16 w-full flex-col items-center justify-center p-2">
               <Archive className="mb-1 h-5 w-5" />
               <span className="text-xs">View Inventory</span>
@@ -279,7 +279,7 @@ function AdminDashboard() {
           </Link>
 
           {/* Orders Management */}
-          <Link to="/Admin/Orders">
+          <Link to="/admin/order">
             <Button color="gray" outline className="flex h-16 w-full flex-col items-center justify-center p-2">
               <Package className="mb-1 h-5 w-5" />
               <span className="text-xs">Manage Orders</span>
@@ -287,7 +287,7 @@ function AdminDashboard() {
           </Link>
 
           {/* Walk-in Ordering */}
-          <Link to="/Admin/WalkInOrdering">
+          <Link to="/admin/create-walk-in">
             <Button color="gray" outline className="flex h-16 w-full flex-col items-center justify-center p-2">
               <ShoppingCart className="mb-1 h-5 w-5" />
               <span className="text-xs">Walk-in Order</span>
@@ -295,7 +295,7 @@ function AdminDashboard() {
           </Link>
 
           {/* User Management */}
-          <Link to="/Admin/AccountManagement">
+          <Link to="/admin/account-management">
             <Button color="gray" outline className="flex h-16 w-full flex-col items-center justify-center p-2">
               <User className="mb-1 h-5 w-5" />
               <span className="text-xs">User Management</span>
@@ -303,7 +303,7 @@ function AdminDashboard() {
           </Link>
 
           {/* Sales Summary */}
-          <Link to="/Admin/SalesPage">
+          <Link to="/admin/sales">
             <Button color="gray" outline className="flex h-16 w-full flex-col items-center justify-center p-2">
               <CreditCard className="mb-1 h-5 w-5" />
               <span className="text-xs">Sales Summary</span>

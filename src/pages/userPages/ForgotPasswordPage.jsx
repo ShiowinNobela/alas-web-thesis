@@ -26,19 +26,19 @@ function ForgotPasswordPage() {
   const handleSendCode = () => {
     // TODO: add send code logic here
     if (!email.trim()) {
-      setErrors(prev => ({ ...prev, email: 'Email is required' }));
+      setErrors((prev) => ({ ...prev, email: 'Email is required' }));
       toast.warning('Please enter your email address!');
       return;
     }
-    
+
     if (!email.includes('@')) {
-      setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+      setErrors((prev) => ({ ...prev, email: 'Please enter a valid email address' }));
       toast.error('Please enter a valid email address!');
       return;
     }
-    
-    setErrors(prev => ({ ...prev, email: '' }));
-    
+
+    setErrors((prev) => ({ ...prev, email: '' }));
+
     // TODO: Implement actual send code logic
     toast.success('Verification code sent to your email!');
   };
@@ -46,13 +46,13 @@ function ForgotPasswordPage() {
   const handleVerifyCode = () => {
     // TODO: add code verification logic here
     if (!code.trim()) {
-      setErrors(prev => ({ ...prev, code: 'Verification code is required' }));
+      setErrors((prev) => ({ ...prev, code: 'Verification code is required' }));
       toast.warning('Please enter the verification code!');
       return;
     }
-    
-    setErrors(prev => ({ ...prev, code: '' }));
-    
+
+    setErrors((prev) => ({ ...prev, code: '' }));
+
     // TODO: Implement actual code verification
     setStep(2);
     toast.success('Code verified! Please set your new password.');
@@ -60,7 +60,7 @@ function ForgotPasswordPage() {
 
   const handleResetPassword = (e) => {
     e.preventDefault();
-    
+
     // TODO: add password reset logic here
     const newErrors = {
       password: newPassword.trim() ? '' : 'Password is required',
@@ -83,29 +83,27 @@ function ForgotPasswordPage() {
     }
 
     setErrors({ email: '', code: '', password: '', confirmPassword: '' });
-    
+
     // TODO: Implement actual password reset
     toast.success('Password reset successfully!');
-    navigate('/LoginPage');
+    navigate('/login');
   };
 
   return (
-    <section className="flex items-center justify-center min-h-screen px-4 py-8 bg-neutral pb-30">
-      <Card className="w-full max-w-md p-4 text-content sm:p-6">
+    <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
+      <Card className="text-content w-full max-w-md p-4 sm:p-6">
         <div className="space-y-6">
           <div className="space-y-3 text-center">
             <img
               src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
               alt="Alas Delis Logo"
-              className="object-contain w-16 h-16 mx-auto sm:w-20 sm:h-20"
+              className="mx-auto h-16 w-16 object-contain sm:h-20 sm:w-20"
             />
-            <h1 className="text-2xl font-bold text-center text-content font-heading sm:text-3xl">
+            <h1 className="text-content font-heading text-center text-2xl font-bold sm:text-3xl">
               {step === 1 ? 'FORGOT PASSWORD' : 'RESET PASSWORD'}
             </h1>
-            <p className="text-sm text-center text-lighter sm:text-base">
-              {step === 1
-                ? 'Enter your email to receive a verification code.'
-                : 'Set your new password to continue.'}
+            <p className="text-lighter text-center text-sm sm:text-base">
+              {step === 1 ? 'Enter your email to receive a verification code.' : 'Set your new password to continue.'}
             </p>
           </div>
 
@@ -125,7 +123,7 @@ function ForgotPasswordPage() {
               />
 
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium text-content">Verification Code</label>
+                <label className="text-content text-sm font-medium">Verification Code</label>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
                   <div className="flex-1">
                     <input
@@ -137,39 +135,36 @@ function ForgotPasswordPage() {
                       }}
                       placeholder="Enter code"
                       disabled={loading}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="focus:ring-primary w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
                     />
                   </div>
-                  <Button 
-                    type="button" 
-                    onClick={handleSendCode} 
+                  <Button
+                    type="button"
+                    onClick={handleSendCode}
                     disabled={loading}
-                    className="h-10 sm:w-auto whitespace-nowrap shrink-0 "
+                    className="h-10 shrink-0 whitespace-nowrap sm:w-auto"
                   >
                     Send Code
                   </Button>
                 </div>
-                {errors.code && (
-                  <p className="mt-1 text-sm text-red-500">{errors.code}</p>
-                )}
+                {errors.code && <p className="mt-1 text-sm text-red-500">{errors.code}</p>}
               </div>
-              
-              <div className="relative flex items-center my-6">
+
+              <div className="relative my-6 flex items-center">
                 <div className="flex-grow border-t border-gray-300"></div>
                 <span className="mx-4 text-sm text-gray-400">or</span>
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>
               <Button
                 type="button"
-                className="w-full h-10 uppercase font-heading"
+                className="font-heading h-10 w-full uppercase"
                 onClick={handleVerifyCode}
                 disabled={loading}
               >
                 {loading ? 'Verifying...' : 'Verify Code'}
               </Button>
 
-
-              <PromptLink promptText="Back to" linkText="SIGN IN" to="/LoginPage" />
+              <PromptLink promptText="Back to" linkText="SIGN IN" to="/login" />
             </form>
           )}
 
@@ -200,15 +195,11 @@ function ForgotPasswordPage() {
                 disabled={loading}
               />
 
-              <Button 
-                type="submit" 
-                className="w-full uppercase font-heading" 
-                disabled={loading}
-              >
+              <Button type="submit" className="font-heading w-full uppercase" disabled={loading}>
                 {loading ? 'Resetting...' : 'Reset Password'}
               </Button>
 
-              <PromptLink promptText="Back to" linkText="SIGN IN" to="/LoginPage" />
+              <PromptLink promptText="Back to" linkText="SIGN IN" to="/login" />
             </form>
           )}
         </div>

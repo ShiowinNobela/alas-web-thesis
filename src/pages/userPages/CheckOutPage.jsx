@@ -14,6 +14,8 @@ import LoadingModal from '@/components/modals/LoadingModal';
 import useCartStore from '@/stores/cartStore';
 import CartSummaryCard from '@/components/cards/CartSummaryCard';
 import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 function CheckOutPage() {
   const navigate = useNavigate();
@@ -95,8 +97,8 @@ function CheckOutPage() {
             <p className="text-lighter mt-2">Complete your order by filling the form below</p>
           </div>
 
+          {/* PERSONAL INFORMATION */}
           <div className="space-y-7">
-            {/* PERSONAL INFORMATION */}
             <Card className="gap-5 p-8">
               <CardTitle className="text-xl">Personal Information</CardTitle>
               <CardDescription>
@@ -129,35 +131,67 @@ function CheckOutPage() {
               </div>
             </Card>
 
+            <CartSummaryCard />
+
             {/* PAYMENT INFORMATION */}
             <Card className="p-8">
               <CardTitle className="text-xl">Payment Information</CardTitle>
+              <CardDescription>
+                Send the payment to any of the following methods and fill in the details below to confirm your order.
+              </CardDescription>
               <div className="mb-4">
-                <label htmlFor="checkout-payment-method" className="text-lighter mb-1 block text-sm font-medium">
+                <Label htmlFor="checkout-payment-method" className="text-lighter mb-1 block text-sm font-medium">
                   Payment Method *
-                </label>
-                <select
-                  id="checkout-payment-method"
+                </Label>
+                <Select
+                  onValueChange={(value) => setGetInfo({ ...getInfo, payment_method: value })}
                   value={getInfo.payment_method || ''}
-                  onChange={(e) => setGetInfo({ ...getInfo, payment_method: e.target.value })}
-                  className={`text-lighter w-full rounded border px-3 py-2 shadow-inner focus:ring-2 focus:ring-blue-500 focus:outline-none dark:bg-gray-100 ${
-                    formErrors.payment_method ? 'border-red-500' : 'border-gray-300'
-                  }`}
                 >
-                  <option disabled value="">
-                    -- select an option --
-                  </option>
-                  <option value="GCash" className="text-black">
-                    GCash
-                  </option>
-                  <option value="bank_transfer" className="text-black">
-                    Bank Transfer
-                  </option>
-                  <option value="Maya" className="text-black">
-                    Maya
-                  </option>
-                </select>
+                  <SelectTrigger
+                    id="checkout-payment-method"
+                    className={`text-lighter w-full cursor-pointer ${formErrors.payment_method ? 'border-red-500' : ''}`}
+                  >
+                    <SelectValue placeholder="-- select an option --" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="GCash">GCash</SelectItem>
+                    <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
+                    <SelectItem value="Maya">Maya</SelectItem>
+                  </SelectContent>
+                </Select>
                 {formErrors.payment_method && <p className="mt-1 text-xs text-red-500">{formErrors.payment_method}</p>}
+
+                {getInfo.payment_method === 'GCash' ? (
+                  <div className="mt-4 space-y-4">
+                    <p className="text-lighter text-sm">
+                      Scan the QR code below via GCash and fill the required details
+                    </p>
+                    <img
+                      src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1760621075/DonateToMe_fyolkd.jpg"
+                      alt={getInfo.payment_method}
+                      className="w-full rounded-2xl object-contain"
+                    />
+                  </div>
+                ) : getInfo.payment_method === 'bank_transfer' ? (
+                  <div className="mt-4 space-y-4">
+                    <p className="text-lighter text-sm">Bank Payment details I dont know this</p>
+                    <div className="container flex h-10 flex-col items-center justify-center rounded-2xl bg-emerald-500">
+                      <p className="mx-auto text-center font-bold text-white">This is a placeholder</p>
+                    </div>
+                  </div>
+                ) : getInfo.payment_method === 'Maya' ? (
+                  <div className="mt-4 space-y-4">
+                    <p className="text-lighter text-sm">
+                      {/* Scan the QR code below via Maya and fill the required details */}
+                      This is a placeholder QR code for Maya payment. DO NOT USE.
+                    </p>
+                    <img
+                      src="https://greensierra.ph/wp-content/uploads/elementor/thumbs/Copy-of-3.8X5INCHES-QR-Code-Standee-Template-qj129ev3osdr1lxzh4lj14ccrq0n8r53so2q7nuqqc.jpg"
+                      alt={getInfo.payment_method}
+                      className="w-full rounded-2xl object-contain"
+                    />
+                  </div>
+                ) : null}
               </div>
               <TextInput
                 label="Account Name *"
@@ -191,8 +225,6 @@ function CheckOutPage() {
                 />
               </div>
             </Card>
-
-            <CartSummaryCard />
 
             <Button
               onClick={handleConfirmOrder}

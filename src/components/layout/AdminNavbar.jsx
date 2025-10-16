@@ -12,25 +12,28 @@ function AdminNavbar() {
 
   const getCurrentPageName = () => {
     const path = location.pathname;
-    const routeSegment = path.replace(/^\/Admin\//, '').split('/')[0];
+    const routeSegment = path.replace(/^\/admin\//, '').split('/')[0];
 
     // map paths to display names
     const pageNames = {
-      DashBoard: 'Dashboard',
-      AddProduct: 'Add Product',
-      EditProduct: 'Edit Product',
-      ProductManagement: 'Product Management',
-      AccountManagement: 'Account Management',
-      Orders: 'Orders',
-      AdminOrderDetails: 'Order Details',
-      PopUpInfoPage: 'Info Page',
-      ViewOrder: 'View Order',
-      InventoryManagement: 'Inventory',
-      WalkInOrdersTable: 'Walk-in Orders',
-      WalkInOrdering: 'Walk-in Ordering',
-      SalesPage: 'Sales',
-      NotificationPage: 'Admin Activity Logs',
+      dashboard: 'Dashboard',
+      'add-product': 'Add Product',
+      'edit-product': 'Edit Product',
+      products: 'Product Management',
+      'account-management': 'Account Management',
+      logs: 'Admin Activity Logs',
+      notifs: 'Notifications',
+      sales: 'Sales',
+      order: 'Orders',
+      inventory: 'Inventory',
+      'walk-in-orders': 'Walk-in Orders',
+      'create-walk-in': 'Walk-in Ordering',
+      'promotion/management': 'Promotion Management',
     };
+
+    if (routeSegment === 'edit-product' || routeSegment === 'order') {
+      return pageNames[routeSegment] + ' Details';
+    }
 
     return pageNames[routeSegment] || routeSegment || 'Admin';
   };

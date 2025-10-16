@@ -19,7 +19,7 @@ function ProductManagement() {
               <Package className="h-6 w-6" />
               Product Management
             </h1>
-            <Link to="/Admin/AddProduct">
+            <Link to="/admin/add-product">
               <Button color="gray">
                 <PlusCircle className="mr-2 h-5 w-5" />
                 Add Product
@@ -78,7 +78,7 @@ function ProductManagement() {
                   <span className="text-content font-semibold">₱{parseFloat(product.price).toLocaleString()}</span>
                 </div>
 
-                <Button onClick={() => navigate(`/Admin/EditProduct/${product.id}`)} className="c w-full" color="gray">
+                <Button onClick={() => navigate(`/admin/edit-product/${product.id}`)} className="c w-full" color="gray">
                   <Edit className="mr-2 h-5 w-5" />
                   Edit Product
                 </Button>
@@ -93,7 +93,7 @@ function ProductManagement() {
             <h3 className="text-content mt-2 text-lg font-medium">No products found</h3>
             <p className="mt-1 text-gray-500">Get started by adding a new product</p>
             <div className="mt-6">
-              <Link to="/Admin/AddProduct">
+              <Link to="/admin/add-product">
                 <Button gradientDuoTone="purpleToBlue">
                   <PlusCircle className="mr-2 h-5 w-5" />
                   Add Product

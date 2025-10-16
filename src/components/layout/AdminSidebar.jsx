@@ -18,81 +18,80 @@ import {
 import { toast } from 'sonner';
 import usePermissionsStore from '@/stores/permissionStore';
 import useUserStore from '@/stores/userStore';
-import path from 'path';
 
 const sidebarItems = [
-  { path: '/Admin/DashBoard', name: 'Dashboard', icon: LayoutDashboard, permission: null, role: ['admin', 'staff'] },
+  { path: '/admin/dashboard', name: 'Dashboard', icon: LayoutDashboard, permission: null, role: ['admin', 'staff'] },
   {
-    path: '/Admin/WalkInOrdering',
+    path: '/admin/create-walk-in',
     name: 'Walk In Ordering',
     icon: ShoppingCart,
     permission: 'create_walkin',
     role: ['staff', 'admin'],
   },
   {
-    path: '/Admin/AccountManagement',
+    path: '/admin/account-management',
     name: 'User Management',
     icon: User,
     permission: 'manage_users',
     role: ['admin'],
   },
   {
-    path: '/Admin/Orders',
+    path: '/admin/order',
     name: 'Orders Management',
     icon: Package,
     permission: 'manage_orders',
     role: ['staff', 'admin'],
   },
   {
-    path: '/Admin/WalkInOrdersTable',
+    path: '/admin/walk-in-orders',
     name: 'Walk In Orders',
     icon: Clipboard,
     permission: 'view_walkin',
     role: ['staff', 'admin'],
   },
   {
-    path: '/Admin/ProductManagement',
+    path: '/admin/products',
     name: 'Product Management',
     icon: Box,
     permission: 'manage_products',
     role: ['admin'],
   },
   {
-    path: '/Admin/InventoryManagement',
+    path: '/admin/inventory',
     name: 'Inventory Management',
     icon: Archive,
     permission: 'view_inventory',
     role: ['staff', 'admin'],
   },
   {
-    path: '/Admin/SalesPage',
+    path: '/admin/sales',
     name: 'Sales Summary',
     icon: CreditCard,
     permission: 'view_sales',
     role: ['staff', 'admin'],
   },
   {
-    path: '/Admin/NotificationPage',
+    path: '/admin/logs',
     name: 'Activity Log',
     icon: Activity,
     permission: 'view_activity',
     role: ['admin'],
   },
-  { path: '/Admin/Notifs', name: 'Notifications', icon: Bell, permission: 'view_notifications', role: ['admin'] },
+  { path: '/admin/Notifs', name: 'Notifications', icon: Bell, permission: 'view_notifications', role: ['admin'] },
   {
-    path: '/Admin/promotion/management',
+    path: '/admin/promotion/management',
     name: 'Promotion Management',
     icon: Ticket,
     permission: 'manage_promotions',
     role: ['staff', 'admin'],
   },
   {
-    path:'/Admin/ModerationPage',
-    name:'Moderation Page',
+    path: '/admin/moderation',
+    name: 'Moderation Page',
     icon: MessageSquareOff,
     permission: 'manage_review',
     role: ['admin'],
-  }
+  },
 ];
 
 function Sidebar() {
@@ -131,9 +130,9 @@ function Sidebar() {
           <img
             src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
             alt="Alas Delis and Spices Logo"
-            className="object-contain h-10"
+            className="h-10 object-contain"
           />
-          <h1 className="ml-4 text-2xl font-bold text-white font-heading">Alas Admin</h1>
+          <h1 className="font-heading ml-4 text-2xl font-bold text-white">Alas Admin</h1>
         </div>
 
         {/* Navigation */}
@@ -144,7 +143,7 @@ function Sidebar() {
                 <Link to={item.path}>
                   <div className={getNavItemClass(item.path)}>
                     <item.icon className="mx-2 size-5" />
-                    <span className="flex-1 ml-2 text-sm text-left whitespace-nowrap">{item.name}</span>
+                    <span className="ml-2 flex-1 text-left text-sm whitespace-nowrap">{item.name}</span>
                   </div>
                 </Link>
               </li>
@@ -157,11 +156,11 @@ function Sidebar() {
       <div className="p-3">
         <button
           type="button"
-          className="flex items-center w-full p-2 font-normal text-white cursor-pointer hover:bg-primary group rounded-2xl"
+          className="hover:bg-primary group flex w-full cursor-pointer items-center rounded-2xl p-2 font-normal text-white"
           onClick={onLogout}
         >
           <LogOut className="mx-2 size-5" />
-          <span className="flex-1 ml-2 text-sm text-left whitespace-nowrap">Logout</span>
+          <span className="ml-2 flex-1 text-left text-sm whitespace-nowrap">Logout</span>
         </button>
       </div>
     </div>

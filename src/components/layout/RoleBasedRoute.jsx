@@ -25,7 +25,7 @@ const RoleBasedRoute = ({ allowedRoles }) => {
   }
 
   if (!isAuthenticated || redirect) {
-    return <Navigate to="/LoginPage" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

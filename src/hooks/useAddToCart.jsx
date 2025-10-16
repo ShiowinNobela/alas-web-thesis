@@ -18,7 +18,7 @@ export function useAddToCart() {
       toast.warning('You need to log in first', {
         action: {
           label: 'Log in',
-          onClick: () => navigate('/LoginPage'),
+          onClick: () => navigate('/login'),
         },
       });
       return;
