@@ -55,6 +55,7 @@ const AdminOrderDetails = lazy(() => import('./pages/adminPages/AdminOrderDetail
 const NotificationPage = lazy(() => import('./pages/adminPages/NotificationPage.jsx'));
 const Notifs = lazy(() => import('./pages/adminPages/Notifs.jsx'));
 const PromotionManagement = lazy(() => import('./pages/adminPages/PromotionManagement.jsx'));
+const ModerationPage = lazy (() => import('./pages/adminPages/ModerationPage.jsx'))
 
 function App() {
   return (
@@ -131,6 +132,7 @@ function App() {
               <Route path="SalesPage" element={<SalesPage />} />
               <Route path="NotificationPage" element={<NotificationPage />} />
               <Route path="Notifs" element={<Notifs />} />
+              <Route path="ModerationPage" element={<ModerationPage/>} />
               <Route path="promotion/management" element={<PromotionManagement />} />
             </Route>
           </Route>

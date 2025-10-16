@@ -13,10 +13,12 @@ import {
   Bell,
   ShoppingCart,
   Ticket,
+  MessageSquareOff,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import usePermissionsStore from '@/stores/permissionStore';
 import useUserStore from '@/stores/userStore';
+import path from 'path';
 
 const sidebarItems = [
   { path: '/Admin/DashBoard', name: 'Dashboard', icon: LayoutDashboard, permission: null, role: ['admin', 'staff'] },
@@ -84,6 +86,13 @@ const sidebarItems = [
     permission: 'manage_promotions',
     role: ['staff', 'admin'],
   },
+  {
+    path:'/Admin/ModerationPage',
+    name:'Moderation Page',
+    icon: MessageSquareOff,
+    permission: 'manage_review',
+    role: ['admin'],
+  }
 ];
 
 function Sidebar() {
@@ -122,9 +131,9 @@ function Sidebar() {
           <img
             src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
             alt="Alas Delis and Spices Logo"
-            className="h-10 object-contain"
+            className="object-contain h-10"
           />
-          <h1 className="font-heading ml-4 text-2xl font-bold text-white">Alas Admin</h1>
+          <h1 className="ml-4 text-2xl font-bold text-white font-heading">Alas Admin</h1>
         </div>
 
         {/* Navigation */}
@@ -135,7 +144,7 @@ function Sidebar() {
                 <Link to={item.path}>
                   <div className={getNavItemClass(item.path)}>
                     <item.icon className="mx-2 size-5" />
-                    <span className="ml-2 flex-1 text-left text-sm whitespace-nowrap">{item.name}</span>
+                    <span className="flex-1 ml-2 text-sm text-left whitespace-nowrap">{item.name}</span>
                   </div>
                 </Link>
               </li>
@@ -148,11 +157,11 @@ function Sidebar() {
       <div className="p-3">
         <button
           type="button"
-          className="hover:bg-primary group flex w-full cursor-pointer items-center rounded-2xl p-2 font-normal text-white"
+          className="flex items-center w-full p-2 font-normal text-white cursor-pointer hover:bg-primary group rounded-2xl"
           onClick={onLogout}
         >
           <LogOut className="mx-2 size-5" />
-          <span className="ml-2 flex-1 text-left text-sm whitespace-nowrap">Logout</span>
+          <span className="flex-1 ml-2 text-sm text-left whitespace-nowrap">Logout</span>
         </button>
       </div>
     </div>
