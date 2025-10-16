@@ -12,6 +12,7 @@ import {
   DropdownItem,
   Tooltip,
   Badge,
+  Button,
 } from 'flowbite-react';
 import { HiCheckCircle, HiDotsVertical, HiOutlineClock, HiTruck, HiCheck, HiX } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
@@ -178,40 +179,40 @@ export default function AdminOrdersTable({
 
                   <TableCell>
                     {order.status === 'pending' && order.cancel_requested === 0 ? (
-                      <button
+                      <Button
                         onClick={() => onStatusUpdateClick(order.id, 'processing', 'Process Order', 'Process Order')}
-                        className="flex items-center gap-2 text-sm font-medium text-amber-600 hover:underline"
+                        className="w-full bg-yellow-200 font-medium text-yellow-700 hover:bg-yellow-100"
                       >
                         Process Order
-                      </button>
+                      </Button>
                     ) : order.status === 'pending' && order.cancel_requested === 1 ? (
                       <Tooltip
                         content="Order can't be processed. Customer has requested to cancel this order"
                         placement="bottom-end"
                       >
-                        <button
+                        <Button
                           onClick={() => onStatusUpdateClick(order.id, '', 'Cancel Order', 'Cancel Order', true)}
-                          className="flex items-center gap-2 text-sm font-medium text-red-600 hover:underline"
+                          className="w-full bg-red-300 font-medium text-red-800 hover:bg-red-100"
                         >
                           Cancel Order
-                        </button>
+                        </Button>
                       </Tooltip>
                     ) : order.status === 'cancelled' ? (
                       <span className="text-sm text-gray-500 italic">Order Cancelled</span>
                     ) : order.status === 'processing' ? (
-                      <button
+                      <Button
                         onClick={() => onStatusUpdateClick(order.id, 'shipping', 'Ship Order', 'Ship Order')}
-                        className="flex items-center gap-2 text-sm font-medium text-green-600 hover:underline"
+                        className="w-full bg-green-200 font-medium text-green-800 hover:bg-green-100"
                       >
                         Ship Order
-                      </button>
+                      </Button>
                     ) : order.status === 'shipping' ? (
-                      <button
+                      <Button
                         onClick={() => onStatusUpdateClick(order.id, 'delivered', 'Mark Order as Delivered', 'Confirm')}
-                        className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline"
+                        className="w-full bg-blue-200 font-medium text-blue-800 hover:bg-blue-100"
                       >
                         Mark Delivered
-                      </button>
+                      </Button>
                     ) : order.status === 'delivered' ? (
                       <div className="flex items-center text-sm text-emerald-500">
                         <HiCheckCircle className="mr-1 h-5 w-5" />
