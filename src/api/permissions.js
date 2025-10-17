@@ -8,3 +8,18 @@ export const fetchMyPermissions = async () => {
 
   return data.data;
 };
+
+export const fetchAllPermissions = async () => {
+  const res = await axios.get('/api/permissions/');
+  return res.data.data || [];
+};
+
+export const fetchStaffPermissions = async (id) => {
+  const res = await axios.get(`/api/permissions/staff/${id}`);
+  return res.data.data || [];
+};
+
+export const updateStaffPermissions = async ({ id, permissions }) => {
+  const res = await axios.put(`/api/permissions/control/${id}`, { permissions });
+  return res.data;
+};

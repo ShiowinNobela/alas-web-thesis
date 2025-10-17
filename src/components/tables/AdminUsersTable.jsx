@@ -1,9 +1,19 @@
 // AdminUsersTable.jsx
-import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Badge, ToggleSwitch } from 'flowbite-react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+  Badge,
+  ToggleSwitch,
+  Button,
+} from 'flowbite-react';
 import RoleBadge from '@/components/bigComponents/RoleBadge';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
-function AdminUsersTable({ users, isLoading, isError, onToggleStatus }) {
+function AdminUsersTable({ users, isLoading, isError, onToggleStatus, onStaffClick }) {
   if (isLoading) return <TableSkeleton columns={6} rows={3} />;
   if (isError) return <div className="p-6 text-center text-red-600">Failed to load users.</div>;
 
@@ -46,7 +56,7 @@ function AdminUsersTable({ users, isLoading, isError, onToggleStatus }) {
                 </Badge>
               </TableCell>
 
-              <TableCell className="flex items-center">
+              <TableCell className="flex items-center gap-4">
                 <ToggleSwitch
                   color={user.is_active ? 'success' : 'failure'}
                   checked={user.is_active}
@@ -54,6 +64,11 @@ function AdminUsersTable({ users, isLoading, isError, onToggleStatus }) {
                   label=""
                   disabled={user.role_name === 'admin' || user._isUpdating}
                 />
+                {user.role_name === 'staff' && (
+                  <Button color="gray" size="sm" outline onClick={() => onStaffClick(user)}>
+                    View Permissions
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}

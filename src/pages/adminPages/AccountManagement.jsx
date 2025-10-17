@@ -8,6 +8,7 @@ import AddUserModal from '@/components/modals/AddUserModal';
 import AdminUsersTable from '@/components/tables/AdminUsersTable';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import ErrorState from '@/components/States/ErrorState';
+import StaffModal from '@/components/modals/StaffModal';
 
 const fetchUser = async () => {
   const user = JSON.parse(window.localStorage.getItem('user'));
@@ -29,20 +30,13 @@ const fetchAdminUsers = async (role) => {
 function AccountManagement() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [openModal, setOpenModal] = useState(false);
+  const [openStaffModal, setOpenStaffModal] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState(null);
 
   const queryClient = useQueryClient();
   const { isLoading: isVerifyingUser, isError: isVerificationError } = useQuery({
     queryKey: ['currentUser'],
     queryFn: fetchUser,
-    onSuccess: (data) => {
-      if (data.role_name !== 'admin') {
-        window.location.href = '/';
-      }
-    },
-    onError: () => {
-      console.error('Unable to fetch user.');
-    },
-    retry: 1,
   });
 
   const {
@@ -84,6 +78,11 @@ function AccountManagement() {
       queryClient.invalidateQueries(['adminUsers']);
     },
   });
+
+  const handleOpenStaffModal = (user) => {
+    setSelectedStaff(user);
+    setOpenStaffModal(true);
+  };
 
   const filteredUsers =
     statusFilter === 'All'
@@ -140,10 +139,12 @@ function AccountManagement() {
             <AdminUsersTable
               users={filteredUsers}
               onToggleStatus={(user) => toggleUserStatus.mutate({ id: user.id, newStatus: !user.is_active })}
+              onStaffClick={handleOpenStaffModal}
             />
           )}
         </main>
         <AddUserModal show={openModal} onClose={() => setOpenModal(false)} />
+        <StaffModal show={openStaffModal} onClose={() => setOpenStaffModal(false)} staff={selectedStaff} />
       </div>
     </>
   );
