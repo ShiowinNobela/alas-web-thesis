@@ -20,6 +20,7 @@ function ProductDetailsPage() {
   const [inWishlist, setInWishlist] = useState(null);
   const [wishlistCount, setWishlistCount] = useState(0);
 
+  // Fetch product details
   const { data: product, isLoading, isError, error } = useQuery({
     queryKey: ['product', id],
     queryFn: async () => {
@@ -28,6 +29,7 @@ function ProductDetailsPage() {
     },
   });
 
+  // Fetch reviews
   const { data: reviews = [], isLoading: isLoadingReviews } = useQuery({
     queryKey: ['product-reviews', id],
     queryFn: async () => {
@@ -36,6 +38,7 @@ function ProductDetailsPage() {
     },
   });
 
+  // Fetch wishlist status
   const { data: wishlistStatus } = useQuery({
     queryKey: ['wishlist-check', id],
     queryFn: async () => {
@@ -61,7 +64,7 @@ function ProductDetailsPage() {
       }
     },
     onSuccess: (count) => {
-      showWishlistToast(product.name, inWishlist ? 'remove' : 'add');
+      showWishlistToast(product.name, inWishlist ? 'remove' : 'add'); // <-- toast here
       setInWishlist(!inWishlist);
       setWishlistCount(count);
     },
@@ -73,6 +76,7 @@ function ProductDetailsPage() {
     }
   };
 
+  // Calculate average rating
   const averageRating =
     reviews.length > 0
       ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
