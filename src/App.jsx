@@ -38,6 +38,7 @@ const ReviewPage = lazy(() => import('./pages/userPages/ReviewPage.jsx'));
 const ForgotPasswordPage = lazy(() => import('./pages/userPages/ForgotPasswordPage.jsx'));
 const TermsAndConditions = lazy(() => import('./pages/userPages/TermsAndConditions.jsx'));
 const PrivacyPolicy = lazy(() => import('./pages/userPages/PrivacyPolicy.jsx'));
+const WishlistPage = lazy(() => import('./pages/userPages/WishlistPage.jsx'))
 
 // Admin Pages
 const AdminDashboard = lazy(() => import('./pages/adminPages/AdminDashboard.jsx'));
@@ -93,6 +94,7 @@ function App() {
               <Route path="/user/profile" element={<UserSettings />} />
               <Route path="/users/orders/:id" element={<UserViewOrderDetails />} />
               <Route path="/users/reviews" element={<ReviewPage />} />
+              <Route path="/users/wishlist" element={<WishlistPage/>} />
             </Route>
           </Route>
 
