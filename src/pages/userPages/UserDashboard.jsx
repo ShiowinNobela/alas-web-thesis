@@ -60,39 +60,39 @@ function UserDashboard() {
     {
       title: 'My Orders',
       desc: 'View your active and past orders',
-      icon: <ListOrdered className="w-6 h-6 text-primary" />,
+      icon: <ListOrdered className="text-primary h-6 w-6" />,
       link: '/user/orders',
     },
     {
       title: 'Reviews',
       desc: 'Tell us what you think',
-      icon: <Star className="w-6 h-6 text-primary" />,
+      icon: <Star className="text-primary h-6 w-6" />,
       link: '/users/reviews',
     },
     {
       title: 'Profile',
       desc: 'Manage your account and settings',
-      icon: <User className="w-6 h-6 text-primary" />,
+      icon: <User className="text-primary h-6 w-6" />,
       link: '/user/profile',
     },
     {
       title: 'Wishlist',
       desc: 'See your saved favorites',
-      icon: <ShoppingBag className="w-6 h-6 text-primary" />,
-      link: '/users/wishlist',
+      icon: <ShoppingBag className="text-primary h-6 w-6" />,
+      link: '/Wishlist',
     },
   ];
 
   return (
-    <div className="min-h-screen p-4 bg-neutral md:p-10">
-      <div className="max-w-6xl mx-auto space-y-15 pb-25">
+    <div className="bg-neutral min-h-screen p-4 md:p-10">
+      <div className="mx-auto max-w-6xl space-y-15 pb-25">
         {/* Header with Welcome & Stats */}
         <div className="flex flex-col justify-between lg:flex-row lg:items-center">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight text-content font-heading md:text-3xl">
+            <h1 className="text-content font-heading text-3xl font-bold tracking-tight md:text-3xl">
               Hello there, <span className="text-brand">{user?.username}!</span>
             </h1>
-            <p className="max-w-xl text-lighter">Ready to spice things up?</p>
+            <p className="text-lighter max-w-xl">Ready to spice things up?</p>
           </div>
           <div className="flex justify-center gap-4">
             <Link to="/menu">
@@ -129,7 +129,7 @@ function UserDashboard() {
                         ease: 'easeInOut',
                       }}
                     >
-                      <Flame className="w-5 h-5 text-white" />
+                      <Flame className="h-5 w-5 text-white" />
                     </motion.div>
                     Shop All Sauces
                   </Button>
@@ -143,9 +143,9 @@ function UserDashboard() {
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl md:text-base">Featured Sauces</h2>
-            <Link to="/menu" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            <Link to="/menu" className="text-primary flex items-center gap-1 text-sm font-medium hover:underline">
               View all products
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
@@ -153,13 +153,13 @@ function UserDashboard() {
             {featuredProducts.map((product) => (
               <Card
                 key={product.name}
-                className="p-0 overflow-hidden transition-all duration-300 group hover:-translate-y-2 hover:shadow-xl"
+                className="group overflow-hidden p-0 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               >
                 <div className="relative h-40 overflow-hidden">
                   <img
                     src={product.img}
                     alt={product.name}
-                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div
                     className={`font-heading absolute top-3 left-3 rounded-full px-2 py-1 text-xs font-bold text-white ${product.tagColor}`}
@@ -167,10 +167,10 @@ function UserDashboard() {
                     {product.tag}
                   </div>
                 </div>
-                <CardContent className="p-5 space-y-3">
+                <CardContent className="space-y-3 p-5">
                   <div>
                     <CardTitle className="text-lg font-bold">{product.name}</CardTitle>
-                    <CardDescription className="mt-1 text-sm line-clamp-2">{product.desc}</CardDescription>
+                    <CardDescription className="mt-1 line-clamp-2 text-sm">{product.desc}</CardDescription>
                   </div>
                   <div className="flex items-center justify-between">
                     <Link to={product.link} className="w-full">
@@ -187,13 +187,13 @@ function UserDashboard() {
 
         {/* Quick Actions - Compact Version */}
         <section className="space-y-4">
-          <h2 className="text-xl text-content md:text-base">Quick Actions</h2>
+          <h2 className="text-content text-xl md:text-base">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {quickActions.map((item) => (
               <Link key={item.title} to={item.link}>
                 <Card className="transition-all hover:-translate-y-1 hover:shadow-md">
                   <CardContent className="flex flex-col items-center gap-3 p-4 text-center">
-                    <div className="p-3 rounded-full bg-primary/10">{item.icon}</div>
+                    <div className="bg-primary/10 rounded-full p-3">{item.icon}</div>
                     <div>
                       <CardTitle className="text-sm font-semibold">{item.title}</CardTitle>
                     </div>
@@ -205,23 +205,23 @@ function UserDashboard() {
         </section>
 
         {/* Promotional Banner */}
-        <Card className="relative overflow-hidden border-0 to-brand from-primary rounded-2xl bg-gradient-to-r">
+        <Card className="to-brand from-primary relative overflow-hidden rounded-2xl border-0 bg-gradient-to-r">
           <div className="absolute inset-0 bg-black/20" />
           <div className="relative z-10 p-8 md:p-12">
             <div className="max-w-2xl">
-              <h2 className="mb-3 text-2xl font-bold text-white font-heading md:text-3xl">Spice Up Your Collection</h2>
-              <p className="max-w-md mb-6 text-orange-100">
+              <h2 className="font-heading mb-3 text-2xl font-bold text-white md:text-3xl">Spice Up Your Collection</h2>
+              <p className="mb-6 max-w-md text-orange-100">
                 Discover limited edition sauces and exclusive bundles. Free shipping on orders over $35!
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link to="/products">
                   <Button variant="secondary" className="gap-2">
-                    <TrendingUp className="w-4 h-4" />
+                    <TrendingUp className="h-4 w-4" />
                     Shop Now
                   </Button>
                 </Link>
                 <Link to="/bundles">
-                  <Button variant="outline" className="text-white border-white hover:bg-white hover:text-orange-600">
+                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-orange-600">
                     View Bundles
                   </Button>
                 </Link>
@@ -233,9 +233,9 @@ function UserDashboard() {
         {/* I think we can make this as Recently Viewed / Personalized Recommendations section but ignore for now */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-content md:text-2xl">⭐ Made Just For You</h2>
+            <h2 className="text-content text-xl font-bold md:text-2xl">⭐ Made Just For You</h2>
             <Button variant="ghost" size="sm" className="gap-1">
-              <RefreshCcw className="w-4 h-4" />
+              <RefreshCcw className="h-4 w-4" />
               Refresh
             </Button>
           </div>
@@ -243,10 +243,10 @@ function UserDashboard() {
             {/* You can add personalized recommendations here based on user behavior */}
             <Card className="overflow-hidden transition hover:shadow-lg">
               <CardContent className="p-0">
-                <div className="flex items-center justify-center p-8 bg-muted">
+                <div className="bg-muted flex items-center justify-center p-8">
                   <div className="text-center">
-                    <Star className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <p className="text-sm text-muted-foreground">
+                    <Star className="text-primary mx-auto mb-2 h-8 w-8" />
+                    <p className="text-muted-foreground text-sm">
                       Your personalized sauce recommendations will appear here
                     </p>
                   </div>
@@ -255,17 +255,17 @@ function UserDashboard() {
             </Card>
             <Card className="overflow-hidden transition hover:shadow-lg">
               <CardContent className="p-0">
-                <div className="flex items-center justify-center p-8 bg-muted">
+                <div className="bg-muted flex items-center justify-center p-8">
                   <div className="text-center">
-                    <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
-                    <p className="text-sm text-muted-foreground">Based on your taste preferences and order history</p>
+                    <Clock className="text-primary mx-auto mb-2 h-8 w-8" />
+                    <p className="text-muted-foreground text-sm">Based on your taste preferences and order history</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
             <Card className="overflow-hidden transition hover:shadow-lg">
               <CardContent className="p-0">
-                <div className="flex items-center justify-center p-8 bg-muted">
+                <div className="bg-muted flex items-center justify-center p-8">
                   <Link to="/menu" className="text-center">
                     <Button variant="CTA" size="sm">
                       Explore All Sauces
@@ -279,32 +279,32 @@ function UserDashboard() {
 
         {/* Help & Support - Compact Footer Style */}
         <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-content">Need Help?</h2>
+          <h2 className="text-content text-lg font-semibold">Need Help?</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[
               {
                 title: 'FAQ',
                 desc: 'Find quick answers',
-                icon: <HelpCircle className="w-5 h-5" />,
+                icon: <HelpCircle className="h-5 w-5" />,
                 link: '/faq',
               },
               {
                 title: 'Contact',
                 desc: 'Get in touch',
-                icon: <Phone className="w-5 h-5" />,
+                icon: <Phone className="h-5 w-5" />,
                 link: '/contact',
               },
               {
                 title: 'About',
                 desc: 'Our story',
-                icon: <Info className="w-5 h-5" />,
+                icon: <Info className="h-5 w-5" />,
                 link: '/about',
               },
             ].map((item) => (
               <Link key={item.title} to={item.link}>
                 <Card className="transition hover:shadow-md">
                   <CardContent className="flex items-center gap-3 p-4">
-                    <div className="p-2 rounded-full bg-primary/10">{item.icon}</div>
+                    <div className="bg-primary/10 rounded-full p-2">{item.icon}</div>
                     <div>
                       <CardTitle className="text-sm font-semibold">{item.title}</CardTitle>
                       <CardDescription className="text-xs">{item.desc}</CardDescription>
