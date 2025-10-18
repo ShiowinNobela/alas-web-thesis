@@ -107,7 +107,7 @@ const StatusInfoCard = ({ currentStatus }) => {
             currentStatus.status === 'delivered'
               ? 'bg-green-100 text-green-600'
               : currentStatus.status === 'cancelled'
-                ? 'bg-red-100 text-red-600'
+                ? 'text-primary bg-red-100'
                 : 'bg-blue-100 text-blue-600'
           )}
         >

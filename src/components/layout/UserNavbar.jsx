@@ -7,6 +7,7 @@ import { handleLogout } from '@/utils/logout';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import Cart from '../bigComponents/Cart';
 import { Menu, ShoppingCart, X } from 'lucide-react';
+import useUserStore from '@/stores/userStore';
 
 const navItemStyle =
   'px-2 py-2 border-b-2 border-transparent hover:border-primary hover:text-primary transition-all cursor-pointer';
@@ -14,7 +15,7 @@ const navItemStyle =
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const storedUser = JSON.parse(window.localStorage.getItem('user'));
+  const user = useUserStore((state) => state.user);
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -80,7 +81,7 @@ function Navbar() {
             </div>
           </div>
 
-          {storedUser && (
+          {user && (
             <>
               <Link to="/user/dashboard" className={getNavItemClass('/user/dashboard')}>
                 Dashboard
@@ -88,7 +89,7 @@ function Navbar() {
             </>
           )}
 
-          {storedUser ? (
+          {user ? (
             <UserDropdown />
           ) : (
             <Link to="/login" className={getNavItemClass('/login')}>
@@ -96,7 +97,7 @@ function Navbar() {
             </Link>
           )}
 
-          <Link to={storedUser ? '/menu' : '/login'} onClick={closeMobileMenu}>
+          <Link to={user ? '/menu' : '/login'} onClick={closeMobileMenu}>
             <Button variant="CTA" className="text-xs lg:text-sm">
               Order Now
             </Button>
@@ -105,7 +106,7 @@ function Navbar() {
 
         {/* Hamburger Icon */}
         <div className="flex items-center gap-3 md:hidden">
-          {storedUser && (
+          {user && (
             <Drawer direction="right">
               <DrawerTrigger className="bg-primary rounded-sm p-2">
                 <ShoppingCart className="size-4 text-white" />
@@ -143,7 +144,7 @@ function Navbar() {
               </Link>
             ))}
 
-            {storedUser ? (
+            {user ? (
               <>
                 <Link to="/user/orders" onClick={closeMobileMenu} className="py-3 transition">
                   My Orders
@@ -161,7 +162,7 @@ function Navbar() {
               </Link>
             )}
 
-            <Button variant="CTA" to={storedUser ? '/menu' : '/login'} onClick={closeMobileMenu} className="mt-4">
+            <Button variant="CTA" to={user ? '/menu' : '/login'} onClick={closeMobileMenu} className="mt-4">
               Order
             </Button>
           </nav>

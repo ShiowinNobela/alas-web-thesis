@@ -2,11 +2,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 
-const getAuthHeader = () => {
-  const user = JSON.parse(window.localStorage.getItem('user'));
-  return { Authorization: `Bearer ${user.token}` };
-};
-
 export const fetchOrders = async (status = '', startDate, endDate) => {
   const params = new URLSearchParams();
 
@@ -14,23 +9,17 @@ export const fetchOrders = async (status = '', startDate, endDate) => {
   if (startDate) params.append('startDate', dayjs(startDate).format('YYYY-MM-DD'));
   if (endDate) params.append('endDate', dayjs(endDate).format('YYYY-MM-DD'));
 
-  const response = await axios.get(`/api/adminOrder?${params.toString()}`, {
-    headers: getAuthHeader(),
-  });
+  const response = await axios.get(`/api/adminOrder?${params.toString()}`, {});
   return response.data.data;
 };
 
 export const fetchOrderById = async (orderId) => {
-  const response = await axios.get(`/api/adminOrder/${orderId}`, {
-    headers: getAuthHeader(),
-  });
+  const response = await axios.get(`/api/adminOrder/${orderId}`, {});
   return response.data?.data || response.data;
 };
 
 export const fetchOrderHistory = async (orderId) => {
-  const response = await axios.get(`/api/adminOrder/status-history/${orderId}`, {
-    headers: getAuthHeader(),
-  });
+  const response = await axios.get(`/api/adminOrder/status-history/${orderId}`, {});
   return response.data;
 };
 
@@ -40,41 +29,27 @@ export const updateOrderStatus = async (orderId, data) => {
 
   const requestData = status ? { notes: note, status, shipping_image: image } : { notes: note };
 
-  const response = await axios.patch(url, requestData, {
-    headers: getAuthHeader(),
-  });
+  const response = await axios.patch(url, requestData, {});
   return response.data;
 };
 
 export const moveToProcessingApi = async (orderId, { notes }) => {
-  const response = await axios.patch(
-    `/api/adminOrder/move-to-processing/${orderId}`,
-    { notes },
-    { headers: getAuthHeader() }
-  );
+  const response = await axios.patch(`/api/adminOrder/move-to-processing/${orderId}`, { notes });
   return response.data;
 };
 
 export const moveToShippingApi = async (orderId, { notes }) => {
-  const response = await axios.patch(
-    `/api/adminOrder/move-to-shipping/${orderId}`,
-    { notes },
-    { headers: getAuthHeader() }
-  );
+  const response = await axios.patch(`/api/adminOrder/move-to-shipping/${orderId}`, { notes });
   return response.data;
 };
 
 export const moveToDeliveredApi = async (orderId, { notes }) => {
-  const response = await axios.patch(
-    `/api/adminOrder/move-to-delivered/${orderId}`,
-    { notes },
-    { headers: getAuthHeader() }
-  );
+  const response = await axios.patch(`/api/adminOrder/move-to-delivered/${orderId}`, { notes });
   return response.data;
 };
 
 export const cancelOrderApi = async (orderId, { notes }) => {
-  const response = await axios.patch(`/api/adminOrder/cancel/${orderId}`, { notes }, { headers: getAuthHeader() });
+  const response = await axios.patch(`/api/adminOrder/cancel/${orderId}`, { notes });
   return response.data;
 };
 
@@ -85,9 +60,7 @@ export const fetchOrderSummary = async (startDate, endDate) => {
   params.append('start', start.format('YYYY-MM-DD'));
   params.append('end', end.format('YYYY-MM-DD'));
 
-  const response = await axios.get(`/api/reports/sales-summary-order?${params.toString()}`, {
-    headers: getAuthHeader(),
-  });
+  const response = await axios.get(`/api/reports/sales-summary-order?${params.toString()}`, {});
   return response.data.data.data;
 };
 
@@ -98,8 +71,6 @@ export const fetchLast30OrderSummary = async () => {
   params.append('start', start.format('YYYY-MM-DD'));
   params.append('end', end.format('YYYY-MM-DD'));
 
-  const response = await axios.get(`/api/reports/sales-summary-order?${params.toString()}`, {
-    headers: getAuthHeader(),
-  });
+  const response = await axios.get(`/api/reports/sales-summary-order?${params.toString()}`, {});
   return response.data.data.data;
 };

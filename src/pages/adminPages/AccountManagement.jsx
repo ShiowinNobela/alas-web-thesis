@@ -10,16 +10,6 @@ import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import ErrorState from '@/components/States/ErrorState';
 import StaffModal from '@/components/modals/StaffModal';
 
-const fetchUser = async () => {
-  const user = JSON.parse(window.localStorage.getItem('user'));
-  const res = await axios.get('/api/users', {
-    headers: {
-      Authorization: `Bearer ${user.token}`,
-    },
-  });
-  return res.data;
-};
-
 const fetchAdminUsers = async (role) => {
   const params = {};
   if (role && role !== 'All') params.role = role;
@@ -34,10 +24,6 @@ function AccountManagement() {
   const [selectedStaff, setSelectedStaff] = useState(null);
 
   const queryClient = useQueryClient();
-  const { isLoading: isVerifyingUser, isError: isVerificationError } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: fetchUser,
-  });
 
   const {
     data: users = [],
@@ -47,7 +33,6 @@ function AccountManagement() {
   } = useQuery({
     queryKey: ['adminUsers', statusFilter],
     queryFn: () => fetchAdminUsers(statusFilter),
-    enabled: !isVerifyingUser && !isVerificationError,
   });
 
   const toggleUserStatus = useMutation({
@@ -96,17 +81,6 @@ function AccountManagement() {
     { label: 'Customer', value: 'customer', icon: Contact },
   ];
 
-  if (isVerifyingUser) {
-    return (
-      <div className="bg-admin flex h-full items-center justify-center p-4">
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-gray-900"></div>
-          <p className="mt-2">Verifying permissions...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
@@ -144,7 +118,7 @@ function AccountManagement() {
           )}
         </main>
         <AddUserModal show={openModal} onClose={() => setOpenModal(false)} />
-        <StaffModal show={openStaffModal} onClose={() => setOpenStaffModal(false)} staff={selectedStaff} />
+        {openStaffModal && <StaffModal show onClose={() => setOpenStaffModal(false)} staff={selectedStaff} />}
       </div>
     </>
   );

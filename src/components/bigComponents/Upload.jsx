@@ -84,7 +84,7 @@ function Upload({ onUploadSuccess }) {
                 setFile(null);
                 setPreview('');
               }}
-              className="rounded bg-red-600 px-3 py-1 text-xs text-white hover:bg-red-700 disabled:opacity-50"
+              className="bg-brand hover:bg-brand/75 rounded px-3 py-1 text-xs text-white disabled:opacity-50"
             >
               Remove
             </button>

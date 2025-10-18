@@ -19,7 +19,12 @@ function ProductCard({ product }) {
         }}
       >
         <div className="mb-4 flex w-full items-center justify-center overflow-hidden">
-          <img src={product.image} alt={product.name} className="h-42 w-full object-contain duration-200" />
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            className="h-42 w-full object-contain duration-200"
+          />
         </div>
 
         {/* 📄 Product details below */}
@@ -37,7 +42,7 @@ function ProductCard({ product }) {
             </div>
 
             <div className="flex flex-row justify-between text-sm">
-              <p className="text-green-600">Stock: {product.stock_quantity - product.reserved_quantity}</p>
+              <p className="text-emerald-500">Stock: {product.stock_quantity - product.reserved_quantity}</p>
               <p className="text-sky-600">Reserved: {product.reserved_quantity}</p>
             </div>
 
@@ -61,14 +66,16 @@ function ProductCard({ product }) {
         </div>
       </Card>
 
-      <AddToCartModal
-        open={open}
-        setOpen={setOpen}
-        product={product}
-        quantity={quantity}
-        setQuantity={setQuantity}
-        onConfirm={() => handleAddToCart(product, quantity)}
-      />
+      {open && (
+        <AddToCartModal
+          open={open}
+          setOpen={setOpen}
+          product={product}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          onConfirm={() => handleAddToCart(product, quantity)}
+        />
+      )}
     </>
   );
 }

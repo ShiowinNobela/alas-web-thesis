@@ -3,6 +3,7 @@ import usePermissionsStore from '@/stores/permissionStore';
 import { socket } from '@/socket';
 import useUserStore from '@/stores/userStore';
 import { toast } from 'sonner';
+import PropTypes from 'prop-types';
 
 const AdminPermissionsProvider = ({ children }) => {
   const userRole = useUserStore((state) => state.user.role_name);
@@ -26,6 +27,10 @@ const AdminPermissionsProvider = ({ children }) => {
   }, [userRole, fetchPermissions]);
 
   return <>{children}</>;
+};
+
+AdminPermissionsProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default AdminPermissionsProvider;

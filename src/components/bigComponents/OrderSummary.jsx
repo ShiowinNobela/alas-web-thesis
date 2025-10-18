@@ -76,7 +76,7 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
   if (isError) {
     return (
       <div className="flex items-center justify-center p-4">
-        <p className="text-red-500">Failed to load order summary.</p>
+        <p className="text-primary">Failed to load order summary.</p>
         <button onClick={onRefresh} className="ml-2 text-blue-600 underline">
           Retry
         </button>
