@@ -4,21 +4,21 @@ import { Suspense, lazy } from 'react';
 
 // Layouts
 import MainLayout from './pages/layouts/MainLayout.jsx';
+import LoadingFallback from './pages/layouts/LoadingFallback';
 const AdminLayout = lazy(() => import('./pages/layouts/AdminLayout.jsx'));
 const ProductListLayout = lazy(() => import('./pages/layouts/ProductListLayout.jsx'));
-import LoadingFallback from './pages/layouts/LoadingFallback';
 
 // Utilities
 import ScrollToTop from './utils/ScrollToTop';
-import RoleBasedRoute from './components/layout/RoleBasedRoute';
 import { Toaster } from 'sonner';
+const RoleBasedRoute = lazy(() => import('./components/layout/RoleBasedRoute'));
+const AdminPermissionsProvider = lazy(() => import('./provider/StaffPermissionProvider.jsx'));
+const PermissionRoute = lazy(() => import('./pages/layouts/PermissionRoute.jsx'));
 
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
-import AdminPermissionsProvider from './provider/StaffPermissionProvider.jsx';
-import PermissionRoute from './pages/layouts/PermissionRoute.jsx';
-import UnauthorizedPage from './pages/userPages/UnauthorizedPage.jsx';
+const UnauthorizedPage = lazy(() => import('./pages/userPages/UnauthorizedPage.jsx'));
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
 const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));

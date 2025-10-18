@@ -34,7 +34,6 @@ const useUserStore = create((set) => ({
         hasCheckedAuth: true,
         loading: false,
       });
-      localStorage.setItem('user', JSON.stringify(res.data));
     } catch {
       set({
         user: null,
@@ -42,7 +41,6 @@ const useUserStore = create((set) => ({
         hasCheckedAuth: true,
         loading: false,
       });
-      localStorage.removeItem('user');
     }
   },
 }));

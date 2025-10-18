@@ -31,12 +31,12 @@ export default function TextInput({
           placeholder={placeholder}
           aria-invalid={error ? 'true' : undefined}
           readOnly={readOnly}
-          className={`${error ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+          className={`${error ? 'border-brand focus-visible:ring-brand' : ''}`}
         />
       </div>
 
       {/* Optional error message */}
-      {typeof error === 'string' && error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {typeof error === 'string' && error && <p className="text-primary mt-1 text-sm">{error}</p>}
     </div>
   );
 }

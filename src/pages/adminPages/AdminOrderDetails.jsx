@@ -412,17 +412,20 @@ function AdminOrderDetails() {
 
         {/* Order Notes */}
       </div>
-      <StatusUpdateModal
-        show={statusUpdateModal}
-        title={modalTitle}
-        orderId={updatingId}
-        textareaValue={adminNote}
-        onTextareaChange={(e) => setAdminNote(e.target.value)}
-        onCancel={() => setStatusUpdateModal(false)}
-        onConfirm={() => handleStatusUpdate(updatingId, adminNote, updateStatus)}
-        confirmButtonLabel={confirmButtonLabel}
-        isLoading={updateStatusMutation.isPending}
-      />
+
+      {StatusUpdateModal && (
+        <StatusUpdateModal
+          show={statusUpdateModal}
+          title={modalTitle}
+          orderId={updatingId}
+          textareaValue={adminNote}
+          onTextareaChange={(e) => setAdminNote(e.target.value)}
+          onCancel={() => setStatusUpdateModal(false)}
+          onConfirm={() => handleStatusUpdate(updatingId, adminNote, updateStatus)}
+          confirmButtonLabel={confirmButtonLabel}
+          isLoading={updateStatusMutation.isPending}
+        />
+      )}
     </div>
   );
 }

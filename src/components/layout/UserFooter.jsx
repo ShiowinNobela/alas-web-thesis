@@ -24,11 +24,11 @@ function Footer() {
 
             <div className="space-y-3">
               <div className="text-lighter flex items-center text-sm">
-                <MapPin className="mr-3 h-4 w-4 text-red-500" />
+                <MapPin className="text-primary mr-3 h-4 w-4" />
                 Old Balara, Tandang Sora Avenue, Quezon City
               </div>
               <div className="text-lighter flex items-center text-sm">
-                <Phone className="mr-3 h-4 w-4 text-red-500" />
+                <Phone className="text-primary mr-3 h-4 w-4" />
                 0995 285 8665
               </div>
             </div>
@@ -47,9 +47,9 @@ function Footer() {
                   <span className="text-lighter dark:text-neutral">Medium - Just right</span>
                 </div>
                 <div className="flex items-center text-xs">
-                  <Flame className="mr-1 h-3 w-3 text-red-500" />
-                  <Flame className="mr-1 h-3 w-3 text-red-500" />
-                  <Flame className="mr-1 h-3 w-3 text-red-500" />
+                  <Flame className="text-primary mr-1 h-3 w-3" />
+                  <Flame className="text-primary mr-1 h-3 w-3" />
+                  <Flame className="text-primary mr-1 h-3 w-3" />
                   <span className="text-lighter dark:text-neutral">Hot - Bring the fire!</span>
                 </div>
               </div>
@@ -90,30 +90,30 @@ function Footer() {
               <h4 className="text-content font-heading mb-4 text-lg font-semibold">Help & Info</h4>
               <ul className="space-y-3">
                 <li>
-                  <Link to="/about" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/about" className="text-lighter hover:text-primary text-sm transition-colors">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/contact" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/contact" className="text-lighter hover:text-primary text-sm transition-colors">
                     Contact
                   </Link>
                 </li>
                 <li>
-                  <Link to="/faq" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/faq" className="text-lighter hover:text-primary text-sm transition-colors">
                     FAQ
                   </Link>
                 </li>
                 <li>
                   <Link
                     to="/terms-and-conditions"
-                    className="text-lighter text-sm transition-colors hover:text-red-600"
+                    className="text-lighter hover:text-primary text-sm transition-colors"
                   >
                     Terms and Conditions
                   </Link>
                 </li>
                 <li>
-                  <Link to="/privacy-policy" className="text-lighter text-sm transition-colors hover:text-red-600">
+                  <Link to="/privacy-policy" className="text-lighter hover:text-primary text-sm transition-colors">
                     Privacy Policy
                   </Link>
                 </li>
@@ -170,7 +170,7 @@ function Footer() {
             </div>
 
             {/* Fun Sauce Fact */}
-            <div className="rounded-2xl border-l-4 border-red-500 bg-gradient-to-r from-red-50 to-orange-50 p-4">
+            <div className="border-primary rounded-2xl border-l-4 bg-gradient-to-r from-red-50 to-orange-50 p-4">
               <h5 className="font-heading mb-1 text-sm font-semibold text-black">Spicy Fact</h5>
               <p className="text-lighter dark:text-neutral text-xs">
                 The Carolina Reaper is currently the world's hottest pepper at 2.2 million Scoville units! 🌶️
@@ -189,10 +189,10 @@ function Footer() {
                 © 2020 <span>Alas Delis and Spices.</span> All rights reserved.
               </p>
               <div className="flex space-x-4">
-                <Link to="/terms-and-conditions" className="text-lighter text-sm transition-colors hover:text-red-600">
+                <Link to="/terms-and-conditions" className="text-lighter hover:text-primary text-sm transition-colors">
                   Terms and Conditions
                 </Link>
-                <Link to="/privacy-policy" className="text-lighter text-sm transition-colors hover:text-red-600">
+                <Link to="/privacy-policy" className="text-lighter hover:text-primary text-sm transition-colors">
                   Privacy Policy
                 </Link>
               </div>

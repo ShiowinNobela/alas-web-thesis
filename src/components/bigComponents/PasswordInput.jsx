@@ -5,14 +5,7 @@ import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export default function PasswordInput({
-  label,
-  value,
-  onChange,
-  placeholder,
-  error,
-  showRequirements = true,
-}) {
+export default function PasswordInput({ label, value, onChange, placeholder, error, showRequirements = true }) {
   const id = useId();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -33,17 +26,14 @@ export default function PasswordInput({
   };
 
   const strength = checkStrength(value);
-  const strengthScore = useMemo(
-    () => strength.filter((req) => req.met).length,
-    [strength]
-  );
+  const strengthScore = useMemo(() => strength.filter((req) => req.met).length, [strength]);
 
   const getStrengthColor = (score) => {
     if (score === 0) {
       return 'bg-border';
     }
     if (score <= 1) {
-      return 'bg-red-500';
+      return 'bg-primary';
     }
     if (score <= 2) {
       return 'bg-orange-500';
@@ -80,7 +70,7 @@ export default function PasswordInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`pe-9 ${error ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+          className={`pe-9 ${error ? 'border-brand focus-visible:ring-brand' : ''}`}
           aria-describedby={showRequirements ? `${id}-description` : undefined}
         />
         <button
@@ -94,9 +84,7 @@ export default function PasswordInput({
       </div>
 
       {/* Optional error message */}
-      {typeof error === 'string' && error && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
-      )}
+      {typeof error === 'string' && error && <p className="text-primary mt-1 text-sm">{error}</p>}
 
       {/* Password requirements section (conditionally rendered) */}
       {showRequirements && (
@@ -115,10 +103,7 @@ export default function PasswordInput({
             />
           </div>
 
-          <p
-            id={`${id}-description`}
-            className="text-foreground mb-2 text-sm font-medium"
-          >
+          <p id={`${id}-description`} className="text-foreground mb-2 text-sm font-medium">
             {getStrengthText(strengthScore)}. Must contain:
           </p>
 
@@ -130,13 +115,9 @@ export default function PasswordInput({
                 ) : (
                   <XIcon size={16} className="text-muted-foreground/80" />
                 )}
-                <span
-                  className={`text-xs ${req.met ? 'text-emerald-600' : 'text-muted-foreground'}`}
-                >
+                <span className={`text-xs ${req.met ? 'text-emerald-600' : 'text-muted-foreground'}`}>
                   {req.text}
-                  <span className="sr-only">
-                    {req.met ? ' - Requirement met' : ' - Requirement not met'}
-                  </span>
+                  <span className="sr-only">{req.met ? ' - Requirement met' : ' - Requirement not met'}</span>
                 </span>
               </li>
             ))}

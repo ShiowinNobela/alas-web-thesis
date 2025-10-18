@@ -66,7 +66,7 @@ function CartSummaryCard() {
                   </div>
                   <button
                     onClick={() => removeItem(item.product_id)}
-                    className="flex-shrink-0 p-0.5 text-gray-400 transition-colors hover:text-red-500"
+                    className="hover:text-primary text-lighter flex-shrink-0 p-0.5 transition-colors"
                   >
                     <Delete className="size-7" />
                   </button>
