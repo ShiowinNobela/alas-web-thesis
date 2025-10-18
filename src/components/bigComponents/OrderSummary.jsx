@@ -1,5 +1,4 @@
 // components/OrderSummary.jsx
-import { HiOutlineRefresh } from 'react-icons/hi';
 import { Tooltip } from 'flowbite-react';
 import dayjs from 'dayjs';
 import OrderInfoModal from '../modals/OrderInfoModal';
@@ -8,6 +7,7 @@ import { fetchOrderSummary, fetchLast30OrderSummary } from '@/api/orders';
 import { memo } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
+import { RefreshCcw } from 'lucide-react';
 
 // ✅ Memoized cards component
 const OrderCards = memo(function OrderCards({ data }) {
@@ -118,7 +118,7 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
             className="group rounded-full border border-gray-300 bg-white p-2 text-gray-700 shadow-sm hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             aria-label="Refresh data"
           >
-            <HiOutlineRefresh className="h-5 w-5 transition-transform duration-300 group-active:rotate-180" />
+            <RefreshCcw className="h-5 w-5 transition-transform duration-300 group-active:rotate-180" />
           </button>
         </Tooltip>
       </div>

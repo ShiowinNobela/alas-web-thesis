@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa';
 import { Card, TextInput } from 'flowbite-react';
-import { MilkOff, Search, X } from 'lucide-react';
+import { MilkOff, Minus, Plus, Search, ShoppingCart, X } from 'lucide-react';
 import { Modal, ModalHeader, ModalBody, Label, Button } from 'flowbite-react';
 
 function WalkInOrdering() {
@@ -150,7 +149,7 @@ function WalkInOrdering() {
               <div className="flex h-full flex-col justify-start gap-4">
                 <div className="flex justify-between">
                   <div className="flex items-center gap-2">
-                    <FaShoppingCart className="text-xl text-blue-600 dark:text-blue-400" />
+                    <ShoppingCart className="text-xl text-blue-600 dark:text-blue-400" />
                     <h2 className="font-bold">Order Summary</h2>
                   </div>
                   {cartItems.length > 0 && (
@@ -192,7 +191,7 @@ function WalkInOrdering() {
                               onClick={() => handleChangeCartQuantity(item.id, -1)}
                               className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 transition-colors hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                             >
-                              <FaMinus className="text-xs" />
+                              <Minus className="text-xs" />
                             </button>
                             <span className="min-w-8 text-center font-semibold text-gray-800 dark:text-white">
                               {item.quantity}
@@ -201,7 +200,7 @@ function WalkInOrdering() {
                               onClick={() => handleChangeCartQuantity(item.id, 1)}
                               className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 transition-colors hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                             >
-                              <FaPlus className="text-xs" />
+                              <Plus className="text-xs" />
                             </button>
                           </div>
                           <span className="font-bold text-gray-800 dark:text-white">
@@ -246,7 +245,7 @@ function WalkInOrdering() {
                       onClick={() => setConfirmOpen(true)}
                       disabled={cartItems.length === 0}
                     >
-                      <FaShoppingCart className="mr-2" />
+                      <ShoppingCart className="mr-2" />
                       Checkout Order
                     </Button>
                   </div>

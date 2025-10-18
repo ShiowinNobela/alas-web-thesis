@@ -1,8 +1,8 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { HiOutlineCloudUpload } from 'react-icons/hi';
 import { toast } from 'sonner';
+import { CloudUpload } from 'lucide-react';
 
 function Upload({ onUploadSuccess }) {
   const [file, setFile] = useState(null);
@@ -65,7 +65,7 @@ function Upload({ onUploadSuccess }) {
             <img src={preview} alt="preview" className="h-full w-full rounded-2xl object-cover" />
           ) : (
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <HiOutlineCloudUpload className="mb-2 h-12 w-12 text-gray-400" />
+              <CloudUpload className="mb-2 h-12 w-12 text-gray-400" />
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-semibold">Click to upload</span> or drag and drop
               </p>
