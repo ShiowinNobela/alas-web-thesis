@@ -1,19 +1,8 @@
 import { useState } from 'react';
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Tooltip,
-} from 'flowbite-react';
-import { HiInformationCircle } from 'react-icons/hi';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Tooltip } from 'flowbite-react';
+import { InfoIcon } from 'lucide-react';
 
-export default function OrderInfoModal({
-  tooltipContent = 'Learn more',
-  modalTitle = 'Information',
-  children,
-}) {
+export default function OrderInfoModal({ tooltipContent = 'Learn more', modalTitle = 'Information', children }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -24,7 +13,7 @@ export default function OrderInfoModal({
           className="group rounded-full border border-gray-300 bg-white p-2 text-gray-700 shadow-sm hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           aria-label={tooltipContent}
         >
-          <HiInformationCircle className="h-5 w-5" />
+          <InfoIcon className="h-5 w-5" />
         </button>
       </Tooltip>
 

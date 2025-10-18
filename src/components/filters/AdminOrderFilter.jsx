@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { TextInput, Button } from 'flowbite-react';
-import { HiOutlineSearch } from 'react-icons/hi';
+import { Search } from 'lucide-react';
 import dayjs from 'dayjs';
+import PropTypes from 'prop-types';
 import StatusFilterDropdown from '@/components/filters/StatusFilterDropdown';
 import { DateRangeSelector } from '../bigComponents/DateRangeSelector';
 import { CalendarDate } from '@internationalized/date';
-// import OrderReportPDF from '@/components/ReportFormats/OrderReportPDF';
-// import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const parseCalendarDate = (dateString) => {
   if (!dateString) return null;
@@ -16,7 +15,7 @@ const parseCalendarDate = (dateString) => {
   return new CalendarDate(d.year(), d.month() + 1, d.date()); // month +1 because CalendarDate is 1-based
 };
 
-const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders, isLoading }) => {
+const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [status, setStatus] = useState(searchParams.get('status') || '');
@@ -57,7 +56,7 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders,
         <TextInput
           placeholder="Search order by ID..."
           value={searchId}
-          icon={HiOutlineSearch}
+          icon={Search}
           onChange={(e) => setSearchId(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && onSearch()}
           color="gray"
@@ -86,25 +85,16 @@ const AdminOrderFilters = ({ onRefresh, onSearch, searchId, setSearchId, orders,
         <Button color="gray" onClick={handleResetFilters}>
           Reset All
         </Button>
-
-        {/* PDF Download */}
-        {/* <PDFDownloadLink
-          document={<OrderReportPDF orders={orders} startDate={dateRange.start} endDate={dateRange.end} />}
-          fileName={`orders-${dateRange.start || 'all'}-to-${dateRange.end || 'all'}.pdf`}
-        >
-          {({ loading }) =>
-            loading ? (
-              <Button className="rounded bg-gray-300 px-3 py-2 text-sm text-gray-700">Preparing...</Button>
-            ) : (
-              <Button disabled={isLoading} color="gray">
-                Download PDF
-              </Button>
-            )
-          }
-        </PDFDownloadLink> */}
       </div>
     </div>
   );
+};
+
+AdminOrderFilters.propTypes = {
+  onRefresh: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired,
+  searchId: PropTypes.string.isRequired,
+  setSearchId: PropTypes.func.isRequired,
 };
 
 export default AdminOrderFilters;

@@ -1,6 +1,5 @@
+import { Button, Label } from 'flowbite-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/Button';
-import { Label } from '@/components/ui/Label';
 
 function ReviewModal({ show, onClose, onSubmit, review, isLoading }) {
   const [action, setAction] = useState('');
@@ -19,14 +18,11 @@ function ReviewModal({ show, onClose, onSubmit, review, isLoading }) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="relative w-full max-w-md p-6 bg-white shadow-xl dark:bg-gray-900 rounded-2xl">
+      <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Moderate Review</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             ✕
           </button>
         </div>
@@ -91,12 +87,8 @@ function ReviewModal({ show, onClose, onSubmit, review, isLoading }) {
         )}
 
         {/* Footer */}
-        <div className="flex justify-end gap-2 mt-6">
-          <Button
-            onClick={handleSubmit}
-            disabled={!action || isLoading}
-            variant="default"
-          >
+        <div className="mt-6 flex justify-end gap-2">
+          <Button onClick={handleSubmit} disabled={!action || isLoading} variant="default">
             {isLoading ? 'Saving…' : 'Save'}
           </Button>
           <Button onClick={onClose} variant="outline">

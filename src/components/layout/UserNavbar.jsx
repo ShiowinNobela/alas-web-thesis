@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useLocation, Link } from 'react-router-dom';
 import UserDropdown from '@/components/bigComponents/UserDropdown';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ import ThemeToggle from '../filters/ThemeToggle';
 import { handleLogout } from '@/utils/logout';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import Cart from '../bigComponents/Cart';
-import { ShoppingCart } from 'lucide-react';
+import { Menu, ShoppingCart, X } from 'lucide-react';
 
 const navItemStyle =
   'px-2 py-2 border-b-2 border-transparent hover:border-primary hover:text-primary transition-all cursor-pointer';
@@ -118,7 +117,7 @@ function Navbar() {
           )}
 
           <Button onClick={toggleMobileMenu} aria-label="Toggle Menu" variant="CTA">
-            {mobileMenuOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </Button>
         </div>
 

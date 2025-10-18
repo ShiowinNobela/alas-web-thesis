@@ -1,18 +1,34 @@
 import { useState } from 'react';
-import axios from '@/lib/axios-config'
-import { useMutation } from '@tanstack/react-query';
+import axios from '@/lib/axios-config';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import useUserStore from '@/stores/userStore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import TextInput from '@/components/bigComponents/TextInput';
 import PasswordInput from '@/components/bigComponents/PasswordInput';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { User } from 'lucide-react';
 import dayjs from 'dayjs';
 
 function UserSettings() {
   const user = useUserStore((state) => state.user);
+
+  const { data: stats, isLoading: isStatsLoading } = useQuery({
+    queryKey: ['user-stats'],
+    queryFn: async () => {
+      const res = await axios.get('/api/users/stats/me');
+      return res.data.data;
+    },
+  });
 
   // Profile states
   const [username, setUsername] = useState(user.username);
@@ -31,8 +47,7 @@ function UserSettings() {
   });
 
   const { mutate: updateUser, isPending } = useMutation({
-    mutationFn: (data) =>
-      axios.put('/api/users', data),
+    mutationFn: (data) => axios.put('/api/users', data),
     onSuccess: (res) => {
       useUserStore.getState().setUser(res.data);
       toast.success('Profile updated successfully!');
@@ -43,8 +58,7 @@ function UserSettings() {
   });
 
   const { mutate: updatePassword, isPending: isUpdatingPassword } = useMutation({
-    mutationFn: (data) =>
-      axios.post('/api/users/reset', data),
+    mutationFn: (data) => axios.post('/api/users/reset', data),
     onSuccess: () => {
       toast.success('Password updated successfully!');
       setOldPassword('');
@@ -86,45 +100,49 @@ function UserSettings() {
   };
 
   return (
-    <section className="min-h-screen py-10 bg-neutral">
-      <div className="max-w-2xl px-4 mx-auto space-y-8 pb-25">
+    <section className="bg-neutral min-h-screen py-10">
+      <div className="mx-auto max-w-2xl space-y-8 px-4 pb-25">
         {/* HEADER */}
-        <div className="flex flex-col items-center justify-center mx-auto">
-          <h1 className="text-5xl text-content font-heading">Profile</h1>
-          <p className="mt-2 text-lighter">Your profile information here </p>
+        <div className="mx-auto flex flex-col items-center justify-center">
+          <h1 className="text-content font-heading text-5xl">Profile</h1>
+          <p className="text-lighter mt-2">Your profile information here </p>
         </div>
 
         {/* PROFILE */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card>
             <CardContent className="py-6 text-center">
-              <div className="flex items-center justify-center mx-auto mb-4 text-white rounded-full shadow-lg bg-primary size-20">
+              <div className="bg-primary mx-auto mb-4 flex size-20 items-center justify-center rounded-full text-white shadow-lg">
                 <User size={36} />
               </div>
-              <h1 className="text-xl font-semibold font-heading text-content">{user.username}</h1>
-              <p className="text-sm text-lighter">{user.email}</p>
-              <p className="text-sm text-content">Joined {dayjs(user.created_at).format('MMMM YYYY')}</p>
+              <h1 className="font-heading text-content text-xl font-semibold">{user.username}</h1>
+              <p className="text-lighter text-sm">{user.email}</p>
+              <p className="text-content text-sm">Joined {dayjs(user.created_at).format('MMMM YYYY')}</p>
             </CardContent>
           </Card>
 
-          {/* Stats placeholder */}
+          {/* Stats  */}
           <div className="grid grid-cols-1 gap-6">
             <Card className="transition hover:shadow-md">
-              <CardContent asChild className="flex items-center justify-between h-full p-6">
+              <CardContent asChild className="flex h-full items-center justify-between p-6">
                 <div>
                   <CardTitle>Total Orders</CardTitle>
                   <CardDescription>The amount of sauces</CardDescription>
                 </div>
-                <p className="text-2xl font-heading text-primary">100</p>
+                <p className="font-heading text-primary text-2xl">
+                  {isStatsLoading ? '...' : (stats?.total_orders ?? 0)}
+                </p>
               </CardContent>
             </Card>
             <Card className="transition hover:shadow-md">
-              <CardContent asChild className="flex items-center justify-between h-full p-6">
+              <CardContent asChild className="flex h-full items-center justify-between p-6">
                 <div>
                   <CardTitle>Reviews</CardTitle>
                   <CardDescription>Sauces reviewed</CardDescription>
                 </div>
-                <p className="text-2xl font-heading text-primary">100</p>
+                <p className="font-heading text-primary text-2xl">
+                  {isStatsLoading ? '...' : (stats?.total_reviews ?? 0)}
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -133,7 +151,7 @@ function UserSettings() {
         {/* ACCOUNT DETAILS */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl text-content">Account Details</CardTitle>
+            <CardTitle className="text-content text-xl">Account Details</CardTitle>
             <CardDescription>Update your data as you need</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -167,9 +185,7 @@ function UserSettings() {
                 <DialogContent className="max-w-md">
                   <DialogHeader>
                     <DialogTitle>Change Password</DialogTitle>
-                    <DialogDescription>
-                      Enter your current password and set a new one
-                    </DialogDescription>
+                    <DialogDescription>Enter your current password and set a new one</DialogDescription>
                   </DialogHeader>
 
                   <form onSubmit={handleChangePassword} className="space-y-4">
@@ -209,11 +225,7 @@ function UserSettings() {
                     />
 
                     <DialogFooter>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setIsModalOpen(false)}
-                      >
+                      <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
                         Cancel
                       </Button>
                       <Button type="submit" disabled={isUpdatingPassword}>

@@ -14,7 +14,7 @@ import {
   Badge,
   Button,
 } from 'flowbite-react';
-import { HiCheckCircle, HiDotsVertical, HiOutlineClock, HiTruck, HiCheck, HiX } from 'react-icons/hi';
+import { CheckCircle, MoreVertical, Clock, Truck, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
@@ -34,11 +34,11 @@ export default function AdminOrdersTable({
 
   // Status icons mapping
   const statusIcons = {
-    pending: <HiOutlineClock className="mr-1 h-4 w-4" />,
-    processing: <HiOutlineClock className="mr-1 h-4 w-4" />,
-    shipping: <HiTruck className="mr-1 h-4 w-4" />,
-    delivered: <HiCheck className="mr-1 h-4 w-4" />,
-    cancelled: <HiX className="mr-1 h-4 w-4" />,
+    pending: <Clock className="mr-1 h-4 w-4" />,
+    processing: <Clock className="mr-1 h-4 w-4" />,
+    shipping: <Truck className="mr-1 h-4 w-4" />,
+    delivered: <Check className="mr-1 h-4 w-4" />,
+    cancelled: <X className="mr-1 h-4 w-4" />,
   };
 
   // Format date consistently
@@ -215,7 +215,7 @@ export default function AdminOrdersTable({
                       </Button>
                     ) : order.status === 'delivered' ? (
                       <div className="flex items-center text-sm text-emerald-500">
-                        <HiCheckCircle className="mr-1 h-5 w-5" />
+                        <CheckCircle className="mr-1 h-5 w-5" />
                         Delivered
                       </div>
                     ) : null}
@@ -227,7 +227,7 @@ export default function AdminOrdersTable({
                       inline
                       renderTrigger={() => (
                         <button className="font-bold text-black hover:text-blue-600">
-                          <HiDotsVertical />
+                          <MoreVertical />
                         </button>
                       )}
                     >
