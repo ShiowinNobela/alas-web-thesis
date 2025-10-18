@@ -125,7 +125,7 @@ export default function OrderFiltersPanel() {
   const hasActiveFilters = selectedStatuses.length > 0 || selectedPayments.length > 0 || selectedMonthYear;
 
   return (
-    <Card className="flex flex-col w-full h-full gap-4 p-4 shadow text-content shrink-0 rounded-xl lg:w-72">
+    <Card className="flex flex-col w-full h-full gap-4 p-4 overflow-y-scroll shadow text-content shrink-0 rounded-xl lg:w-72">
       <div className="flex items-center justify-between pb-2 border-b border-lighter">
         <h3 className="font-semibold">Filters</h3>
         {hasActiveFilters && (

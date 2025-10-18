@@ -122,12 +122,12 @@ function ProductDetailsPage() {
 
           {/* Reviews */}
           <section className="pt-8 mt-10 border-t border-gray-200">
-            <h2 className="mb-4 text-2xl font-semibold text-gray-800">Customer Reviews</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-gray-800 dark:text-gray-50">Customer Reviews</h2>
 
             {isLoadingReviews && <ReviewSkeleton items={3} />}
 
             {!isLoadingReviews && reviews.length === 0 && (
-              <p className="text-gray-500">No reviews yet. Be the first to leave one!</p>
+              <p className="text-gray-500 dark:text-gray-300">No reviews yet. Be the first to leave one!</p>
             )}
 
             {!isLoadingReviews && reviews.length > 0 && (
@@ -146,12 +146,12 @@ function ProductDetailsPage() {
                           fill="currentColor"
                         />
                       ))}
-                      <span className="ml-2 text-sm text-gray-600">
+                      <span className="ml-2 text-sm text-gray-600 dark:text-gray-200">
                         {new Date(review.created_at).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="font-semibold text-gray-800">{review.username}</p>
-                    <p className="text-gray-700">{review.review_text}</p>
+                    <p className="font-semibold text-gray-800 dark:text-gray-300">{review.username}</p>
+                    <p className="text-gray-700 dark:text-gray-300">{review.review_text}</p>
                   </div>
                 ))}
               </div>

@@ -96,13 +96,13 @@ function UserViewOrderPage() {
   return (
     <ErrorBoundary>
       <TooltipProvider>
-        <main className="bg-neutral min-h-screen pb-8 sm:pb-4">
-          <div className="mx-auto max-w-6xl p-4 sm:py-8 md:px-6 lg:px-8">
+        <main className="min-h-screen pb-8 bg-neutral sm:pb-4">
+          <div className="max-w-6xl p-4 mx-auto sm:py-8 md:px-6 lg:px-8">
             {/* Header Section */}
             <div className="mb-6 text-center sm:mb-8">
-              <div className="mb-2 flex flex-col items-start justify-center">
-                <h1 className="text-content font-heading text-2xl font-semibold sm:text-3xl">Your Orders</h1>
-                <p className="text-lighter text-base sm:text-lg">
+              <div className="flex flex-col items-start justify-center mb-2">
+                <h1 className="text-2xl font-semibold text-content font-heading sm:text-3xl">Your Orders</h1>
+                <p className="text-base text-lighter sm:text-lg">
                   Track your recent orders and stay updated on their status in one place.
                 </p>
               </div>
@@ -111,12 +111,12 @@ function UserViewOrderPage() {
             {/* Main Content Layout */}
             <div className="flex gap-6">
               {/* Desktop Sidebar - Hidden on mobile */}
-              <div className="sticky top-4 hidden h-fit self-start lg:block">
+              <div className="sticky self-start hidden top-4 h-fit lg:block">
                 <OrderFiltersPanel />
               </div>
 
               {/* Orders Table - Full width on mobile */}
-              <div className="min-w-0 flex-1">
+              <div className="flex-1 min-w-0">
                 {isLoading ? (
                   <TableSkeleton columns={6} rows={10} />
                 ) : isError ? (
@@ -146,15 +146,15 @@ function UserViewOrderPage() {
           <div className="lg:hidden">
             <Button
               size="icon"
-              className="fixed right-10 bottom-10 z-50 rounded-full shadow-lg"
+              className="fixed z-50 rounded-full shadow-lg right-10 bottom-10"
               onClick={() => setShowMobileFilters(true)}
             >
-              <SlidersHorizontal className="h-5 w-5" />
+              <SlidersHorizontal className="w-5 h-5" />
             </Button>
 
             <Dialog open={showMobileFilters} onOpenChange={setShowMobileFilters}>
               <DialogContent className="w-[90%] max-w-sm rounded-2xl p-0">
-                <DialogHeader className="border-b p-4">
+                <DialogHeader className="p-4 border-b">
                   <DialogTitle>Order Filters</DialogTitle>
                 </DialogHeader>
                 <div className="max-h-[70vh] overflow-y-auto px-2">

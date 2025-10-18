@@ -36,7 +36,7 @@ export default function UserViewOrderDetails() {
   });
 
   if (isLoading) {
-    return <div className="bg-neutral h-screen"></div>;
+    return <div className="h-screen bg-neutral"></div>;
   }
 
   if (isError) {
@@ -75,22 +75,22 @@ export default function UserViewOrderDetails() {
 
   return (
     <TooltipProvider>
-      <section className="bg-neutral h-full py-8 pb-40">
-        <div className="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+      <section className="h-full py-8 pb-40 bg-neutral">
+        <div className="max-w-6xl px-4 mx-auto md:px-6 lg:px-8">
           <BackButton />
 
           <div className="flex flex-col items-start space-y-2">
             <div className="flex gap-4">
-              <h1 className="text-content font-heading text-xl font-bold md:text-2xl">
-                Order ID: <span className="text-brand text-xl">{order?.id} </span>
+              <h1 className="text-xl font-bold text-content font-heading md:text-2xl">
+                Order ID: <span className="text-xl text-brand">{order?.id} </span>
               </h1>
-              <p className={`px-4 text-sm md:text-base ${getStatusStyle(order?.status || 'unknown')}`}>
+              <p className={`px-4 mb-7 text-sm md:text-base ${getStatusStyle(order?.status || 'unknown')}`}>
                 {order?.status || 'Unknown'}
               </p>
             </div>
-            <div className="flex w-full flex-col space-y-2 md:flex-row md:justify-between md:space-y-0">
+            <div className="flex flex-col w-full space-y-2 md:flex-row md:justify-between md:space-y-0">
               <div className="flex flex-col space-y-1 md:flex-row md:items-center md:space-y-0 md:space-x-2">
-                <p className="text-lighter text-sm">
+                <p className="text-sm text-lighter">
                   You ordered this on <span className="text-content">{finalDateString}</span>
                 </p>
               </div>
@@ -98,37 +98,37 @@ export default function UserViewOrderDetails() {
             </div>
           </div>
 
-          <div className="mt-5 flex w-full flex-col items-stretch justify-center space-y-4 xl:flex-row xl:space-y-0 xl:space-x-4">
-            <div className="flex w-full flex-col items-start justify-start space-y-4">
+          <div className="flex flex-col items-stretch justify-center w-full mt-5 space-y-4 xl:flex-row xl:space-y-0 xl:space-x-4">
+            <div className="flex flex-col items-start justify-start w-full space-y-4">
               {order.items?.map((item) => (
-                <Card key={item.item_id} className="border-primary flex w-full flex-col items-start px-4 md:flex-row">
+                <Card key={item.item_id} className="flex flex-col items-center w-full px-4 sm:items-start border-primary md:flex-row">
                   <div className="w-30">
-                    <img src={item.image} alt={item.product_name} className="w-full object-cover" />
+                    <img src={item.image} alt={item.product_name} className="object-cover w-full" />
                   </div>
 
                   {/* CONTENT COLUMN */}
-                  <div className="flex h-full flex-1 flex-col justify-between">
-                    <div className="space-y-1">
-                      <h3 className="font-heading text-xl font-bold">{item.product_name}</h3>
-                      <p className="text-lighter text-sm capitalize">{item.category}</p>
+                  <div className="flex flex-col items-center flex-1 h-full sm:items-baseline sm:justify-between">
+                    <div className="pb-5 space-y-1 sm:pb-2">
+                      <h3 className="text-2xl font-bold font-heading">{item.product_name}</h3>
+                      <p className="text-sm text-center capitalize text-lighter">{item.category}</p>
                     </div>
-                    <div className="md:divide-lighter text-content flex gap-4 text-sm md:flex-row md:divide-x">
+                    <div className="flex gap-8 text-sm sm:gap-4 md:divide-lighter text-content md:flex-row md:divide-x">
                       <div className="pr-2">
                         <p>Quantity</p>
-                        <span className="font-heading font-bold">{item.quantity}</span>
+                        <span className="font-bold font-heading">{item.quantity}</span>
                       </div>
                       <div className="pr-2">
                         <p>Item Price</p>
-                        <span className="font-heading font-bold">₱ {item.unit_price}</span>
+                        <span className="font-bold font-heading">₱ {item.unit_price}</span>
                       </div>
                       <div className="pr-2">
                         <p>Subtotal</p>
-                        <span className="font-heading font-bold text-emerald-500">₱ {item.subtotal}</span>
+                        <span className="font-bold font-heading text-emerald-500">₱ {item.subtotal}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="mr-2 flex flex-col gap-2">
-                    <Button>Order Again</Button>
+                  <div className="flex flex-row items-center gap-5 mr-5 sm:mr-2 sm:gap-2 sm:flex-col">
+                    <Button className="w-1/2 sm:w-full">Order Again</Button>
                     <Link to={`/user/review/${order?.id}?product_id=${item.product_id}`}>
                       <Button variant="outline">Review Product</Button>
                     </Link>
@@ -136,7 +136,7 @@ export default function UserViewOrderDetails() {
                 </Card>
               ))}
 
-              <div className="flex w-full flex-col items-stretch justify-center space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+              <div className="flex flex-col items-stretch justify-center w-full space-y-4 md:flex-row md:space-y-0 md:space-x-4">
                 <Card className="w-full">
                   <CardHeader>
                     <CardTitle className="font-bold">Order Summary</CardTitle>
@@ -157,20 +157,20 @@ export default function UserViewOrderDetails() {
                   </CardContent>
                   <CardFooter className="flex justify-between pt-2">
                     <span className="font-semibold">Total</span>
-                    <span className="text-primary font-semibold">{order?.total_amount || '0.00'}</span>
+                    <span className="font-semibold text-primary">{order?.total_amount || '0.00'}</span>
                   </CardFooter>
                 </Card>
 
-                <Card className="w-full flex-col space-y-4">
+                <Card className="flex-col w-full space-y-4">
                   <CardHeader>
                     <CardTitle className="font-bold">Courier</CardTitle>
                   </CardHeader>
                   <CardContent className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <img src="https://i.ibb.co/L8KSdNQ/image-3.png" alt="Courier Logo" className="h-8 w-8" />
+                      <img src="https://i.ibb.co/L8KSdNQ/image-3.png" alt="Courier Logo" className="w-8 h-8" />
                       <div className="flex flex-col">
                         <span className="text-base">Free Delivery</span>
-                        <span className="text-muted-foreground text-sm">Delivery within 24 Hours</span>
+                        <span className="text-sm text-muted-foreground">Delivery within 24 Hours</span>
                       </div>
                     </div>
                     <span className="font-semibold">0.00</span>
@@ -184,8 +184,8 @@ export default function UserViewOrderDetails() {
                 <UserOrderHistory order={order} />
               </div>
             </div>
-            <div className="flex w-full flex-col items-center gap-4 md:items-start xl:w-5/12">
-              <Card className="w-full flex-col space-y-2">
+            <div className="flex flex-col items-center w-full gap-4 md:items-start xl:w-5/12">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle className="font-bold">Customer</CardTitle>
                 </CardHeader>
@@ -205,7 +205,7 @@ export default function UserViewOrderDetails() {
                 </CardContent>
               </Card>
 
-              <Card className="w-full flex-col space-y-2">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle className="font-bold">Payment Information</CardTitle>
                 </CardHeader>
@@ -229,21 +229,21 @@ export default function UserViewOrderDetails() {
                 </CardContent>
               </Card>
 
-              <Card className="w-full flex-col space-y-2">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle className="font-bold">Notes</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm">{order.notes?.trim() ? order.notes : 'No notes'}</p>
+                  <p className="text-sm text-muted-foreground">{order.notes?.trim() ? order.notes : 'No notes'}</p>
                 </CardContent>
               </Card>
 
-              <Card className="w-full flex-col space-y-2">
+              <Card className="flex-col w-full space-y-2">
                 <CardHeader>
                   <CardTitle className="font-bold">More Information</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm">{order.notes?.trim() ? order.notes : 'No notes'}</p>
+                  <p className="text-sm text-muted-foreground">{order.notes?.trim() ? order.notes : 'No notes'}</p>
                 </CardContent>
               </Card>
             </div>
