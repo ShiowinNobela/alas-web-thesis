@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import globalAxios from '@/api/axios'
+import axios from '../lib/axios-config'
 
 export function useUserReviews(userId) {
   const [reviews, setReviews] = useState([])
@@ -9,7 +9,7 @@ export function useUserReviews(userId) {
   const fetchReviews = useCallback(async () => {
     try {
       setLoading(true)
-      const res = await globalAxios.get(`/reviews/user/${userId}`)
+      const res = await axios.get(`/api/reviews/user/${userId}`)
       setReviews(res.data.data || [])
       setError(null)
     } catch (err) {
@@ -20,7 +20,7 @@ export function useUserReviews(userId) {
   }, [userId])
 
   const updateReview = async (id, data) => {
-    const res = await globalAxios.put(`/reviews/${id}`, data);
+    const res = await axios.put(`/api/reviews/${id}`, data);
     const updatedReview = res.data.data;
 
     setReviews((prev) =>
@@ -32,7 +32,7 @@ export function useUserReviews(userId) {
 
 
   const deleteReview = async (id) => {
-    await globalAxios.delete(`/reviews/${id}`)
+    await axios.delete(`/api/reviews/${id}`)
     setReviews((prev) => prev.filter((r) => r.review_id !== id))
   }
 

@@ -35,13 +35,13 @@ const StatusUpdateModal = ({
               <strong>Order ID:</strong> {order.id}
             </p>
             <p>
-              <strong>Customer:</strong> {order.customer_name}
+              <strong>Customer:</strong> {order.username}
             </p>
             <p>
               <strong>Status:</strong> {order.status}
             </p>
             <p>
-              <strong>Total:</strong> ${order.total_amount}
+              <strong>Total:</strong> ₱ {order.total_amount}
             </p>
           </div>
         ) : (

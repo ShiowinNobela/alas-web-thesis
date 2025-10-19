@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, Label, Button, Card } from 'flowbite-react';
 import { X } from 'lucide-react';
 import PDFDownloadButton from '../bigComponents/PDFDownloadButton';
+import { toast } from 'sonner';
 
 export default function GeneratePDFModal({ isOpen, onClose, activePeriod }) {
   const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
   const [isCustomValid, setIsCustomValid] = useState(false);
+
+  const handleError = (error) => {
+    toast.error("Failed to Generate a PDF. Please make sure that there's data on that toggle");
+
+  }
 
   // Validate custom date range
   useEffect(() => {
@@ -44,13 +50,14 @@ export default function GeneratePDFModal({ isOpen, onClose, activePeriod }) {
             <PDFDownloadButton
               activePeriod={activePeriod}
               onComplete={onClose}
-              className="w-full bg-blue-600 text-white hover:bg-blue-700"
+              onError={handleError}
+              className="w-full text-white bg-blue-600 hover:bg-blue-700"
             />
           </Card>
 
           {/* Custom Range */}
           <Card className="ring-1">
-            <h2 className="mb-3 flex items-center space-x-2 text-base font-semibold text-gray-900 dark:text-gray-100">
+            <h2 className="flex items-center mb-3 space-x-2 text-base font-semibold text-gray-900 dark:text-gray-100">
               <p>Custom Date Range</p>
             </h2>
             <p className="mb-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
@@ -66,7 +73,7 @@ export default function GeneratePDFModal({ isOpen, onClose, activePeriod }) {
                     type="date"
                     value={dateRange.startDate}
                     onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
-                    className="block w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                   />
                 </div>
 
@@ -78,14 +85,14 @@ export default function GeneratePDFModal({ isOpen, onClose, activePeriod }) {
                     value={dateRange.endDate}
                     onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
                     min={dateRange.startDate}
-                    className="block w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                   />
                 </div>
               </div>
 
               {dateRange.startDate && dateRange.endDate && dateRange.startDate > dateRange.endDate && (
                 <p className="flex items-center space-x-1 text-sm text-red-600 dark:text-red-400">
-                  <X className="h-4 w-4" />
+                  <X className="w-4 h-4" />
                   <span>End date must be after start date</span>
                 </p>
               )}
@@ -96,12 +103,13 @@ export default function GeneratePDFModal({ isOpen, onClose, activePeriod }) {
               startDate={dateRange.startDate}
               endDate={dateRange.endDate}
               onComplete={onClose}
+              onError={handleError}
               disabled={!isCustomValid}
             />
           </Card>
 
           {/* Cancel Button */}
-          <div className="border-t border-gray-200 pt-4 dark:border-gray-700">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
             <Button
               color="gray"
               onClick={onClose}

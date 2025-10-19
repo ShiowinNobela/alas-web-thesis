@@ -8,14 +8,15 @@ import ReviewList from '@/components/review/ReviewList'
 import ReviewEditModal from '@/components/review/ReviewEditModal'
 import EmptyReviewState from '@/components/review/EmptyReviewState'
 import DeleteConfirmModal from '@/components/review/DeleteReviewModal'
+import useUserStore from '@/stores/userStore'
 
 export default function ReviewPage() {
-  const user = JSON.parse(localStorage.getItem('user'))
-  const { reviews, isLoading, isError, updateReview, deleteReview } = useUserReviews(user.id)
+  const {user, isAuthenticated, hasCheckAuth } = useUserStore();
+  const { reviews, isLoading, isError, updateReview, deleteReview } = useUserReviews(user.id);
 
-  const [editingReview, setEditingReview] = useState(null)
-  const [updatedText, setUpdatedText] = useState('')
-  const [updatedRating, setUpdatedRating] = useState(0)
+  const [editingReview, setEditingReview] = useState(null);
+  const [updatedText, setUpdatedText] = useState('');
+  const [updatedRating, setUpdatedRating] = useState(0);
   const [deleteSelectedReview, setDeleteSelectedReiew] = useState(null);
 
   const handleEditClick = (review) => {
@@ -62,6 +63,16 @@ export default function ReviewPage() {
         title="Failed to load your reviews"
         retryText="Try Again"
       />
+    )
+  }
+
+  if (hasCheckAuth && !isAuthenticated) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen px-4">
+        <h2 className='text-xl font-semibold text-gray-800 dark:text-gray-100'>
+          You need to Log In!
+        </h2>
+      </div>
     )
   }
 
