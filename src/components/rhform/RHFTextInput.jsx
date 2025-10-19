@@ -21,6 +21,11 @@ export default function RHFTextInput({ name, control, rules, label, ...props }) 
             {...props}
             value={field.value || ''}
             color={fieldState.error ? 'failure' : 'gray'}
+            onChange={(e) => {
+              const { value } = e.target;
+              if (props.type === 'number' && Number(value) < 0) return;
+              field.onChange(e);
+            }}
           />
           {fieldState.error && <p className="text-sm text-red-500">{fieldState.error.message}</p>}
         </div>
@@ -34,4 +39,5 @@ RHFTextInput.propTypes = {
   control: PropTypes.any.isRequired,
   rules: PropTypes.object,
   label: PropTypes.string,
+  type: PropTypes.string,
 };

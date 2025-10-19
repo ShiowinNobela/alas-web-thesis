@@ -9,6 +9,7 @@ import RHFFileUpload from '@/components/rhform/RHFFileUpload';
 import { Button } from 'flowbite-react';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import RHFSelectInput from '@/components/rhform/RHFSelectInput';
 
 function UpdateProduct() {
   const { id: productId } = useParams();
@@ -48,11 +49,15 @@ function UpdateProduct() {
 
   const mutation = useMutation({
     mutationFn: (updatedProduct) => axios.put(`/api/products/${productId}`, updatedProduct).then((res) => res.data),
-    onSuccess: () => {
-      toast.success('Product updated successfully!');
+    onMutate: () => {
+      const toastId = toast.loading('Updating product...');
+      return { toastId };
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Something went wrong');
+    onSuccess: (_, __, context) => {
+      toast.success('Product updated successfully!', { id: context.toastId });
+    },
+    onError: (error, _, context) => {
+      toast.error(error.response?.data?.message || 'Something went wrong', { id: context.toastId });
     },
   });
 
@@ -104,12 +109,13 @@ function UpdateProduct() {
                   rules={{ required: 'Name is required' }}
                 />
 
-                <RHFTextInput
+                <RHFSelectInput
                   name="category"
                   control={control}
                   label="Category"
-                  placeholder="Category"
+                  placeholder="Select a category"
                   rules={{ required: 'Category is required' }}
+                  options={['condiment', 'pickles', 'powders']}
                 />
 
                 <RHFTextInput

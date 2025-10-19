@@ -6,7 +6,6 @@ import axios from 'axios';
 
 export default function RHFFileUpload({ name, control, rules, onUploadSuccess, uploadPath = '/api/upload/product' }) {
   const [uploading, setUploading] = useState(false);
-  const [uploadedUrl, setUploadedUrl] = useState(null);
 
   const mutation = useMutation({
     mutationFn: (file) => {
@@ -15,24 +14,15 @@ export default function RHFFileUpload({ name, control, rules, onUploadSuccess, u
 
       return axios
         .post(uploadPath, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+          headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then((res) => res.data);
     },
-    onSuccess: (data) => {
-      setUploadedUrl(data.data?.url);
-      if (onUploadSuccess) {
-        onUploadSuccess(data.data);
-      }
+    onSuccess: (data, variables, context) => {
+      if (onUploadSuccess) onUploadSuccess(data.data);
     },
-    onError: (err) => {
-      console.error('Upload error', err);
-    },
-    onSettled: () => {
-      setUploading(false);
-    },
+    onSettled: () => setUploading(false),
+    onError: (err) => console.error('Upload error', err),
   });
 
   return (
@@ -42,25 +32,25 @@ export default function RHFFileUpload({ name, control, rules, onUploadSuccess, u
       rules={rules}
       render={({ field, fieldState }) => (
         <div className="flex flex-col gap-2">
-          <Label htmlFor={name} className="text-lighter">
-            Upload Image
-          </Label>
+          <Label htmlFor={name}>Upload Image</Label>
           <FileInput
             id={name}
             onChange={(e) => {
               const file = e.target.files && e.target.files[0];
               if (file) {
                 setUploading(true);
-                mutation.mutate(file);
+                mutation.mutate(file, {
+                  onSuccess: (data) => field.onChange(data.data?.url),
+                });
               }
             }}
           />
           {uploading && <p className="text-sm text-gray-500">Uploading...</p>}
-          {uploadedUrl && (
+          {field.value && (
             <div className="text-sm text-green-600">
               Uploaded:{' '}
-              <a href={uploadedUrl} target="_blank" rel="noopener noreferrer">
-                {uploadedUrl}
+              <a href={field.value} target="_blank" rel="noopener noreferrer" className="line-clamp-1">
+                {field.value}
               </a>
             </div>
           )}

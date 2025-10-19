@@ -9,6 +9,7 @@ import { UserIcon, MailIcon, PhoneIcon, HashIcon, PiggyBankIcon, LocationEditIco
 import BackButton from '@/components/bigComponents/BackButton';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import UserOrderHistory from '@/components/bigComponents/UserOrderHistory';
+import PaymentMethodIcon from '@/components/bigComponents/PaymentMethodsIcon';
 
 function fetchOrder(id) {
   return axios.get(`/api/orders/${id}`, {}).then((res) => res.data.data);
@@ -105,8 +106,8 @@ export default function UserViewOrderDetails() {
                   {/* CONTENT COLUMN */}
                   <div className="flex h-full flex-1 flex-col items-center sm:items-baseline sm:justify-between">
                     <div className="space-y-1 pb-5 sm:pb-2">
-                      <h3 className="font-heading text-2xl font-bold">{item.product_name}</h3>
-                      <p className="text-lighter text-center text-sm capitalize">{item.category}</p>
+                      <h3 className="font-heading text-xl font-bold">{item.product_name}</h3>
+                      <p className="text-lighter text-sm capitalize">{item.category}</p>
                     </div>
                     <div className="md:divide-lighter text-content flex gap-8 text-sm sm:gap-4 md:flex-row md:divide-x">
                       <div className="pr-2">
@@ -123,10 +124,9 @@ export default function UserViewOrderDetails() {
                       </div>
                     </div>
                   </div>
-                  <div className="mr-5 flex flex-row items-center gap-5 sm:mr-2 sm:flex-col sm:gap-2">
-                    <Button className="w-1/2 sm:w-full">Order Again</Button>
+                  <div className="flex flex-row items-center sm:mr-2 sm:flex-col">
                     <Link to={`/user/review/${order?.id}?product_id=${item.product_id}`}>
-                      <Button variant="outline">Review Product</Button>
+                      <Button className="bg-amber-500 hover:bg-amber-500/75">Review Product</Button>
                     </Link>
                   </div>
                 </Card>
@@ -176,6 +176,7 @@ export default function UserViewOrderDetails() {
                   </CardFooter>
                 </Card>
               </div>
+
               <div className="w-full">
                 <UserOrderHistory order={order} />
               </div>
@@ -208,7 +209,7 @@ export default function UserViewOrderDetails() {
                 <CardContent className="flex flex-col gap-2 text-sm">
                   <div className="flex items-center gap-3">
                     <PiggyBankIcon size={16} className="text-muted-foreground" />
-                    <span>{order?.payment_method || 'N/A'}</span>
+                    <PaymentMethodIcon method={order?.payment_method || 'unknown'} />
                   </div>
                   <div className="flex items-center gap-3">
                     <UserIcon size={16} className="text-muted-foreground" />
