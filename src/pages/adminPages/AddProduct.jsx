@@ -7,9 +7,12 @@ import RHFTextInput from '@/components/rhform/RHFTextInput';
 import RHFTextarea from '@/components/rhform/RHFTextArea';
 import RHFFileUpload from '@/components/rhform/RHFFileUpload';
 import { Button } from 'flowbite-react';
+import RHFSelectInput from '@/components/rhform/RHFSelectInput';
+import { useState } from 'react';
 
 function AddProduct() {
   const { control, handleSubmit, reset, setValue, watch } = useForm();
+  const [resetKey, setResetKey] = useState(0);
 
   const mutation = useMutation({
     mutationFn: (newProduct) => axios.post('/api/products/', newProduct).then((res) => res.data),
@@ -24,6 +27,7 @@ function AddProduct() {
         image: '',
         description: '',
       });
+      setResetKey((prev) => prev + 1);
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || 'Something went wrong');
@@ -76,18 +80,20 @@ function AddProduct() {
               />
 
               <RHFFileUpload
+                key={resetKey}
                 name="image"
                 control={control}
                 rules={{ required: 'Image is required' }}
                 onUploadSuccess={(uploadData) => setValue('image', uploadData.url)}
               />
 
-              <RHFTextInput
+              <RHFSelectInput
                 name="category"
                 control={control}
                 label="Category"
-                placeholder="Category"
+                placeholder="Select a category"
                 rules={{ required: 'Category is required' }}
+                options={['condiment', 'pickles', 'powders']}
               />
 
               <div className="grid grid-cols-2 gap-4">
@@ -97,7 +103,14 @@ function AddProduct() {
                   label="Stock Quantity"
                   placeholder="Stock"
                   type="number"
-                  rules={{ required: 'Stock is required' }}
+                  rules={{
+                    required: 'Stock is required',
+                    min: {
+                      value: 0,
+                      message: 'Stock cannot be negative',
+                    },
+                  }}
+                  min={0}
                 />
                 <RHFTextInput
                   name="price"
@@ -105,7 +118,14 @@ function AddProduct() {
                   label="Price"
                   placeholder="Price"
                   type="number"
-                  rules={{ required: 'Price is required' }}
+                  rules={{
+                    required: 'Price is required',
+                    min: {
+                      value: 0,
+                      message: 'Stock cannot be negative',
+                    },
+                  }}
+                  min={0}
                 />
               </div>
 

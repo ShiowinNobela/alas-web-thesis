@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import axios from 'axios';
-import { AlertCircle, CheckCircle, Clock, Truck, Package, MessageSquare, User, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, Truck, Package, MessageSquare, XCircle } from 'lucide-react';
 import {
   Timeline,
   TimelineContent,
@@ -50,75 +50,13 @@ const statusTitles = {
   note: 'Admin Note',
 };
 
-const StatusInfoCard = ({ currentStatus }) => {
-  if (!currentStatus) {
-    return null;
-  }
-
-  const getStatusDetails = () => {
-    switch (currentStatus.status) {
-      case 'pending':
-        return {
-          description: 'We received your order and it will be processed soon.',
-          action: 'Expected processing time: 1-2 business days',
-        };
-      case 'processing':
-        return {
-          description: 'Your items are being prepared for shipment.',
-          action: 'Expected shipping time: 1-3 business days',
-        };
-      case 'shipping':
-        return {
-          description: 'Your package is on its way to you.',
-          action: 'Track your shipment with the provided tracking number',
-        };
-      case 'delivered':
-        return {
-          description: 'Your order has been successfully delivered.',
-          action: 'Please check your items and contact us if there are any issues',
-        };
-      case 'cancelled':
-        return {
-          description: 'This order has been cancelled.',
-          action: 'If this was unexpected, please contact customer support',
-        };
-      case 'cancel_requested':
-        return {
-          description: 'Your cancellation request has been received.',
-          action: 'We will process your request shortly',
-        };
-      default:
-        return {
-          description: 'Your order is being processed.',
-          action: 'Check back for updates',
-        };
-    }
-  };
-
-  const details = getStatusDetails();
-  const IconComponent = statusIcons[currentStatus.status] || Package;
-
-  return (
-    <div className="flex-shrink-0 max-sm:mt-4 max-sm:ml-0 max-sm:w-full">
-      <div className="flex items-center gap-2">
-        <div
-          className={cn(
-            'flex size-8 items-center justify-center rounded-full',
-            currentStatus.status === 'delivered'
-              ? 'bg-green-100 text-green-600'
-              : currentStatus.status === 'cancelled'
-                ? 'text-primary bg-red-100'
-                : 'bg-blue-100 text-blue-600'
-          )}
-        >
-          <IconComponent size={16} />
-        </div>
-        <span className="font-medium">{statusTitles[currentStatus.status] || 'Order Processing'}</span>
-      </div>
-      <p className="text-muted-foreground mt-3 text-sm">{details.description}</p>
-      <p className="text-muted-foreground mt-2 text-sm font-medium">{details.action}</p>
-    </div>
-  );
+const statusColors = {
+  pending: 'bg-orange-200 text-orange-900 border-orange-300',
+  processing: 'bg-yellow-200 text-yellow-700 border-yellow-300',
+  shipping: 'bg-green-200 text-green-800 border-green-300',
+  delivered: 'bg-blue-200 text-blue-800 border-blue-300',
+  cancel_requested: 'bg-pink-100 text-pink-700 border-pink-300',
+  cancelled: 'bg-red-300 text-red-800 border-red-300',
 };
 
 export default function UserOrderHistory({ order }) {
@@ -153,9 +91,13 @@ export default function UserOrderHistory({ order }) {
     );
   }
 
-  // Sort history with most recent first
-  const sortedHistory = [...orderHistory].sort((a, b) => new Date(b.status_date) - new Date(a.status_date));
-  const currentStatus = sortedHistory[0];
+  const normalFlow = ['pending', 'processing', 'shipping', 'delivered'];
+  const cancelFlow = ['pending', 'cancel_requested', 'cancelled'];
+
+  const isCancelledFlow = orderHistory.some((h) => ['cancel_requested', 'cancelled'].includes(h.status));
+  const fullFlow = isCancelledFlow ? cancelFlow : normalFlow;
+  const historyMap = Object.fromEntries(orderHistory.map((h) => [h.status, h]));
+  const currentStatus = orderHistory[orderHistory.length - 1] || null;
 
   return (
     <Card>
@@ -164,48 +106,53 @@ export default function UserOrderHistory({ order }) {
       </CardHeader>
 
       <CardContent className="px-10">
-        {sortedHistory.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
+        {fullFlow.length === 0 ? (
+          <div className="text-lighter p-8 text-center">
             <p className="text-sm">No activity yet</p>
           </div>
         ) : (
           <div className="flex flex-col sm:flex-row">
             <Timeline className="flex-1">
-              {sortedHistory.map((entry, index) => {
-                const Icon = statusIcons[entry.status] || (entry.admin_id ? User : MessageSquare);
-                const isCurrent = index === 0;
-                const isAdminNote = entry.admin_id;
+              {fullFlow.map((status, index) => {
+                const entry = historyMap[status];
+                const Icon = statusIcons[status] || MessageSquare;
+                const isCompleted = !!entry;
+                const isCurrent =
+                  currentStatus?.status === status || (!isCompleted && index > 0 && historyMap[fullFlow[index - 1]]);
 
                 return (
                   <TimelineItem
-                    key={`entry-${entry.history_id}`}
+                    key={status}
                     step={index + 1}
                     data-current={isCurrent || undefined}
-                    className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+                    className="group-data-[orientation=vertical]/timeline:ms-10"
                   >
                     <TimelineHeader>
-                      <TimelineSeparator />
-                      <TimelineDate className="group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-36 group-data-[orientation=vertical]/timeline:sm:text-right">
-                        {dayjs(entry.status_date).format('MMM D, YYYY h:mm A')}
+                      <TimelineSeparator className="group-data-[orientation=vertical]/timeline:-left-7 group-data-[orientation=vertical]/timeline:h-[calc(100%-1.5rem-0.25rem)] group-data-[orientation=vertical]/timeline:translate-y-6.5" />
+                      <TimelineDate>
+                        {entry ? dayjs(entry.status_date).format('MMMM D, YYYY h:mm A') : 'Has not reached yet'}
                       </TimelineDate>
                       <TimelineTitle
-                        className={cn('sm:-mt-0.5', isCurrent ? 'font-semibold' : 'text-muted-foreground')}
+                        className={cn(
+                          'font-heading text-base font-medium transition-colors',
+                          isCurrent ? 'text-primary font-semibold' : isCompleted ? 'text-content' : 'text-lighter'
+                        )}
                       >
-                        {isAdminNote ? 'Admin Note' : statusTitles[entry.status] || 'System Note'}
+                        {statusTitles[status] || status}
                       </TimelineTitle>
                       <TimelineIndicator
                         className={cn(
-                          'flex size-6 items-center justify-center border-none',
-                          isCurrent ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                          'flex size-8 items-center justify-center rounded-full border-2 transition-colors group-data-[orientation=vertical]/timeline:-left-7',
+                          isCompleted ? statusColors[status] : 'bg-muted text-muted-foreground border-muted'
                         )}
                       >
-                        <Icon size={14} />
+                        <Icon size={15} />
                       </TimelineIndicator>
                     </TimelineHeader>
                     <TimelineContent>
-                      <p className={cn('text-sm', !isCurrent && 'text-muted-foreground')}>
-                        {entry.notes || statusMessages[entry.status]}
-                        {isAdminNote && (
+                      <p className={cn('text-sm', !isCompleted && 'text-lighter')}>
+                        {entry?.notes || statusMessages[status] || 'Awaiting update...'}
+                        {entry?.admin_id && (
                           <span className="text-muted-foreground mt-1 block">by {entry.admin_name || 'Admin'}</span>
                         )}
                       </p>
@@ -214,19 +161,12 @@ export default function UserOrderHistory({ order }) {
                 );
               })}
             </Timeline>
-            <StatusInfoCard currentStatus={currentStatus} />
           </div>
         )}
       </CardContent>
     </Card>
   );
 }
-
-StatusInfoCard.propTypes = {
-  currentStatus: PropTypes.shape({
-    status: PropTypes.string.isRequired,
-  }),
-};
 
 UserOrderHistory.propTypes = {
   order: PropTypes.object.isRequired,

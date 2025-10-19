@@ -14,7 +14,7 @@ import {
   Badge,
   Button,
 } from 'flowbite-react';
-import { CheckCircle, MoreVertical, Clock, Truck, Check, X } from 'lucide-react';
+import { CheckCircle, MoreVertical, Clock, Truck, Check, X, StepBack } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
@@ -38,6 +38,7 @@ export default function AdminOrdersTable({
     processing: <Clock className="mr-1 h-4 w-4" />,
     shipping: <Truck className="mr-1 h-4 w-4" />,
     delivered: <Check className="mr-1 h-4 w-4" />,
+    returned: <StepBack className="mr-1 h-4 w-4" />,
     cancelled: <X className="mr-1 h-4 w-4" />,
   };
 

@@ -14,14 +14,7 @@ const useTimeline = () => {
   return context;
 };
 
-function Timeline({
-  defaultValue = 1,
-  value,
-  onValueChange,
-  orientation = 'vertical',
-  className,
-  ...props
-}) {
+function Timeline({ defaultValue = 1, value, onValueChange, orientation = 'vertical', className, ...props }) {
   const [activeStep, setInternalStep] = React.useState(defaultValue);
 
   const setActiveStep = React.useCallback(
@@ -37,9 +30,7 @@ function Timeline({
   const currentStep = value ?? activeStep;
 
   return (
-    <TimelineContext.Provider
-      value={{ activeStep: currentStep, setActiveStep }}
-    >
+    <TimelineContext.Provider value={{ activeStep: currentStep, setActiveStep }}>
       <div
         data-slot="timeline"
         className={cn(
@@ -55,13 +46,7 @@ function Timeline({
 
 // TimelineContent
 function TimelineContent({ className, ...props }) {
-  return (
-    <div
-      data-slot="timeline-content"
-      className={cn('text-muted-foreground text-sm', className)}
-      {...props}
-    />
-  );
+  return <div data-slot="timeline-content" className={cn('text-muted-foreground text-sm', className)} {...props} />;
 }
 
 function TimelineDate({ asChild = false, className, ...props }) {
@@ -81,9 +66,7 @@ function TimelineDate({ asChild = false, className, ...props }) {
 
 // TimelineHeader
 function TimelineHeader({ className, ...props }) {
-  return (
-    <div data-slot="timeline-header" className={cn(className)} {...props} />
-  );
+  return <div data-slot="timeline-header" className={cn(className)} {...props} />;
 }
 
 function TimelineIndicator({ asChild = false, className, children, ...props }) {
@@ -91,7 +74,7 @@ function TimelineIndicator({ asChild = false, className, children, ...props }) {
     <div
       data-slot="timeline-indicator"
       className={cn(
-        'border-primary/20 group-data-completed/timeline-item:border-primary absolute size-4 rounded-full border-2 group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:left-0 group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:top-0 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:-translate-x-1/2',
+        'absolute size-4 rounded-full group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:left-0 group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:top-0 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:-translate-x-1/2',
         className
       )}
       aria-hidden="true"
@@ -135,13 +118,7 @@ function TimelineSeparator({ className, ...props }) {
 
 // TimelineTitle
 function TimelineTitle({ className, ...props }) {
-  return (
-    <h3
-      data-slot="timeline-title"
-      className={cn('text-sm font-medium', className)}
-      {...props}
-    />
-  );
+  return <h3 data-slot="timeline-title" className={cn('text-sm font-medium', className)} {...props} />;
 }
 
 export {
