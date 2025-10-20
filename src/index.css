@@ -47,6 +47,7 @@ html {
   --font-other: ChangaOne, Georgia, 'Times New Roman', Times, serif;
 
   --color-brand: #a50104;
+  --color-error: #ba2d0b;
   --color-brand-dark: #fe7376;
   --color-red: #ef4444;
   --color-info: #2364aa;
@@ -63,10 +64,11 @@ html {
 /* Theme Variables */
 :root {
   --lighter: #888888;
-  --primary: #d63230;
+  --primary: #d64045;
   --content: #251605;
   --neutral: #f4f4f8;
   --admin: #fcfffc;
+  --money: #06ba63;
 
   --card: oklch(1 0 0);
 
@@ -118,6 +120,7 @@ html {
   --content: oklch(0.88 0.03 70);
   --neutral: oklch(0.25 0.01 270);
   --admin: oklch(0.2 0.02 240);
+  --money: #2ceaa3;
 
   --card: oklch(0.32 0.015 270);
   --background: oklch(0.25 0.02 270);
@@ -151,6 +154,7 @@ html {
   --color-content: var(--content);
   --color-neutral: var(--neutral);
   --color-admin: var(--admin);
+  --color-money: var(--money);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -23,7 +23,7 @@ export default function RHFSelectInput({ name, control, label, rules, options, p
               </option>
             ))}
           </Select>
-          {error && <p className="text-sm text-red-500">{error.message}</p>}
+          {error && <p className="text-error text-sm">{error.message}</p>}
         </div>
       )}
     />

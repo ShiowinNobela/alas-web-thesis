@@ -21,7 +21,6 @@ function AdminViewOrderPage() {
   const startDate = searchParams.get('startDate') || null;
   const endDate = searchParams.get('endDate') || null;
 
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [historyData, setHistoryData] = useState(null);
   const [searchId, setSearchId] = useState('');
@@ -66,25 +65,6 @@ function AdminViewOrderPage() {
     }
   };
 
-  const sortedOrders = [...orders].sort((a, b) => {
-    if (sortConfig.key === 'date') {
-      const dateA = new Date(a.order_date);
-      const dateB = new Date(b.order_date);
-      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
-    } else if (sortConfig.key === 'total') {
-      return sortConfig.direction === 'asc' ? a.total_amount - b.total_amount : b.total_amount - a.total_amount;
-    }
-    return 0;
-  });
-
-  const handleSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortConfig({ key, direction });
-  };
-
   const handleRefresh = useCallback(() => {
     setSearchId('');
     queryClient.invalidateQueries(['orders']);
@@ -120,13 +100,13 @@ function AdminViewOrderPage() {
           onSearch={handleSearchById}
           searchId={searchId}
           setSearchId={setSearchId}
-          orders={sortedOrders}
+          orders={orders}
           isLoading={isOrdersLoading}
         />
 
         {isOrdersLoading ? (
           <TableSkeleton rows={3} />
-        ) : sortedOrders.length === 0 ? (
+        ) : orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-6 text-gray-600">
             <p>No orders found.</p>
             <button
@@ -138,9 +118,7 @@ function AdminViewOrderPage() {
           </div>
         ) : (
           <AdminOrdersTable
-            orders={sortedOrders}
-            sortConfig={sortConfig}
-            handleSort={handleSort}
+            orders={orders}
             getStatusColor={getStatusStyle}
             onStatusUpdateClick={handleStatusUpdateClick}
             onViewHistory={fetchOrderHistory}

@@ -14,7 +14,7 @@ import {
   Badge,
   Button,
 } from 'flowbite-react';
-import { CheckCircle, MoreVertical, Clock, Truck, Check, X, StepBack } from 'lucide-react';
+import { MoreVertical, Clock, Truck, Check, X, StepBack, BadgeX, BadgeCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
@@ -23,8 +23,6 @@ import PaymentMethodIcon from '../bigComponents/PaymentMethodsIcon';
 
 export default function AdminOrdersTable({
   orders,
-  sortConfig,
-  handleSort,
   onStatusUpdateClick,
   onViewHistory,
   isLoading = false,
@@ -39,6 +37,7 @@ export default function AdminOrdersTable({
     shipping: <Truck className="mr-1 h-4 w-4" />,
     delivered: <Check className="mr-1 h-4 w-4" />,
     returned: <StepBack className="mr-1 h-4 w-4" />,
+    refunded: <StepBack className="mr-1 h-4 w-4" />,
     cancelled: <X className="mr-1 h-4 w-4" />,
   };
 
@@ -57,42 +56,8 @@ export default function AdminOrdersTable({
         <TableHead>
           <TableHeadCell className="table-header">Order Information</TableHeadCell>
           <TableHeadCell className="table-header">Items</TableHeadCell>
-          <TableHeadCell className="table-header">
-            <button className="flex cursor-pointer items-center hover:underline" onClick={() => handleSort('date')}>
-              DATE
-              <svg
-                className="ms-1.5 h-3 w-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                {sortConfig.key === 'date' && sortConfig.direction === 'asc' ? (
-                  <path d="M7 14l5-5 5 5H7z" />
-                ) : (
-                  <path d="M7 10l5 5 5-5H7z" />
-                )}
-              </svg>
-            </button>
-          </TableHeadCell>
-          <TableHeadCell className="table-header">
-            <button className="flex cursor-pointer items-center hover:underline" onClick={() => handleSort('total')}>
-              TOTAL
-              <svg
-                className="ms-1.5 h-3 w-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                {sortConfig.key === 'total' && sortConfig.direction === 'asc' ? (
-                  <path d="M7 14l5-5 5 5H7z" />
-                ) : (
-                  <path d="M7 10l5 5 5-5H7z" />
-                )}
-              </svg>
-            </button>
-          </TableHeadCell>
+          <TableHeadCell className="table-header">DATE</TableHeadCell>
+          <TableHeadCell className="table-header">TOTAL</TableHeadCell>
           <TableHeadCell className="table-header">
             <div className="leading-tight">Payment Method</div>
           </TableHeadCell>
@@ -126,7 +91,7 @@ export default function AdminOrdersTable({
                     <div className="flex items-center">
                       <div>
                         <p className="font-primary text-sm">{order.username}</p>
-                        <Badge color="indigo" className="mt-1 w-fit">
+                        <Badge color="yellow" className="mt-1 w-fit">
                           #{order.id}
                         </Badge>
                       </div>
@@ -164,17 +129,9 @@ export default function AdminOrdersTable({
                   </TableCell>
 
                   <TableCell>
-                    <div className="flex w-fit flex-col items-start space-y-1">
-                      <div className={`${getStatusStyle(order.status)} flex items-center text-xs`}>
-                        {statusIcons[order.status] && <span className="mr-1">{statusIcons[order.status]}</span>}
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                      </div>
-
-                      {order.cancel_requested === 1 && order.status !== 'cancelled' && (
-                        <div className="w-fit rounded-sm bg-red-200 px-2 py-0.5 text-xs font-semibold text-red-800">
-                          Cancel Requested
-                        </div>
-                      )}
+                    <div className={`${getStatusStyle(order.status)} flex items-center justify-center text-xs`}>
+                      {statusIcons[order.status] && <span className="mr-1">{statusIcons[order.status]}</span>}
+                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                     </div>
                   </TableCell>
 
@@ -199,7 +156,7 @@ export default function AdminOrdersTable({
                         </Button>
                       </Tooltip>
                     ) : order.status === 'cancelled' ? (
-                      <span className="text-sm text-gray-500 italic">Order Cancelled</span>
+                      <BadgeX className="text-error" />
                     ) : order.status === 'processing' ? (
                       <Button
                         onClick={() => onStatusUpdateClick(order.id, 'shipping', 'Ship Order', 'Ship Order')}
@@ -215,10 +172,7 @@ export default function AdminOrdersTable({
                         Mark Delivered
                       </Button>
                     ) : order.status === 'delivered' ? (
-                      <div className="flex items-center text-sm text-emerald-500">
-                        <CheckCircle className="mr-1 h-5 w-5" />
-                        Delivered
-                      </div>
+                      <BadgeCheck className="text-money" />
                     ) : null}
                   </TableCell>
 

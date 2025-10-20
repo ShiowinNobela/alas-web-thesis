@@ -70,7 +70,7 @@ export default function PasswordInput({ label, value, onChange, placeholder, err
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`pe-9 ${error ? 'border-brand focus-visible:ring-brand' : ''}`}
+          className={`pe-9 ${error && 'border-error focus-visible:ring-error'}`}
           aria-describedby={showRequirements ? `${id}-description` : undefined}
         />
         <button

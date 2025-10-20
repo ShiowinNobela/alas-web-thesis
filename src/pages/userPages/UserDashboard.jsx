@@ -9,7 +9,6 @@ import {
   Info,
   Phone,
   ArrowRight,
-  ShoppingBag,
   Flame,
   TrendingUp,
   Clock,
@@ -74,12 +73,6 @@ function UserDashboard() {
       desc: 'Manage your account and settings',
       icon: <User className="text-primary h-6 w-6" />,
       link: '/user/profile',
-    },
-    {
-      title: 'Wishlist',
-      desc: 'See your saved favorites',
-      icon: <ShoppingBag className="text-primary h-6 w-6" />,
-      link: '/Wishlist',
     },
   ];
 
@@ -188,7 +181,7 @@ function UserDashboard() {
         {/* Quick Actions - Compact Version */}
         <section className="space-y-4">
           <h2 className="text-content text-xl md:text-base">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
             {quickActions.map((item) => (
               <Link key={item.title} to={item.link}>
                 <Card className="transition-all hover:-translate-y-1 hover:shadow-md">

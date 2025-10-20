@@ -22,7 +22,7 @@ export default function RHFTextarea({ name, control, rules, label, ...props }) {
             value={field.value || ''} // Explicitly set the value
             color={fieldState.error ? 'failure' : 'gray'}
           />
-          {fieldState.error && <p className="text-sm text-red-500">{fieldState.error.message}</p>}
+          {fieldState.error && <p className="text-error text-sm">{fieldState.error.message}</p>}
         </div>
       )}
     />

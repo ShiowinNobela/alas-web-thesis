@@ -111,7 +111,7 @@ function LoginPage() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" className="h-4 w-4 rounded border-gray-300" disabled={loading} />
+                <input type="checkbox" className="border-lighter h-4 w-4 rounded" disabled={loading} />
                 Remember me
               </label>
               <button
@@ -129,12 +129,12 @@ function LoginPage() {
               {loading ? 'Signing in...' : 'Sign In'}
             </Button>
 
-            <PromptLink promptText="Don’t have an account yet?" linkText="Create an account" to="/RegPage" />
+            <PromptLink promptText="Don’t have an account yet?" linkText="Create an account" to="/register" />
 
             <p className="text-lighter text-center text-xs">
-              By clicking continue, you agree to our{' '}
-              <a href="/terms-of-service" className="hover:text-primary underline">
-                Terms of Service
+              By signing in, you agree to our{' '}
+              <a href="/terms-and-conditions" className="hover:text-primary underline">
+                Terms and Conditions
               </a>{' '}
               and{' '}
               <a href="/privacy-policy" className="hover:text-primary underline">

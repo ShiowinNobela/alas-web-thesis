@@ -44,7 +44,7 @@ function AdminNavbar() {
     <nav className="bg-card border-content flex items-center justify-between border-b p-4">
       {/* Page title */}
       <div className="flex items-center gap-4">
-        <h1 className="font-heading text-xl font-semibold">{currentPageName}</h1>
+        <h1 className="text-xl font-bold">{currentPageName}</h1>
       </div>
 
       {/* Actions */}

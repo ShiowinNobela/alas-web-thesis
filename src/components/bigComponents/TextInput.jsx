@@ -31,7 +31,7 @@ export default function TextInput({
           placeholder={placeholder}
           aria-invalid={error ? 'true' : undefined}
           readOnly={readOnly}
-          className={`${error ? 'border-brand focus-visible:ring-brand' : ''}`}
+          className={`${error && 'border-error focus-visible:ring-error'}`}
         />
       </div>
 

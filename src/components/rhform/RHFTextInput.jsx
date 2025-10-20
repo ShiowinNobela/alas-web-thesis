@@ -27,7 +27,7 @@ export default function RHFTextInput({ name, control, rules, label, ...props }) 
               field.onChange(e);
             }}
           />
-          {fieldState.error && <p className="text-sm text-red-500">{fieldState.error.message}</p>}
+          {fieldState.error && <p className="text-error text-sm">{fieldState.error.message}</p>}
         </div>
       )}
     />

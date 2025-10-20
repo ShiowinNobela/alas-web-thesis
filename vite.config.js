@@ -9,40 +9,46 @@ import viteCompression from 'vite-plugin-compression';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    viteCompression({ algorithm: 'brotliCompress', threshold: 1024 }),
-    viteCompression({ algorithm: 'gzip' }),
-    tailwindcss(),
-    flowbiteReact(),
-  ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000/',
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-      },
-      '/socket.io/': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-        secure: false,
-        ws: true,
-      },
-    },
-    historyApiFallback: true,
-  },
-  build: {
-    assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
-    outDir: 'dist',
-  },
+export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production';
 
-  base: '/',
+  const plugins = [react(), tailwindcss(), flowbiteReact()];
+
+  if (isProduction) {
+    plugins.push(
+      viteCompression({ algorithm: 'brotliCompress', threshold: 1024 }),
+      viteCompression({ algorithm: 'gzip' })
+    );
+  }
+
+  return {
+    plugins,
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
+    },
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000/',
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+        },
+        '/socket.io/': {
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+        },
+      },
+      historyApiFallback: true,
+    },
+    build: {
+      assetsInclude: ['**/*.ttf', '**/*.woff', '**/*.woff2'],
+      outDir: 'dist',
+    },
+    base: '/',
+  };
 });
