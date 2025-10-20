@@ -106,7 +106,7 @@ function RegistrationPage() {
               <h1 className="font-lg font-heading text-center text-3xl leading-tight font-bold tracking-tight">
                 CREATE ACCOUNT
               </h1>
-              <p className="text-center text-sm text-gray-500">Spice up your life with flavorful, savory spices.</p>
+              <p className="text-lighter text-center text-sm">Spice up your life with flavorful, savory spices.</p>
             </div>
 
             <form className="space-y-4" onSubmit={handleCreateUser}>
@@ -173,19 +173,17 @@ function RegistrationPage() {
                 Register
               </Button>
 
-              <p className="text-center text-xs text-gray-500">
-                A verification email will be sent to confirm your account.
-              </p>
+              <p className="text-center text-xs">A verification email will be sent to confirm your account.</p>
 
               <PromptLink promptText="Already have an account?" linkText="SIGN IN" to="/login" />
 
-              <p className="text-center text-xs text-gray-400">
+              <p className="text-lighter text-center text-xs">
                 By clicking Register, you agree to our{' '}
-                <a href="/terms-of-service" className="underline hover:text-[#d47849]">
-                  Terms of Service
+                <a href="/terms-and-conditions" className="hover:text-primary underline">
+                  Terms and Conditions
                 </a>{' '}
                 and{' '}
-                <a href="/privacy-policy" className="underline hover:text-[#d47849]">
+                <a href="/privacy-policy" className="hover:text-primary underline">
                   Privacy Policy
                 </a>
                 .

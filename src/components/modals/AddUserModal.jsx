@@ -39,12 +39,15 @@ function AddUserModal({ show, onClose }) {
   };
 
   return (
-    <Modal show={show} size="md" onClose={handleClose} dismissible popup>
-      <ModalHeader className="bg-card rounded-t-2xl" />
-      <ModalBody className="bg-card rounded-b-2xl">
+    <Modal show={show} size="md" onClose={handleClose}>
+      <ModalHeader>
+        <div>
+          <h3 className="text-xl font-bold">Create a new user account</h3>
+          <p className="text-lighter text-sm">Create dynamic accounts</p>
+        </div>
+      </ModalHeader>
+      <ModalBody className="rounded-b-2xl">
         <form onSubmit={handleAddUser} className="space-y-7">
-          <h3 className="text-content text-center text-xl font-semibold">Create New Account</h3>
-
           <div>
             <Label htmlFor="email" value="Email" />
             <TextInput

@@ -66,7 +66,12 @@ function StaffModal({ show, onClose, staff }) {
 
   return (
     <Modal show={show} onClose={onClose}>
-      <ModalHeader>Staff Information</ModalHeader>
+      <ModalHeader>
+        <div>
+          <h3 className="text-xl font-bold">Manage staff accounts</h3>
+          <p className="text-lighter text-sm">View and control permissions of staff</p>
+        </div>
+      </ModalHeader>
       <ModalBody>
         <div className="flex flex-col gap-4">
           <div>
@@ -88,9 +93,9 @@ function StaffModal({ show, onClose, staff }) {
             <Label value="Permissions" />
 
             {loadingAll || loadingStaff ? (
-              <p className="text-sm text-gray-500">Loading permissions...</p>
+              <p className="text-lighter text-sm">Loading permissions...</p>
             ) : errorAll || errorStaff ? (
-              <p className="text-sm text-red-500">Failed to load permissions.</p>
+              <p className="text-error text-sm">Failed to load permissions.</p>
             ) : (
               <div className="mt-2 grid grid-cols-2 gap-2">
                 {allPermissions.map((perm) => (
@@ -111,10 +116,10 @@ function StaffModal({ show, onClose, staff }) {
         </div>
 
         <div className="mt-5 flex justify-end gap-2">
-          <Button color="gray" onClick={onClose}>
+          <Button color="light" onClick={onClose}>
             Close
           </Button>
-          <Button onClick={handleSave} isProcessing={mutation.isLoading}>
+          <Button onClick={handleSave} isProcessing={mutation.isLoading} color="red" className="bg-primary">
             Save Changes
           </Button>
         </div>

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import { fetchOrderById } from '@/api/orders';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Spinner, Textarea } from 'flowbite-react';
+import { Button, Card, Modal, ModalBody, ModalFooter, ModalHeader, Spinner, Textarea } from 'flowbite-react';
+import PaymentMethodIcon from '../bigComponents/PaymentMethodsIcon';
 
 const StatusUpdateModal = ({
   show,
@@ -20,37 +21,80 @@ const StatusUpdateModal = ({
   });
 
   return (
-    <Modal show={show} size="md" onClose={onCancel}>
-      <ModalHeader>{title}</ModalHeader>
+    <Modal show={show} size="xl" onClose={onCancel}>
+      <ModalHeader>
+        <div>
+          <h3 className="text-xl font-bold">{title}</h3>
+
+          <p className="text-lighter text-base">
+            Order # <span className="text-primary text-sm tracking-tight">{order?.id}</span>
+          </p>
+        </div>
+      </ModalHeader>
       <ModalBody>
         {/* Order details */}
         {isLoading ? (
           <div className="flex items-center justify-center py-4">
             <Spinner aria-label="Loading order details" />
-            <span className="ml-2 text-gray-500">Loading order details...</span>
+            <span className="text-lighter ml-2">Loading order details...</span>
           </div>
         ) : order ? (
-          <div className="p-3 mb-4 text-sm border border-gray-200 rounded bg-gray-50 dark:bg-[#30333b]">
-            <p>
-              <strong>Order ID:</strong> {order.id}
+          <Card className="mb-4 text-sm ring-1">
+            <div className="text-lighter mb-2 space-y-1">
+              <p>
+                Customer: <span className="text-content">{order.username}</span>
+              </p>
+              <p>
+                Contact: <span className="text-content">{order.contact_number}</span>
+              </p>
+              <p>
+                Payment: <PaymentMethodIcon method={order?.payment_method || 'unknown'} />
+              </p>
+              <p>
+                Reference Number: <span className="text-primary tracking-tighter">{order.reference_number}</span>
+              </p>
+
+              <p>
+                Address: <span className="text-content">{order.address}</span>
+              </p>
+              {order.notes && (
+                <p>
+                  Notes: <span className="text-content">{order.notes}</span>
+                </p>
+              )}
+            </div>
+
+            <p className="text-base font-bold">
+              Total: <span className="text-emerald-500">₱ {order.total_amount}</span>
             </p>
-            <p>
-              <strong>Customer:</strong> {order.username}
-            </p>
-            <p>
-              <strong>Status:</strong> {order.status}
-            </p>
-            <p>
-              <strong>Total:</strong> ₱ {order.total_amount}
-            </p>
-          </div>
+            {order.discount_amount !== '0.00' && <p>Discount: ₱ {order.discount_amount}</p>}
+
+            <div>
+              <p className="mb-1 font-medium">Items:</p>
+              {order.items.map((item) => (
+                <Card key={item.item_id} className="mb-1 ring-1">
+                  <div className="flex">
+                    <img src={item.product_image} alt={item.product_name} className="h-10 w-10 rounded object-cover" />
+                    <div>
+                      <p>
+                        <span className="text-primary font-heading">{item.product_name} </span>x {item.quantity}
+                      </p>
+                      <p className="text-lighter text-xs">
+                        ₱ {item.unit_price} each | Subtotal: ₱ <span className="text-emerald-500">{item.subtotal}</span>
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </Card>
         ) : (
-          <div className="mb-4 text-red-500">Order not found</div>
+          <div className="text-brand mb-4">Order not found</div>
         )}
 
         {/* Admin notes */}
         <div className="mb-4">
-          <label htmlFor="admin-notes-textarea" className="block mb-2 text-sm font-medium text-gray-700">
+          <label htmlFor="admin-notes-textarea" className="mb-2 block text-sm font-medium text-gray-700">
             Admin Notes:
           </label>
           <Textarea

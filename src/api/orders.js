@@ -18,6 +18,43 @@ export const fetchOrderById = async (orderId) => {
   return response.data?.data || response.data;
 };
 
+/* {
+	"statusCode": 200,
+	"status": "success",
+	"message": "Order retrieved successfully",
+	"data": {
+		"id": "ALAS101625897077",
+		"customer_id": 32,
+		"order_date": "2025-10-16T12:50:26.000Z",
+		"status": "pending",
+		"total_amount": "800.00",
+		"discount_amount": "0.00",
+		"notes": "Hello mah man",
+		"address": "69 Kalamares, Almaroeses",
+		"cancel_requested": 0,
+		"coupon_code": null,
+		"subtotal": "800.00",
+		"payment_method": "bank_transfer",
+		"reference_number": "DFHUSJ934",
+		"account_name": "09234823312",
+		"username": "RodianEbias1",
+		"email": "RodianEbias1@gmail.com",
+		"contact_number": "0973486343",
+		"items": [
+			{
+				"item_id": 180,
+				"order_id": "ALAS101625897077",
+				"product_id": "P003",
+				"quantity": 2,
+				"unit_price": "400.00",
+				"subtotal": "800.00",
+				"product_name": "Call Me Debra",
+				"product_image": "https://res.cloudinary.com/drq2wzvmo/image/upload/v1749302419/alas_uploads/ffgfhv57rvygxjkriw9e.jpg"
+			}
+		]
+	}
+} */
+
 export const fetchOrderHistory = async (orderId) => {
   const response = await axios.get(`/api/adminOrder/status-history/${orderId}`, {});
   return response.data;
