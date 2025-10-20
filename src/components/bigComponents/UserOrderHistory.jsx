@@ -85,7 +85,7 @@ export default function UserOrderHistory({ order }) {
     return (
       <Card>
         <CardContent>
-          <p className="text-sm text-red-500">Failed to load history</p>
+          <p className="text-error text-sm">Failed to load history</p>
         </CardContent>
       </Card>
     );

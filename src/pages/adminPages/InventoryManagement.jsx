@@ -40,7 +40,7 @@ function InventoryManagement() {
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
           <SummaryCard
             iconKey="lowStock"
-            iconColor="text-red-500"
+            iconColor="text-error"
             title="Low Stock Items"
             value={lowStockItems}
             className="bg-red-100 dark:bg-red-900/50"

@@ -15,7 +15,7 @@ import TableSkeleton from '@/components/skeletons/TableSkeleton';
 
 function AdminUsersTable({ users, isLoading, isError, onToggleStatus, onStaffClick }) {
   if (isLoading) return <TableSkeleton columns={6} rows={3} />;
-  if (isError) return <div className="p-6 text-center text-red-600">Failed to load users.</div>;
+  if (isError) return <div className="text-error p-6 text-center">Failed to load users.</div>;
 
   return (
     <div className="overflow-x-auto">

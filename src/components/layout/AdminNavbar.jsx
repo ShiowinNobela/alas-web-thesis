@@ -79,7 +79,7 @@ function AdminNavbar() {
           <DropdownItem>Account Settings</DropdownItem>
           <DropdownItem>Personal Notifications</DropdownItem>
           <DropdownDivider />
-          <DropdownItem icon={LogOut} onClick={handleLogout} className="text-red-600">
+          <DropdownItem icon={LogOut} onClick={handleLogout} className="text-error">
             Log out
           </DropdownItem>
         </Dropdown>
