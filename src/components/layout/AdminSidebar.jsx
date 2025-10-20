@@ -117,7 +117,7 @@ function Sidebar() {
   const getNavItemClass = (path) => {
     const isActive = location.pathname === path;
     return `flex items-center p-2 rounded-2xl text-sm ${
-      isActive ? 'text-red-400 hover:bg-gray-700' : 'text-white hover:bg-gray-700'
+      isActive ? 'text-primary hover:bg-gray-700' : 'text-white hover:bg-gray-700'
     } group cursor-pointer`;
   };
 

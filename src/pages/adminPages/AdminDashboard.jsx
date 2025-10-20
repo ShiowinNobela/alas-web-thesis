@@ -173,8 +173,8 @@ function AdminDashboard() {
         <div className="mb-4 flex items-center space-x-2">
           {items?.lowStock?.length > 0 ? (
             <>
-              <AlertTriangle className="h-5 w-5 text-red-500" />
-              <h3 className="text-lg font-semibold text-red-700">Low Stock Alerts</h3>
+              <AlertTriangle className="text-error h-5 w-5" />
+              <h3 className="text-error text-lg font-semibold">Low Stock Alerts</h3>
             </>
           ) : (
             <>
@@ -202,8 +202,8 @@ function AdminDashboard() {
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">{item.name}</p>
                       <div className="mt-1 flex items-center space-x-2">
-                        <AlertCircle className={`h-4 w-4 ${isCritical ? 'text-red-500' : 'text-orange-500'}`} />
-                        <span className={`text-sm font-bold ${isCritical ? 'text-red-600' : 'text-orange-600'}`}>
+                        <AlertCircle className={`h-4 w-4 ${isCritical ? 'text-error' : 'text-orange-500'}`} />
+                        <span className={`text-sm font-bold ${isCritical ? 'text-error' : 'text-orange-600'}`}>
                           {isCritical ? 'CRITICAL' : 'LOW'} - Only {item.stock} left!
                         </span>
                       </div>
@@ -211,7 +211,7 @@ function AdminDashboard() {
 
                     <Link
                       to="/admin/inventory"
-                      className="ml-2 flex-shrink-0 cursor-pointer p-1 text-gray-500 transition-colors hover:text-red-600"
+                      className="hover:text-error ml-2 flex-shrink-0 cursor-pointer p-1 text-gray-500 transition-colors"
                       title="Restock item"
                     >
                       <ArrowRight className="h-6 w-6" />

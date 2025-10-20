@@ -21,7 +21,7 @@ export default function OrderHistoryModal({ data, error, onClose }) {
       </ModalHeader>
 
       <ModalBody>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-error">{error}</p>}
 
         {data && data.length > 0 ? (
           <Timeline>
