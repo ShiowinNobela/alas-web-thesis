@@ -10,6 +10,8 @@ import App from './App.jsx';
 import './lib/axios-config.js';
 import CartProvider from './provider/CartProvider';
 import ErrorBoundary from './components/errorUI/ErrorBoundary';
+import 'leaflet/dist/leaflet.css';
+import '@/utils/fixLeafletIcons';
 
 const queryClient = new QueryClient();
 

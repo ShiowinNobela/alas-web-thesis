@@ -16,6 +16,8 @@ import CartSummaryCard from '@/components/cards/CartSummaryCard';
 import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import LocationPickerModal from '@/components/modals/LocationPickerModal';
+import { MapPin } from 'lucide-react';
 
 function CheckOutPage() {
   const navigate = useNavigate();
@@ -32,6 +34,9 @@ function CheckOutPage() {
     username: user?.username || '',
     email: user?.email || '',
   });
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [landmarkAddress, setLandmarkAddress] = useState('');
+  const combinedAddress = `${getInfo.address}${landmarkAddress ?  '  - (Landmark: ' + landmarkAddress + ')' : '' }`;
 
   // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,7 +76,10 @@ function CheckOutPage() {
       await checkoutSchema.validate(getInfo, { abortEarly: false });
       setFormErrors({});
       setIsModalOpen(true); // Show modal while loading
-      placeOrderMutation.mutate(getInfo);
+      placeOrderMutation.mutate({
+        ...getInfo,
+        address: combinedAddress,
+      });
     } catch (err) {
       if (err.name === 'ValidationError') {
         const errors = {};
@@ -84,17 +92,26 @@ function CheckOutPage() {
     }
   };
 
+  const handleSaveLandmark = (address) => {
+    setLandmarkAddress(address);
+    toast.success('Location pinned successfully!');
+  };
+
+  const handleLandmarkErr = (res) => {
+    toast.error(res);
+  }
+
   return (
     <ErrorBoundary>
-      <section className="bg-neutral min-h-screen py-8">
-        <main className="relative mx-auto max-w-2xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="min-h-screen py-8 bg-neutral">
+        <main className="relative max-w-2xl px-4 pb-24 mx-auto sm:px-6 lg:px-8">
           <div className="absolute top-0 left-0 mt-4">
             <BackButton />
           </div>
 
-          <div className="mx-auto flex flex-col items-center justify-center pb-8">
-            <h1 className="text-content font-heading text-5xl">Checkout</h1>
-            <p className="text-lighter mt-2">Complete your order by filling the form below</p>
+          <div className="flex flex-col items-center justify-center pb-8 mx-auto">
+            <h1 className="text-5xl text-content font-heading">Checkout</h1>
+            <p className="mt-2 text-lighter">Complete your order by filling the form below</p>
           </div>
 
           {/* PERSONAL INFORMATION */}
@@ -115,19 +132,40 @@ function CheckOutPage() {
                 error={formErrors.contact_number}
                 placeholder="Your Phone Number"
               />
-              <div className="mt-4">
-                <label htmlFor="checkout-address" className="text-lighter mb-1 block text-sm font-medium">
-                  Delivery Address *
-                </label>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="checkout-address" className="block mb-1 text-sm font-medium text-lighter">
+                    Delivery Address *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setIsLocationModalOpen(true)}
+                    className="flex items-center gap-1 text-sm text-primary hover:underline"
+                  >
+                    <MapPin size={16} />
+                    Pin Location
+                  </button>
+                </div>
                 <Textarea
                   id="checkout-address"
                   placeholder="Your complete address"
                   value={getInfo.address || ''}
                   onChange={(e) => setGetInfo({ ...getInfo, address: e.target.value })}
-                  className={formErrors.address ? 'border-red-500' : ''}
                   rows={3}
                 />
-                {formErrors.address && <p className="mt-1 text-xs text-red-500">{formErrors.address}</p>}
+                <div className="mt-4 space-y-2">
+                  <label htmlFor="checkout-landmark" className="block mb-1 text-sm font-medium text-lighter">
+                    Landmark Address (for faster delivery)
+                  </label>
+                  <Textarea
+                    id="checkout-landmark"
+                    placeholder="Landmark / Nearby location for rider"
+                    value={landmarkAddress || ''}
+                    onChange={(e) => setLandmarkAddress(e.target.value)}
+                    rows={2}
+                    readOnly
+                  />
+                </div>
               </div>
             </Card>
 
@@ -140,7 +178,7 @@ function CheckOutPage() {
                 Send the payment to any of the following methods and fill in the details below to confirm your order.
               </CardDescription>
               <div className="mb-4">
-                <Label htmlFor="checkout-payment-method" className="text-lighter mb-1 block text-sm font-medium">
+                <Label htmlFor="checkout-payment-method" className="block mb-1 text-sm font-medium text-lighter">
                   Payment Method *
                 </Label>
                 <Select
@@ -163,32 +201,32 @@ function CheckOutPage() {
 
                 {getInfo.payment_method === 'GCash' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-lighter text-sm">
+                    <p className="text-sm text-lighter">
                       Scan the QR code below via GCash and fill the required details
                     </p>
                     <img
                       src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1760621075/DonateToMe_fyolkd.jpg"
                       alt={getInfo.payment_method}
-                      className="w-full rounded-2xl object-contain"
+                      className="object-contain w-full rounded-2xl"
                     />
                   </div>
                 ) : getInfo.payment_method === 'bank_transfer' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-lighter text-sm">Bank Payment details I dont know this</p>
-                    <div className="container flex h-10 flex-col items-center justify-center rounded-2xl bg-emerald-500">
-                      <p className="mx-auto text-center font-bold text-white">This is a placeholder</p>
+                    <p className="text-sm text-lighter">Bank Payment details I dont know this</p>
+                    <div className="container flex flex-col items-center justify-center h-10 rounded-2xl bg-emerald-500">
+                      <p className="mx-auto font-bold text-center text-white">This is a placeholder</p>
                     </div>
                   </div>
                 ) : getInfo.payment_method === 'Maya' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-lighter text-sm">
+                    <p className="text-sm text-lighter">
                       {/* Scan the QR code below via Maya and fill the required details */}
                       This is a placeholder QR code for Maya payment. DO NOT USE.
                     </p>
                     <img
                       src="https://greensierra.ph/wp-content/uploads/elementor/thumbs/Copy-of-3.8X5INCHES-QR-Code-Standee-Template-qj129ev3osdr1lxzh4lj14ccrq0n8r53so2q7nuqqc.jpg"
                       alt={getInfo.payment_method}
-                      className="w-full rounded-2xl object-contain"
+                      className="object-contain w-full rounded-2xl"
                     />
                   </div>
                 ) : null}
@@ -213,7 +251,7 @@ function CheckOutPage() {
             <Card className="p-8">
               <CardTitle className="text-xl">Additional Information</CardTitle>
               <div>
-                <label htmlFor="checkout-order-notes" className="text-lighter mb-1 block text-sm font-medium">
+                <label htmlFor="checkout-order-notes" className="block mb-1 text-sm font-medium text-lighter">
                   Order Notes
                 </label>
                 <Textarea
@@ -235,11 +273,19 @@ function CheckOutPage() {
             >
               {placeOrderMutation.isLoading ? 'Placing Order...' : 'Confirm Order'}
             </Button>
-            <p className="mx-auto flex items-center justify-center text-xs">
+            <p className="flex items-center justify-center mx-auto text-xs">
               By Clicking Confirm you agree to our terms and conditions
             </p>
           </div>
         </main>
+        
+        <LocationPickerModal
+          open={isLocationModalOpen}
+          setOpen={setIsLocationModalOpen}
+          onSave={handleSaveLandmark}
+          onError={handleLandmarkErr}
+        />
+        
         <LoadingModal isOpen={isModalOpen} onClose={setIsModalOpen} />
       </section>
     </ErrorBoundary>
