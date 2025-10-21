@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 function AboutUs() {
   return (
     <section className="bg-neutral relative min-h-screen py-8 lg:py-12">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 pb-25 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h1 className="font-heading text-content text-2xl font-bold sm:text-3xl lg:text-4xl xl:text-5xl">
             More Than Just <span className="text-primary">Heat</span>
@@ -51,8 +51,8 @@ function AboutUs() {
                 <div className="hidden flex-1 text-right lg:block">
                   <Card className="bg-card inline-block rounded-2xl p-6 shadow-lg">
                     <div className="mb-2 flex items-center justify-end gap-2">
-                      <Sprout className="h-5 w-5 text-green-500" />
-                      <span className="text-sm font-semibold text-green-600">THE BEGINNING</span>
+                      <Sprout className="text-money h-5 w-5" />
+                      <span className="text-money text-sm font-semibold">THE BEGINNING</span>
                     </div>
                     <h3 className="text-content font-heading text-2xl font-bold">The Seed Was Planted</h3>
                     <p className="text-lighter mt-2">

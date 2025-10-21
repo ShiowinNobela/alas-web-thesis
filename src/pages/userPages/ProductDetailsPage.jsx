@@ -120,7 +120,7 @@ function ProductDetailsPage() {
             {isLoadingReviews && <ReviewSkeleton items={3} />}
 
             {!isLoadingReviews && reviews.length === 0 && (
-              <p className="text-gray-500 dark:text-gray-300">No reviews yet. Be the first to leave one!</p>
+              <p className="text-lighter">No reviews yet. Be the first to leave one!</p>
             )}
 
             {!isLoadingReviews && reviews.length > 0 && (
