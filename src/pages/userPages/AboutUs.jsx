@@ -165,7 +165,7 @@ function AboutUs() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div className="group text-center">
               <div className="mb-3 inline-flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 transition-all group-hover:scale-110 group-hover:bg-orange-200 lg:mb-4 lg:h-20 lg:w-20">
-                <Heart className="h-8 w-8 text-red-500 lg:h-10 lg:w-10" />
+                <Heart className="text-primary h-8 w-8 lg:h-10 lg:w-10" />
               </div>
               <h3 className="text-content font-heading mb-2 text-lg font-bold lg:mb-3 lg:text-xl">
                 Handcrafted with Heart

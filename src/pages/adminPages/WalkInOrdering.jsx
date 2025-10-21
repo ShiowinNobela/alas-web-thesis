@@ -220,9 +220,9 @@ function WalkInOrdering() {
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-600 dark:text-gray-300">Discount:</span>
+                      <span className="text-lighter">Discount:</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-500 dark:text-gray-400">₱</span>
+                        <span className="text-lighter">₱</span>
                         <input
                           type="number"
                           className="w-20 [appearance:textfield] border-b border-gray-300 px-1 py-1 text-right focus:border-orange-500 focus:outline-none dark:border-gray-600 dark:bg-transparent dark:text-white"
@@ -310,7 +310,7 @@ function WalkInOrdering() {
             <div className="space-y-4">
               <h3 className="text-center text-xl font-semibold text-gray-800 dark:text-white">Confirm Walk-in Order</h3>
 
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-lighter text-center text-sm">
                 You can enter optional customer information before confirming.
               </p>
 

@@ -91,7 +91,7 @@ function ProductManagement() {
           <div className="rounded-lg border-2 border-dashed py-12 text-center">
             <Package className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="text-content mt-2 text-lg font-medium">No products found</h3>
-            <p className="mt-1 text-gray-500">Get started by adding a new product</p>
+            <p className="text-lighter mt-1">Get started by adding a new product</p>
             <div className="mt-6">
               <Link to="/admin/add-product">
                 <Button gradientDuoTone="purpleToBlue">

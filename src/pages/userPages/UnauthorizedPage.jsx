@@ -12,7 +12,7 @@ function UnauthorizedPage() {
   return (
     <section className="bg-admin flex min-h-screen flex-col items-center justify-center px-6 text-center">
       <div className="mb-2 flex items-center justify-center gap-2">
-        <AlertTriangle className="size-30 text-red-500" />
+        <AlertTriangle className="text-error size-30" />
         <h2 className="text-3xl font-bold">Unauthorized</h2>
       </div>
       <p className="mt-2 max-w-xl text-gray-600">

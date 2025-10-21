@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = import.meta.env.PROD ? 'https://flux-backend-1-5yv1.onrender.com' : 'http://localhost:3000';
+axios.defaults.baseURL = import.meta.env.PROD ? 'https://flux-backend-2.onrender.com' : 'http://localhost:3000';
 
 axios.defaults.withCredentials = true;
 
