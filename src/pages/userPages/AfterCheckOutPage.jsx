@@ -49,10 +49,10 @@ function AfterCheckOutPage() {
   }, [id, navigate]);
 
   if (loading) return <div className="h-screen bg-amber-100"></div>;
-  if (error) return <p className="mt-10 text-center text-red-500">{error}</p>;
+  if (error) return <p className="text-error mt-10 text-center">{error}</p>;
 
   return (
-    <main className="min-h-screen py-8 bg-amber-100">
+    <main className="min-h-screen bg-amber-100 py-8">
       <Confetti
         width={dimensions.width}
         height={dimensions.height}
@@ -63,18 +63,18 @@ function AfterCheckOutPage() {
       />
       {/* Because why not */}
 
-      <div className="flex flex-col items-center w-full max-w-3xl px-4 mx-auto">
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center px-4">
         <motion.img
           src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
           alt="Alas Delis Logo"
-          className="object-contain w-20 h-20 mx-auto mb-4"
+          className="mx-auto mb-4 h-20 w-20 object-contain"
           initial={{ y: -40 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         />
 
         <motion.h1
-          className="mb-4 text-3xl font-bold text-center font-heading text-primary sm:text-5xl"
+          className="font-heading text-primary mb-4 text-center text-3xl font-bold sm:text-5xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -83,7 +83,7 @@ function AfterCheckOutPage() {
         </motion.h1>
 
         <motion.p
-          className="mb-2 text-base text-center sm:text-lg text-content font-heading dark:text-neutral"
+          className="text-content font-heading dark:text-neutral mb-2 text-center text-base sm:text-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
@@ -92,7 +92,7 @@ function AfterCheckOutPage() {
         </motion.p>
 
         <motion.p
-          className="mb-10 text-sm text-center uppercase sm:text-base font-heading text-lighter dark:text-card"
+          className="font-heading text-lighter dark:text-card mb-10 text-center text-sm uppercase sm:text-base"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
@@ -101,24 +101,24 @@ function AfterCheckOutPage() {
         </motion.p>
 
         <motion.div
-          className="flex flex-col items-center w-full gap-2 pb-8"
+          className="flex w-full flex-col items-center gap-2 pb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
           <Link to="/user/orders">
-            <Button size="lg" className="px-12 py-6 text-base rounded-lg font-heading">
+            <Button size="lg" className="font-heading rounded-lg px-12 py-6 text-base">
               Go to your Orders
             </Button>
           </Link>
           <div className="flex flex-col items-center">
             <Link to="/menu">
-              <Button variant="link" className="text-sm text-lighter sm:text-base dark:text-card">
+              <Button variant="link" className="text-lighter dark:text-card text-sm sm:text-base">
                 Go to Dashboard
               </Button>
             </Link>
             <Link to="/menu">
-              <Button variant="link" className="text-sm text-lighter sm:text-base dark:text-card">
+              <Button variant="link" className="text-lighter dark:text-card text-sm sm:text-base">
                 Back to Menu
               </Button>
             </Link>
@@ -131,13 +131,13 @@ function AfterCheckOutPage() {
           transition={{ delay: 0.8, duration: 0.6 }}
           className="w-full"
         >
-          <Card className="w-full p-3 mb-6 border-2 rounded-lg sm:p-5">
-            <h2 className="text-lg font-bold text-center sm:text-xl font-heading">ORDER ITEMS</h2>
+          <Card className="mb-6 w-full rounded-lg border-2 p-3 sm:p-5">
+            <h2 className="font-heading text-center text-lg font-bold sm:text-xl">ORDER ITEMS</h2>
 
-            <div className="py-2 mb-4 border-t border-b border-gray-300">
+            <div className="mb-4 border-t border-b border-gray-300 py-2">
               <div className="flex items-center justify-between">
                 <span className="font-semibold">TOTAL AMOUNT</span>
-                <span className="text-xl font-bold font-heading text-emerald-500">₱{order.total_amount}</span>
+                <span className="font-heading text-xl font-bold text-emerald-500">₱{order.total_amount}</span>
               </div>
             </div>
 
@@ -145,16 +145,16 @@ function AfterCheckOutPage() {
               {order.items.map((item) => (
                 <div
                   key={item.item_id}
-                  className="flex items-start justify-between pb-3 border-b border-gray-200 border-dashed"
+                  className="flex items-start justify-between border-b border-dashed border-gray-200 pb-3"
                 >
                   <div className="flex items-start gap-3">
-                    <img src={item.image} alt={item.product_name} className="object-cover rounded size-28" />
+                    <img src={item.image} alt={item.product_name} className="size-28 rounded object-cover" />
                     <div>
-                      <p className="text-sm font-semibold font-heading sm:text-base">{item.product_name}</p>
+                      <p className="font-heading text-sm font-semibold sm:text-base">{item.product_name}</p>
                       <p className="text-xs sm:text-sm">Qty: {item.quantity}</p>
                     </div>
                   </div>
-                  <span className="text-sm font-semibold font-heading sm:text-base">₱{item.subtotal}</span>
+                  <span className="font-heading text-sm font-semibold sm:text-base">₱{item.subtotal}</span>
                 </div>
               ))}
             </div>
@@ -162,7 +162,7 @@ function AfterCheckOutPage() {
         </motion.div>
 
         <motion.p
-          className="mb-10 text-lg leading-relaxed text-center sm:text-lg text-content font-heading dark:text-card"
+          className="text-content font-heading dark:text-card mb-10 text-center text-lg leading-relaxed sm:text-lg"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.6 }}

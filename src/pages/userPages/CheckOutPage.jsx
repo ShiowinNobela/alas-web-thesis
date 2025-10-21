@@ -36,7 +36,7 @@ function CheckOutPage() {
   });
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [landmarkAddress, setLandmarkAddress] = useState('');
-  const combinedAddress = `${getInfo.address}${landmarkAddress ?  '  - (Landmark: ' + landmarkAddress + ')' : '' }`;
+  const combinedAddress = `${getInfo.address}${landmarkAddress ? '  - (Landmark: ' + landmarkAddress + ')' : ''}`;
 
   // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,19 +99,19 @@ function CheckOutPage() {
 
   const handleLandmarkErr = (res) => {
     toast.error(res);
-  }
+  };
 
   return (
     <ErrorBoundary>
-      <section className="min-h-screen py-8 bg-neutral">
-        <main className="relative max-w-2xl px-4 pb-24 mx-auto sm:px-6 lg:px-8">
+      <section className="bg-neutral min-h-screen py-8">
+        <main className="relative mx-auto max-w-2xl px-4 pb-24 sm:px-6 lg:px-8">
           <div className="absolute top-0 left-0 mt-4">
             <BackButton />
           </div>
 
-          <div className="flex flex-col items-center justify-center pb-8 mx-auto">
-            <h1 className="text-5xl text-content font-heading">Checkout</h1>
-            <p className="mt-2 text-lighter">Complete your order by filling the form below</p>
+          <div className="mx-auto flex flex-col items-center justify-center pb-8">
+            <h1 className="text-content font-heading text-5xl">Checkout</h1>
+            <p className="text-lighter mt-2">Complete your order by filling the form below</p>
           </div>
 
           {/* PERSONAL INFORMATION */}
@@ -134,13 +134,13 @@ function CheckOutPage() {
               />
               <div className="mt-4 space-y-2">
                 <div className="flex items-center justify-between">
-                  <label htmlFor="checkout-address" className="block mb-1 text-sm font-medium text-lighter">
+                  <label htmlFor="checkout-address" className="text-lighter mb-1 block text-sm font-medium">
                     Delivery Address *
                   </label>
                   <button
                     type="button"
                     onClick={() => setIsLocationModalOpen(true)}
-                    className="flex items-center gap-1 text-sm text-primary hover:underline"
+                    className="text-primary flex items-center gap-1 text-sm hover:underline"
                   >
                     <MapPin size={16} />
                     Pin Location
@@ -154,7 +154,7 @@ function CheckOutPage() {
                   rows={3}
                 />
                 <div className="mt-4 space-y-2">
-                  <label htmlFor="checkout-landmark" className="block mb-1 text-sm font-medium text-lighter">
+                  <label htmlFor="checkout-landmark" className="text-lighter mb-1 block text-sm font-medium">
                     Landmark Address (for faster delivery)
                   </label>
                   <Textarea
@@ -178,7 +178,7 @@ function CheckOutPage() {
                 Send the payment to any of the following methods and fill in the details below to confirm your order.
               </CardDescription>
               <div className="mb-4">
-                <Label htmlFor="checkout-payment-method" className="block mb-1 text-sm font-medium text-lighter">
+                <Label htmlFor="checkout-payment-method" className="text-lighter mb-1 block text-sm font-medium">
                   Payment Method *
                 </Label>
                 <Select
@@ -197,36 +197,36 @@ function CheckOutPage() {
                     <SelectItem value="Maya">Maya</SelectItem>
                   </SelectContent>
                 </Select>
-                {formErrors.payment_method && <p className="mt-1 text-xs text-red-500">{formErrors.payment_method}</p>}
+                {formErrors.payment_method && <p className="text-error mt-1 text-xs">{formErrors.payment_method}</p>}
 
                 {getInfo.payment_method === 'GCash' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-sm text-lighter">
+                    <p className="text-lighter text-sm">
                       Scan the QR code below via GCash and fill the required details
                     </p>
                     <img
                       src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1760621075/DonateToMe_fyolkd.jpg"
                       alt={getInfo.payment_method}
-                      className="object-contain w-full rounded-2xl"
+                      className="w-full rounded-2xl object-contain"
                     />
                   </div>
                 ) : getInfo.payment_method === 'bank_transfer' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-sm text-lighter">Bank Payment details I dont know this</p>
-                    <div className="container flex flex-col items-center justify-center h-10 rounded-2xl bg-emerald-500">
-                      <p className="mx-auto font-bold text-center text-white">This is a placeholder</p>
+                    <p className="text-lighter text-sm">Bank Payment details I dont know this</p>
+                    <div className="container flex h-10 flex-col items-center justify-center rounded-2xl bg-emerald-500">
+                      <p className="mx-auto text-center font-bold text-white">This is a placeholder</p>
                     </div>
                   </div>
                 ) : getInfo.payment_method === 'Maya' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-sm text-lighter">
+                    <p className="text-lighter text-sm">
                       {/* Scan the QR code below via Maya and fill the required details */}
                       This is a placeholder QR code for Maya payment. DO NOT USE.
                     </p>
                     <img
                       src="https://greensierra.ph/wp-content/uploads/elementor/thumbs/Copy-of-3.8X5INCHES-QR-Code-Standee-Template-qj129ev3osdr1lxzh4lj14ccrq0n8r53so2q7nuqqc.jpg"
                       alt={getInfo.payment_method}
-                      className="object-contain w-full rounded-2xl"
+                      className="w-full rounded-2xl object-contain"
                     />
                   </div>
                 ) : null}
@@ -251,7 +251,7 @@ function CheckOutPage() {
             <Card className="p-8">
               <CardTitle className="text-xl">Additional Information</CardTitle>
               <div>
-                <label htmlFor="checkout-order-notes" className="block mb-1 text-sm font-medium text-lighter">
+                <label htmlFor="checkout-order-notes" className="text-lighter mb-1 block text-sm font-medium">
                   Order Notes
                 </label>
                 <Textarea
@@ -273,19 +273,19 @@ function CheckOutPage() {
             >
               {placeOrderMutation.isLoading ? 'Placing Order...' : 'Confirm Order'}
             </Button>
-            <p className="flex items-center justify-center mx-auto text-xs">
+            <p className="mx-auto flex items-center justify-center text-xs">
               By Clicking Confirm you agree to our terms and conditions
             </p>
           </div>
         </main>
-        
+
         <LocationPickerModal
           open={isLocationModalOpen}
           setOpen={setIsLocationModalOpen}
           onSave={handleSaveLandmark}
           onError={handleLandmarkErr}
         />
-        
+
         <LoadingModal isOpen={isModalOpen} onClose={setIsModalOpen} />
       </section>
     </ErrorBoundary>

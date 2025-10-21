@@ -147,7 +147,7 @@ function ForgotPasswordPage() {
                     Send Code
                   </Button>
                 </div>
-                {errors.code && <p className="mt-1 text-sm text-red-500">{errors.code}</p>}
+                {errors.code && <p className="text-error mt-1 text-sm">{errors.code}</p>}
               </div>
 
               <div className="relative my-6 flex items-center">
