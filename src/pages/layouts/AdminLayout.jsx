@@ -4,7 +4,7 @@ import Sidebar from '@/components/layout/AdminSidebar';
 import AdminNavbar from '@/components/layout/AdminNavbar';
 import AdminFooter from '@/components/layout/AdminFooter';
 import { Suspense } from 'react';
-// import LoadingFallback from './LoadingFallback';
+import LoadingFallback from './LoadingFallback';
 import { toast } from 'sonner';
 import { socket } from '@/socket';
 import useUserStore from '@/stores/userStore';
@@ -54,8 +54,8 @@ const AdminLayout = () => {
       <AdminNavbar />
 
       <main className="bg-admin overflow-y-auto">
-        {/* <Suspense fallback={<LoadingFallback />}>  Testing */}
-        <Suspense>
+        <Suspense fallback={<LoadingFallback />}>
+          Testing
           <Outlet />
         </Suspense>
       </main>

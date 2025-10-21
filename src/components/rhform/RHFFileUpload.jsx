@@ -45,9 +45,9 @@ export default function RHFFileUpload({ name, control, rules, onUploadSuccess, u
               }
             }}
           />
-          {uploading && <p className="text-sm text-gray-500">Uploading...</p>}
+          {uploading && <p className="text-lighter text-sm">Uploading...</p>}
           {field.value && (
-            <div className="text-sm text-green-600">
+            <div className="text-money text-sm">
               Uploaded:{' '}
               <a href={field.value} target="_blank" rel="noopener noreferrer" className="line-clamp-1">
                 {field.value}

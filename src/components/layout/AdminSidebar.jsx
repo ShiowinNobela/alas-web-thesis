@@ -10,7 +10,6 @@ import {
   Archive,
   CreditCard,
   Activity,
-  Bell,
   ShoppingCart,
   Ticket,
   MessageSquareOff,
@@ -77,7 +76,6 @@ const sidebarItems = [
     permission: 'view_activity',
     role: ['admin'],
   },
-  { path: '/admin/Notifs', name: 'Notifications', icon: Bell, permission: 'view_notifications', role: ['admin'] },
   {
     path: '/admin/promotion/management',
     name: 'Promotion Management',

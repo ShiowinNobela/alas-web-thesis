@@ -114,7 +114,7 @@ function WalkInOrders() {
       )}
 
       {!isLoading && !error && orders.length === 0 && (
-        <div className="flex min-h-[200px] flex-col items-center justify-center rounded-lg bg-white p-6 text-gray-500 shadow-sm ring-1">
+        <div className="text-lighter flex min-h-[200px] flex-col items-center justify-center rounded-lg bg-white p-6 shadow-sm ring-1">
           <p className="text-lg font-medium">No walk-in orders yet</p>
           <p className="mt-1 text-sm">Create your first walk-in order to get started</p>
           <Button onClick={() => navigate('/admin/create-walk-in')} color="blue" className="mt-4">
