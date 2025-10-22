@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Star, Loader2, ArrowLeft, Send } from 'lucide-react';
+import useUserStore from '@/stores/userStore';
 
 function GiveReview() {
   const { id: orderId } = useParams();
@@ -19,7 +20,7 @@ function GiveReview() {
     review_text: '',
   });
 
-  const user = JSON.parse(window.localStorage.getItem('user'));
+  const {user, isAuthenticated} = useUserStore();
   const userId = user?.id;
 
   const { data: orderData, isLoading: isLoadingOrder } = useQuery({
@@ -60,7 +61,7 @@ function GiveReview() {
     e.preventDefault();
 
     //Checks everything before sending
-    if (!userId) {
+    if (!isAuthenticated || !userId) {
       toast.error('User not found. Please log in again.');
       navigate('/login');
       return;
