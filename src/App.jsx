@@ -6,7 +6,6 @@ import { Suspense, lazy } from 'react';
 import MainLayout from './pages/layouts/MainLayout.jsx';
 import LoadingFallback from './pages/layouts/LoadingFallback';
 const AdminLayout = lazy(() => import('./pages/layouts/AdminLayout.jsx'));
-const ProductListLayout = lazy(() => import('./pages/layouts/ProductListLayout.jsx'));
 
 // Utilities
 import ScrollToTop from './utils/ScrollToTop';
@@ -18,6 +17,7 @@ const PermissionRoute = lazy(() => import('./pages/layouts/PermissionRoute.jsx')
 // User Pages
 import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
+import ProductListLayout from './pages/layouts/ProductListLayout.jsx';
 const UnauthorizedPage = lazy(() => import('./pages/userPages/UnauthorizedPage.jsx'));
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
