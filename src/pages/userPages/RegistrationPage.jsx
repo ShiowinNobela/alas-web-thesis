@@ -70,7 +70,10 @@ function RegistrationPage() {
           password: '',
           confirmPassword: '',
         });
-        Navigate('/login');
+        toast.success('Account created successfully! Please verify your email before logging in.');
+        setTimeout(() => {
+          Navigate('/login');
+        }, 1500);
       })
       .catch((err) => {
         const res = err.response;
@@ -94,19 +97,19 @@ function RegistrationPage() {
 
   return (
     <>
-      <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
-        <Card className="text-content w-full max-w-md p-4 sm:p-8">
+      <section className="flex items-center justify-center min-h-screen px-4 py-8 bg-neutral pb-30">
+        <Card className="w-full max-w-md p-4 text-content sm:p-8">
           <div className="space-y-6">
             <div className="space-y-1">
               <img
                 src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
                 alt="Alas Delis Logo"
-                className="mx-auto h-20 w-20 shrink-0 object-contain"
+                className="object-contain w-20 h-20 mx-auto shrink-0"
               />
-              <h1 className="font-lg font-heading text-center text-3xl leading-tight font-bold tracking-tight">
+              <h1 className="text-3xl font-bold leading-tight tracking-tight text-center font-lg font-heading">
                 CREATE ACCOUNT
               </h1>
-              <p className="text-lighter text-center text-sm">Spice up your life with flavorful, savory spices.</p>
+              <p className="text-sm text-center text-lighter">Spice up your life with flavorful, savory spices.</p>
             </div>
 
             <form className="space-y-4" onSubmit={handleCreateUser}>
@@ -173,17 +176,17 @@ function RegistrationPage() {
                 Register
               </Button>
 
-              <p className="text-center text-xs">A verification email will be sent to confirm your account.</p>
+              <p className="text-xs text-center">A verification email will be sent to confirm your account.</p>
 
               <PromptLink promptText="Already have an account?" linkText="SIGN IN" to="/login" />
 
-              <p className="text-lighter text-center text-xs">
+              <p className="text-xs text-center text-lighter">
                 By clicking Register, you agree to our{' '}
-                <a href="/terms-and-conditions" className="hover:text-primary underline">
+                <a href="/terms-and-conditions" className="underline hover:text-primary">
                   Terms and Conditions
                 </a>{' '}
                 and{' '}
-                <a href="/privacy-policy" className="hover:text-primary underline">
+                <a href="/privacy-policy" className="underline hover:text-primary">
                   Privacy Policy
                 </a>
                 .
