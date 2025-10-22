@@ -88,16 +88,16 @@ function WalkInOrdering() {
 
   return (
     <>
-      <div className="bg-admin h-full p-4">
+      <div className="h-full p-4 bg-admin">
         <div className="mx-auto max-w-7xl">
           <div className="grid-cols-4 gap-4 lg:grid">
             {/* Products and Customer Info */}
-            <Card className="col-span-3 flex-1 ring-1">
-              <h1 className="text-content text-2xl font-bold">Make a Walk-in Order</h1>
+            <Card className="flex-1 col-span-3 ring-1">
+              <h1 className="text-2xl font-bold text-content">Make a Walk-in Order</h1>
 
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                  <div className="mb-4 flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lighter">Available Products</h2>
                     <span className="text-content">{filteredProducts.length} products</span>
                   </div>
@@ -114,21 +114,21 @@ function WalkInOrdering() {
                   />
 
                   {/* Products Grid with Fixed Height */}
-                  <div className="h-screen overflow-y-auto pr-2">
+                  <div className="h-screen pr-2 overflow-y-auto">
                     <div className="grid grid-cols-2 gap-4 p-1 sm:grid-cols-3 lg:grid-cols-4">
                       {filteredProducts.map((d) => (
                         <Card
                           key={d.id}
                           imgSrc={d.image}
                           imgAlt={d.name}
-                          className="group cursor-pointer ring-1 transition-all duration-200 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                          className="transition-all duration-200 cursor-pointer group ring-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
                           onClick={() => {
                             setOpen(true);
                             setSelectedProduct(d);
                           }}
                         >
-                          <h3 className="font-heading line-clamp-1 font-bold">{d.name}</h3>
-                          <div className="text-lighter text-sm">
+                          <h3 className="font-bold font-heading line-clamp-1">{d.name}</h3>
+                          <div className="text-sm text-lighter">
                             <p>
                               Stock: <span className="text-content">{d.stock_quantity}</span>
                             </p>
@@ -146,7 +146,7 @@ function WalkInOrdering() {
             </Card>
 
             <Card className="flex h-full ring-1">
-              <div className="flex h-full flex-col justify-start gap-4">
+              <div className="flex flex-col justify-start h-full gap-4">
                 <div className="flex justify-between">
                   <div className="flex items-center gap-2">
                     <ShoppingCart className="text-xl text-blue-600 dark:text-blue-400" />
@@ -162,19 +162,19 @@ function WalkInOrdering() {
                   )}
                 </div>
 
-                <div className="space-y-4 overflow-y-auto p-1">
+                <div className="p-1 space-y-4 overflow-y-auto">
                   {cartItems.length === 0 ? (
-                    <Card className="mx-auto py-8 text-center ring-1">
-                      <MilkOff className="text-lighter mx-auto mb-3 size-20" />
+                    <Card className="py-8 mx-auto text-center ring-1">
+                      <MilkOff className="mx-auto mb-3 text-lighter size-20" />
                       <p className="text-content">No items in cart</p>
-                      <p className="text-lighter text-sm">Select products to add to order</p>
+                      <p className="text-sm text-lighter">Select products to add to order</p>
                     </Card>
                   ) : (
                     cartItems.map((item) => (
                       <Card key={item.id} className="ring-1">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="font-heading text-content line-clamp-1 font-bold">{item.name}</h3>
+                            <h3 className="font-bold font-heading text-content line-clamp-1">{item.name}</h3>
                             <p className="font-bold text-emerald-500">₱{item.price}</p>
                           </div>
                           <button
@@ -189,16 +189,16 @@ function WalkInOrdering() {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleChangeCartQuantity(item.id, -1)}
-                              className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 transition-colors hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                              className="flex items-center justify-center w-6 h-6 transition-colors bg-gray-200 rounded-full hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                             >
                               <Minus className="text-xs" />
                             </button>
-                            <span className="min-w-8 text-center font-semibold text-gray-800 dark:text-white">
+                            <span className="font-semibold text-center text-gray-800 min-w-8 dark:text-white">
                               {item.quantity}
                             </span>
                             <button
                               onClick={() => handleChangeCartQuantity(item.id, 1)}
-                              className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 transition-colors hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
+                              className="flex items-center justify-center w-6 h-6 transition-colors bg-gray-200 rounded-full hover:bg-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500"
                             >
                               <Plus className="text-xs" />
                             </button>
@@ -213,7 +213,7 @@ function WalkInOrdering() {
                 </div>
 
                 {cartItems.length > 0 && (
-                  <div className="mt-4 space-y-3 border-t border-gray-200 pt-4 dark:border-gray-600">
+                  <div className="pt-4 mt-4 space-y-3 border-t border-gray-200 dark:border-gray-600">
                     <div className="flex items-center justify-between text-gray-600 dark:text-gray-300">
                       <span>Subtotal:</span>
                       <span className="font-semibold">₱{subtotal.toLocaleString()}</span>
@@ -234,14 +234,14 @@ function WalkInOrdering() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-gray-200 pt-3 text-lg font-bold text-gray-800 dark:border-gray-600 dark:text-white">
+                    <div className="flex items-center justify-between pt-3 text-lg font-bold text-gray-800 border-t border-gray-200 dark:border-gray-600 dark:text-white">
                       <span>Total:</span>
                       <span className="text-orange-600 dark:text-orange-400">₱{total.toLocaleString()}</span>
                     </div>
 
                     <Button
                       color="blue"
-                      className="flex w-full items-center justify-center gap-2 font-semibold"
+                      className="flex items-center justify-center w-full gap-2 font-semibold"
                       onClick={() => setConfirmOpen(true)}
                       disabled={cartItems.length === 0}
                     >
@@ -259,13 +259,13 @@ function WalkInOrdering() {
           <ModalHeader />
           <ModalBody>
             <div className="space-y-6">
-              <h2 className="text-center text-xl font-bold text-gray-800 dark:text-white">{selectedProduct?.name}</h2>
+              <h2 className="text-xl font-bold text-center text-gray-800 dark:text-white">{selectedProduct?.name}</h2>
 
               <div className="flex items-center gap-4">
                 <img
                   src={selectedProduct?.image}
                   alt={selectedProduct?.name}
-                  className="h-24 w-24 rounded-lg bg-gray-50 object-contain p-2 dark:bg-gray-600"
+                  className="object-contain w-24 h-24 p-2 rounded-lg bg-gray-50 dark:bg-gray-600"
                 />
                 <div>
                   <p className="text-lg font-bold text-orange-600 dark:text-orange-400">₱{selectedProduct?.price}</p>
@@ -280,8 +280,13 @@ function WalkInOrdering() {
                   type="number"
                   min={1}
                   value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const num = Number(value);
+                    setQuantity(value === '' ? '' : num);
+                  }}
                   placeholder="Enter quantity"
+                  inputMode='numeric'
                 />
               </div>
 
@@ -308,9 +313,9 @@ function WalkInOrdering() {
           <ModalHeader />
           <ModalBody>
             <div className="space-y-4">
-              <h3 className="text-center text-xl font-semibold text-gray-800 dark:text-white">Confirm Walk-in Order</h3>
+              <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white">Confirm Walk-in Order</h3>
 
-              <p className="text-lighter text-center text-sm">
+              <p className="text-sm text-center text-lighter">
                 You can enter optional customer information before confirming.
               </p>
 
@@ -347,7 +352,7 @@ function WalkInOrdering() {
                 />
               </div>
 
-              <div className="mt-6 flex flex-col gap-3">
+              <div className="flex flex-col gap-3 mt-6">
                 <Button
                   color="blue"
                   onClick={(e) => {

@@ -5,9 +5,10 @@ import { toast } from 'sonner';
 import BackButton from '@/components/bigComponents/BackButton.jsx';
 import RHFTextInput from '@/components/rhform/RHFTextInput';
 import { Button } from 'flowbite-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 function PromotionManagement() {
-  const { control, handleSubmit, reset } = useForm();
+  const { control, handleSubmit, reset, setValue } = useForm();
 
   const mutation = useMutation({
     mutationFn: (newCoupon) => axios.post('/api/coupons', newCoupon).then((res) => res.data),
@@ -41,89 +42,121 @@ function PromotionManagement() {
   };
 
   return (
-    <div className="bg-admin flex flex-col overflow-auto p-4">
-      <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border p-6 shadow ring-1">
-        <div className="mb-6 flex w-full items-center gap-3">
-          <BackButton label="" className="py-6 ring-1" />
+    <div className="flex flex-col p-4 overflow-auto bg-admin">
+      <main className="w-full max-w-4xl p-6 mx-auto border shadow bg-card rounded-xl ring-1">
+        {/* Header */}
+        <div className="flex items-center w-full gap-3 mb-6">
+          <BackButton className="py-6 ring-1" />
           <div className="flex flex-col">
-            <span className="text-lighter text-sm">I know this needs changes, I wanna chill orayt</span>
-            <h1 className="flex items-center gap-1 text-xl font-bold">Add Coupon</h1>
+            <h1 className="text-xl font-bold">Promotion Management</h1>
+            <span className="text-sm text-lighter">Create and manage your discount coupons</span>
           </div>
         </div>
 
+        {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto grid w-full max-w-full grid-cols-1 gap-8 md:grid-cols-2"
+          className="grid w-full grid-cols-1 gap-6 md:grid-cols-2"
         >
-          <div className="flex flex-col gap-7 rounded-xl">
-            <RHFTextInput
-              name="code"
-              control={control}
-              label="Coupon Code"
-              placeholder="e.g. TESTCOUPON2"
-              rules={{ required: 'Code is required' }}
-            />
-            <RHFTextInput
-              name="description"
-              control={control}
-              label="Description"
-              placeholder="Coupon description"
-              rules={{ required: 'Description is required' }}
-            />
-            <RHFTextInput
-              name="discount_type"
-              control={control}
-              label="Discount Type"
-              placeholder="percentage or fixed"
-              rules={{ required: 'Discount type is required' }}
-            />
-            <RHFTextInput
-              name="discount_value"
-              control={control}
-              label="Discount Value"
-              placeholder="e.g. 10"
-              type="number"
-              rules={{ required: 'Discount value is required' }}
-            />
-            <RHFTextInput
-              name="is_active"
-              control={control}
-              label="Is Active"
-              placeholder="true or false"
-              rules={{ required: 'This field is required' }}
-            />
-            <RHFTextInput
-              name="starts_at"
-              control={control}
-              label="Start Date"
-              placeholder="YYYY-MM-DD HH:mm:ss"
-              rules={{ required: 'Start date is required' }}
-            />
-            <RHFTextInput
-              name="expires_at"
-              control={control}
-              label="Expiry Date"
-              placeholder="YYYY-MM-DD HH:mm:ss"
-              rules={{ required: 'Expiry date is required' }}
-            />
-            <RHFTextInput
-              name="usage_limit"
-              control={control}
-              label="Usage Limit"
-              placeholder="e.g. 100"
-              type="number"
-              rules={{ required: 'Usage limit is required' }}
-            />
-            <RHFTextInput
-              name="per_user_limit"
-              control={control}
-              label="Per User Limit"
-              placeholder="e.g. 20"
-              type="number"
-              rules={{ required: 'Per user limit is required' }}
-            />
+          <RHFTextInput
+            name="code"
+            control={control}
+            label="Coupon Code *"
+            placeholder="e.g. TESTCOUPON2"
+            rules={{ required: 'Code is required' }}
+          />
 
-            <Button type="submit" color="gray" disabled={mutation.isLoading} className="w-full">
+          <RHFTextInput
+            name="description"
+            control={control}
+            label="Description *"
+            placeholder="Coupon description"
+            rules={{ required: 'Description is required' }}
+          />
+
+          {/* Discount Type */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Discount Type *</label>
+            <Select
+              onValueChange={(value) => setValue('discount_type', value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select discount type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="percentage">Percentage</SelectItem>
+                <SelectItem value="fixed">Fixed Amount</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <RHFTextInput
+            name="discount_value"
+            control={control}
+            label="Discount Value *"
+            placeholder="e.g. 10"
+            type="number"
+            rules={{ required: 'Discount value is required' }}
+          />
+
+          {/* Is Active */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Status *</label>
+            <Select
+              onValueChange={(value) => setValue('is_active', value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Active</SelectItem>
+                <SelectItem value="false">Inactive</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <RHFTextInput
+            name="starts_at"
+            control={control}
+            label="Start Date *"
+            placeholder="YYYY-MM-DD HH:mm:ss"
+            rules={{ required: 'Start date is required' }}
+          />
+
+          <RHFTextInput
+            name="expires_at"
+            control={control}
+            label="Expiry Date *"
+            placeholder="YYYY-MM-DD HH:mm:ss"
+            rules={{ required: 'Expiry date is required' }}
+          />
+
+          <RHFTextInput
+            name="usage_limit"
+            control={control}
+            label="Usage Limit *"
+            placeholder="e.g. 100"
+            type="number"
+            rules={{ required: 'Usage limit is required' }}
+          />
+
+          <RHFTextInput
+            name="per_user_limit"
+            control={control}
+            label="Per User Limit *"
+            placeholder="e.g. 20"
+            type="number"
+            rules={{ required: 'Per user limit is required' }}
+          />
+
+          {/* Submit Button */}
+          <div className="flex justify-end col-span-1 md:col-span-2">
+            <Button
+              type="submit"
+              color="gray"
+              disabled={mutation.isLoading}
+              className="w-full px-8 md:w-auto"
+            >
               {mutation.isLoading ? 'Creating...' : 'Create Coupon'}
             </Button>
           </div>

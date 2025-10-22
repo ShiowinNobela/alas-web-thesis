@@ -19,8 +19,6 @@ function GiveReview() {
     review_text: '',
   });
 
-  const [hoverRating, setHoverRating] = useState(0);
-
   const user = JSON.parse(window.localStorage.getItem('user'));
   const userId = user?.id;
 
