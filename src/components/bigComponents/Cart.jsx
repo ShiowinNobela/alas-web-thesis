@@ -6,6 +6,7 @@ import { Input } from '../ui/input';
 import { Delete, MilkOff, Minus, Plus, ShoppingCart, ShoppingBag, ArrowRight } from 'lucide-react';
 import CouponCard from '../cards/CouponCard';
 import { AnimatePresence } from 'framer-motion';
+import LoyaltyDialog from '../modals/LoyaltyModal';
 
 function Cart() {
   const {
@@ -22,6 +23,7 @@ function Cart() {
     removeCoupon,
   } = useCartStore();
 
+  const [loyaltyOpen, setLoyaltyOpen] = useState(false);
   const [couponInput, setCouponInput] = useState('');
 
   useEffect(() => {
@@ -174,6 +176,27 @@ function Cart() {
                 </div>
               )}
             </AnimatePresence>
+          </div>
+
+          <div className="mt-2">
+            <Button
+              size="sm"
+              className="w-full bg-gradient-to-r from-amber-200 via-amber-200 to-yellow-200 py-5 text-black hover:bg-amber-400"
+              onClick={() => setLoyaltyOpen(true)}
+            >
+              View Claimed Rewards
+            </Button>
+            {loyaltyOpen && (
+              <LoyaltyDialog
+                open={loyaltyOpen}
+                onOpenChange={setLoyaltyOpen}
+                onSelectCoupon={async (code) => {
+                  await applyCoupon(code.trim());
+                  setCouponInput('');
+                  setLoyaltyOpen(false);
+                }}
+              />
+            )}
           </div>
 
           {/* Totals */}

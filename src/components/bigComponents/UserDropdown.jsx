@@ -54,8 +54,12 @@ export default function UserDropdown() {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link to="/user/orders" state={{ tab: 'notif' }} className={`${isActive('/user/orders')} flex items-center`}>
-            <Bell className="mr-2 h-4 w-4" /> Notifications
+          <Link
+            to="/user/loyalty-rewards"
+            state={{ tab: 'notif' }}
+            className={`${isActive('/user/loyalty-rewards')} flex items-center`}
+          >
+            <Bell className="mr-2 h-4 w-4" /> Loyalty Reward
           </Link>
         </DropdownMenuItem>
 

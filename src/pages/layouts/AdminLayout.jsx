@@ -55,7 +55,6 @@ const AdminLayout = () => {
 
       <main className="bg-admin overflow-y-auto">
         <Suspense fallback={<LoadingFallback />}>
-          Testing
           <Outlet />
         </Suspense>
       </main>

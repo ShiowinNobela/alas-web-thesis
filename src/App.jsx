@@ -19,6 +19,7 @@ import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
 import ProductListLayout from './pages/layouts/ProductListLayout.jsx';
 const UnauthorizedPage = lazy(() => import('./pages/userPages/UnauthorizedPage.jsx'));
+const LoyaltyRewardsPage = lazy(() => import('./pages/userPages/LoyaltyRewardsPage.jsx'));
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
 const UserDashboard = lazy(() => import('./pages/userPages/UserDashboard.jsx'));
 const ContactUs = lazy(() => import('./pages/userPages/ContactUs.jsx'));
@@ -86,6 +87,7 @@ function App() {
             {/* Protected user routes */}
             <Route element={<RoleBasedRoute allowedRoles={['customer']} />}>
               <Route path="/user/dashboard" element={<UserDashboard />} />
+              <Route path="/user/loyalty-rewards" element={<LoyaltyRewardsPage />} />
               <Route path="/user/review/:id" element={<GiveReview />}></Route>
               <Route path="/user/checkout" element={<CheckOutPage />}></Route>
               <Route path="/user/after-checkout/:id" element={<AfterCheckOutPage />} />
