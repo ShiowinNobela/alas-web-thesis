@@ -6,6 +6,7 @@ import PasswordInput from '@/components/bigComponents/PasswordInput';
 import PromptLink from '@/components/bigComponents/PromptLink';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import axios from '../../lib/axios-config'
 
 function ForgotPasswordPage() {
   const [step, setStep] = useState(1);
@@ -23,8 +24,7 @@ function ForgotPasswordPage() {
 
   const navigate = useNavigate();
 
-  const handleSendCode = () => {
-    // TODO: add send code logic here
+  const handleSendCode =  async () => {
     if (!email.trim()) {
       setErrors((prev) => ({ ...prev, email: 'Email is required' }));
       toast.warning('Please enter your email address!');
@@ -38,13 +38,19 @@ function ForgotPasswordPage() {
     }
 
     setErrors((prev) => ({ ...prev, email: '' }));
+    setLoading(true);
 
-    // TODO: Implement actual send code logic
-    toast.success('Verification code sent to your email!');
+    try {
+      const res = await axios.post('/api/users/password-reset', {email});
+      toast.success('Verification code sent to your email!' || res.data.message);
+    } catch (error) {
+      toast.error('Failed to send verification code. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleVerifyCode = () => {
-    // TODO: add code verification logic here
     if (!code.trim()) {
       setErrors((prev) => ({ ...prev, code: 'Verification code is required' }));
       toast.warning('Please enter the verification code!');
@@ -52,16 +58,13 @@ function ForgotPasswordPage() {
     }
 
     setErrors((prev) => ({ ...prev, code: '' }));
-
-    // TODO: Implement actual code verification
     setStep(2);
     toast.success('Code verified! Please set your new password.');
   };
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
 
-    // TODO: add password reset logic here
     const newErrors = {
       password: newPassword.trim() ? '' : 'Password is required',
       confirmPassword: confirmPassword.trim() ? '' : 'Confirm Password is required',
@@ -83,26 +86,38 @@ function ForgotPasswordPage() {
     }
 
     setErrors({ email: '', code: '', password: '', confirmPassword: '' });
+    setLoading(true);
 
-    // TODO: Implement actual password reset
-    toast.success('Password reset successfully!');
-    navigate('/login');
+    try {
+      const res = await axios.post('/api/users/password-reset/confirm', {
+        email,
+        code,
+        newPassword,
+        confirmPassword
+      });
+      toast.success('Password reset successfully!');
+      navigate('/login');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to reset password. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <section className="bg-neutral flex min-h-screen items-center justify-center px-4 py-8 pb-30">
-      <Card className="text-content w-full max-w-md p-4 sm:p-6">
+    <section className="flex items-center justify-center min-h-screen px-4 py-8 bg-neutral pb-30">
+      <Card className="w-full max-w-md p-4 text-content sm:p-6">
         <div className="space-y-6">
           <div className="space-y-3 text-center">
             <img
               src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1758546285/logo-alas1_iisjkz.jpg"
               alt="Alas Delis Logo"
-              className="mx-auto h-16 w-16 object-contain sm:h-20 sm:w-20"
+              className="object-contain w-16 h-16 mx-auto sm:h-20 sm:w-20"
             />
-            <h1 className="text-content font-heading text-center text-2xl font-bold sm:text-3xl">
+            <h1 className="text-2xl font-bold text-center text-content font-heading sm:text-3xl">
               {step === 1 ? 'FORGOT PASSWORD' : 'RESET PASSWORD'}
             </h1>
-            <p className="text-lighter text-center text-sm sm:text-base">
+            <p className="text-sm text-center text-lighter sm:text-base">
               {step === 1 ? 'Enter your email to receive a verification code.' : 'Set your new password to continue.'}
             </p>
           </div>
@@ -123,7 +138,7 @@ function ForgotPasswordPage() {
               />
 
               <div className="flex flex-col gap-2">
-                <label className="text-content text-sm font-medium">Verification Code</label>
+                <label className="text-sm font-medium text-content">Verification Code</label>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
                   <div className="flex-1">
                     <input
@@ -135,7 +150,7 @@ function ForgotPasswordPage() {
                       }}
                       placeholder="Enter code"
                       disabled={loading}
-                      className="focus:ring-primary w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-transparent focus:ring-2 focus:outline-none"
                     />
                   </div>
                   <Button
@@ -147,17 +162,17 @@ function ForgotPasswordPage() {
                     Send Code
                   </Button>
                 </div>
-                {errors.code && <p className="text-error mt-1 text-sm">{errors.code}</p>}
+                {errors.code && <p className="mt-1 text-sm text-error">{errors.code}</p>}
               </div>
 
-              <div className="relative my-6 flex items-center">
+              <div className="relative flex items-center my-6">
                 <div className="flex-grow border-t border-gray-300"></div>
                 <span className="mx-4 text-sm text-gray-400">or</span>
                 <div className="flex-grow border-t border-gray-300"></div>
               </div>
               <Button
                 type="button"
-                className="font-heading h-10 w-full uppercase"
+                className="w-full h-10 uppercase font-heading"
                 onClick={handleVerifyCode}
                 disabled={loading}
               >
@@ -195,7 +210,7 @@ function ForgotPasswordPage() {
                 disabled={loading}
               />
 
-              <Button type="submit" className="font-heading w-full uppercase" disabled={loading}>
+              <Button type="submit" className="w-full uppercase font-heading" disabled={loading}>
                 {loading ? 'Resetting...' : 'Reset Password'}
               </Button>
 
