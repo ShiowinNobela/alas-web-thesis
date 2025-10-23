@@ -175,7 +175,7 @@ const useCartStore = create((set, get) => {
           });
         }
 
-        toast.success(`Coupon "${couponCode}" applied!`);
+        toast.success(`Coupon applied!`);
       } catch (err) {
         toast.error(err.response?.data?.message || 'Failed to apply coupon');
       } finally {
