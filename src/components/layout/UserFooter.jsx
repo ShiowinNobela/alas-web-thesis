@@ -14,7 +14,7 @@ function Footer() {
             <div>
               <h3 className="text-content font-heading mb-2 text-2xl font-bold">Alas Delis & Spices</h3>
               <div className="mb-4 flex items-center space-x-1">
-                <span className="text-lighter text-xs">Est. May 2020</span>
+                <span className="text-lighter text-xs">Established, May 2020</span>
               </div>
               <p className="text-lighter text-sm leading-relaxed">
                 Handcrafted sauces that bring the heat and flavor to every meal. From garden-fresh ingredients to your
@@ -59,30 +59,57 @@ function Footer() {
           {/* Simplified Navigation */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
             {/* Shop */}
-            <div>
-              <h4 className="text-content font-heading mb-4 text-lg font-semibold">Other Shops</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a
-                    href="https://shopee.ph/alashotsauce"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-lighter flex items-center text-sm hover:text-amber-600"
-                  >
-                    Shopee
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.lazada.com.ph/shop/alas-hot-sauce-by-alas-delis-and-spices"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-lighter flex items-center text-sm hover:text-pink-500"
-                  >
-                    Lazada
-                  </a>
-                </li>
-              </ul>
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-content font-heading mb-4 text-lg font-semibold">Other Shops</h4>
+                <ul className="space-y-3">
+                  <li>
+                    <a
+                      href="https://shopee.ph/alashotsauce"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lighter flex items-center text-sm hover:text-amber-600"
+                    >
+                      Shopee
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.lazada.com.ph/shop/alas-hot-sauce-by-alas-delis-and-spices"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lighter flex items-center text-sm hover:text-pink-500"
+                    >
+                      Lazada
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-content font-heading mb-4 text-lg font-semibold">More Links</h4>
+                <ul className="space-y-3">
+                  <li>
+                    <a
+                      href="https://shopee.ph/alashotsauce"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lighter flex items-center text-sm hover:text-amber-600"
+                    >
+                      Shopee
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.lazada.com.ph/shop/alas-hot-sauce-by-alas-delis-and-spices"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lighter flex items-center text-sm hover:text-pink-500"
+                    >
+                      Lazada
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             {/* Support */}

@@ -63,16 +63,22 @@ function UserDashboard() {
       link: '/user/orders',
     },
     {
-      title: 'Reviews',
+      title: 'My Reviews',
       desc: 'Tell us what you think',
       icon: <Star className="text-primary h-6 w-6" />,
       link: '/users/reviews',
     },
     {
-      title: 'Profile',
+      title: 'My Profile',
       desc: 'Manage your account and settings',
       icon: <User className="text-primary h-6 w-6" />,
       link: '/user/profile',
+    },
+    {
+      title: 'My Rewards',
+      desc: 'See your progress on getting rewards!',
+      icon: <User className="text-primary h-6 w-6" />,
+      link: '/user/loyalty-rewards',
     },
   ];
 
@@ -83,7 +89,7 @@ function UserDashboard() {
         <div className="flex flex-col justify-between lg:flex-row lg:items-center">
           <div className="space-y-2">
             <h1 className="text-content font-heading text-3xl font-bold tracking-tight md:text-3xl">
-              Hello there, <span className="text-brand">{user?.username}!</span>
+              Hello there, <span className="text-primary">{user?.username}!</span>
             </h1>
             <p className="text-lighter max-w-xl">Ready to spice things up?</p>
           </div>
@@ -181,7 +187,7 @@ function UserDashboard() {
         {/* Quick Actions - Compact Version */}
         <section className="space-y-4">
           <h2 className="text-content text-xl md:text-base">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {quickActions.map((item) => (
               <Link key={item.title} to={item.link}>
                 <Card className="transition-all hover:-translate-y-1 hover:shadow-md">
@@ -199,7 +205,7 @@ function UserDashboard() {
 
         {/* Promotional Banner */}
         <Card className="to-brand from-primary relative overflow-hidden rounded-2xl border-0 bg-gradient-to-r">
-          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute" />
           <div className="relative z-10 p-8 md:p-12">
             <div className="max-w-2xl">
               <h2 className="font-heading mb-3 text-2xl font-bold text-white md:text-3xl">Spice Up Your Collection</h2>

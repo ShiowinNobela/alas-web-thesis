@@ -10,7 +10,7 @@ import { Card } from '../ui/card';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
 import PaymentMethodIcon from '@/components/bigComponents/PaymentMethodsIcon';
 
-export default function OrdersCard({ orders, onCancelOrder }) {
+export default function OrdersCard({ orders, onCancelOrder, onRefundOrder, onReturnOrder }) {
   const navigate = useNavigate();
   const [expandedOrderIds, setExpandedOrderIds] = useState([]);
 
@@ -209,6 +209,95 @@ export default function OrdersCard({ orders, onCancelOrder }) {
                         </motion.div>
                       )
                     ) : null}
+
+                    {order?.status === 'cancelled' &&
+                      (() => {
+                        const latestStatusDate = new Date(order?.latest_status_date);
+                        const now = new Date();
+                        const daysPassed = (now - latestStatusDate) / (1000 * 60 * 60 * 24);
+
+                        // If refund already requested
+                        if (order?.refund_status === 'pending') {
+                          return (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div>
+                                  <Button disabled className="w-full cursor-not-allowed bg-gray-200 text-gray-500">
+                                    Refund Requested
+                                  </Button>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent side="left">You already refund requested this order.</TooltipContent>
+                            </Tooltip>
+                          );
+                        }
+
+                        if (order?.refund_status === 'denied') {
+                          return (
+                            <Button disabled className="w-full cursor-not-allowed bg-red-200 text-red-800">
+                              Refund Denied
+                            </Button>
+                          );
+                        }
+
+                        // Only show refund button if it's been 3 days or less
+                        if (daysPassed <= 15) {
+                          return (
+                            <motion.div whileHover={{ scale: 1.03 }}>
+                              <Button
+                                variant="destructive"
+                                onClick={() => onRefundOrder(order?.id)}
+                                className="w-full bg-violet-200 text-violet-800 hover:bg-violet-300"
+                              >
+                                Refund Order
+                              </Button>
+                            </motion.div>
+                          );
+                        }
+
+                        return null;
+                      })()}
+
+                    {order?.status === 'delivered' &&
+                      (() => {
+                        // Show return button logic
+                        const latestStatusDate = new Date(order?.latest_status_date);
+                        const now = new Date();
+                        const daysPassed = (now - latestStatusDate) / (1000 * 60 * 60 * 24);
+
+                        // 🟠 Already has a return request
+                        if (order?.return_status === 'pending') {
+                          return (
+                            <Button disabled className="w-full cursor-not-allowed bg-gray-200 text-gray-500">
+                              Return Requested
+                            </Button>
+                          );
+                        }
+
+                        if (order?.return_status === 'denied') {
+                          return (
+                            <Button disabled className="w-full cursor-not-allowed bg-red-200 text-red-800">
+                              Return Denied
+                            </Button>
+                          );
+                        }
+
+                        if (daysPassed <= 3) {
+                          return (
+                            <motion.div whileHover={{ scale: 1.03 }}>
+                              <Button
+                                variant="secondary"
+                                onClick={() => onReturnOrder(order?.id)}
+                                className="w-full bg-pink-200 text-pink-800 hover:bg-pink-300"
+                              >
+                                Return Order
+                              </Button>
+                            </motion.div>
+                          );
+                        }
+
+                        return null;
+                      })()}
 
                     <motion.div whileTap={{ scale: 0.95 }}>
                       <Button
