@@ -90,6 +90,20 @@ const sidebarItems = [
     permission: 'manage_review',
     role: ['admin'],
   },
+  {
+    path: '/admin/refunds',
+    name: 'Refund Page',
+    icon: MessageSquareOff,
+    permission: 'manage_refunds',
+    role: ['admin'],
+  },
+  {
+    path: '/admin/returns',
+    name: 'Return Page',
+    icon: MessageSquareOff,
+    permission: 'manage_returns',
+    role: ['admin'],
+  },
 ];
 
 function Sidebar() {

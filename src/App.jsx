@@ -18,6 +18,8 @@ const PermissionRoute = lazy(() => import('./pages/layouts/PermissionRoute.jsx')
 import LandPage from './pages/home/LandingPage.jsx';
 import ProductPage from './pages/userPages/ProductListPage.jsx';
 import ProductListLayout from './pages/layouts/ProductListLayout.jsx';
+import RefundsPage from './pages/adminPages/RefundsPage.jsx';
+import ReturnsPage from './pages/adminPages/ReturnsPage.jsx';
 const UnauthorizedPage = lazy(() => import('./pages/userPages/UnauthorizedPage.jsx'));
 const LoyaltyRewardsPage = lazy(() => import('./pages/userPages/LoyaltyRewardsPage.jsx'));
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
@@ -120,6 +122,8 @@ function App() {
                 <Route path="logs" element={<NotificationPage />} />
                 <Route path="Notifs" element={<Notifs />} />
                 <Route path="sales" element={<SalesPage />} />
+                <Route path="refunds" element={<RefundsPage />} />
+                <Route path="returns" element={<ReturnsPage />} />
               </Route>
 
               <Route element={<PermissionRoute permission="manage_orders" />}>
