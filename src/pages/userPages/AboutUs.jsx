@@ -164,7 +164,7 @@ function AboutUs() {
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div className="group text-center">
-              <div className="mb-3 inline-flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 transition-all group-hover:scale-110 group-hover:bg-orange-200 lg:mb-4 lg:h-20 lg:w-20">
+              <div className="bg-primary/10 group-hover:bg-primary/20 mb-3 inline-flex h-16 w-16 items-center justify-center rounded-full transition-all group-hover:scale-110 lg:mb-4 lg:h-20 lg:w-20">
                 <Heart className="text-primary h-8 w-8 lg:h-10 lg:w-10" />
               </div>
               <h3 className="text-content font-heading mb-2 text-lg font-bold lg:mb-3 lg:text-xl">
@@ -188,8 +188,8 @@ function AboutUs() {
             </div>
 
             <div className="group text-center sm:col-span-2 lg:col-span-1">
-              <div className="mb-3 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 transition-all group-hover:scale-110 group-hover:bg-green-200 lg:mb-4 lg:h-20 lg:w-20">
-                <Star className="h-8 w-8 text-green-600 lg:h-10 lg:w-10" />
+              <div className="bg-primary/10 group-hover:bg-primary/20 mb-3 inline-flex h-16 w-16 items-center justify-center rounded-full transition-all group-hover:scale-110 lg:mb-4 lg:h-20 lg:w-20">
+                <Star className="text-primary h-8 w-8 lg:h-10 lg:w-10" />
               </div>
               <h3 className="text-content font-heading mb-2 text-lg font-bold lg:mb-3 lg:text-xl">Proudly Local</h3>
               <p className="text-lighter text-sm lg:text-base">
@@ -216,7 +216,7 @@ function AboutUs() {
               <Link to="/">
                 <Button
                   variant="outline"
-                  className="border-card dark:hover:bg-admin dark:hover:text-brand font-heading text-card rounded-full border-2 px-6 py-3 text-sm font-semibold transition-all hover:bg-gray-900 sm:px-8 sm:py-6 sm:text-base"
+                  className="border-card dark:hover:bg-admin dark:hover:text-brand font-heading text-card hover:bg-primary/50 rounded-full border-2 px-6 py-3 text-sm font-semibold transition-all sm:px-8 sm:py-6 sm:text-base"
                 >
                   Home
                 </Button>

@@ -46,14 +46,8 @@ export default [
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'react/no-unescaped-entities': 'warn',
       'react/jsx-boolean-value': ['warn', 'never'],
-      'react/jsx-curly-brace-presence': [
-        'warn',
-        { props: 'never', children: 'never' },
-      ],
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 ];
