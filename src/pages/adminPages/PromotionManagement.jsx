@@ -54,13 +54,13 @@ function PromotionManagement() {
   };
 
   return (
-    <div className="bg-admin flex flex-col overflow-auto p-4">
-      <main className="bg-card w-full rounded-xl border p-6 shadow ring-1">
+    <div className="flex flex-col p-4 overflow-auto bg-admin">
+      <main className="w-full p-6 border shadow bg-card rounded-xl ring-1">
         {/* Header */}
-        <div className="mb-6 flex w-full items-center gap-3">
+        <div className="flex items-center w-full gap-3 mb-6">
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">Promotion Management</h1>
-            <span className="text-lighter text-sm">Manage coupons and promotions</span>
+            <span className="text-sm text-lighter">Manage coupons and promotions</span>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ function PromotionManagement() {
           <Card className="rounded-2xl ring-1">
             <div>
               <h2 className="text-lg font-bold">Coupon Creation</h2>
-              <span className="text-lighter text-sm">Create and manage your discount coupons</span>
+              <span className="text-sm text-lighter">Create and manage your discount coupons</span>
             </div>
             <form onSubmit={handleSubmit(onCouponSubmit)} className="flex flex-col gap-6">
               <RHFTextInput
@@ -154,7 +154,7 @@ function PromotionManagement() {
                 type="number"
                 rules={{ required: 'Per user limit is required' }}
               />
-              <div className="col-span-1 flex justify-end md:col-span-2">
+              <div className="flex justify-end col-span-1 md:col-span-2">
                 <Button type="submit" color="gray" disabled={mutation.isLoading} className="w-full px-8 md:w-auto">
                   {mutation.isLoading ? 'Creating...' : 'Create Coupon'}
                 </Button>
@@ -164,10 +164,10 @@ function PromotionManagement() {
 
           {/* Loyalty Rewards Table to be updated because wtf */}
           <Card className="col-span-2 overflow-auto rounded-2xl ring-1">
-            <div className="flex h-full flex-col justify-start">
+            <div className="flex flex-col justify-start h-full">
               <div className="mb-4">
                 <h2 className="text-lg font-bold">Loyalty Rewards</h2>
-                <span className="text-lighter text-sm">Manage loyalty rewards here</span>
+                <span className="text-sm text-lighter">Manage loyalty rewards here</span>
               </div>
               {isLoading ? (
                 <p>Loading rewards...</p>
@@ -175,16 +175,16 @@ function PromotionManagement() {
                 <p className="text-error">Failed to fetch rewards</p>
               ) : (
                 <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-gray-50 dark:bg-none">
                     <tr>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Required Orders</th>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Coupon Code</th>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Discount</th>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Active</th>
-                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Actions</th>
+                      <th className="px-4 py-2 text-sm font-medium text-left text-gray-700">Required Orders</th>
+                      <th className="px-4 py-2 text-sm font-medium text-left text-gray-700">Coupon Code</th>
+                      <th className="px-4 py-2 text-sm font-medium text-left text-gray-700">Discount</th>
+                      <th className="px-4 py-2 text-sm font-medium text-left text-gray-700">Active</th>
+                      <th className="px-4 py-2 text-sm font-medium text-left text-gray-700">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {rewardsData.map((reward, index) => (
                       <tr key={index}>
                         <td className="px-4 py-2">{reward.required_orders || '-'}</td>
