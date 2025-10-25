@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from 'flowbite-react';
-import { PackagePlus } from 'lucide-react';
+import { History } from 'lucide-react';
 import SummaryCard from '@/components/cards/SummaryCard';
 import ErrorState from '@/components/States/ErrorState';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
 import { useProducts, useToggleProductStatus, useUpdateStockPrice } from '@/hooks/useProducts';
 import InventoryUpdateModal from '@/components/modals/InventoryUpdateModal';
 import InventoryTable from '@/components/tables/InventoryTable';
+import InventoryHistoryModal from '@/components/modals/InventoryHistoryModal';
 
 function InventoryManagement() {
   const { data: products = [], isLoading, isError, refetch } = useProducts();
@@ -17,6 +17,10 @@ function InventoryManagement() {
   // Edit modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+
+  // Inventory history modal state
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   // Summary calculations
   const totalProducts = products.length;
@@ -31,6 +35,16 @@ function InventoryManagement() {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingProduct(null);
+  };
+
+  const openHistoryModal = (productId = null) => {
+    setSelectedProductId(productId);
+    setIsHistoryModalOpen(true);
+  };
+
+  const closeHistoryModal = () => {
+    setIsHistoryModalOpen(false);
+    setSelectedProductId(null);
   };
 
   return (
@@ -64,12 +78,12 @@ function InventoryManagement() {
         {/* Action Bar */}
         <div className="flex flex-row justify-between px-4 py-4">
           <h2 className="text-xl font-semibold">Product Inventory</h2>
-          <Link to="/admin/add-product">
-            <Button color="gray">
-              <PackagePlus className="mr-2 h-5 w-5" />
-              Add Product
+          <div className="flex gap-2">
+            <Button color="gray" onClick={() => openHistoryModal()}>
+              <History className="mr-2 h-5 w-5" />
+              View Inventory History
             </Button>
-          </Link>
+          </div>
         </div>
 
         {/* Table */}
@@ -82,6 +96,7 @@ function InventoryManagement() {
             products={products}
             onEdit={openEditModal}
             onToggle={(data) => toggleProductStatus.mutate(data)}
+            onViewHistory={(product) => openHistoryModal(product.id)} // Add this prop if you want history per product
           />
         )}
       </main>
@@ -94,6 +109,9 @@ function InventoryManagement() {
           updateStockPrice={updateStockPrice}
         />
       )}
+
+      {/* Inventory History Modal */}
+      <InventoryHistoryModal isOpen={isHistoryModalOpen} onClose={closeHistoryModal} productId={selectedProductId} />
     </div>
   );
 }

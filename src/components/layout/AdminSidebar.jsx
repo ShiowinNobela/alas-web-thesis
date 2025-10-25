@@ -104,6 +104,13 @@ const sidebarItems = [
     permission: 'manage_returns',
     role: ['admin'],
   },
+  {
+    path: '/admin/contacts',
+    name: 'Conttacts Page',
+    icon: MessageSquareOff,
+    permission: 'view_contacts',
+    role: ['admin'],
+  },
 ];
 
 function Sidebar() {
@@ -149,7 +156,7 @@ function Sidebar() {
 
         {/* Navigation */}
         <nav>
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-1">
             {visibleItems.map((item) => (
               <li key={item.path}>
                 <Link to={item.path}>
