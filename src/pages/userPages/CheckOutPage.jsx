@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -24,6 +24,7 @@ function CheckOutPage() {
   const { items } = useCartStore();
   const user = useUserStore((state) => state.user);
   const [formErrors, setFormErrors] = useState({});
+  const [referenceValidation, setReferenceValidation] = useState({ isValid: null, message: '' });
   const [getInfo, setGetInfo] = useState({
     payment_method: '',
     address: user?.address || '',
@@ -40,6 +41,74 @@ function CheckOutPage() {
 
   // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Debounce timer reference
+  const [debounceTimer, setDebounceTimer] = useState(null);
+  const hasReferenceError = getInfo.reference_number && referenceValidation.isValid === false;
+  const isReferenceValidating = getInfo.reference_number && referenceValidation.isValid === null;
+
+  // Mutation for checking reference number
+  const checkReferenceMutation = useMutation({
+    mutationFn: (referenceNumber) => axios.post(`/api/orders/check-reference/${referenceNumber}`),
+    onSuccess: (response) => {
+      setReferenceValidation({
+        isValid: true,
+        message: 'Your reference number looks good!',
+      });
+    },
+    onError: (error) => {
+      setReferenceValidation({
+        isValid: false,
+        message: error.response?.data?.message || 'Invalid reference number',
+      });
+    },
+  });
+
+  // Debounced reference number validation
+  const validateReferenceNumber = (referenceNumber) => {
+    // Clear previous timer
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+
+    // Reset validation state for empty input
+    if (!referenceNumber.trim()) {
+      setReferenceValidation({ isValid: null, message: '' });
+      return;
+    }
+
+    // Set new timer for debounce (500ms delay)
+    const timer = setTimeout(() => {
+      checkReferenceMutation.mutate(referenceNumber);
+    }, 500);
+
+    setDebounceTimer(timer);
+  };
+
+  // Handle reference number change
+  const handleReferenceNumberChange = (value) => {
+    setGetInfo({ ...getInfo, reference_number: value });
+
+    // Clear any existing errors when user starts typing
+    if (formErrors.reference_number) {
+      setFormErrors({ ...formErrors, reference_number: '' });
+    }
+
+    // Reset validation state
+    setReferenceValidation({ isValid: null, message: '' });
+
+    // Trigger debounced validation
+    validateReferenceNumber(value);
+  };
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+    };
+  }, [debounceTimer]);
 
   const placeOrderMutation = useMutation({
     mutationFn: (orderData) => axios.post('/api/orders', orderData),
@@ -58,6 +127,7 @@ function CheckOutPage() {
         email: user?.email || '',
       });
       setFormErrors({});
+      setReferenceValidation({ isValid: null, message: '' });
       setIsModalOpen(false);
       navigate(`/user/after-checkout/${orderId}`);
     },
@@ -72,10 +142,15 @@ function CheckOutPage() {
   });
 
   const handleConfirmOrder = async () => {
+    if (hasReferenceError || isReferenceValidating) {
+      toast.error('Please wait for reference number validation to complete');
+      return;
+    }
+
     try {
       await checkoutSchema.validate(getInfo, { abortEarly: false });
       setFormErrors({});
-      setIsModalOpen(true); // Show modal while loading
+      setIsModalOpen(true);
       placeOrderMutation.mutate({
         ...getInfo,
         address: combinedAddress,
@@ -248,13 +323,24 @@ function CheckOutPage() {
                 error={formErrors.account_name}
                 placeholder="Your GCash or Bank Account Name"
               />
-              <TextInput
-                label="Reference Number *"
-                value={getInfo.reference_number || ''}
-                onChange={(value) => setGetInfo({ ...getInfo, reference_number: value })}
-                error={formErrors.reference_number}
-                placeholder="Reference Number"
-              />
+              <div className="space-y-2">
+                <TextInput
+                  label="Reference Number *"
+                  value={getInfo.reference_number || ''}
+                  onChange={handleReferenceNumberChange}
+                  error={
+                    formErrors.reference_number ||
+                    (referenceValidation.isValid === false ? referenceValidation.message : '')
+                  }
+                  placeholder="Reference Number"
+                />
+                {referenceValidation.isValid === true && (
+                  <div className="text-sm text-green-600">{referenceValidation.message}</div>
+                )}
+                {checkReferenceMutation.isPending && (
+                  <div className="text-sm text-blue-600">Checking reference number...</div>
+                )}
+              </div>
             </Card>
 
             {/* ORDER NOTES */}
@@ -279,7 +365,9 @@ function CheckOutPage() {
               size="lg"
               variant="CTA"
               className="w-full py-7"
-              disabled={placeOrderMutation.isLoading || items.length === 0}
+              disabled={
+                placeOrderMutation.isLoading || items.length === 0 || hasReferenceError || isReferenceValidating
+              }
             >
               {placeOrderMutation.isLoading ? 'Placing Order...' : 'Confirm Order'}
             </Button>
@@ -303,86 +391,3 @@ function CheckOutPage() {
 }
 
 export default CheckOutPage;
-
-/*   
-
-  const featuredProducts = [
-    {
-      name: 'Carbon',
-      desc: 'Perfect balance of sweet and heat.',
-      img: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1758445989/122179467_192071712292847_9036583728645172047_n_zwhbth.jpg',
-      link: '/products/sweet-chili',
-      tag: 'BESTSELLER',
-      tagColor: 'bg-orange-500',
-    },
-    {
-      name: 'Alas Powders',
-      desc: 'Creamy and savory favorite.',
-      img: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1755351170/powders_lziet3.jpg',
-      link: '/products/garlic-mayo',
-      tag: 'NEW',
-      tagColor: 'bg-green-500',
-    },
-    {
-      name: 'Classic Sauces',
-      desc: 'Smoky and rich in flavor.',
-      img: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1758445522/122462317_192071598959525_4825425067991163101_n_yh2sac.jpg',
-      link: '/products/bbq',
-      tag: 'TRENDING',
-      tagColor: 'bg-red-500',
-    },
-    {
-      name: 'Ballad of Q',
-      desc: 'A bold kick for any meal.',
-      img: 'https://res.cloudinary.com/drq2wzvmo/image/upload/v1758445445/471449145_1098376664995676_4011717143068015172_n_fmgpvi.jpg',
-      link: '/products/spicy-vinegar',
-      tag: 'HOT',
-      tagColor: 'bg-red-600',
-    },
-  ];
-
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl md:text-base">Featured Sauces</h2>
-            <Link to="/menu" className="text-primary flex items-center gap-1 text-sm font-medium hover:underline">
-              View all products
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featuredProducts.map((product) => (
-              <Card
-                key={product.name}
-                className="group overflow-hidden p-0 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-              >
-                <div className="relative h-40 overflow-hidden">
-                  <img
-                    src={product.img}
-                    alt={product.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div
-                    className={`font-heading absolute top-3 left-3 rounded-full px-2 py-1 text-xs font-bold text-white ${product.tagColor}`}
-                  >
-                    {product.tag}
-                  </div>
-                </div>
-                <CardContent className="space-y-3 p-5">
-                  <div>
-                    <CardTitle className="text-lg font-bold">{product.name}</CardTitle>
-                    <CardDescription className="mt-1 line-clamp-2 text-sm">{product.desc}</CardDescription>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Link to={product.link} className="w-full">
-                      <Button size="sm" className="w-full">
-                        Try It Now
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section> 
-        */

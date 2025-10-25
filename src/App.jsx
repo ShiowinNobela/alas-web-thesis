@@ -20,6 +20,7 @@ import ProductPage from './pages/userPages/ProductListPage.jsx';
 import ProductListLayout from './pages/layouts/ProductListLayout.jsx';
 import RefundsPage from './pages/adminPages/RefundsPage.jsx';
 import ReturnsPage from './pages/adminPages/ReturnsPage.jsx';
+import AdminContactPage from './pages/adminPages/AdminContactPage.jsx';
 const UnauthorizedPage = lazy(() => import('./pages/userPages/UnauthorizedPage.jsx'));
 const LoyaltyRewardsPage = lazy(() => import('./pages/userPages/LoyaltyRewardsPage.jsx'));
 const LoginPage = lazy(() => import('./pages/userPages/LoginPage.jsx'));
@@ -124,6 +125,7 @@ function App() {
                 <Route path="sales" element={<SalesPage />} />
                 <Route path="refunds" element={<RefundsPage />} />
                 <Route path="returns" element={<ReturnsPage />} />
+                <Route path="contacts" element={<AdminContactPage />} />
               </Route>
 
               <Route element={<PermissionRoute permission="manage_orders" />}>
