@@ -64,8 +64,8 @@ const products = [
 
 export default function ProductsShowcaseSection() {
   return (
-    <section className="py-12 product-gradient md:py-25">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <section className="product-gradient py-12 md:py-25">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -73,10 +73,10 @@ export default function ProductsShowcaseSection() {
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <h2 className="mb-4 text-4xl font-bold font-heading text-content md:text-5xl">
+          <h2 className="font-heading text-content mb-4 text-4xl font-bold md:text-5xl">
             Spice Up Your Life, <span className="text-primary">Like Never Before</span>
           </h2>
-          <p className="max-w-2xl mx-auto text-lg text-lighter">
+          <p className="text-lighter mx-auto max-w-2xl text-lg">
             Artisanal heat crafted for flavor explorers. Each product tells a story of passion.
           </p>
         </motion.div>
@@ -93,56 +93,56 @@ export default function ProductsShowcaseSection() {
               key={index}
               variants={item}
               whileHover={hoverEffect}
-              className="relative overflow-hidden transition-all duration-300 rounded-lg shadow-md group bg-card hover:shadow-xl sm:rounded-xl"
+              className="group bg-card relative overflow-hidden rounded-lg shadow-md transition-all duration-300 hover:shadow-xl sm:rounded-xl"
             >
-              {index === 1 && (
-                <div className="absolute z-10 px-2 py-1 text-xs font-bold text-white bg-primary top-3 right-3 rounded-xl">
+              {/* {index === 1 && (
+                <div className="bg-primary absolute top-3 right-3 z-10 rounded-xl px-2 py-1 text-xs font-bold text-white">
                   Bestseller
                 </div>
               )}
               {index === 2 && (
-                <div className="absolute z-10 px-2 py-1 text-xs font-bold text-white bg-primary top-3 right-3 rounded-xl">
+                <div className="bg-primary absolute top-3 right-3 z-10 rounded-xl px-2 py-1 text-xs font-bold text-white">
                   New
                 </div>
-              )}
+              )} */}
 
-              <div className="relative w-full h-40 overflow-hidden sm:h-48">
+              <div className="relative h-40 w-full overflow-hidden sm:h-48">
                 <img
                   src={product.image}
                   alt={product.name}
                   loading="lazy"
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               </div>
 
               <div className="p-3 sm:p-5">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-xl font-bold font-heading text-content">{product.name}</h3>
-                  <div className="flex items-center text-primary">
-                    <StarIcon className="w-4 h-4 fill-current" />
+                <div className="mb-2 flex items-start justify-between">
+                  <h3 className="font-heading text-content text-xl font-bold">{product.name}</h3>
+                  {/* <div className="text-primary flex items-center">
+                    <StarIcon className="h-4 w-4 fill-current" />
                     <span className="ml-1 text-sm font-medium">4.8</span>
-                  </div>
+                  </div> */}
                 </div>
 
-                <div className="flex items-center gap-2 mb-3">
+                {/* <div className="flex items-center gap-2 mb-3">
                   <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
                     <FlameIcon className="w-4 h-4" />
                     {product.heatLevel}
                   </span>
                   <span className="text-sm text-lighter">|</span>
                   <span className="text-sm text-lighter">{product.size}</span>
-                </div>
+                </div> */}
 
-                <p className="mb-4 text-lighter">{product.description}</p>
+                <p className="text-lighter mb-4">{product.description}</p>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-lg font-bold text-content">{product.price}</span>
+                  <span className="text-content text-lg font-bold">{product.price}</span>
                   <Link to={`/product/${product.id}`}>
                     <ShowcaseButton
                       size="sm"
-                      icon={<ArrowRightIcon className="w-4 h-4" />}
-                      className="text-white bg-primary hover:bg-amber-600"
+                      icon={<ArrowRightIcon className="h-4 w-4" />}
+                      className="bg-primary text-white hover:bg-amber-600"
                     >
                       View Menu
                     </ShowcaseButton>
@@ -158,11 +158,11 @@ export default function ProductsShowcaseSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="text-center mt-14"
+          className="mt-14 text-center"
           whileHover={{ scale: 1.05 }}
         >
           <Link to="/menu">
-            <Button variant="CTA" className="relative overflow-hidden group">
+            <Button variant="CTA" className="group relative overflow-hidden">
               <motion.span
                 className="relative z-10 flex items-center justify-center gap-2"
                 whileHover={{ gap: 3 }}
@@ -179,12 +179,12 @@ export default function ProductsShowcaseSection() {
                     ease: 'easeInOut',
                   }}
                 >
-                  <ArrowRightIcon className="w-5 h-5" />
+                  <ArrowRightIcon className="h-5 w-5" />
                 </motion.span>
               </motion.span>
 
               <motion.span
-                className="absolute inset-0 opacity-0 bg-gradient-to-r from-amber-500 to-amber-600 group-hover:opacity-100"
+                className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-600 opacity-0 group-hover:opacity-100"
                 initial={{ x: '-100%' }}
                 whileHover={{ x: '0%', opacity: 1 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}

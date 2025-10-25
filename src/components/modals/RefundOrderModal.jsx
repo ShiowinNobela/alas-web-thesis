@@ -9,6 +9,10 @@ function RefundOrderModal({ open, onClose, reason, onReasonChange, contactNumber
       <DialogContent className="max-w-md rounded-2xl">
         <DialogHeader>
           <DialogTitle>Request Refund</DialogTitle>
+          <p className="text-muted-foreground text-sm">
+            Please provide a reason, your contact number for this refund request. We will also be contacting you through
+            your email account.
+          </p>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
@@ -18,9 +22,13 @@ function RefundOrderModal({ open, onClose, reason, onReasonChange, contactNumber
             onChange={(e) => onReasonChange(e.target.value)}
           />
           <Input
-            placeholder="Contact number..."
+            placeholder="09XXXXXXXXX"
+            type="tel"
             value={contactNumber}
-            onChange={(e) => onContactChange(e.target.value)}
+            onChange={(e) => {
+              const numericValue = e.target.value.replace(/\D/g, '').slice(0, 11);
+              onContactChange(numericValue);
+            }}
           />
         </div>
 

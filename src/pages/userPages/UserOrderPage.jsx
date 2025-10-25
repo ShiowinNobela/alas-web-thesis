@@ -27,8 +27,15 @@ function UserViewOrderPage() {
   const paymentFilters = useMemo(() => searchParams.getAll('payment_method'), [searchParams]);
   const monthYearFilter = useMemo(() => searchParams.get('month_year'), [searchParams]);
 
-  const { showCancelModal, setShowCancelModal, cancelNote, setCancelNote, setCancelingOrderId, cancelOrder, reset } =
-    useCancelOrder();
+  const {
+    showCancelModal,
+    setShowCancelModal,
+    cancelNote,
+    setCancelNote,
+    setCancelingOrderId,
+    cancelOrder,
+    resetCancelState,
+  } = useCancelOrder();
   const {
     showRefundModal,
     setShowRefundModal,
@@ -148,7 +155,7 @@ function UserViewOrderPage() {
 
         <CancelOrderModal
           open={showCancelModal}
-          onClose={reset}
+          onClose={resetCancelState}
           note={cancelNote}
           onNoteChange={setCancelNote}
           onConfirm={cancelOrder}

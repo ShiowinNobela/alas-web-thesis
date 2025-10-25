@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import usePermissionsStore from '@/stores/permissionStore';
 import { socket } from '@/socket';
 import useUserStore from '@/stores/userStore';
@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 const AdminPermissionsProvider = ({ children }) => {
   const userRole = useUserStore((state) => state.user.role_name);
   const fetchPermissions = usePermissionsStore((state) => state.fetchPermissions);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (userRole === 'admin') return;
@@ -17,6 +18,7 @@ const AdminPermissionsProvider = ({ children }) => {
     const handlePermissionUpdate = () => {
       toast.success('🔄 Permissions have been updated.');
       fetchPermissions();
+      setReloadKey((prev) => prev + 1); // triggers re-render
     };
 
     socket.on('permissions:updated', handlePermissionUpdate);
@@ -26,7 +28,7 @@ const AdminPermissionsProvider = ({ children }) => {
     };
   }, [userRole, fetchPermissions]);
 
-  return <>{children}</>;
+  return <div key={reloadKey}>{children}</div>; // re-render children
 };
 
 AdminPermissionsProvider.propTypes = {

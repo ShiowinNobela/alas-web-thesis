@@ -117,8 +117,12 @@ export default function UserOrderHistory({ order }) {
                 const entry = historyMap[status];
                 const Icon = statusIcons[status] || MessageSquare;
                 const isCompleted = !!entry;
-                const isCurrent =
-                  currentStatus?.status === status || (!isCompleted && index > 0 && historyMap[fullFlow[index - 1]]);
+                const lastCompletedIndex =
+                  fullFlow.findIndex((status) => !historyMap[status]) !== -1
+                    ? fullFlow.findIndex((status) => !historyMap[status]) - 1
+                    : fullFlow.length - 1; // if all completed, highlight the last
+
+                const isCurrent = index === lastCompletedIndex;
 
                 return (
                   <TimelineItem

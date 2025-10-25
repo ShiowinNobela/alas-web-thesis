@@ -12,6 +12,7 @@ import {
 } from 'flowbite-react';
 import RoleBadge from '@/components/bigComponents/RoleBadge';
 import TableSkeleton from '@/components/skeletons/TableSkeleton';
+import { Key } from 'lucide-react';
 
 function AdminUsersTable({ users, isLoading, isError, onToggleStatus, onStaffClick }) {
   if (isLoading) return <TableSkeleton columns={6} rows={3} />;
@@ -65,8 +66,14 @@ function AdminUsersTable({ users, isLoading, isError, onToggleStatus, onStaffCli
                   disabled={user.role_name === 'admin' || user._isUpdating}
                 />
                 {user.role_name === 'staff' && (
-                  <Button color="gray" size="sm" outline onClick={() => onStaffClick(user)}>
-                    View Permissions
+                  <Button
+                    size="sm"
+                    color="gray"
+                    className="rounded-full p-2 transition hover:bg-gray-100"
+                    onClick={() => onStaffClick(user)}
+                    aria-label="View Permissions"
+                  >
+                    <Key className="h-4 w-4 text-white" />
                   </Button>
                 )}
               </TableCell>

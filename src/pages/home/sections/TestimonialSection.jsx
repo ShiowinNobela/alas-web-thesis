@@ -50,8 +50,8 @@ const TestimonialSection = () => {
   };
 
   return (
-    <section className="py-16 bg-neutral md:py-24">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <section className="bg-neutral py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -59,10 +59,10 @@ const TestimonialSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-12 text-center"
         >
-          <h2 className="mb-4 text-3xl font-bold text-center font-heading text-content md:text-5xl">
+          <h2 className="font-heading text-content mb-4 text-center text-3xl font-bold md:text-5xl">
             What Our <span className="text-orange-600">Spice Lovers</span> Say
           </h2>
-          <p className="max-w-2xl mx-auto text-center text-lighter">
+          <p className="text-lighter mx-auto max-w-2xl text-center">
             Don't just take our word for it - hear from those who've experienced the ALAS difference
           </p>
         </motion.div>
@@ -79,27 +79,19 @@ const TestimonialSection = () => {
               key={index}
               variants={item}
               whileHover={{ y: -10 }}
-              className="relative overflow-hidden shadow-lg group bg-card rounded-2xl"
+              className="group bg-card relative overflow-hidden rounded-2xl shadow-lg"
             >
               <div className="relative z-10 p-6">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="overflow-hidden border-2 rounded-full border-primary h-14 w-14">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="object-cover w-full h-full"
-                      loading="lazy"
-                    />
-                  </div>
+                <div className="mb-6 flex items-center gap-4">
                   <div>
-                    <h3 className="font-medium text-content">{testimonial.name}</h3>
-                    <p className="text-sm text-lighter">{testimonial.role}</p>
+                    <h3 className="text-content font-medium">{testimonial.name}</h3>
+                    <p className="text-lighter text-sm">{testimonial.role}</p>
                   </div>
                 </div>
 
-                <QuoteIcon className="w-6 h-6 mb-4 text-primary opacity-80" />
+                <QuoteIcon className="text-primary mb-4 h-6 w-6 opacity-80" />
 
-                <p className="mb-6 text-lighter">{testimonial.content}</p>
+                <p className="text-lighter mb-6">{testimonial.content}</p>
 
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
@@ -111,7 +103,7 @@ const TestimonialSection = () => {
                 </div>
               </div>
 
-              <div className="absolute bottom-0 left-0 w-full h-1 from-primary bg-gradient-to-r to-amber-600"></div>
+              <div className="from-primary absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r to-amber-600"></div>
             </motion.div>
           ))}
         </motion.div>
@@ -126,8 +118,8 @@ const TestimonialSection = () => {
           {user ? (
             <Link to="/users/reviews">
               <ShowcaseButton
-                icon={<MessageCircleIcon className="w-5 h-5" />}
-                className="text-white bg-primary hover:bg-primary/90"
+                icon={<MessageCircleIcon className="h-5 w-5" />}
+                className="bg-primary hover:bg-primary/90 text-white"
               >
                 Leave a Review
               </ShowcaseButton>
@@ -135,8 +127,8 @@ const TestimonialSection = () => {
           ) : (
             <Link to="/login">
               <ShowcaseButton
-                icon={<MessageCircleIcon className="w-5 h-5" />}
-                className="text-white bg-primary hover:bg-primary/90"
+                icon={<MessageCircleIcon className="h-5 w-5" />}
+                className="bg-primary hover:bg-primary/90 text-white"
               >
                 Leave a Review
               </ShowcaseButton>
