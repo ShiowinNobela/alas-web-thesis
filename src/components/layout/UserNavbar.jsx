@@ -8,14 +8,18 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
 import Cart from '../bigComponents/Cart';
 import { Menu, ShoppingCart, X } from 'lucide-react';
 import useUserStore from '@/stores/userStore';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 const navItemStyle =
   'px-2 py-2 border-b-2 border-transparent hover:border-primary hover:text-primary transition-all cursor-pointer';
 
-function Navbar() {
+function Navbar({ notifications = [], setNotifications }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const user = useUserStore((state) => state.user);
+
+  const showNotifications = user && user.role_name === 'customer';
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -35,6 +39,17 @@ function Navbar() {
     { to: '/terms-and-conditions', label: 'Terms & Conditions' },
     { to: '/privacy-policy', label: 'Privacy Policy' },
   ];
+
+  const handleMarkAsRead = async (notifId) => {
+    try {
+      await axios.patch(`/api/notifications/${notifId}/read`);
+      setNotifications((prev) => prev.filter((n) => n.id !== notifId));
+      toast.success('Notification marked as read');
+    } catch (err) {
+      console.error('❌ Failed to mark notification as read:', err);
+      toast.error('Failed to mark notification as read');
+    }
+  };
 
   return (
     <header className="bg-card sticky top-0 z-50 w-full shadow">
@@ -80,6 +95,50 @@ function Navbar() {
               ))}
             </div>
           </div>
+
+          {showNotifications && (
+            <div className="group relative">
+              <button className="hover:bg-accent relative rounded-full p-2 transition" aria-label="Notifications">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.857 17.657A2 2 0 0012 19a2 2 0 01-2.857-1.343M6 8a6 6 0 1112 0c0 2.28.857 4.44 2.343 6.343A1.5 1.5 0 0118.97 16H5.03a1.5 1.5 0 01-1.373-1.657C5.143 12.44 6 10.28 6 8z"
+                  />
+                </svg>
+
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+                    {notifications.length}
+                  </span>
+                )}
+              </button>
+
+              {/* Dropdown */}
+              <div className="invisible absolute top-full right-0 z-50 mt-2 w-64 rounded-lg border bg-white opacity-0 shadow-lg transition-all duration-300 group-hover:visible group-hover:opacity-100">
+                {notifications.length > 0 ? (
+                  notifications.map((notif, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleMarkAsRead(notif.id)}
+                      className="w-full border-b px-4 py-3 text-left text-sm text-gray-700 last:border-b-0 hover:bg-gray-100"
+                    >
+                      {notif.message || notif.title || 'New notification'}
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-4 py-3 text-sm text-gray-500">No notifications</div>
+                )}
+              </div>
+            </div>
+          )}
 
           {user && (
             <>
