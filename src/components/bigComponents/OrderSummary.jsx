@@ -1,13 +1,13 @@
 // components/OrderSummary.jsx
-import { Tooltip } from 'flowbite-react';
+// import { Tooltip } from 'flowbite-react';
 import dayjs from 'dayjs';
-import OrderInfoModal from '../modals/OrderInfoModal';
+// import OrderInfoModal from '../modals/OrderInfoModal';
 import { useQuery } from '@tanstack/react-query';
 import { fetchOrderSummary, fetchLast30OrderSummary } from '@/api/orders';
 import { memo } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
-import { RefreshCcw } from 'lucide-react';
+// import { RefreshCcw } from 'lucide-react';
 
 // ✅ Memoized cards component
 const OrderCards = memo(function OrderCards({ data }) {
@@ -106,7 +106,7 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
         </div>
       )}
 
-      <div className="flex flex-col items-center justify-center space-y-2">
+      {/* <div className="flex flex-col items-center justify-center space-y-2">
         <OrderInfoModal tooltipContent="Learn more about orders" modalTitle="Order Information">
           <p>This modal shows detailed information or guides about orders.</p>
           <p>Someone can work on this, it would just be a guide anyway, heck put pics on the guide if you want</p>
@@ -121,7 +121,7 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
             <RefreshCcw className="h-5 w-5 transition-transform duration-300 group-active:rotate-180" />
           </button>
         </Tooltip>
-      </div>
+      </div> */}
     </div>
   );
 };

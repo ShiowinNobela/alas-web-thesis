@@ -43,12 +43,12 @@ function UserDashboard() {
     },
   ];
 
-  const stats = [
-    { label: 'Active Orders', value: '2', color: 'text-blue-600' },
-    { label: 'Reward Points', value: '1,250', color: 'text-amber-600' },
-    { label: 'Reviews', value: '8', color: 'text-green-600' },
-    { label: 'Wishlist', value: '5', color: 'text-pink-600' },
-  ];
+  // const stats = [
+  //   { label: 'Active Orders', value: '2', color: 'text-blue-600' },
+  //   { label: 'Reward Points', value: '1,250', color: 'text-amber-600' },
+  //   { label: 'Reviews', value: '8', color: 'text-green-600' },
+  //   { label: 'Wishlist', value: '5', color: 'text-pink-600' },
+  // ];
 
   return (
     <div className="bg-neutral min-h-screen p-4 md:p-6">
@@ -65,7 +65,7 @@ function UserDashboard() {
             </h1>
             <p className="text-lighter max-w-xl">Manage your account, track orders, and discover new hot sauces!</p>
 
-            {/* Stats Overview */}
+            {/* Stats Overview
             <div className="flex gap-6 pt-4">
               {stats.map((stat, index) => (
                 <motion.div
@@ -79,7 +79,7 @@ function UserDashboard() {
                   <div className="text-xs text-gray-500">{stat.label}</div>
                 </motion.div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* CTA Button */}
@@ -114,7 +114,6 @@ function UserDashboard() {
         >
           <div className="flex items-center justify-between">
             <h2 className="text-content text-xl font-semibold">Quick Actions</h2>
-            <span className="text-sm text-gray-500">{quickActions.length} options</span>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -193,17 +192,17 @@ function UserDashboard() {
                 color: 'blue',
               },
               {
-                title: 'Contact Support',
-                desc: '24/7 customer service available',
+                title: 'Contact Us',
+                desc: 'We promise we will reply as soon as we can.',
                 icon: <Phone className="h-6 w-6 text-green-500" />,
                 link: '/contact',
                 color: 'green',
               },
               {
-                title: 'Privacy & Security',
-                desc: 'Learn about our safety measures',
+                title: 'Privacy Policy',
+                desc: 'Learn about our policies on keeping your privacy safe',
                 icon: <Shield className="h-6 w-6 text-purple-500" />,
-                link: '/privacy',
+                link: '/privacy-policy',
                 color: 'purple',
               },
             ].map((item, index) => (

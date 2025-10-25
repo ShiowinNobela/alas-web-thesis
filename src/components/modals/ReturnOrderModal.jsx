@@ -50,7 +50,8 @@ function ReturnOrderModal({
         <DialogHeader>
           <DialogTitle>Request a Return</DialogTitle>
           <p className="text-muted-foreground text-sm">
-            Please provide a reason, your contact number, and optionally upload an image of the product.
+            Please provide a reason, your contact number, and upload an image of the item. We will also be contacting
+            you through your email account.
           </p>
         </DialogHeader>
 
@@ -68,16 +69,17 @@ function ReturnOrderModal({
           </div>
 
           {/* Contact Field */}
-          <div className="space-y-2">
-            <Label htmlFor="contact-number">Contact Number *</Label>
-            <Input
-              id="contact-number"
-              type="tel"
-              value={contactNumber}
-              onChange={(e) => onContactChange(e.target.value)}
-              placeholder="09XXXXXXXXX"
-            />
-          </div>
+          <Input
+            id="contact-number"
+            type="tel"
+            value={contactNumber}
+            onChange={(e) => {
+              // Only allow digits and limit to 11 characters
+              const numericValue = e.target.value.replace(/\D/g, '').slice(0, 11);
+              onContactChange(numericValue);
+            }}
+            placeholder="09XXXXXXXXX"
+          />
 
           {/* Image Upload Field */}
           <div className="space-y-2">

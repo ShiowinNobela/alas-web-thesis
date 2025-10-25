@@ -117,7 +117,7 @@ function UserSettings() {
         {/* PROFILE */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-            <Card>
+            <Card className="h-full">
               <CardContent className="py-6 text-center">
                 <div className="bg-primary mx-auto mb-4 flex size-20 items-center justify-center rounded-full text-white shadow-lg">
                   <User size={36} />

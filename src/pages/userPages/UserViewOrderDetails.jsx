@@ -255,14 +255,14 @@ export default function UserViewOrderDetails() {
                 </CardContent>
               </Card>
 
-              <Card className="w-full flex-col space-y-2">
+              {/* <Card className="w-full flex-col space-y-2">
                 <CardHeader>
                   <CardTitle className="font-bold">More Information</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm">{order.notes?.trim() ? order.notes : 'No notes'}</p>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </div>
         </div>

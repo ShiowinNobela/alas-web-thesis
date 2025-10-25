@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
-import { Flame, ShoppingCart, Star } from 'lucide-react';
+import { ShoppingCart, Star } from 'lucide-react';
 import BackButton from '@/components/bigComponents/BackButton';
 import AddToCartModal from '@/components/modals/AddToCartModal';
 import { useAddToCart } from '@/hooks/useAddToCart';
@@ -63,7 +63,6 @@ function ProductDetailsPage() {
             </div>
 
             <div className="mt-6 w-full lg:mt-0 lg:w-1/2 lg:py-6 lg:pl-10">
-              <h2 className="text-lighter text-sm">{product.category}</h2>
               <h1 className="font-heading text-content mb-1 text-3xl font-bold">{product.name}</h1>
 
               {/* Rating thingy */}
@@ -93,11 +92,9 @@ function ProductDetailsPage() {
               <p className="leading-relaxed">{product.description}</p>
 
               <div className="mt-6 mb-5 flex items-center border-b-2 border-gray-100 pb-5">
-                <div className="flex">
-                  <span className="mr-3">Spice Level</span>
-                  <Flame className="size-5 fill-amber-500 text-red-400" />
-                  <Flame className="size-5 fill-amber-500 text-red-400" />
-                  <Flame className="size-5 fill-amber-500 text-red-400" />
+                <div className="flex items-center">
+                  <span className="mr-3 font-medium text-gray-700">Net Wt.</span>
+                  <span className="text-gray-600">150 ml / 5 oz</span>
                 </div>
               </div>
 

@@ -21,6 +21,7 @@ function InventoryTable({ products, onEdit, onToggle, onViewHistory }) {
             <TableHeadCell className="table-header">Name</TableHeadCell>
             <TableHeadCell className="table-header">Category</TableHeadCell>
             <TableHeadCell className="table-header">Stock</TableHeadCell>
+            <TableHeadCell className="table-header">Reserved</TableHeadCell>
             <TableHeadCell className="table-header">Price</TableHeadCell>
             <TableHeadCell className="table-header">Status</TableHeadCell>
             <TableHeadCell className="table-header">Last Updated</TableHeadCell>
@@ -34,7 +35,7 @@ function InventoryTable({ products, onEdit, onToggle, onViewHistory }) {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <img src={product.image} alt={product.name} className="size-8 object-cover" />
-                  <span className="font-medium">{product.name}</span>
+                  <span className="max-w-[150px] truncate font-medium">{product.name}</span>
                 </div>
               </TableCell>
 
@@ -52,6 +53,7 @@ function InventoryTable({ products, onEdit, onToggle, onViewHistory }) {
                   product.stock_quantity
                 )}
               </TableCell>
+              <TableCell>{product.reserved_quantity}</TableCell>
               <TableCell className="text-emerald-500">₱{parseFloat(product.price).toFixed(2)}</TableCell>
               <TableCell>
                 <Badge

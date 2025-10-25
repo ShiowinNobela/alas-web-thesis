@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import { Flame, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import AddToCartModal from '../modals/AddToCartModal';
 import { useAddToCart } from '@/hooks/useAddToCart';
 
@@ -31,14 +31,10 @@ function ProductCard({ product }) {
         <div className="flex flex-1 flex-col justify-between text-left">
           <div>
             <h3 className="font-heading text-content line-clamp-1 text-lg font-bold">{product.name}</h3>
-            <p className="text-lighter mb-2 text-sm capitalize">{product.category}</p>
             <p className="text-lighter mb-2 line-clamp-2 text-xs">{product.description}</p>
 
             <div className="mb-2 flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Flame key={i} className="text-primary fill-primary size-3" />
-              ))}
-              <p className="ml-2 text-xs">Super Hawt</p>
+              <p className="text-xs font-medium text-gray-700">Net Wt. 150 ml/5 oz</p>
             </div>
 
             <div className="flex flex-row justify-between text-sm">

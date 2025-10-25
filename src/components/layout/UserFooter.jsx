@@ -1,4 +1,4 @@
-import { Phone, MapPin, Flame, Truck, Shield, RotateCcw } from 'lucide-react';
+import { Phone, MapPin, Truck, Shield, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
@@ -34,7 +34,7 @@ function Footer() {
             </div>
 
             {/* Unique Heat Level Guide */}
-            <div className="rounded-2xl border border-orange-200 bg-gradient-to-r from-yellow-50 to-red-50 p-4">
+            {/* <div className="rounded-2xl border border-orange-200 bg-gradient-to-r from-yellow-50 to-red-50 p-4">
               <h4 className="font-heading mb-2 text-sm font-semibold text-black">Heat Level Guide</h4>
               <div className="space-y-1">
                 <div className="flex items-center text-xs">
@@ -53,7 +53,7 @@ function Footer() {
                   <span className="text-lighter dark:text-neutral">Hot - Bring the fire!</span>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Simplified Navigation */}
@@ -85,7 +85,7 @@ function Footer() {
                   </li>
                 </ul>
               </div>
-              <div>
+              {/* <div>
                 <h4 className="text-content font-heading mb-4 text-lg font-semibold">More Links</h4>
                 <ul className="space-y-3">
                   <li>
@@ -109,7 +109,7 @@ function Footer() {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </div>
 
             {/* Support */}
@@ -197,12 +197,12 @@ function Footer() {
             </div>
 
             {/* Fun Sauce Fact */}
-            <div className="border-primary rounded-2xl border-l-4 bg-gradient-to-r from-red-50 to-orange-50 p-4">
+            {/* <div className="border-primary rounded-2xl border-l-4 bg-gradient-to-r from-red-50 to-orange-50 p-4">
               <h5 className="font-heading mb-1 text-sm font-semibold text-black">Spicy Fact</h5>
               <p className="text-lighter dark:text-neutral text-xs">
                 The Carolina Reaper is currently the world's hottest pepper at 2.2 million Scoville units! 🌶️
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
