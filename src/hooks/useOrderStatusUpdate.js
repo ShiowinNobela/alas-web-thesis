@@ -11,6 +11,9 @@ export function useOrderStatusUpdate() {
   const [updatingId, setUpdatingId] = useState(null);
   const [updateStatus, setUpdateStatus] = useState('');
   const [adminNote, setAdminNote] = useState('');
+  const [shippingPrice, setShippingPrice] = useState('');
+  const [shippingCompany, setShippingCompany] = useState('');
+  const [orderReferenceNumber, setOrderReferenceNumber] = useState('');
   const [modalTitle, setModalTitle] = useState('');
   const [confirmButtonLabel, setConfirmButtonLabel] = useState('');
   const [cancelRequested, setCancelRequested] = useState(false);
@@ -18,7 +21,7 @@ export function useOrderStatusUpdate() {
   // Mutation logic reused across pages
   const updateStatusMutation = useMutation({
     mutationFn: async ({ orderId, data }) => {
-      const { status, notes, cancelRequested } = data;
+      const { status, notes, cancelRequested, shippingPrice, shippingCompany, orderReferenceNumber } = data;
 
       if (cancelRequested) return await cancelOrderApi(orderId, { notes });
 
@@ -26,7 +29,12 @@ export function useOrderStatusUpdate() {
         case 'processing':
           return await moveToProcessingApi(orderId, { notes });
         case 'shipping':
-          return await moveToShippingApi(orderId, { notes });
+          return await moveToShippingApi(orderId, {
+            notes,
+            shippingPrice,
+            shippingCompany,
+            orderReferenceNumber,
+          });
         case 'delivered':
           return await moveToDeliveredApi(orderId, { notes });
         default:
@@ -66,7 +74,16 @@ export function useOrderStatusUpdate() {
   const handleStatusUpdate = (orderId, note, status) => {
     updateStatusMutation.mutate({
       orderId,
-      data: { status, notes: note, cancelRequested },
+      data: {
+        status,
+        notes: note,
+        cancelRequested,
+        ...(status === 'shipping' && {
+          shippingPrice,
+          shippingCompany,
+          orderReferenceNumber,
+        }),
+      },
     });
   };
 
@@ -77,11 +94,20 @@ export function useOrderStatusUpdate() {
     setCancelRequested(cancelRequested);
     setModalTitle(cancelRequested ? 'Confirm Cancellation' : modalTitle);
     setConfirmButtonLabel(cancelRequested ? 'Cancel Order' : confirmLabel);
+
+    if (status === 'shipping') {
+      setShippingPrice('');
+      setShippingCompany('');
+      setOrderReferenceNumber('');
+    }
   };
 
   const resetModal = () => {
     setStatusUpdateModal(false);
     setAdminNote('');
+    setShippingPrice('');
+    setShippingCompany('');
+    setOrderReferenceNumber('');
     setUpdatingId(null);
     setUpdateStatus('');
     setModalTitle('');
@@ -94,12 +120,18 @@ export function useOrderStatusUpdate() {
     updatingId,
     updateStatus,
     adminNote,
+    shippingPrice,
+    shippingCompany,
+    orderReferenceNumber,
     modalTitle,
     confirmButtonLabel,
     cancelRequested,
 
     // setters
     setAdminNote,
+    setShippingPrice,
+    setShippingCompany,
+    setOrderReferenceNumber,
     setStatusUpdateModal,
 
     // mutation

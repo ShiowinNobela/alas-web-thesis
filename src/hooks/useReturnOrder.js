@@ -8,14 +8,33 @@ export function useReturnOrder() {
   const [returnReason, setReturnReason] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [returningOrderId, setReturningOrderId] = useState(null);
+  const [returnImage, setReturnImage] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const queryClient = useQueryClient();
 
+  const uploadMutation = useMutation({
+    mutationFn: async (file) => {
+      const formData = new FormData();
+      formData.append('image', file);
+      const res = await axios.post('/api/upload/product', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return res.data;
+    },
+    onError: (err) => {
+      toast.error('Failed to upload image.');
+    },
+  });
+
   const returnMutation = useMutation({
-    mutationFn: async ({ orderId, reason, contactNumber }) => {
+    mutationFn: async ({ orderId, reason, contactNumber, imageUrl }) => {
       const res = await axios.post(`/api/returns/request/${orderId}`, {
         reason,
         contact_number: contactNumber,
+        image_url: imageUrl,
       });
       return res.data;
     },
@@ -29,7 +48,7 @@ export function useReturnOrder() {
     },
   });
 
-  const requestReturn = () => {
+  const requestReturn = async () => {
     const reason = returnReason.trim();
     const contact = contactNumber.trim();
 
@@ -42,7 +61,27 @@ export function useReturnOrder() {
       return;
     }
 
-    returnMutation.mutate({ orderId: returningOrderId, reason, contactNumber: contact });
+    let imageUrl = null;
+
+    if (returnImage) {
+      setUploadingImage(true);
+      try {
+        const uploadResult = await uploadMutation.mutateAsync(returnImage);
+        imageUrl = uploadResult.data.url;
+      } catch (error) {
+        toast.error('Failed to upload image. Please try again.');
+        setUploadingImage(false);
+        return;
+      }
+      setUploadingImage(false);
+    }
+
+    returnMutation.mutate({
+      orderId: returningOrderId,
+      reason,
+      contactNumber: contact,
+      imageUrl,
+    });
   };
 
   const reset = () => {
@@ -50,7 +89,10 @@ export function useReturnOrder() {
     setReturnReason('');
     setContactNumber('');
     setReturningOrderId(null);
+    setReturnImage(null);
+    setUploadingImage(false);
     returnMutation.reset();
+    uploadMutation.reset();
   };
 
   return {
@@ -62,6 +104,9 @@ export function useReturnOrder() {
     setContactNumber,
     returningOrderId,
     setReturningOrderId,
+    returnImage,
+    setReturnImage,
+    uploadingImage,
     requestReturn,
     reset,
     returnMutation,

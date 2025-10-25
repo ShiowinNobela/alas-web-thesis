@@ -75,11 +75,15 @@ export const moveToProcessingApi = async (orderId, { notes }) => {
   return response.data;
 };
 
-export const moveToShippingApi = async (orderId, { notes }) => {
-  const response = await axios.patch(`/api/adminOrder/move-to-shipping/${orderId}`, { notes });
+export const moveToShippingApi = async (orderId, { notes, shippingPrice, shippingCompany, orderReferenceNumber }) => {
+  const response = await axios.patch(`/api/adminOrder/move-to-shipping/${orderId}`, {
+    notes,
+    shipping_price: shippingPrice,
+    shipping_company: shippingCompany,
+    order_reference_number: orderReferenceNumber,
+  });
   return response.data;
 };
-
 export const moveToDeliveredApi = async (orderId, { notes }) => {
   const response = await axios.patch(`/api/adminOrder/move-to-delivered/${orderId}`, { notes });
   return response.data;
