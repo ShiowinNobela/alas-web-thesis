@@ -153,7 +153,7 @@ export default function UserViewOrderDetails() {
                   </CardContent>
                   <CardFooter className="flex justify-between pt-2">
                     <span className="font-semibold">Total</span>
-                    <span className="text-primary font-semibold">{order?.total_amount || '0.00'}</span>
+                    <span className="text-money font-semibold">₱ {order?.total_amount || '0.00'}</span>
                   </CardFooter>
                 </Card>
 
@@ -161,19 +161,39 @@ export default function UserViewOrderDetails() {
                   <CardHeader>
                     <CardTitle className="font-bold">Courier</CardTitle>
                   </CardHeader>
+
                   <CardContent className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <img src="https://i.ibb.co/L8KSdNQ/image-3.png" alt="Courier Logo" className="h-8 w-8" />
-                      <div className="flex flex-col">
-                        <span className="text-base">Free Delivery</span>
-                        <span className="text-muted-foreground text-sm">Delivery within 24 Hours</span>
-                      </div>
+                    <div className="flex w-full flex-col gap-2">
+                      {['shipping', 'delivered', 'returned'].includes(order?.status) ? (
+                        !order?.shipping_company ? (
+                          <p className="text-lighter w-full text-center italic">No shipping info available.</p>
+                        ) : (
+                          <div className="space-y-3">
+                            <div className="border-muted flex items-center justify-between border-b pb-2">
+                              <p className="text-muted-foreground font-medium">Courier</p>
+                              <span className="text-foreground text-lg font-semibold">
+                                {order?.shipping_company || 'Unknown Courier'}
+                              </span>
+                            </div>
+
+                            <div className="border-muted flex items-center justify-between border-b pb-2">
+                              <p className="text-muted-foreground font-medium">Shipping Fee</p>
+                              <span className="text-money font-bold">₱ {order?.shipping_price ?? '—'}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <p className="text-muted-foreground font-medium">Reference Number</p>
+                              <span className="text-primary font-semibold tracking-wide">
+                                {order?.shipping_reference || 'N/A'}
+                              </span>
+                            </div>
+                          </div>
+                        )
+                      ) : (
+                        <p className="text-lighter w-full text-center italic">Order not shipped yet.</p>
+                      )}
                     </div>
-                    <span className="font-semibold">0.00</span>
                   </CardContent>
-                  <CardFooter>
-                    <Button className="w-full">View Carrier Details</Button>
-                  </CardFooter>
                 </Card>
               </div>
 

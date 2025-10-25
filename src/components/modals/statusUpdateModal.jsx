@@ -10,6 +10,14 @@ const StatusUpdateModal = ({
   title,
   textareaValue,
   onTextareaChange,
+
+  showShippingFields = false,
+  shippingPrice = '',
+  onShippingPriceChange,
+  shippingCompany = '',
+  onShippingCompanyChange,
+  orderReferenceNumber = '',
+  onOrderReferenceNumberChange,
   onCancel,
   onConfirm,
   confirmButtonLabel,
@@ -25,7 +33,6 @@ const StatusUpdateModal = ({
       <ModalHeader>
         <div>
           <h3 className="text-xl font-bold">{title}</h3>
-
           <p className="text-lighter text-base">
             Order # <span className="text-primary text-sm tracking-tight">{order?.id}</span>
           </p>
@@ -92,6 +99,52 @@ const StatusUpdateModal = ({
           <div className="text-brand mb-4">Order not found</div>
         )}
 
+        {showShippingFields && (
+          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div>
+              <label htmlFor="shipping-price" className="mb-2 block text-sm font-medium text-gray-700">
+                Shipping Price
+              </label>
+              <input
+                id="shipping-price"
+                type="number"
+                step="0.01"
+                min="0"
+                value={shippingPrice}
+                onChange={onShippingPriceChange}
+                placeholder="0.00"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="shipping-company" className="mb-2 block text-sm font-medium text-gray-700">
+                Shipping Company
+              </label>
+              <input
+                id="shipping-company"
+                type="text"
+                value={shippingCompany}
+                onChange={onShippingCompanyChange}
+                placeholder="e.g., LBC, J&T, DHL"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="order-reference-number" className="mb-2 block text-sm font-medium text-gray-700">
+                Order Reference Number
+              </label>
+              <input
+                id="order-reference-number"
+                type="text"
+                value={orderReferenceNumber}
+                onChange={onOrderReferenceNumberChange}
+                placeholder="e.g., TRK123456789"
+                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Admin notes */}
         <div className="mb-4">
           <label htmlFor="admin-notes-textarea" className="mb-2 block text-sm font-medium text-gray-700">
@@ -125,6 +178,13 @@ StatusUpdateModal.propTypes = {
   title: PropTypes.string.isRequired,
   textareaValue: PropTypes.string.isRequired,
   onTextareaChange: PropTypes.func.isRequired,
+  showShippingFields: PropTypes.bool,
+  shippingPrice: PropTypes.string,
+  onShippingPriceChange: PropTypes.func,
+  shippingCompany: PropTypes.string,
+  onShippingCompanyChange: PropTypes.func,
+  orderReferenceNumber: PropTypes.string,
+  onOrderReferenceNumberChange: PropTypes.func,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
   confirmButtonLabel: PropTypes.string.isRequired,

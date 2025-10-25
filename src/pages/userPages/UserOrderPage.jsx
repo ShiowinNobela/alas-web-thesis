@@ -40,6 +40,7 @@ function UserViewOrderPage() {
     requestRefund,
     reset: resetRefund,
   } = useRefundOrder();
+
   const {
     showReturnModal,
     setShowReturnModal,
@@ -47,9 +48,13 @@ function UserViewOrderPage() {
     setReturnReason,
     contactNumber: returnContactNumber,
     setContactNumber: setReturnContactNumber,
+    returnImage,
+    setReturnImage,
+    uploadingImage,
     setReturningOrderId,
     requestReturn,
     reset: resetReturn,
+    returnMutation,
   } = useReturnOrder();
 
   const {
@@ -164,7 +169,11 @@ function UserViewOrderPage() {
           onReasonChange={setReturnReason}
           contactNumber={returnContactNumber}
           onContactChange={setReturnContactNumber}
+          returnImage={returnImage}
+          setReturnImage={setReturnImage}
           onConfirm={requestReturn}
+          isLoading={returnMutation.isLoading}
+          uploadingImage={uploadingImage}
         />
       </main>
     </TooltipProvider>

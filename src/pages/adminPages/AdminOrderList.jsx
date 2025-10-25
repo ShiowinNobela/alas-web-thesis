@@ -30,16 +30,21 @@ function AdminViewOrderPage() {
     updatingId,
     updateStatus,
     adminNote,
+    shippingPrice,
+    shippingCompany,
+    orderReferenceNumber,
     modalTitle,
     confirmButtonLabel,
     setAdminNote,
+    setShippingPrice,
+    setShippingCompany,
+    setOrderReferenceNumber,
     setStatusUpdateModal,
     updateStatusMutation,
     handleStatusUpdate,
     handleStatusUpdateClick,
   } = useOrderStatusUpdate();
 
-  // 📦 Fetch orders
   const {
     data: orders = [],
     refetch: refetchOrders,
@@ -143,6 +148,13 @@ function AdminViewOrderPage() {
           orderId={updatingId}
           textareaValue={adminNote}
           onTextareaChange={(e) => setAdminNote(e.target.value)}
+          showShippingFields={updateStatus === 'shipping'}
+          shippingPrice={shippingPrice}
+          onShippingPriceChange={(e) => setShippingPrice(e.target.value)}
+          shippingCompany={shippingCompany}
+          onShippingCompanyChange={(e) => setShippingCompany(e.target.value)}
+          orderReferenceNumber={orderReferenceNumber}
+          onOrderReferenceNumberChange={(e) => setOrderReferenceNumber(e.target.value)}
           onCancel={() => setStatusUpdateModal(false)}
           onConfirm={() => handleStatusUpdate(updatingId, adminNote, updateStatus)}
           confirmButtonLabel={confirmButtonLabel}

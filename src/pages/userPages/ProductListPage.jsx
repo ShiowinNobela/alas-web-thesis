@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { createColumnHelper, useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
+import { motion } from 'framer-motion';
 import ProductCard from '@/components/cards/ProductCard.jsx';
 import useUserStore from '@/stores/userStore';
 import ErrorState from '@/components/States/ErrorState';
@@ -101,8 +102,15 @@ function ProductPage() {
                     : 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
                 }
               >
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+                {filteredProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                  >
+                    <ProductCard product={product} onAddToCart={handleAddToCart} />
+                  </motion.div>
                 ))}
               </div>
             )}

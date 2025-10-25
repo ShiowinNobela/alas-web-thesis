@@ -24,6 +24,8 @@ function ReturnsPage() {
   const [actionType, setActionType] = useState('');
   const [notes, setNotes] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['returns'],
@@ -113,13 +115,13 @@ function ReturnsPage() {
   return (
     <div className="bg-admin flex h-full flex-col overflow-x-auto p-4">
       <main className="bg-card mx-auto w-full overflow-x-auto rounded-xl border shadow ring-1 dark:text-white">
-        <div className="p-6">
-          <h1 className="mb-6 text-2xl font-bold">Return Requests</h1>
+        <div className="py-6">
+          <h1 className="mb-6 px-6 text-2xl font-bold">Return Requests</h1>
 
           <div className="overflow-x-auto">
             <Table hoverable>
               <TableHead>
-                <TableHeadCell>ID</TableHeadCell>
+                <TableHeadCell>Image</TableHeadCell>
                 <TableHeadCell>Order ID</TableHeadCell>
                 <TableHeadCell>Customer</TableHeadCell>
                 <TableHeadCell>Contact</TableHeadCell>
@@ -128,16 +130,33 @@ function ReturnsPage() {
                 <TableHeadCell>Date Created</TableHeadCell>
                 <TableHeadCell>Actions</TableHeadCell>
               </TableHead>
+
               <TableBody className="divide-y">
                 {data?.map((returnItem) => (
                   <TableRow key={returnItem.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <TableCell>{returnItem.id}</TableCell>
+                    <TableCell>
+                      {returnItem.image_url ? (
+                        <button
+                          onClick={() => {
+                            setSelectedImage(returnItem.image_url);
+                            setImageModalOpen(true);
+                          }}
+                          className="text-blue-600 hover:underline"
+                        >
+                          View Image
+                        </button>
+                      ) : (
+                        <span className="text-gray-400 italic">No image</span>
+                      )}
+                    </TableCell>
+
                     <TableCell className="font-mono">{returnItem.order_id}</TableCell>
                     <TableCell>{returnItem.customer_name}</TableCell>
                     <TableCell>{returnItem.contact_number}</TableCell>
                     <TableCell className="max-w-xs truncate">{returnItem.reason}</TableCell>
                     <TableCell>{getStatusBadge(returnItem.status)}</TableCell>
                     <TableCell>{formatDate(returnItem.created_at)}</TableCell>
+
                     <TableCell>
                       <div className="flex space-x-2">
                         <Button
@@ -207,6 +226,24 @@ function ReturnsPage() {
             </Button>
             <Button color="gray" onClick={() => setShowModal(false)}>
               Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+        {/* Image Preview Modal */}
+        <Modal show={imageModalOpen} onClose={() => setImageModalOpen(false)} size="xl">
+          <ModalHeader>Return Image</ModalHeader>
+          <ModalBody className="overflow-hidden">
+            {selectedImage ? (
+              <div className="flex justify-center">
+                <img src={selectedImage} alt="Return proof" className="max-h-[70vh] rounded-lg object-contain shadow" />
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 italic">No image available</p>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="gray" onClick={() => setImageModalOpen(false)}>
+              Close
             </Button>
           </ModalFooter>
         </Modal>
