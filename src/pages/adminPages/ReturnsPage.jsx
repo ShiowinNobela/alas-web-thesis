@@ -85,7 +85,11 @@ function ReturnsPage() {
       approved: 'success',
       denied: 'failure',
     };
-    return <Badge color={colors[status]}>{status.toUpperCase()}</Badge>;
+    return (
+      <Badge className="flex justify-center" color={colors[status]}>
+        {status.toUpperCase()}
+      </Badge>
+    );
   };
 
   const formatDate = (dateString) => {

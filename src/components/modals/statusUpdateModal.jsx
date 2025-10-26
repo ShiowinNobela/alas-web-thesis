@@ -1,8 +1,20 @@
 import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import { fetchOrderById } from '@/api/orders';
-import { Button, Card, Modal, ModalBody, ModalFooter, ModalHeader, Spinner, Textarea } from 'flowbite-react';
+import {
+  Button,
+  Card,
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Spinner,
+  Textarea,
+  TextInput,
+} from 'flowbite-react';
 import PaymentMethodIcon from '../bigComponents/PaymentMethodsIcon';
+import { Barcode, Truck } from 'lucide-react';
 
 const StatusUpdateModal = ({
   show,
@@ -100,47 +112,58 @@ const StatusUpdateModal = ({
         )}
 
         {showShippingFields && (
-          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div>
-              <label htmlFor="shipping-price" className="mb-2 block text-sm font-medium text-gray-700">
-                Shipping Price
-              </label>
-              <input
-                id="shipping-price"
-                type="number"
-                step="0.01"
-                min="0"
-                value={shippingPrice}
-                onChange={onShippingPriceChange}
-                placeholder="0.00"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="shipping-company" className="mb-2 block text-sm font-medium text-gray-700">
-                Shipping Company
-              </label>
-              <input
-                id="shipping-company"
-                type="text"
-                value={shippingCompany}
-                onChange={onShippingCompanyChange}
-                placeholder="e.g., LBC, J&T, DHL"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="order-reference-number" className="mb-2 block text-sm font-medium text-gray-700">
-                Order Reference Number
-              </label>
-              <input
-                id="order-reference-number"
-                type="text"
-                value={orderReferenceNumber}
-                onChange={onOrderReferenceNumberChange}
-                placeholder="e.g., TRK123456789"
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              />
+          <div className="mb-6">
+            <h3 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white">Shipping Information</h3>
+
+            <div className="space-y-4">
+              {/* Shipping Price */}
+              <div>
+                <Label htmlFor="shipping-price" value="Shipping Price" className="mb-2 block font-medium" />
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span className="text-gray-500">₱</span>
+                  </div>
+                  <TextInput
+                    id="shipping-price"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={shippingPrice}
+                    onChange={onShippingPriceChange}
+                    placeholder="0.00"
+                    className="pl-8"
+                  />
+                </div>
+                <p className="mt-1 text-xs text-gray-500">Enter shipping cost</p>
+              </div>
+
+              {/* Shipping Company */}
+              <div>
+                <Label htmlFor="shipping-company" value="Shipping Company" className="mb-2 block font-medium" />
+                <TextInput
+                  id="shipping-company"
+                  type="text"
+                  value={shippingCompany}
+                  onChange={onShippingCompanyChange}
+                  placeholder="e.g., LBC, J&T, DHL"
+                  icon={Truck}
+                />
+                <p className="mt-1 text-xs text-gray-500">Courier service provider</p>
+              </div>
+
+              {/* Order Reference Number */}
+              <div>
+                <Label htmlFor="order-reference-number" value="Tracking Number" className="mb-2 block font-medium" />
+                <TextInput
+                  id="order-reference-number"
+                  type="text"
+                  value={orderReferenceNumber}
+                  onChange={onOrderReferenceNumberChange}
+                  placeholder="e.g., TRK123456789"
+                  icon={Barcode}
+                />
+                <p className="mt-1 text-xs text-gray-500">Order tracking reference</p>
+              </div>
             </div>
           </div>
         )}

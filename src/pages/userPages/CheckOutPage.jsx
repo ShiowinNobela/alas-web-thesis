@@ -297,19 +297,22 @@ function CheckOutPage() {
                   </div>
                 ) : getInfo.payment_method === 'bank_transfer' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-lighter text-sm">Bank Payment details I dont know this</p>
-                    <div className="container flex h-10 flex-col items-center justify-center rounded-2xl bg-emerald-500">
-                      <p className="mx-auto text-center font-bold text-white">This is a placeholder</p>
-                    </div>
+                    <p className="text-lighter text-sm">
+                      Scan the QR code below via Bank Transfer and fill the required details
+                    </p>
+                    <img
+                      src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1761442632/6545af42-c08e-4ca7-beff-ae76d91e0ce1_w42tfd.jpg"
+                      alt={getInfo.payment_method}
+                      className="w-full rounded-2xl object-contain"
+                    />
                   </div>
                 ) : getInfo.payment_method === 'Maya' ? (
                   <div className="mt-4 space-y-4">
                     <p className="text-lighter text-sm">
-                      {/* Scan the QR code below via Maya and fill the required details */}
-                      This is a placeholder QR code for Maya payment. DO NOT USE.
+                      Scan the QR code below via Maya and fill the required details
                     </p>
                     <img
-                      src="https://greensierra.ph/wp-content/uploads/elementor/thumbs/Copy-of-3.8X5INCHES-QR-Code-Standee-Template-qj129ev3osdr1lxzh4lj14ccrq0n8r53so2q7nuqqc.jpg"
+                      src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1761442632/6167d02c-a777-4739-9fb0-8e8d0e8806d6_ofeil8.jpg"
                       alt={getInfo.payment_method}
                       className="w-full rounded-2xl object-contain"
                     />
