@@ -96,6 +96,14 @@ function Navbar({ notifications = [], setNotifications }) {
             </div>
           </div>
 
+          {user && (
+            <>
+              <Link to="/user/dashboard" className={getNavItemClass('/user/dashboard')}>
+                Dashboard
+              </Link>
+            </>
+          )}
+
           {showNotifications && (
             <div className="group relative">
               <button className="hover:bg-accent relative rounded-full p-2 transition" aria-label="Notifications">
@@ -138,14 +146,6 @@ function Navbar({ notifications = [], setNotifications }) {
                 )}
               </div>
             </div>
-          )}
-
-          {user && (
-            <>
-              <Link to="/user/dashboard" className={getNavItemClass('/user/dashboard')}>
-                Dashboard
-              </Link>
-            </>
           )}
 
           {user ? (

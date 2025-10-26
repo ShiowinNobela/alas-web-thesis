@@ -82,7 +82,11 @@ function RefundsPage() {
       approved: 'success',
       denied: 'failure',
     };
-    return <Badge color={colors[status]}>{status.toUpperCase()}</Badge>;
+    return (
+      <Badge className="flex justify-center" color={colors[status]}>
+        {status.toUpperCase()}
+      </Badge>
+    );
   };
 
   const formatDate = (dateString) => {
@@ -118,7 +122,6 @@ function RefundsPage() {
           <div className="overflow-x-auto">
             <Table hoverable>
               <TableHead>
-                <TableHeadCell>ID</TableHeadCell>
                 <TableHeadCell>Order ID</TableHeadCell>
                 <TableHeadCell>Customer</TableHeadCell>
                 <TableHeadCell>Contact</TableHeadCell>
@@ -130,7 +133,6 @@ function RefundsPage() {
               <TableBody className="divide-y">
                 {data?.map((refund) => (
                   <TableRow key={refund.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <TableCell>{refund.id}</TableCell>
                     <TableCell className="font-mono">{refund.order_id}</TableCell>
                     <TableCell>{refund.customer_name}</TableCell>
                     <TableCell>{refund.contact_number}</TableCell>

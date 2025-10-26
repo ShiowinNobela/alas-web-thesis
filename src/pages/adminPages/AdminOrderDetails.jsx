@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchOrderById } from '@/api/orders';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
-import { User, MapPin, Phone, Mail, Package, CreditCard, Copy, CheckCircle, PhilippinePeso } from 'lucide-react';
+import { User, MapPin, Phone, Mail, Package, CreditCard, Copy, CheckCircle, PhilippinePeso, Truck } from 'lucide-react';
 import { format } from 'date-fns';
 import { Card, Badge, Button, Tooltip } from 'flowbite-react';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from 'flowbite-react';
@@ -348,54 +348,93 @@ function AdminOrderDetails() {
         </Card>
 
         {/* Delivery Info */}
-        <Card className="rounded-lg shadow-sm ring-1">
-          <div className="mb-3 border-b border-gray-100 pb-2">
-            <h2 className="flex items-center gap-2 text-base font-semibold">
-              <MapPin className="h-5 w-5 text-green-500" /> Delivery Information
+        <Card className="rounded-lg border border-gray-200 shadow-sm ring-1 dark:border-gray-700">
+          <div className="mb-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-600">
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-white">
+              <MapPin className="h-5 w-5 text-green-500" />
+              Delivery Information
             </h2>
+            <Truck className="h-5 w-5 text-gray-400" />
           </div>
-          <div className="space-y-3 text-sm">
-            <div>
-              <p className="text-lighter font-medium">Shipping Address</p>
-              <div className="flex items-start gap-1">
-                <p className="mt-1 flex-1">{order.shipping_address || order.address || 'N/A'}</p>
-                {(order.shipping_address || order.address) && (
-                  <Button
-                    size="xs"
-                    color="light"
-                    onClick={() => handleCopy(order.shipping_address || order.address, 'Address')}
-                  >
-                    <Copy size={12} />
-                  </Button>
-                )}
+
+          <div className="space-y-4">
+            {/* Shipping Address */}
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <p className="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Shipping Address</p>
+                <p className="text-sm leading-relaxed text-gray-800 dark:text-gray-200">
+                  {order.shipping_address || order.address || 'No address provided'}
+                </p>
+              </div>
+              {(order.shipping_address || order.address) && (
+                <Button
+                  size="xs"
+                  color="light"
+                  className="ml-2 shrink-0"
+                  onClick={() => handleCopy(order.shipping_address || order.address, 'Address')}
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+
+            {/* Tracking Reference */}
+            <div className="flex items-start justify-between text-sm">
+              <div className="flex-1">
+                <p className="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Tracking Number</p>
+                <p className="font-mono text-gray-800 dark:text-gray-200">
+                  {order?.shipping_reference || 'Not provided'}
+                </p>
+              </div>
+              {order?.shipping_reference && (
+                <Button
+                  size="xs"
+                  color="light"
+                  className="ml-2 shrink-0"
+                  onClick={() => handleCopy(order.shipping_reference, 'Tracking number')}
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+
+            {/* Shipping Details Grid */}
+            <div className="grid grid-cols-2 gap-4 border-t border-gray-100 pt-2 dark:border-gray-600">
+              <div>
+                <p className="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Shipping Company</p>
+                <div className="flex items-center gap-2">
+                  <Truck className="h-4 w-4 text-gray-400" />
+                  <p className="text-gray-800 dark:text-gray-200">{order.shipping_company || 'Not specified'}</p>
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-1 text-sm font-medium text-gray-500 dark:text-gray-400">Shipping Cost</p>
+                <p className="text-money font-semibold">
+                  {order.shipping_price ? `₱${Number(order.shipping_price).toLocaleString()}` : 'N/A'}
+                </p>
               </div>
             </div>
-            {order.payment_status && (
-              <div className="mt-2">
+
+            {/* Optional: Shipping Status Badge */}
+            {order.shipping_status && (
+              <div className="border-t border-gray-100 pt-2 dark:border-gray-600">
+                <p className="mb-2 text-sm font-medium text-gray-500 dark:text-gray-400">Shipping Status</p>
                 <Badge
-                  size="sm"
                   color={
-                    order.payment_status === 'paid'
+                    order.shipping_status === 'delivered'
                       ? 'success'
-                      : order.payment_status === 'pending'
-                        ? 'warning'
-                        : 'failure'
+                      : order.shipping_status === 'shipped'
+                        ? 'blue'
+                        : order.shipping_status === 'in_transit'
+                          ? 'yellow'
+                          : 'gray'
                   }
-                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
+                  className="inline-flex items-center gap-1"
                 >
-                  Payment: {order.payment_status}
+                  <Package className="h-3 w-3" />
+                  {order.shipping_status.replace('_', ' ').toUpperCase()}
                 </Badge>
-              </div>
-            )}
-            {order.tracking_number && (
-              <div>
-                <p className="text-lighter font-medium">Tracking Number</p>
-                <div className="flex items-center gap-1">
-                  <p className="mt-1">{order.tracking_number}</p>
-                  <Button size="xs" color="light" onClick={() => handleCopy(order.tracking_number, 'Tracking number')}>
-                    <Copy size={12} />
-                  </Button>
-                </div>
               </div>
             )}
           </div>

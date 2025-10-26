@@ -13,6 +13,9 @@ import {
   ShoppingCart,
   Ticket,
   MessageSquareOff,
+  MilkOff,
+  Phone,
+  PhilippinePeso,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import usePermissionsStore from '@/stores/permissionStore';
@@ -93,21 +96,21 @@ const sidebarItems = [
   {
     path: '/admin/refunds',
     name: 'Refund Page',
-    icon: MessageSquareOff,
+    icon: PhilippinePeso,
     permission: 'manage_refunds',
     role: ['admin'],
   },
   {
     path: '/admin/returns',
     name: 'Return Page',
-    icon: MessageSquareOff,
+    icon: MilkOff,
     permission: 'manage_returns',
     role: ['admin'],
   },
   {
     path: '/admin/contacts',
-    name: 'Conttacts Page',
-    icon: MessageSquareOff,
+    name: 'Contacts Page',
+    icon: Phone,
     permission: 'view_contacts',
     role: ['admin'],
   },
