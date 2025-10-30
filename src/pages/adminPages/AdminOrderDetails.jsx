@@ -68,7 +68,7 @@ function AdminOrderDetails() {
   if (isError) {
     return (
       <Card className="mx-auto mt-6 max-w-5xl p-6 text-center ring-1">
-        <h1 className="text-lg font-bold text-red-600">Error Loading Order</h1>
+        <h1 className="text-error text-lg font-bold">Error Loading Order</h1>
         <p className="text-lighter mt-2 text-sm">{error?.response?.data?.message || 'Failed to load order details'}</p>
         <Button onClick={() => navigate('/admin/orders')} size="sm" color="blue" className="mt-4">
           Back to Orders

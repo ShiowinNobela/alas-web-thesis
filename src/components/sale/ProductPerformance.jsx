@@ -53,7 +53,7 @@ const ProductPerformance = ({ products, period, isLoading }) => {
       <Card className="ring-1">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">Least Selling Products</h2>
-          <TrendingDown className="h-5 w-5 text-red-500 dark:text-red-400" />
+          <TrendingDown className="text-error h-5 w-5" />
         </div>
         <ProductList products={products.leastSelling} type="least" />
       </Card>

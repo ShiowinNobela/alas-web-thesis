@@ -1,28 +1,25 @@
-import { motion } from 'framer-motion'
-import { AlertTriangle, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { motion } from 'framer-motion';
+import { AlertTriangle, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function DeleteConfirmModal({ open, onCancel, onConfirm }) {
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <motion.div
-        className="relative w-full max-w-sm p-6 text-center bg-white shadow-2xl dark:bg-neutral rounded-xl"
+        className="dark:bg-neutral relative w-full max-w-sm rounded-xl bg-white p-6 text-center shadow-2xl"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
       >
         {/* Close button */}
-        <button
-          className="absolute text-gray-500 top-3 right-3 hover:text-gray-700"
-          onClick={onCancel}
-        >
-          <X className="w-5 h-5" />
+        <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-700" onClick={onCancel}>
+          <X className="h-5 w-5" />
         </button>
 
         {/* Icon */}
-        <div className="flex justify-center mb-4">
-          <AlertTriangle className="w-10 h-10 text-red-500" />
+        <div className="mb-4 flex justify-center">
+          <AlertTriangle className="text-error h-10 w-10" />
         </div>
 
         {/* Title */}
@@ -33,23 +30,15 @@ export default function DeleteConfirmModal({ open, onCancel, onConfirm }) {
 
         {/* Buttons */}
         <div className="flex justify-between gap-2">
-          <Button 
-            variant="outline" 
-            className="w-30" 
-            onClick={onCancel}
-          >
+          <Button variant="outline" className="w-30" onClick={onCancel}>
             Cancel
           </Button>
-          
-          <Button 
-            variant="destructive" 
-            className="w-30"
-            onClick={onConfirm}
-          >
+
+          <Button variant="destructive" className="w-30" onClick={onConfirm}>
             Delete
           </Button>
         </div>
       </motion.div>
     </div>
-  )
+  );
 }

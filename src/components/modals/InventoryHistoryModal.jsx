@@ -162,9 +162,7 @@ function InventoryHistoryModal({ isOpen, onClose, productId = null }) {
                       </TableCell>
                       <TableCell>{getActionBadge(log.action)}</TableCell>
                       <TableCell>
-                        <span
-                          className={`font-semibold ${log.changeAvailable >= 0 ? 'text-green-600' : 'text-red-600'}`}
-                        >
+                        <span className={`font-semibold ${log.changeAvailable >= 0 ? 'text-green-600' : 'text-error'}`}>
                           {log.changeAvailable >= 0 ? '+' : ''}
                           {log.changeAvailable}
                         </span>

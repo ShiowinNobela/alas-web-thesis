@@ -56,7 +56,7 @@ const statusColors = {
   shipping: 'bg-green-200 text-green-800 border-green-300',
   delivered: 'bg-blue-200 text-blue-800 border-blue-300',
   cancel_requested: 'bg-pink-100 text-pink-700 border-pink-300',
-  cancelled: 'bg-red-300 text-red-800 border-red-300',
+  cancelled: 'bg-red-300 text-error border-red-300',
 };
 
 export default function UserOrderHistory({ order }) {

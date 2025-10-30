@@ -87,7 +87,7 @@ function UpdateProduct() {
           {loadingProduct ? (
             <p>Loading...</p>
           ) : isError ? (
-            <p className="text-red-500">{error?.response?.data?.message || 'Failed to load product'}</p>
+            <p className="text-error">{error?.response?.data?.message || 'Failed to load product'}</p>
           ) : product ? (
             <form
               onSubmit={handleSubmit(onSubmit)}

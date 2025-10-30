@@ -18,7 +18,7 @@ const SalesMetricCard = ({ title, value, subtitle, icon: Icon, color, status, lo
         {status && (
           <div className="mt-2 flex items-center space-x-2">
             {status.positive && <CheckCircle className="h-4 w-4 text-green-500 dark:text-green-400" />}
-            {!status.positive && <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />}
+            {!status.positive && <XCircle className="text-error h-4 w-4" />}
             <span className={`text-xs ${status.className} ${getStatusStyle(status.type)} dark:text-gray-300`}>
               {status.label}
             </span>
@@ -44,9 +44,7 @@ const SalesMetrics = ({ currentData, previousData, period, isLoading }) => {
       positive: isPositive,
       label: `${isPositive ? '+' : ''}${difference.toFixed(1)}% vs previous ${period.toLowerCase()}`,
       type: isPositive ? 'delivered' : 'cancelled',
-      className: isPositive
-        ? 'text-green-700 dark:text-green-500 font-medium'
-        : 'text-red-600 dark:text-red-700 font-medium',
+      className: isPositive ? 'text-green-700 dark:text-green-500 font-medium' : 'text-error font-medium',
     };
   };
 
