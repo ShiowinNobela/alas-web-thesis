@@ -536,7 +536,7 @@ function Notifs() {
                       <HiBell className="h-12 w-12 text-gray-400" />
                     </div>
                     <h3 className="font-heading mb-2 text-xl font-bold text-gray-900">No Heat Alerts Found</h3>
-                    <p className="max-w-md text-center text-gray-500">
+                    <p className="text-lighter max-w-md text-center">
                       {searchTerm || filterType !== 'all'
                         ? 'Try adjusting your filters or search terms to find specific notifications.'
                         : 'Your sauce inventory is running smooth! No critical alerts at this time.'}
@@ -587,7 +587,7 @@ function Notifs() {
                                 <div className="ml-4">{getPriorityBadge(notification)}</div>
                               </div>
 
-                              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                              <div className="text-lighter flex flex-wrap items-center gap-4 text-sm">
                                 <div className="flex items-center gap-1">
                                   <Clock className="h-3 w-3" />
                                   {formatDate(notification.created_at)}

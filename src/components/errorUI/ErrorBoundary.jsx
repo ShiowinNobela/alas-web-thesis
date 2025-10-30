@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from '../ui/button';
 
 class ErrorBoundary extends React.Component {
@@ -11,7 +12,7 @@ class ErrorBoundary extends React.Component {
     };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -52,7 +53,7 @@ class ErrorBoundary extends React.Component {
       }
 
       return (
-        <div className="bg-neutral text-primary flex h-full flex-col items-center justify-center">
+        <div className="bg-neutral text-primary flex h-screen flex-col items-center justify-center">
           <p className="mb-2 text-lg font-bold">Something went wrong</p>
           <p className="mb-4 text-center">{this.state.error && this.state.error.toString()}</p>
           <Button onClick={this.resetError}>Try Again</Button>
@@ -65,3 +66,10 @@ class ErrorBoundary extends React.Component {
 }
 
 export default ErrorBoundary;
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.node.isRequired,
+  fallback: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  onError: PropTypes.func,
+  onReset: PropTypes.func,
+};

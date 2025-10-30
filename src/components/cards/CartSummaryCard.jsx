@@ -50,9 +50,9 @@ function CartSummaryCard() {
       {/* CART ITEMS */}
       <CardContent className="mt-4 space-y-3">
         {isLoading ? (
-          <p className="text-sm text-gray-500">Loading cart...</p>
+          <p className="text-lighter text-sm">Loading cart...</p>
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-500">Your cart is empty. Add items to proceed</p>
+          <p className="text-lighter text-sm">Your cart is empty. Add items to proceed</p>
         ) : (
           items.map((item) => (
             <article key={item.product_id} className="flex items-center gap-3 rounded-2xl border p-3">

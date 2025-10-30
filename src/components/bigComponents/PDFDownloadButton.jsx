@@ -4,12 +4,11 @@ import dayjs from 'dayjs';
 import { usePDFDownload } from '@/hooks/usePDFDownload';
 
 const PDFDownloadButton = ({ activePeriod, startDate, endDate, onComplete, disabled = false, allowCustom = true }) => {
-
   const { downloadPDF, isDownloading, error, reset } = usePDFDownload();
 
   const handleDownload = async () => {
     if (disabled) return;
-    
+
     reset();
 
     let start, end;
@@ -29,7 +28,7 @@ const PDFDownloadButton = ({ activePeriod, startDate, endDate, onComplete, disab
         alert('Please select a valid custom date range');
         return;
       }
-    } 
+    }
 
     // Toggle Report settings
     else {
@@ -76,23 +75,17 @@ const PDFDownloadButton = ({ activePeriod, startDate, endDate, onComplete, disab
 
   return (
     <div>
-    <Button
+      <Button
         onClick={handleDownload}
         disabled={isDownloading || disabled}
-        className="flex items-center space-x-2 bg:gray hover:bg-gray-600 disabled:bg-gray-400"
+        className="bg:gray flex items-center space-x-2 hover:bg-gray-600 disabled:bg-gray-400"
       >
-        {isDownloading ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : (
-          <Download className="w-4 h-4" />
-        )}
-        <span>
-          {isDownloading ? 'Generating PDF...' : 'Download PDF Report'}
-        </span>
+        {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+        <span>{isDownloading ? 'Generating PDF...' : 'Download PDF Report'}</span>
       </Button>
 
       {error && (
-        <div className="p-3 mt-2 text-sm text-red-700 bg-red-100 rounded-lg">
+        <div className="text-error mt-2 rounded-lg bg-red-100 p-3 text-sm">
           <strong>Error:</strong> {error}
         </div>
       )}

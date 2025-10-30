@@ -1,15 +1,15 @@
-// components/OrderSummary.jsx
-// import { Tooltip } from 'flowbite-react';
 import dayjs from 'dayjs';
-// import OrderInfoModal from '../modals/OrderInfoModal';
+import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import { fetchOrderSummary, fetchLast30OrderSummary } from '@/api/orders';
 import { memo } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { getStatusStyle } from '@/utils/statusBadgeStyle';
+// import OrderInfoModal from '../modals/OrderInfoModal';
+// import { Tooltip } from 'flowbite-react';
 // import { RefreshCcw } from 'lucide-react';
 
-// ✅ Memoized cards component
+// Meoized cards component
 const OrderCards = memo(function OrderCards({ data }) {
   return (
     <div className="flex flex-grow flex-row gap-2">
@@ -124,6 +124,21 @@ const OrderSummary = ({ startDate, endDate, onRefresh }) => {
       </div> */}
     </div>
   );
+};
+
+OrderCards.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      status: PropTypes.string.isRequired,
+      totalOrders: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
+
+OrderSummary.propTypes = {
+  startDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+  endDate: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+  onRefresh: PropTypes.func,
 };
 
 export default OrderSummary;

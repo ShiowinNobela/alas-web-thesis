@@ -62,7 +62,7 @@ function AdminContactPage() {
     return (
       <div className="flex min-h-96 items-center justify-center">
         <div className="text-center">
-          <p className="mb-4 text-red-500">{error}</p>
+          <p className="text-error mb-4">{error}</p>
           <Button onClick={fetchContacts}>Retry</Button>
         </div>
       </div>

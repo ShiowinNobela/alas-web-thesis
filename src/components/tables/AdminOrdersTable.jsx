@@ -150,7 +150,7 @@ export default function AdminOrdersTable({
                       >
                         <Button
                           onClick={() => onStatusUpdateClick(order.id, '', 'Cancel Order', 'Cancel Order', true)}
-                          className="w-full bg-red-300 font-medium text-red-800 hover:bg-red-100"
+                          className="text-error w-full bg-red-300 font-medium hover:bg-red-100"
                         >
                           Cancel Order
                         </Button>

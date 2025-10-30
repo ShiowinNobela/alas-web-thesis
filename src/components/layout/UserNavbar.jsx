@@ -142,7 +142,7 @@ function Navbar({ notifications = [], setNotifications }) {
                     </button>
                   ))
                 ) : (
-                  <div className="px-4 py-3 text-sm text-gray-500">No notifications</div>
+                  <div className="text-lighter px-4 py-3 text-sm">No notifications</div>
                 )}
               </div>
             </div>

@@ -234,7 +234,7 @@ export default function OrdersCard({ orders, onCancelOrder, onRefundOrder, onRet
 
                         if (order?.refund_status === 'denied') {
                           return (
-                            <Button disabled className="w-full cursor-not-allowed bg-red-200 text-red-800">
+                            <Button disabled className="text-error w-full cursor-not-allowed bg-red-200">
                               Refund Denied
                             </Button>
                           );
@@ -265,7 +265,7 @@ export default function OrdersCard({ orders, onCancelOrder, onRefundOrder, onRet
                         const now = new Date();
                         const daysPassed = (now - latestStatusDate) / (1000 * 60 * 60 * 24);
 
-                        // 🟠 Already has a return request
+                        // Already has a return request
                         if (order?.return_status === 'pending') {
                           return (
                             <Button disabled className="w-full cursor-not-allowed bg-gray-200 text-gray-500">
@@ -276,7 +276,7 @@ export default function OrdersCard({ orders, onCancelOrder, onRefundOrder, onRet
 
                         if (order?.return_status === 'denied') {
                           return (
-                            <Button disabled className="w-full cursor-not-allowed bg-red-200 text-red-800">
+                            <Button disabled className="text-error w-full cursor-not-allowed bg-red-200">
                               Return Denied
                             </Button>
                           );
@@ -350,4 +350,6 @@ OrdersCard.propTypes = {
     })
   ).isRequired,
   onCancelOrder: PropTypes.func.isRequired,
+  onRefundOrder: PropTypes.func,
+  onReturnOrder: PropTypes.func,
 };
