@@ -39,7 +39,6 @@ function ProductCard({ product }) {
 
             <div className="flex flex-row justify-between text-sm">
               <p className="text-emerald-500">Stock: {product.stock_quantity - product.reserved_quantity}</p>
-              <p className="text-sky-600">Reserved: {product.reserved_quantity}</p>
             </div>
 
             <p className="font-heading text-primary pt-2 text-lg font-bold">

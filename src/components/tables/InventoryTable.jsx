@@ -10,6 +10,7 @@ import {
   ToggleSwitch,
 } from 'flowbite-react';
 import { Edit, AlertTriangle, CheckCircle, XCircle, History } from 'lucide-react';
+import PropTypes from 'prop-types';
 
 function InventoryTable({ products, onEdit, onToggle, onViewHistory }) {
   return (
@@ -45,12 +46,14 @@ function InventoryTable({ products, onEdit, onToggle, onViewHistory }) {
                 </Badge>
               </TableCell>
               <TableCell>
-                {product.stock_quantity <= 10 ? (
-                  <Badge color="failure" icon={AlertTriangle} className="animate-pulse">
+                {product.stock_quantity === 0 ? (
+                  <Badge className="animate-pulse rounded-lg bg-red-400 text-white dark:bg-red-200">Out of Stock</Badge>
+                ) : product.stock_quantity <= 10 ? (
+                  <Badge color="warning" icon={AlertTriangle} className="animate-pulse">
                     {product.stock_quantity} (Low)
                   </Badge>
                 ) : (
-                  product.stock_quantity
+                  <Badge color="gray">{product.stock_quantity}</Badge>
                 )}
               </TableCell>
               <TableCell>{product.reserved_quantity}</TableCell>
@@ -106,3 +109,29 @@ function InventoryTable({ products, onEdit, onToggle, onViewHistory }) {
 }
 
 export default InventoryTable;
+
+InventoryTable.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      image: PropTypes.string,
+      name: PropTypes.string,
+      category: PropTypes.string,
+      stock_quantity: PropTypes.number,
+      reserved_quantity: PropTypes.number,
+      price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      is_active: PropTypes.bool,
+      updated_at: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    })
+  ),
+  onEdit: PropTypes.func,
+  onToggle: PropTypes.func,
+  onViewHistory: PropTypes.func,
+};
+
+InventoryTable.defaultProps = {
+  products: [],
+  onEdit: () => {},
+  onToggle: () => {},
+  onViewHistory: undefined,
+};
