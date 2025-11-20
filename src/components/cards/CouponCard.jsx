@@ -3,7 +3,7 @@ import { X, TicketPercent } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 
-function CouponCard({ code, onRemove, discount }) {
+function CouponCard({ code, onRemove, discount, fromLoyalty }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -5 }}
@@ -22,7 +22,7 @@ function CouponCard({ code, onRemove, discount }) {
           <TicketPercent size={18} className="text-amber-700" />
         </div>
         <div>
-          <p className="text-sm font-semibold tracking-wide text-amber-800">{code}</p>
+          <p className="text-sm font-semibold tracking-wide text-amber-800">{fromLoyalty ? 'Loyalty Reward' : code}</p>
           {discount ? (
             <p className="text-xs font-medium text-amber-600">Discount: ₱{discount.toFixed(2)}</p>
           ) : (
@@ -49,6 +49,7 @@ CouponCard.propTypes = {
   code: PropTypes.string.isRequired,
   onRemove: PropTypes.func.isRequired,
   discount: PropTypes.number,
+  fromLoyalty: PropTypes.bool,
 };
 
 export default CouponCard;

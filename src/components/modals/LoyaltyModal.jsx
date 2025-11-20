@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Card } from '../ui/card';
 import PropTypes from 'prop-types';
 
 export default function LoyaltyDialog({ open, onOpenChange, onSelectCoupon }) {
@@ -31,19 +30,29 @@ export default function LoyaltyDialog({ open, onOpenChange, onSelectCoupon }) {
           <div className="mt-2 space-y-3">
             {data && data.length > 0 ? (
               data.map((reward) => (
-                <Card key={reward.claimed_id} className="flex flex-col gap-2 rounded-2xl bg-gray-100 p-4">
-                  <div>
-                    <p>
-                      <span className="font-semibold">Discount:</span> {reward.discount_value}% ({reward.discount_type})
+                <div
+                  key={reward.claimed_id}
+                  className="relative flex w-full items-center justify-between overflow-hidden rounded-2xl border-y border-dashed border-amber-400 bg-gradient-to-r from-amber-200 via-amber-100 to-yellow-200 px-5 py-3"
+                >
+                  <div className="bg-background absolute top-1/2 left-0 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full"></div>
+                  <div className="bg-background absolute top-1/2 right-0 h-6 w-6 translate-x-1/2 -translate-y-1/2 rounded-full"></div>
+
+                  <div className="flex flex-col">
+                    <p className="text-sm font-semibold tracking-wide text-amber-800">Loyalty Reward!</p>
+
+                    <p className="text-xs font-medium text-amber-600">
+                      Discount: {reward.discount_value}% ({reward.discount_type})
                     </p>
 
-                    <p className="text-xs">Claimed on: {new Date(reward.claimed_at).toLocaleString()}</p>
+                    <p className="mt-1 text-[10px] text-amber-700">
+                      Claimed: {new Date(reward.claimed_at).toLocaleString()}
+                    </p>
                   </div>
 
-                  <Button className="mt-1 w-full" onClick={() => onSelectCoupon(reward.coupon_code)}>
-                    Use Coupon
+                  <Button size="sm" className="ml-4 rounded-full" onClick={() => onSelectCoupon(reward.coupon_code)}>
+                    Use
                   </Button>
-                </Card>
+                </div>
               ))
             ) : (
               <p className="text-lighter text-sm">No rewards claimed yet.</p>

@@ -40,6 +40,7 @@ const useCartStore = create((set, get) => {
     discount: 0,
     final_total: 0,
     coupon_code: null,
+    coupon_from_loyalty: false,
     isLoading: false,
 
     fetchCart: async () => {
@@ -160,7 +161,7 @@ const useCartStore = create((set, get) => {
       }
     },
 
-    applyCoupon: async (couponCode) => {
+    applyCoupon: async (couponCode, fromLoyalty = false) => {
       const toastId = toast.loading(`Applying "${couponCode}"...`);
       try {
         const res = await axios.post('/api/cart/apply-coupon', { coupon_code: couponCode });
@@ -172,6 +173,7 @@ const useCartStore = create((set, get) => {
             discount: parseFloat(data.discount || 0),
             cart_total: parseFloat(data.cartTotal || get().cart_total),
             final_total: parseFloat(data.finalTotal || get().cart_total),
+            coupon_from_loyalty: fromLoyalty,
           });
         }
 
@@ -191,6 +193,7 @@ const useCartStore = create((set, get) => {
           set({
             coupon_code: null,
             discount: 0,
+            coupon_from_loyalty: false,
           });
 
           // refetch just to be safe
