@@ -15,19 +15,22 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-export default function StoreLocationCard() {
-  // Approximate coordinates for Old Balara, Tandang Sora Ave, Quezon City
-  const storeLocation = [14.6676, 121.0736];
+export const STORE_LOCATION = {
+  lat: 14.6676,
+  lng: 121.0736,
+  address: 'Old Balara, Tandang Sora Avenue Quezon City, Philippines'
+};
 
+export default function StoreLocationCard() {
   return (
     <Card className="pb-0">
       <CardHeader>
         <CardTitle className="text-lg font-bold">Our Walk In Store Location</CardTitle>
-        <CardDescription>Old Balara, Tandang Sora Avenue Quezon City, Philippines</CardDescription>
+        <CardDescription>{STORE_LOCATION.address}</CardDescription>
       </CardHeader>
-      <CardContent className="z-49 p-0">
+      <CardContent className="p-0 z-49">
         <MapContainer
-          center={storeLocation}
+          center={[STORE_LOCATION.lat, STORE_LOCATION.lng]}
           zoom={21}
           scrollWheelZoom={false}
           dragging={false}
@@ -39,11 +42,11 @@ export default function StoreLocationCard() {
             attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={storeLocation}>
+          <Marker position={[STORE_LOCATION.lat, STORE_LOCATION.lng]}>
             <Popup>
               <b>Alas Delis & Spices</b>
               <br />
-              Old Balara, Tandang Sora Ave, QC
+              {STORE_LOCATION.address}
             </Popup>
           </Marker>
         </MapContainer>

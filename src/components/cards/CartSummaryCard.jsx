@@ -8,7 +8,7 @@ import useCartStore from '@/stores/cartStore';
 import { useState } from 'react';
 import CouponCard from './CouponCard';
 
-function CartSummaryCard() {
+function CartSummaryCard({ shippingFee = 0 }) {
   const navigate = useNavigate();
   const {
     items,
@@ -24,6 +24,10 @@ function CartSummaryCard() {
   } = useCartStore();
 
   const [couponInput, setCouponInput] = useState('');
+  
+  // Calculate total including shipping fee
+  const subtotal = cart_total || 0;
+  const total = (subtotal - discount) + shippingFee;
 
   const handleAdjust = (productId, currentQty, isIncrement, stock) => {
     const newQty = isIncrement ? currentQty + 1 : currentQty - 1;
@@ -42,7 +46,7 @@ function CartSummaryCard() {
     <Card>
       <CardHeader className="flex items-center justify-between">
         <CardTitle className="text-xl">Your Cart</CardTitle>
-        <button className="border-content cursor-pointer text-sm hover:border-b" onClick={() => navigate('/menu')}>
+        <button className="text-sm cursor-pointer border-content hover:border-b" onClick={() => navigate('/menu')}>
           Go Back to Menu
         </button>
       </CardHeader>
@@ -50,17 +54,17 @@ function CartSummaryCard() {
       {/* CART ITEMS */}
       <CardContent className="mt-4 space-y-3">
         {isLoading ? (
-          <p className="text-lighter text-sm">Loading cart...</p>
+          <p className="text-sm text-lighter">Loading cart...</p>
         ) : items.length === 0 ? (
-          <p className="text-lighter text-sm">Your cart is empty. Add items to proceed</p>
+          <p className="text-sm text-lighter">Your cart is empty. Add items to proceed</p>
         ) : (
           items.map((item) => (
-            <article key={item.product_id} className="flex items-center gap-3 rounded-2xl border p-3">
-              <img src={item.image} alt={item.name} className="size-24 flex-shrink-0 rounded-2xl border object-cover" />
+            <article key={item.product_id} className="flex items-center gap-3 p-3 border rounded-2xl">
+              <img src={item.image} alt={item.name} className="flex-shrink-0 object-cover border size-24 rounded-2xl" />
 
-              <div className="flex min-w-0 flex-1 flex-col">
+              <div className="flex flex-col flex-1 min-w-0">
                 <div className="flex items-start justify-between">
-                  <div className="min-w-0 flex-1 pr-1">
+                  <div className="flex-1 min-w-0 pr-1">
                     <h3 className="text-content font-heading line-clamp-2">{item.name}</h3>
                     <p className="text-primary font-heading mt-0.5 text-sm">₱{parseFloat(item.price).toFixed(2)}</p>
                   </div>
@@ -72,26 +76,26 @@ function CartSummaryCard() {
                   </button>
                 </div>
 
-                <div className="mt-2 flex items-center justify-between">
+                <div className="flex items-center justify-between mt-2">
                   {/* Quantity controls */}
                   <div className="flex items-center gap-1 rounded-full border border-gray-300 px-2 py-0.5">
                     <button
                       onClick={() => handleAdjust(item.product_id, item.quantity, false, item.stock_quantity)}
-                      className="flex h-5 w-5 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+                      className="flex items-center justify-center w-5 h-5 transition-colors rounded-full hover:bg-gray-100"
                     >
                       <Minus size={10} />
                     </button>
-                    <span className="w-4 text-center text-xs font-medium">{item.quantity}</span>
+                    <span className="w-4 text-xs font-medium text-center">{item.quantity}</span>
                     <button
                       onClick={() => handleAdjust(item.product_id, item.quantity, true, item.stock_quantity)}
-                      className="flex h-5 w-5 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+                      className="flex items-center justify-center w-5 h-5 transition-colors rounded-full hover:bg-gray-100"
                     >
                       <Plus size={10} />
                     </button>
                   </div>
 
                   <div className="text-right">
-                    <p className="text-content font-semibold">₱{(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-semibold text-content">₱{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
                 </div>
               </div>
@@ -126,18 +130,29 @@ function CartSummaryCard() {
       </div>
 
       {/* TOTALS */}
-      <div className="flex flex-col gap-1 border-t px-8 pt-6 text-right text-sm">
+      <div className="flex flex-col gap-1 px-8 pt-6 text-sm text-right border-t">
         <div className="flex justify-end gap-2 text-gray-600">
           <span>Subtotal</span>
-          <span>₱{cart_total?.toFixed(2) || 0}</span>
+          <span>₱{subtotal.toFixed(2)}</span>
         </div>
+        
         <div className={`flex justify-end gap-2 ${discount > 0 ? 'text-emerald-500' : 'text-lighter'}`}>
           <span>Discount</span>
           <span>- ₱{discount?.toFixed(2) || 0}</span>
         </div>
-        <div className="text-primary flex justify-end gap-2 font-semibold">
+        
+        {/* Shipping Fee Row */}
+        {shippingFee > 0 && (
+          <div className="flex justify-end gap-2 text-gray-600">
+            <span>Shipping Fee</span>
+            <span>₱{shippingFee.toFixed(2)}</span>
+          </div>
+        )}
+        
+        {/* Total Row */}
+        <div className="flex justify-end gap-2 pt-2 mt-2 font-semibold border-t text-primary">
           <span>Total</span>
-          <span>₱{final_total.toFixed(2) || 0}</span>
+          <span>₱{total.toFixed(2)}</span>
         </div>
       </div>
     </Card>

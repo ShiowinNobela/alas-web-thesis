@@ -17,7 +17,9 @@ import ErrorBoundary from '@/components/errorUI/ErrorBoundary';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import LocationPickerModal from '@/components/modals/LocationPickerModal';
-import { MapPin } from 'lucide-react';
+import { MapPin, Truck } from 'lucide-react';
+import { STORE_LOCATION } from '@/components/cards/StoreLocationCard';
+import { calculateDistance, calculateShippingFee, getZoneName } from '@/utils/shippingCalculator';
 
 function CheckOutPage() {
   const navigate = useNavigate();
@@ -36,8 +38,11 @@ function CheckOutPage() {
     email: user?.email || '',
   });
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-  const [landmarkAddress, setLandmarkAddress] = useState('');
-  const combinedAddress = `${getInfo.address}${landmarkAddress ? '  - (Landmark: ' + landmarkAddress + ')' : ''}`;
+  const [landmark, setLandmark] = useState({ address: '', coordinates: null });
+  const [shippingFee, setShippingFee] = useState(0);
+  const [deliveryZone, setDeliveryZone] = useState('');
+  
+  const combinedAddress = `${getInfo.address}${landmark.address ? '  - (Landmark: ' + landmark.address + ')' : ''}`;
 
   // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,6 +51,34 @@ function CheckOutPage() {
   const [debounceTimer, setDebounceTimer] = useState(null);
   const hasReferenceError = getInfo.reference_number && referenceValidation.isValid === false;
   const isReferenceValidating = getInfo.reference_number && referenceValidation.isValid === null;
+
+  // Calculate shipping fee when landmark coordinates change
+  useEffect(() => {
+    if (landmark.coordinates) {
+      const distance = calculateDistance(
+        STORE_LOCATION.lat,
+        STORE_LOCATION.lng,
+        landmark.coordinates.lat,
+        landmark.coordinates.lng
+      );
+      
+      const fee = calculateShippingFee(distance);
+      const zone = getZoneName(distance);
+      
+      if (fee === null) {
+        toast.error('Sorry, we do not deliver to locations beyond 40km');
+        setShippingFee(0);
+        setDeliveryZone('Beyond delivery range');
+      } else {
+        setShippingFee(fee);
+        setDeliveryZone(zone);
+        toast.success(`Shipping fee calculated: ₱${fee} (${zone.split(' — ')[0]})`);
+      }
+    } else {
+      setShippingFee(0);
+      setDeliveryZone('');
+    }
+  }, [landmark.coordinates]);
 
   // Mutation for checking reference number
   const checkReferenceMutation = useMutation({
@@ -66,18 +99,15 @@ function CheckOutPage() {
 
   // Debounced reference number validation
   const validateReferenceNumber = (referenceNumber) => {
-    // Clear previous timer
     if (debounceTimer) {
       clearTimeout(debounceTimer);
     }
 
-    // Reset validation state for empty input
     if (!referenceNumber.trim()) {
       setReferenceValidation({ isValid: null, message: '' });
       return;
     }
 
-    // Set new timer for debounce (500ms delay)
     const timer = setTimeout(() => {
       checkReferenceMutation.mutate(referenceNumber);
     }, 500);
@@ -85,23 +115,17 @@ function CheckOutPage() {
     setDebounceTimer(timer);
   };
 
-  // Handle reference number change
   const handleReferenceNumberChange = (value) => {
     setGetInfo({ ...getInfo, reference_number: value });
 
-    // Clear any existing errors when user starts typing
     if (formErrors.reference_number) {
       setFormErrors({ ...formErrors, reference_number: '' });
     }
 
-    // Reset validation state
     setReferenceValidation({ isValid: null, message: '' });
-
-    // Trigger debounced validation
     validateReferenceNumber(value);
   };
 
-  // Cleanup timer on unmount
   useEffect(() => {
     return () => {
       if (debounceTimer) {
@@ -128,6 +152,9 @@ function CheckOutPage() {
       });
       setFormErrors({});
       setReferenceValidation({ isValid: null, message: '' });
+      setLandmark({ address: '', coordinates: null });
+      setShippingFee(0);
+      setDeliveryZone('');
       setIsModalOpen(false);
       navigate(`/user/after-checkout/${orderId}`);
     },
@@ -147,6 +174,16 @@ function CheckOutPage() {
       return;
     }
 
+    if (!landmark.coordinates) {
+      toast.error('Please set a delivery location to calculate shipping fee');
+      return;
+    }
+
+    if (shippingFee === 0 && landmark.coordinates) {
+      toast.error('Sorry, we cannot deliver to your selected location');
+      return;
+    }
+
     try {
       await checkoutSchema.validate(getInfo, { abortEarly: false });
       setFormErrors({});
@@ -154,6 +191,7 @@ function CheckOutPage() {
       placeOrderMutation.mutate({
         ...getInfo,
         address: combinedAddress,
+        shipping_fee: shippingFee,
       });
     } catch (err) {
       if (err.name === 'ValidationError') {
@@ -167,8 +205,8 @@ function CheckOutPage() {
     }
   };
 
-  const handleSaveLandmark = (address) => {
-    setLandmarkAddress(address);
+  const handleSaveLandmark = (landmarkData) => {
+    setLandmark(landmarkData);
     toast.success('Location pinned successfully!');
   };
 
@@ -176,17 +214,24 @@ function CheckOutPage() {
     toast.error(res);
   };
 
+  const handleRemoveLandmark = () => {
+    setLandmark({ address: '', coordinates: null });
+    setShippingFee(0);
+    setDeliveryZone('');
+    toast.info('Delivery location removed');
+  };
+
   return (
     <ErrorBoundary>
-      <section className="bg-neutral min-h-screen py-8">
-        <main className="relative mx-auto max-w-2xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="min-h-screen py-8 bg-neutral">
+        <main className="relative max-w-2xl px-4 pb-24 mx-auto sm:px-6 lg:px-8">
           <div className="absolute top-0 left-0 mt-4">
             <BackButton />
           </div>
 
-          <div className="mx-auto flex flex-col items-center justify-center pb-8">
-            <h1 className="text-content font-heading text-5xl">Checkout</h1>
-            <p className="text-lighter mt-2">Complete your order by filling the form below</p>
+          <div className="flex flex-col items-center justify-center pb-8 mx-auto">
+            <h1 className="text-5xl text-content font-heading">Checkout</h1>
+            <p className="mt-2 text-lighter">Complete your order by filling the form below</p>
           </div>
 
           {/* PERSONAL INFORMATION */}
@@ -209,13 +254,13 @@ function CheckOutPage() {
               />
               <div className="mt-4 space-y-2">
                 <div className="flex items-center justify-between">
-                  <label htmlFor="checkout-address" className="text-lighter mb-1 block text-sm font-medium">
+                  <label htmlFor="checkout-address" className="block mb-1 text-sm font-medium text-lighter">
                     Delivery Address *
                   </label>
                   <button
                     type="button"
                     onClick={() => setIsLocationModalOpen(true)}
-                    className="text-primary flex items-center gap-1 text-sm hover:underline"
+                    className="flex items-center gap-1 text-sm text-primary hover:underline"
                   >
                     <MapPin size={16} />
                     Pin Location
@@ -230,14 +275,14 @@ function CheckOutPage() {
                 />
                 <div className="mt-4 space-y-2">
                   <div className="flex items-center justify-between">
-                    <label htmlFor="checkout-landmark" className="text-lighter mb-1 block text-sm font-medium">
+                    <label htmlFor="checkout-landmark" className="block mb-1 text-sm font-medium text-lighter">
                       Landmark Address (for faster delivery)
                     </label>
-                    {landmarkAddress && (
+                    {landmark.address && (
                       <button
                         type="button"
-                        onClick={() => setLandmarkAddress('')}
-                        className="mb-1 cursor-pointer text-sm text-red-500 hover:underline"
+                        onClick={handleRemoveLandmark}
+                        className="mb-1 text-sm text-red-500 cursor-pointer hover:underline"
                       >
                         Remove Landmark
                       </button>
@@ -246,15 +291,40 @@ function CheckOutPage() {
                   <Textarea
                     id="checkout-landmark"
                     placeholder="Landmark / Nearby location for rider"
-                    value={landmarkAddress || ''}
+                    value={landmark.address || ''}
                     rows={2}
                     readOnly
                   />
+                  
+                  {/* Shipping Fee Display */}
+                  {landmark.coordinates && shippingFee > 0 && (
+                    <div className="p-3 mt-4 border border-green-200 rounded-lg bg-green-50">
+                      <div className="flex items-center gap-2 text-green-800">
+                        <Truck size={18} />
+                        <div>
+                          <p className="font-medium">Shipping Fee: ₱{shippingFee}</p>
+                          <p className="text-sm text-green-600">{deliveryZone}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {landmark.coordinates && shippingFee === 0 && (
+                    <div className="p-3 mt-4 border border-red-200 rounded-lg bg-red-50">
+                      <div className="flex items-center gap-2 text-red-800">
+                        <Truck size={18} />
+                        <div>
+                          <p className="font-medium">Delivery Not Available</p>
+                          <p className="text-sm text-red-600">{deliveryZone}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </Card>
 
-            <CartSummaryCard />
+            <CartSummaryCard shippingFee={shippingFee} />
 
             {/* PAYMENT INFORMATION */}
             <Card className="p-8">
@@ -263,7 +333,7 @@ function CheckOutPage() {
                 Send the payment to any of the following methods and fill in the details below to confirm your order.
               </CardDescription>
               <div className="mb-4">
-                <Label htmlFor="checkout-payment-method" className="text-lighter mb-1 block text-sm font-medium">
+                <Label htmlFor="checkout-payment-method" className="block mb-1 text-sm font-medium text-lighter">
                   Payment Method *
                 </Label>
                 <Select
@@ -282,39 +352,39 @@ function CheckOutPage() {
                     <SelectItem value="Maya">Maya</SelectItem>
                   </SelectContent>
                 </Select>
-                {formErrors.payment_method && <p className="text-error mt-1 text-xs">{formErrors.payment_method}</p>}
+                {formErrors.payment_method && <p className="mt-1 text-xs text-error">{formErrors.payment_method}</p>}
 
                 {getInfo.payment_method === 'GCash' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-lighter text-sm">
+                    <p className="text-sm text-lighter">
                       Scan the QR code below via GCash and fill the required details
                     </p>
                     <img
                       src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1760621075/DonateToMe_fyolkd.jpg"
                       alt={getInfo.payment_method}
-                      className="w-full rounded-2xl object-contain"
+                      className="object-contain w-full rounded-2xl"
                     />
                   </div>
                 ) : getInfo.payment_method === 'bank_transfer' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-lighter text-sm">
+                    <p className="text-sm text-lighter">
                       Scan the QR code below via Bank Transfer and fill the required details
                     </p>
                     <img
                       src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1761442632/6545af42-c08e-4ca7-beff-ae76d91e0ce1_w42tfd.jpg"
                       alt={getInfo.payment_method}
-                      className="w-full rounded-2xl object-contain"
+                      className="object-contain w-full rounded-2xl"
                     />
                   </div>
                 ) : getInfo.payment_method === 'Maya' ? (
                   <div className="mt-4 space-y-4">
-                    <p className="text-lighter text-sm">
+                    <p className="text-sm text-lighter">
                       Scan the QR code below via Maya and fill the required details
                     </p>
                     <img
                       src="https://res.cloudinary.com/drq2wzvmo/image/upload/v1761442632/6167d02c-a777-4739-9fb0-8e8d0e8806d6_ofeil8.jpg"
                       alt={getInfo.payment_method}
-                      className="w-full rounded-2xl object-contain"
+                      className="object-contain w-full rounded-2xl"
                     />
                   </div>
                 ) : null}
@@ -350,7 +420,7 @@ function CheckOutPage() {
             <Card className="p-8">
               <CardTitle className="text-xl">Additional Information</CardTitle>
               <div>
-                <label htmlFor="checkout-order-notes" className="text-lighter mb-1 block text-sm font-medium">
+                <label htmlFor="checkout-order-notes" className="block mb-1 text-sm font-medium text-lighter">
                   Order Notes
                 </label>
                 <Textarea
@@ -369,12 +439,17 @@ function CheckOutPage() {
               variant="CTA"
               className="w-full py-7"
               disabled={
-                placeOrderMutation.isLoading || items.length === 0 || hasReferenceError || isReferenceValidating
+                placeOrderMutation.isLoading || 
+                items.length === 0 || 
+                hasReferenceError || 
+                isReferenceValidating ||
+                !landmark.coordinates ||
+                shippingFee === 0
               }
             >
               {placeOrderMutation.isLoading ? 'Placing Order...' : 'Confirm Order'}
             </Button>
-            <p className="mx-auto flex items-center justify-center text-xs">
+            <p className="flex items-center justify-center mx-auto text-xs">
               By Clicking Confirm you agree to our terms and conditions
             </p>
           </div>

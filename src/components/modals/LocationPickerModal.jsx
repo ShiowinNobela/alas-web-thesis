@@ -21,7 +21,10 @@ function LocationMarker({ onSelect }) {
 function LocationPickerModal({ open, setOpen, onSave, onError }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [additionalAddress, setAdditionalAddress] = useState('');
+
+  const handleLocationSelect = (latlng) => {
+    setSelectedLocation(latlng);
+  };
 
   const handleConfirm = async () => {
     if (!selectedLocation) return;
@@ -30,13 +33,16 @@ function LocationPickerModal({ open, setOpen, onSave, onError }) {
       const res = await axios.post('/api/landmarks', {
         latitude: selectedLocation.lat,
         longitude: selectedLocation.lng,
-        additional_address: additionalAddress,
       });
-      onSave(res.data.data.address);
+      // Pass both address and coordinates to onSave
+      onSave({
+        address: res.data.data.address,
+        coordinates: selectedLocation
+      });
       setOpen(false);
     } catch (err) {
-        onError?.(err?.response?.data?.message || 'Failed to save location! please try again!');
-    }finally {
+      onError?.(err?.response?.data?.message || 'Failed to save location! please try again!');
+    } finally {
       setLoading(false);
     }
   };
@@ -45,12 +51,12 @@ function LocationPickerModal({ open, setOpen, onSave, onError }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="w-full h-[70vh] sm:max-w-lg flex flex-col">
         <DialogHeader>
-          <DialogTitle>Pin Your Delivery Location 📍</DialogTitle>
+          <DialogTitle>Pin Your Delivery Location </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden rounded-md">
           <MapContainer
-            center={[14.6760, 121.0437]} // Default for QC (Update this if we adding auto set for locations latur)
+            center={[14.6760, 121.0437]}
             zoom={13}
             style={{ height: '100%', width: '100%' }}
           >
@@ -58,8 +64,17 @@ function LocationPickerModal({ open, setOpen, onSave, onError }) {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; OpenStreetMap contributors'
             />
-            <LocationMarker onSelect={setSelectedLocation} />
+            <LocationMarker onSelect={handleLocationSelect} />
           </MapContainer>
+        </div>
+
+        <div className="mt-4 space-y-2">
+          {selectedLocation && (
+            <div className="p-2 text-sm text-gray-600 rounded bg-gray-50">
+              <p><strong>Selected Location:</strong></p>
+              <p>Lat: {selectedLocation.lat.toFixed(6)}, Lng: {selectedLocation.lng.toFixed(6)}</p>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end gap-2 mt-4">
@@ -67,7 +82,7 @@ function LocationPickerModal({ open, setOpen, onSave, onError }) {
             Cancel
           </Button>
           <Button disabled={!selectedLocation || loading} onClick={handleConfirm}>
-            {loading ? 'Saving…' : 'Confirm'}
+            {loading ? 'Saving…' : 'Confirm Location'}
           </Button>
         </div>
       </DialogContent>
