@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import { ShoppingCart } from 'lucide-react';
+import { Flame, ShoppingCart } from 'lucide-react';
 import AddToCartModal from '../modals/AddToCartModal';
 import { useAddToCart } from '@/hooks/useAddToCart';
 
@@ -36,6 +36,22 @@ function ProductCard({ product }) {
             <div className="mb-2 flex items-center">
               <p className="text-xs font-medium text-gray-700">Net Wt. 150 ml/5 oz</p>
             </div>
+
+            {product.spice_level != null && (
+              <div className="mb-2 flex items-center text-xs">
+                <span className="mr-1 font-medium text-red-500">Spice:</span>
+
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Flame
+                    key={i}
+                    size={16}
+                    className={`${i < product.spice_level ? 'fill-current text-red-500' : 'text-gray-300'}`}
+                  />
+                ))}
+
+                <span className="ml-1 text-red-500">({product.spice_level})</span>
+              </div>
+            )}
 
             <div className="flex flex-row justify-between text-sm">
               <p className="text-emerald-500">Stock: {product.stock_quantity - product.reserved_quantity}</p>
@@ -80,6 +96,7 @@ ProductCard.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
+    spice_level: PropTypes.number,
     image: PropTypes.string,
     price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     stock_quantity: PropTypes.number.isRequired,

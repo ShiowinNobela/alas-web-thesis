@@ -2,13 +2,19 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { createColumnHelper, useReactTable, getCoreRowModel, getFilteredRowModel, getSortedRowModel } from '@tanstack/react-table';
+import {
+  createColumnHelper,
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+} from '@tanstack/react-table';
 import { motion } from 'framer-motion';
 import ProductCard from '@/components/cards/ProductCard.jsx';
 import useUserStore from '@/stores/userStore';
 import ErrorState from '@/components/States/ErrorState';
 import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton';
-import { Filter, ChevronDown } from 'lucide-react';
+import { Filter, ChevronDown, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -20,6 +26,7 @@ function ProductPage() {
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [spiceLevelFilter, setSpiceLevelFilter] = useState(null); // null = no filter
 
   const {
     data: products = [],
@@ -61,7 +68,13 @@ function ProductPage() {
     globalFilterFn: 'includesString',
   });
 
-  const showProducts = table.getRowModel().rows.map((row) => row.original);
+  const showProducts = table
+    .getRowModel()
+    .rows.map((row) => row.original)
+    .filter((product) => {
+      if (spiceLevelFilter === null) return true; // no filter
+      return product.spice_level === spiceLevelFilter;
+    });
 
   const handleAddToCart = () => {
     if (!isLoggedIn) {
@@ -88,42 +101,76 @@ function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen py-5 bg-neutral">
+    <div className="bg-neutral min-h-screen py-5">
       <div className="flex flex-col pb-20">
         <div className="relative flex-1">
           {/* Header */}
           <div className="flex flex-col items-start justify-between gap-4 px-4 py-6 md:flex-row md:items-center md:gap-0 md:px-20">
             <div>
-              <h1 className="text-2xl font-semibold font-heading text-content md:text-3xl">Alas Menu and Spices</h1>
+              <h1 className="font-heading text-content text-2xl font-semibold md:text-3xl">Alas Menu and Spices</h1>
               <p className="text-lighter">From mild to wild - find your perfect heat level</p>
             </div>
 
-            <div className="flex flex-row w-full gap-2 sm:w-auto sm:items-center">
-              <div className='relative'>
-                <Button variant="outline" size="lg" className="flex justify-center py-4 w-1/8 sm:w-auto sm:py-7"
-                  onClick={() => setShowDropdown(!showDropdown)}>
+            <div className="flex w-full flex-row gap-2 sm:w-auto sm:items-center">
+              {/* Spice level filter */}
+              <div className="ring-primary flex items-center gap-2 rounded-xl p-4 ring-1">
+                <span className="text-primary text-sm">Spice Level:</span>
+                {[1, 2, 3, 4, 5].map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    onClick={() => setSpiceLevelFilter(level)}
+                    className="rounded-md border bg-transparent p-1 focus:outline-none"
+                    aria-label={`Filter by spice level ${level}`}
+                  >
+                    <Flame
+                      size={16}
+                      className={spiceLevelFilter >= level ? 'text-red-500' : 'text-lighter'}
+                      fill={spiceLevelFilter >= level ? 'currentColor' : 'none'}
+                    />
+                  </button>
+                ))}
+                {spiceLevelFilter !== null && (
+                  <button
+                    type="button"
+                    onClick={() => setSpiceLevelFilter(null)}
+                    className="bg-secondary rounded-md border px-2 py-1 text-xs"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              {/* Dropdown Filter */}
+              <div className="relative">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="flex w-1/8 justify-center py-4 sm:w-auto sm:py-7"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                >
                   <Filter className="size-6 sm:size-7" />
-                    <span>Sort</span>
+                  <span>Sort</span>
                   <ChevronDown className="size-5" />
                 </Button>
                 {/* Dropdown */}
                 {showDropdown && (
-                  <div className="absolute right-0 z-20 w-48 mt-2 text-black bg-white border rounded-md shadow-md">
+                  <div className="absolute right-0 z-20 mt-2 w-48 rounded-md border bg-white text-black shadow-md">
                     <button
                       onClick={() => handleSortChange('priceDesc')}
-                      className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                      className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                     >
                       Highest to Lowest
                     </button>
                     <button
                       onClick={() => handleSortChange('priceAsc')}
-                      className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                      className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                     >
                       Lowest to Highest
                     </button>
                     <button
                       onClick={() => handleSortChange('nameAsc')}
-                      className="block w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
+                      className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                     >
                       Alphabetical (A–Z)
                     </button>
@@ -135,13 +182,13 @@ function ProductPage() {
                 placeholder="Search products..."
                 value={globalFilter ?? ''}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="w-full py-4 bg-red-100 border-primary rounded-2xl sm:w-64 sm:py-6"
+                className="border-primary w-full rounded-2xl bg-red-100 py-4 sm:w-64 sm:py-6"
               />
             </div>
           </div>
 
           {/* Product Grid */}
-          <div className="px-4 pb-20 mt-4 md:px-20">
+          <div className="mt-4 px-4 pb-20 md:px-20">
             {isLoading ? (
               <div
                 className={
@@ -156,6 +203,12 @@ function ProductPage() {
               </div>
             ) : isError ? (
               <ErrorState error={isError} onRetry={refetch} title="Failed to load Products" retryText="Retry Request" />
+            ) : showProducts.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-20 text-gray-500">
+                <Flame size={32} className="mb-4 text-red-500" />
+                <p className="text-lg font-medium">No products found for the selected spice level.</p>
+                <p className="text-sm">Try changing the spice filter or search term.</p>
+              </div>
             ) : (
               <div
                 className={
