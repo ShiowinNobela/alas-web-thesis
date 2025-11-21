@@ -9,7 +9,7 @@ import CreateLoyaltyRewardModal from '@/components/modals/CreateLoyaltyRewardMod
 import { Button, Card } from 'flowbite-react';
 
 function PromotionManagement() {
-  const { control, handleSubmit, reset, setValue } = useForm();
+  const { control, handleSubmit, reset, setValue, watch } = useForm();
   const [selectedReward, setSelectedReward] = useState(null);
 
   const {
@@ -87,11 +87,15 @@ function PromotionManagement() {
                 rules={{ required: 'Description is required' }}
               />
               {/* Discount Type */}
-              <div className="flex flex-col gap-2">
+              <div className="flex w-full flex-col gap-2">
                 <label htmlFor="discount_type" className="text-sm font-medium">
                   Discount Type *
                 </label>
-                <Select id="discount_type" onValueChange={(value) => setValue('discount_type', value)}>
+                <Select
+                  id="discount_type"
+                  onValueChange={(value) => setValue('discount_type', value)}
+                  className="w-full"
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select discount type" />
                   </SelectTrigger>
@@ -101,14 +105,42 @@ function PromotionManagement() {
                   </SelectContent>
                 </Select>
               </div>
-              <RHFTextInput
-                name="discount_value"
-                control={control}
-                label="Discount Value *"
-                placeholder="e.g. 10"
-                type="number"
-                rules={{ required: 'Discount value is required' }}
-              />
+              {watch('discount_type') === 'percentage' && (
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="discount_value" className="text-sm font-medium">
+                    Discount Value *
+                  </label>
+                  <select
+                    id="discount_value"
+                    name="discount_value"
+                    className="w-full rounded-md border px-3 py-2"
+                    value={watch('discount_value') || ''}
+                    onChange={(e) => setValue('discount_value', e.target.value)}
+                  >
+                    <option value="" disabled>
+                      Select percentage
+                    </option>
+                    <option value="5">5%</option>
+                    <option value="10">10%</option>
+                    <option value="15">15%</option>
+                    <option value="20">20%</option>
+                    <option value="25">25%</option>
+                    <option value="30">30% (max)</option>
+                  </select>
+                </div>
+              )}
+
+              {watch('discount_type') === 'fixed' && (
+                <RHFTextInput
+                  name="discount_value"
+                  control={control}
+                  label="Discount Value *"
+                  type="number"
+                  placeholder="e.g. 10"
+                  rules={{ required: 'Discount value is required' }}
+                />
+              )}
+
               {/* Status */}
               <div className="flex flex-col gap-2">
                 <label htmlFor="active_status" className="text-sm font-medium">

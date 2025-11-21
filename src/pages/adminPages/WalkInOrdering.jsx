@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { Card, TextInput } from 'flowbite-react';
+import { Card, Select, TextInput, Button, Modal, ModalHeader, ModalBody, Label } from 'flowbite-react';
 import { MilkOff, Minus, Plus, Search, ShoppingCart, X } from 'lucide-react';
-import { Modal, ModalHeader, ModalBody, Label, Button } from 'flowbite-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-// React Query hooks
 function useProducts() {
   return useQuery({
     queryKey: ['products'],
@@ -26,7 +24,6 @@ function useCreateWalkInOrder() {
       return data;
     },
     onSuccess: () => {
-      // Invalidate any related queries if needed
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       queryClient.invalidateQueries({ queryKey: ['products'] });
     },
@@ -38,16 +35,17 @@ function WalkInOrdering() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [discount_amount, setDiscount] = useState(0);
+  const [discount_amount, setDiscount_amount] = useState('0');
   const [searchTerm, setSearchTerm] = useState('');
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
 
-  // React Query hooks usage
   const { data: products = [], isLoading, error } = useProducts();
   const createOrderMutation = useCreateWalkInOrder();
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const total = Math.max(0, subtotal - Number(discount_amount) || 0);
+  const total = Math.max(0, subtotal - parseFloat(discount_amount) || 0);
+
   const [userInput, setUserInput] = useState({
     customer_name: '',
     customer_email: '',
@@ -57,11 +55,11 @@ function WalkInOrdering() {
   const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     try {
       await createOrderMutation.mutateAsync({
         ...userInput,
-        discount_amount: Number(discount_amount),
+        discount_amount: parseFloat(discount_amount) || 0,
         items: cartItems.map((item) => ({
           product_id: item.id,
           quantity: item.quantity,
@@ -71,7 +69,9 @@ function WalkInOrdering() {
       toast.success('Order placed!');
       setCartItems([]);
       setUserInput({ customer_name: '', customer_email: '', notes: '' });
-      setDiscount(0);
+      setDiscount_amount('0');
+      setDiscountPercentage(0);
+      setConfirmOpen(false);
     } catch (err) {
       console.log(err);
       toast.error('Failed to place order');
@@ -80,6 +80,12 @@ function WalkInOrdering() {
 
   const handleAddToCart = () => {
     if (!selectedProduct) return;
+
+    if (selectedProduct.stock_quantity < quantity) {
+      toast.error(`Not enough stock! Only ${selectedProduct.stock_quantity} available.`);
+      return;
+    }
+
     const existing = cartItems.find((item) => item.id === selectedProduct.id);
     if (existing) {
       setCartItems(
@@ -100,16 +106,28 @@ function WalkInOrdering() {
 
   const handleChangeCartQuantity = (id, delta) => {
     setCartItems((cartItems) =>
-      cartItems.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item))
+      cartItems.map((item) => {
+        if (item.id === id) {
+          const newQuantity = Math.max(1, item.quantity + delta);
+
+          if (newQuantity > item.stock_quantity) {
+            toast.error(`Only ${item.stock_quantity} items available in stock!`);
+            return item;
+          }
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      })
     );
   };
 
   const clearCart = () => {
     setCartItems([]);
+    setDiscount_amount('0');
+    setDiscountPercentage(0);
     toast.info('Cart cleared');
   };
 
-  // You can also add loading and error states in your JSX
   if (isLoading) {
     return <div>Loading products...</div>;
   }
@@ -118,65 +136,60 @@ function WalkInOrdering() {
     return <div>Error loading products</div>;
   }
 
-  // ... rest of your JSX remains the same
-
   return (
     <>
       <div className="bg-admin h-full p-4">
         <div className="mx-auto max-w-7xl">
           <div className="grid-cols-4 gap-4 lg:grid">
-            {/* Products and Customer Info */}
             <Card className="col-span-3 flex-1 ring-1">
               <h1 className="text-content text-2xl font-bold">Make a Walk-in Order</h1>
 
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <h2 className="text-lighter">Available Products</h2>
-                    <span className="text-content">{filteredProducts.length} products</span>
-                  </div>
+              <div className="mb-4">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="text-lighter">Available Products</h2>
+                  <span className="text-content">{filteredProducts.length} products</span>
+                </div>
 
-                  <TextInput
-                    id="search"
-                    type="text"
-                    icon={Search}
-                    placeholder="Search products..."
-                    value={searchTerm}
-                    className="mb-4"
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    color="gray"
-                  />
+                <TextInput
+                  id="search"
+                  type="text"
+                  icon={Search}
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  className="mb-4"
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  color="gray"
+                />
 
-                  {/* Products Grid with Fixed Height */}
-                  <div className="h-screen overflow-y-auto pr-2">
-                    <div className="grid grid-cols-2 gap-4 p-1 sm:grid-cols-3 lg:grid-cols-4">
-                      {filteredProducts.map((d) => (
-                        <Card
-                          key={d.id}
-                          imgSrc={d.image}
-                          imgAlt={d.name}
-                          className="group cursor-pointer ring-1 transition-all duration-200 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                          onClick={() => {
-                            setOpen(true);
-                            setSelectedProduct(d);
-                          }}
-                        >
-                          <h3 className="font-heading line-clamp-1 font-bold">{d.name}</h3>
-                          <div className="text-lighter text-sm">
-                            <p>
-                              Stock: <span className="text-content">{d.stock_quantity}</span>
-                            </p>
-                            <p>
-                              Reserved Stock: <span className="text-content">{d.reserved_quantity}</span>
-                            </p>
-                          </div>
-                          <p className="font-bold text-emerald-500">₱{d.price}</p>
-                        </Card>
-                      ))}
-                    </div>
+                {/* Products Grid with Fixed Height */}
+                <div className="h-screen overflow-y-auto pr-2">
+                  <div className="grid grid-cols-2 gap-4 p-1 sm:grid-cols-3 lg:grid-cols-4">
+                    {filteredProducts.map((d) => (
+                      <Card
+                        key={d.id}
+                        imgSrc={d.image}
+                        imgAlt={d.name}
+                        className="group cursor-pointer ring-1 transition-all duration-200 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                        onClick={() => {
+                          setOpen(true);
+                          setSelectedProduct(d);
+                        }}
+                      >
+                        <h3 className="font-heading line-clamp-1 font-bold">{d.name}</h3>
+                        <div className="text-lighter text-sm">
+                          <p>
+                            Stock: <span className="text-content">{d.stock_quantity}</span>
+                          </p>
+                          <p>
+                            Reserved Stock: <span className="text-content">{d.reserved_quantity}</span>
+                          </p>
+                        </div>
+                        <p className="font-bold text-emerald-500">₱{d.price}</p>
+                      </Card>
+                    ))}
                   </div>
                 </div>
-              </form>
+              </div>
             </Card>
 
             <Card className="flex h-full ring-1">
@@ -256,15 +269,28 @@ function WalkInOrdering() {
                     <div className="flex items-center justify-between">
                       <span className="text-lighter">Discount:</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-lighter">₱</span>
-                        <input
-                          type="number"
-                          className="w-20 [appearance:textfield] border-b border-gray-300 px-1 py-1 text-right focus:border-orange-500 focus:outline-none dark:border-gray-600 dark:bg-transparent dark:text-white"
-                          value={discount_amount}
-                          min={0}
-                          max={subtotal}
-                          onChange={(e) => setDiscount(e.target.value)}
-                        />
+                        <Select
+                          value={discountPercentage}
+                          className={discountPercentage ? '' : 'w-30'}
+                          onChange={(e) => {
+                            const percentage = parseInt(e.target.value);
+                            setDiscountPercentage(percentage);
+                            const discountAmount = (subtotal * (percentage / 100)).toFixed(2);
+                            setDiscount_amount(discountAmount);
+                          }}
+                        >
+                          <option value={0}>No Discount</option>
+                          <option value={5}>5%</option>
+                          <option value={10}>10%</option>
+                          <option value={15}>15%</option>
+                          <option value={20}>20%</option>
+                          <option value={25}>25%</option>
+                          <option value={30}>30%</option>
+                        </Select>
+
+                        <span className="text-money font-semibold">
+                          -₱{parseFloat(discount_amount || 0).toLocaleString()}
+                        </span>
                       </div>
                     </div>
 
@@ -313,6 +339,7 @@ function WalkInOrdering() {
                   id="quantity"
                   type="number"
                   min={1}
+                  max={selectedProduct?.stock_quantity}
                   value={quantity}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -322,17 +349,11 @@ function WalkInOrdering() {
                   placeholder="Enter quantity"
                   inputMode="numeric"
                 />
+                <p className="mt-1 text-xs text-gray-500">Available: {selectedProduct?.stock_quantity} units</p>
               </div>
 
               <div className="flex gap-3">
-                <Button
-                  color="blue"
-                  className="flex-1"
-                  onClick={() => {
-                    handleAddToCart();
-                    setOpen(false);
-                  }}
-                >
+                <Button color="blue" className="flex-1" onClick={handleAddToCart}>
                   Add to Cart
                 </Button>
                 <Button color="gray" className="flex-1" onClick={() => setOpen(false)}>
@@ -387,13 +408,7 @@ function WalkInOrdering() {
               </div>
 
               <div className="mt-6 flex flex-col gap-3">
-                <Button
-                  color="blue"
-                  onClick={(e) => {
-                    handleSubmit(e);
-                    setConfirmOpen(false);
-                  }}
-                >
+                <Button color="blue" onClick={handleSubmit}>
                   Confirm Order
                 </Button>
                 <Button color="gray" onClick={() => setConfirmOpen(false)}>

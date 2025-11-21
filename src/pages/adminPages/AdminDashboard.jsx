@@ -13,7 +13,6 @@ import {
   TrendingUp,
   AlertTriangle,
   AlertCircle,
-  ArrowRight,
   Plus,
   Archive,
   Package,
@@ -107,148 +106,6 @@ function AdminDashboard() {
             ))}
       </div>
 
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-2xl font-semibold">Top Products</h3>
-          <TrendingUp className="h-6 w-6 text-blue-600" />
-        </div>
-
-        {items?.topProducts?.length > 0 ? (
-          <div className="space-y-3">
-            {items.topProducts.map((p, index) => (
-              <Card key={p.id} className="flex gap-4 ring-1">
-                <div className="flex items-center">
-                  <div
-                    className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full font-bold text-white ${
-                      index === 0
-                        ? 'bg-yellow-500'
-                        : index === 1
-                          ? 'bg-gray-400'
-                          : index === 2
-                            ? 'bg-orange-600'
-                            : 'bg-blue-500'
-                    }`}
-                  >
-                    {index === 0 ? <Crown className="h-5 w-5" /> : index + 1}
-                  </div>
-
-                  {/* Product Image */}
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="h-16 w-16 flex-shrink-0 rounded-lg border border-gray-200 object-cover"
-                  />
-
-                  {/* Product Info */}
-                  <div className="flex min-w-0 flex-1 flex-col justify-center">
-                    <p className="truncate text-lg font-semibold text-gray-900 dark:text-white">{p.name}</p>
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-300">
-                      <span>₱{p.price}</span>
-                      <span className="flex items-center">
-                        <Star className="mr-1 h-4 w-4 text-yellow-500" />
-                        Sold: {p.total_sold}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Popularity Indicator */}
-                  <div className="flex-shrink-0">
-                    <div className="rounded-full border border-gray-300 px-3 py-1 text-xs font-medium text-gray-700 dark:border-gray-600 dark:text-gray-200">
-                      {p.total_sold > 50 ? 'Hot' : p.total_sold > 20 ? 'Popular' : 'Good'}
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="py-8 text-center text-gray-500">
-            <TrendingUp className="mx-auto mb-2 h-12 w-12 text-gray-300" />
-            <p>No top products yet</p>
-          </div>
-        )}
-      </Card>
-
-      <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
-        <div className="mb-4 flex items-center space-x-2">
-          {items?.lowStock?.length > 0 ? (
-            <>
-              <AlertTriangle className="text-error h-5 w-5" />
-              <h3 className="text-error text-lg font-semibold">Low Stock Alerts</h3>
-            </>
-          ) : (
-            <>
-              <CheckCircle className="h-5 w-5 text-green-500" />
-              <h3 className="text-lg font-semibold text-green-700">Stock Status</h3>
-            </>
-          )}
-        </div>
-
-        {items?.lowStock?.length > 0 ? (
-          <div className="space-y-3">
-            {items.lowStock.map((item) => {
-              const isCritical = item.stock <= 5;
-
-              return (
-                <div
-                  key={item.id}
-                  className={`rounded-lg border p-3 transition-all duration-200 ${
-                    isCritical
-                      ? 'border-red-200 bg-red-50 hover:bg-red-100'
-                      : 'border-orange-200 bg-orange-50 hover:bg-orange-100'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">{item.name}</p>
-                      <div className="mt-1 flex items-center space-x-2">
-                        <AlertCircle className={`h-4 w-4 ${isCritical ? 'text-error' : 'text-orange-500'}`} />
-                        <span className={`text-sm font-bold ${isCritical ? 'text-error' : 'text-orange-600'}`}>
-                          {isCritical ? 'CRITICAL' : 'LOW'} - Only {item.stock} left!
-                        </span>
-                      </div>
-                    </div>
-
-                    <Link
-                      to="/admin/inventory"
-                      className="hover:text-error ml-2 flex-shrink-0 cursor-pointer p-1 text-gray-500 transition-colors"
-                      title="Restock item"
-                    >
-                      <ArrowRight className="h-6 w-6" />
-                    </Link>
-                  </div>
-
-                  {/* Stock Level Bar */}
-                  <div className="mt-2 h-2 w-full rounded-full bg-gray-200">
-                    <div
-                      className={`h-2 rounded-full ${isCritical ? 'bg-red-500' : 'bg-orange-500'}`}
-                      style={{
-                        width: `${Math.min((item.stock / 20) * 100, 100)}%`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* Quick Action Button */}
-            <Link to="/admin/inventory">
-              <Button color="failure" className="mt-4 flex w-full cursor-pointer items-center justify-center space-x-2">
-                <AlertTriangle className="h-4 w-4" />
-                <span>Manage All Inventory</span>
-              </Button>
-            </Link>
-          </div>
-        ) : (
-          <div className="py-6 text-center">
-            <div className="mb-3 flex justify-center">
-              <CheckCircle className="h-12 w-12 text-green-500" />
-            </div>
-            <p className="font-medium text-green-700">All items are well stocked! Yippie!!!!</p>
-          </div>
-        )}
-      </Card>
-
       {isLoadingDaily ? (
         <ChartSkeleton />
       ) : (
@@ -256,6 +113,98 @@ function AdminDashboard() {
       )}
 
       <Card className="rounded-2xl shadow-sm ring-1 lg:col-span-2">
+        <div className="mb-3 flex items-center gap-2">
+          {items?.lowStock?.length > 0 ? (
+            <>
+              <AlertTriangle className="text-error h-5 w-5" />
+              <h3 className="text-error text-sm font-semibold">Low Stock Alerts</h3>
+            </>
+          ) : (
+            <>
+              <CheckCircle className="h-5 w-5 text-green-500" />
+              <h3 className="text-sm font-semibold text-green-700">Stock Status</h3>
+            </>
+          )}
+        </div>
+
+        {items?.lowStock?.length > 0 ? (
+          <div className="space-y-2">
+            {items.lowStock.slice(0, 2).map((item) => {
+              const isCritical = item.stock <= 5;
+              return (
+                <div
+                  key={item.id}
+                  className={`rounded-lg border p-2 text-xs ${
+                    isCritical ? 'border-red-200 bg-red-50' : 'border-orange-200 bg-orange-50'
+                  }`}
+                >
+                  <p className="truncate font-medium text-gray-900">{item.name}</p>
+                  <div className="mt-1 flex items-center gap-1">
+                    <AlertCircle className={`h-3 w-3 ${isCritical ? 'text-error' : 'text-orange-500'}`} />
+                    <span className={`${isCritical ? 'text-error font-bold' : 'font-bold text-orange-600'}`}>
+                      {isCritical ? 'CRITICAL' : 'LOW'} - {item.stock} left
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+
+            {items.lowStock.length > 2 && (
+              <p className="text-xs text-gray-500">+{items.lowStock.length - 2} more low stock items</p>
+            )}
+
+            <Link to="/admin/inventory">
+              <Button color="failure" className="mt-2 flex w-full items-center justify-center gap-1 text-xs">
+                <AlertTriangle className="h-3 w-3" /> Manage All Inventory
+              </Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="py-4 text-center">
+            <CheckCircle className="mx-auto mb-2 h-10 w-10 text-green-500" />
+            <p className="text-sm font-medium text-green-700">All items are well stocked!</p>
+          </div>
+        )}
+      </Card>
+
+      <Card className="rounded-2xl bg-lime-100/25 shadow-sm ring-1 lg:col-span-4">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-xl font-semibold">Top Products</h3>
+          <TrendingUp className="h-5 w-5 text-blue-600" />
+        </div>
+
+        {items?.topProducts?.length > 0 ? (
+          <div className="grid grid-cols-3 gap-3">
+            {items.topProducts.slice(0, 3).map((p, index) => (
+              <Card key={p.id} className="flex flex-col items-center rounded-2xl p-2 ring-1">
+                <div className="flex">
+                  <div
+                    className={`mb-2 flex h-10 w-10 items-center justify-center rounded-full font-bold text-white ${
+                      index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : 'bg-orange-600'
+                    }`}
+                  >
+                    {index === 0 ? <Crown className="h-5 w-5" /> : index + 1}
+                  </div>
+                  <img src={p.image} alt={p.name} className="mb-2 size-15 object-cover" />
+                </div>
+
+                <p className="truncate text-center text-sm font-semibold text-gray-900">{p.name}</p>
+                <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <span className="text-money font-bold">₱{p.price}</span>
+                  <span className="flex items-center gap-1">{p.total_sold} sold</span>
+                </div>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="py-6 text-center text-gray-500">
+            <TrendingUp className="mx-auto mb-2 h-10 w-10 text-gray-300" />
+            <p>No top products yet</p>
+          </div>
+        )}
+      </Card>
+
+      <Card className="rounded-2xl bg-fuchsia-100/25 shadow-sm ring-1 lg:col-span-2">
         <div className="mb-4 flex items-center space-x-2">
           <Activity className="h-5 w-5 text-blue-600" />
           <h3 className="text-lg font-semibold">Quick Actions</h3>

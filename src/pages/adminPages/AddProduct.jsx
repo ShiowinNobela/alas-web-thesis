@@ -9,6 +9,7 @@ import RHFFileUpload from '@/components/rhform/RHFFileUpload';
 import { Button } from 'flowbite-react';
 import RHFSelectInput from '@/components/rhform/RHFSelectInput';
 import { useState } from 'react';
+import { Flame } from 'lucide-react';
 
 function AddProduct() {
   const { control, handleSubmit, reset, setValue, watch } = useForm();
@@ -26,6 +27,7 @@ function AddProduct() {
         price: '',
         image: '',
         description: '',
+        spice_level: 0,
       });
       setResetKey((prev) => prev + 1);
     },
@@ -43,6 +45,7 @@ function AddProduct() {
       price: Number(data.price),
       image: data.image,
       description: data.description,
+      spice_level: data.spice_level,
     });
   };
 
@@ -95,6 +98,40 @@ function AddProduct() {
                 rules={{ required: 'Category is required' }}
                 options={['condiment', 'pickles', 'powders']}
               />
+
+              <div className="flex flex-col gap-1">
+                <label htmlFor="spice_level" className="text-sm font-medium">
+                  Spice Level
+                </label>
+                <input
+                  id="spice_level"
+                  name="spice_level"
+                  type="range"
+                  min={0}
+                  max={5}
+                  value={watch('spice_level')}
+                  onChange={(e) => setValue('spice_level', Number(e.target.value))}
+                  className="sr-only"
+                />
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((level) => (
+                    <button
+                      key={level}
+                      type="button"
+                      aria-label={`Set spice level ${level}`}
+                      aria-pressed={watch('spice_level') >= level}
+                      className="m-0 border-0 bg-transparent p-0 focus:outline-none"
+                      onClick={() => setValue('spice_level', level)}
+                    >
+                      <Flame
+                        size={24}
+                        className={watch('spice_level') >= level ? 'fill-current text-red-500' : 'text-gray-300'}
+                      />
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500">Click to select spice level</p>
+              </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <RHFTextInput

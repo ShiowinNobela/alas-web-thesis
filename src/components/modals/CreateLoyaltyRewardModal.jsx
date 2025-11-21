@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 export default function CreateLoyaltyRewardModal({ show, onClose, selectedReward }) {
   const queryClient = useQueryClient();
+  const [type, setType] = useState(selectedReward?.discount_type || '');
 
   const createRewardMutation = useMutation({
     mutationFn: (newReward) => axios.post('/api/loyalty/create', newReward).then((res) => res.data),
@@ -51,7 +53,8 @@ export default function CreateLoyaltyRewardModal({ show, onClose, selectedReward
               id="discount_type"
               name="discount_type"
               className="w-full rounded border p-2"
-              defaultValue={selectedReward?.discount_type || ''}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
               required
             >
               <option value="">Select type</option>
@@ -59,16 +62,42 @@ export default function CreateLoyaltyRewardModal({ show, onClose, selectedReward
               <option value="fixed">Fixed Amount</option>
             </select>
           </div>
-          <div>
-            <Label htmlFor="discount_value">Discount Value *</Label>
-            <TextInput
-              type="number"
-              id="discount_value"
-              name="discount_value"
-              defaultValue={selectedReward?.discount_value || ''}
-              required
-            />
-          </div>
+          {type === 'percentage' && (
+            <div>
+              <Label htmlFor="discount_value">Discount Value *</Label>
+              <select
+                id="discount_value"
+                name="discount_value"
+                className="w-full rounded border p-2"
+                defaultValue={selectedReward?.discount_value || ''}
+                required
+              >
+                <option value="" disabled>
+                  Select percentage
+                </option>
+                <option value="5">5%</option>
+                <option value="10">10%</option>
+                <option value="15">15%</option>
+                <option value="20">20%</option>
+                <option value="25">25%</option>
+                <option value="30">30% (max)</option>
+              </select>
+            </div>
+          )}
+
+          {type === 'fixed' && (
+            <div>
+              <Label htmlFor="discount_value">Discount Value *</Label>
+              <TextInput
+                type="number"
+                id="discount_value"
+                name="discount_value"
+                defaultValue={selectedReward?.discount_value || ''}
+                required
+              />
+            </div>
+          )}
+
           <div>
             <Label htmlFor="required_orders">Required Orders *</Label>
             <TextInput

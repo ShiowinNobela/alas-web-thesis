@@ -114,11 +114,6 @@ function AdminContactPage() {
                 <Mail className="mr-1 h-3 w-3 flex-shrink-0" />
                 <span className="truncate">{contact.subject}</span>
               </div>
-
-              <div className="flex items-center text-xs text-gray-600 dark:text-gray-400">
-                <Globe className="mr-1 h-3 w-3 flex-shrink-0" />
-                <span className="truncate font-mono">{contact.ip}</span>
-              </div>
             </div>
 
             {/* Note Preview */}
@@ -189,26 +184,14 @@ function AdminContactPage() {
                   {selectedContact ? formatDate(selectedContact.createdAt) : ''}
                 </p>
               </div>
-
-              <div>
-                <label className="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400">
-                  <Globe className="mr-1 h-4 w-4" />
-                  IP Address
-                </label>
-                <p className="font-mono text-sm text-gray-900 dark:text-white">{selectedContact?.ip}</p>
-              </div>
             </div>
           </div>
         </ModalBody>
 
         <ModalFooter>
-          <Button color="gray" onClick={closeModal}>
+          <Button color="red" onClick={closeModal}>
             <X className="mr-2 h-4 w-4" />
             Close
-          </Button>
-          <Button color="blue" onClick={() => window.open(`mailto:${selectedContact?.email}`, '_blank')}>
-            <Mail className="mr-2 h-4 w-4" />
-            Reply via Email
           </Button>
         </ModalFooter>
       </Modal>

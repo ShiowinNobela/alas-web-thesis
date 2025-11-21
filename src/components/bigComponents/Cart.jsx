@@ -16,6 +16,7 @@ function Cart() {
     final_total,
     discount,
     coupon_code,
+    coupon_from_loyalty,
     isLoading,
     adjustQuantity,
     removeItem,
@@ -161,7 +162,13 @@ function Cart() {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <AnimatePresence>
               {coupon_code ? (
-                <CouponCard key={coupon_code} code={coupon_code} discount={discount} onRemove={removeCoupon} />
+                <CouponCard
+                  key={coupon_code}
+                  code={coupon_code}
+                  discount={discount}
+                  onRemove={removeCoupon}
+                  fromLoyalty={coupon_from_loyalty}
+                />
               ) : (
                 <div className="flex flex-col gap-2 sm:flex-row">
                   <Input
@@ -191,7 +198,7 @@ function Cart() {
                 open={loyaltyOpen}
                 onOpenChange={setLoyaltyOpen}
                 onSelectCoupon={async (code) => {
-                  await applyCoupon(code.trim());
+                  await applyCoupon(code.trim(), true);
                   setCouponInput('');
                   setLoyaltyOpen(false);
                 }}
